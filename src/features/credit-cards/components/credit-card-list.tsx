@@ -1,0 +1,53 @@
+import Link from "next/link"
+
+import { computeStatementDates } from "@/features/credit-cards/lib/billing-cycle.utils"
+import { getCreditCards } from "@/features/credit-cards/lib/credit-cards.queries"
+import { CreditCardVisual } from "@/features/credit-cards/components/credit-card-visual"
+
+interface CreditCardListProps {
+	userId: string
+}
+
+export async function CreditCardList({ userId }: CreditCardListProps) {
+	const cards = await getCreditCards(userId)
+
+	if (cards.length === 0) {
+		return (
+			<div className="flex flex-col items-center justify-center rounded-none border border-dashed p-12 text-center">
+				<p className="text-muted-foreground text-sm">
+					No credit cards yet. Add your first card to start tracking your spending.
+				</p>
+			</div>
+		)
+	}
+
+	return (
+		<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{cards.map((card) => {
+				const { paymentDueDate } = computeStatementDates(
+					card.closingDay,
+					card.paymentDay,
+					new Date()
+				)
+
+				return (
+					<Link
+						key={card.id}
+						href={`/credit-cards/${card.id}`}
+						className="transition-transform hover:scale-[1.02]"
+					>
+						<CreditCardVisual
+							name={card.name}
+							brand={card.brand}
+							lastFourDigits={card.lastFourDigits}
+							color={card.color}
+							totalLimit={card.totalLimit}
+							usedLimit={card.usedLimit}
+							paymentDueDate={paymentDueDate}
+						/>
+					</Link>
+				)
+			})}
+		</div>
+	)
+}

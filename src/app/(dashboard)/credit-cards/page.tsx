@@ -1,0 +1,29 @@
+import { Plus } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { CreditCardDialog } from "@/features/credit-cards/components/credit-card-dialog";
+import { CreditCardList } from "@/features/credit-cards/components/credit-card-list";
+import { requireSession } from "@/shared/lib/auth";
+
+export default async function CreditCardsPage() {
+  const session = await requireSession();
+
+  return (
+    <div className="mx-auto max-w-4xl">
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-lg font-semibold">Credit Cards</h1>
+        <CreditCardDialog
+          mode="create"
+          trigger={
+            <Button size="sm">
+              <Plus className="size-3.5" data-icon="inline-start" />
+              New Card
+            </Button>
+          }
+        />
+      </div>
+
+      <CreditCardList userId={session.user.id} />
+    </div>
+  );
+}
