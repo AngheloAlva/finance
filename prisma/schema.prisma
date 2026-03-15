@@ -1,0 +1,458 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CategoryScope {
+  SYSTEM
+  GROUP
+  USER
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+enum PaymentMethod {
+  CASH
+  DEBIT
+  CREDIT
+  TRANSFER
+  OTHER
+}
+
+enum RecurrenceFrequency {
+  DAILY
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  BIMONTHLY
+  QUARTERLY
+  SEMIANNUAL
+  ANNUAL
+}
+
+enum AlertType {
+  CATEGORY_THRESHOLD_EXCEEDED
+  CATEGORY_SPENDING_SPIKE
+  CREDIT_CARD_HIGH_USAGE
+  CREDIT_CARD_PAYMENT_DUE
+  GOAL_MILESTONE
+  GOAL_DEADLINE_APPROACHING
+  GOAL_COMPLETED
+  NEGATIVE_BALANCE_RISK
+  FUTURE_OVERLOAD
+  EXCESSIVE_INSTALLMENTS
+  INVESTMENT_SIGNIFICANT_CHANGE
+  MISSING_INCOME
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum AlertStatus {
+  PENDING
+  READ
+  DISMISSED
+}
+
+enum SplitRule {
+  EQUAL
+  PROPORTIONAL
+  CUSTOM
+}
+
+enum GroupRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+}
+
+enum GoalStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum InvestmentType {
+  STOCKS
+  BONDS
+  CRYPTO
+  REAL_ESTATE
+  FUND
+  SAVINGS
+  OTHER
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  name          String
+  emailVerified Boolean  @default(false)
+  image         String?
+  currency      String   @default("USD")
+  timezone      String   @default("UTC")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions          Session[]
+  accounts          Account[]
+  categories        Category[]
+  transactions      Transaction[]
+  creditCards       CreditCard[]
+  alerts            Alert[]
+  groupMemberships  GroupMember[]
+  groupInvitations  GroupInvitation[]
+  transactionSplits TransactionSplit[]
+  goals             Goal[]
+  goalContributions GoalContribution[]
+  investments       Investment[]
+
+  @@map("users")
+}
+
+model Category {
+  id              String          @id @default(cuid())
+  name            String
+  icon            String
+  color           String
+  scope           CategoryScope   @default(USER)
+  transactionType TransactionType @default(EXPENSE)
+  isRecurring     Boolean         @default(false)
+  isAvoidable     Boolean         @default(false)
+  alertThreshold  Int?
+  parentId        String?
+  parent          Category?       @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: Restrict)
+  children        Category[]      @relation("CategoryHierarchy")
+  userId          String?
+  user            User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupId         String?
+  group           Group?          @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  transactions    Transaction[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([scope])
+  @@index([parentId])
+  @@index([groupId])
+  @@map("categories")
+}
+
+model Transaction {
+  id            String             @id @default(cuid())
+  amount        Int
+  description   String
+  notes         String?
+  date          DateTime
+  impactDate    DateTime
+  type          TransactionType
+  paymentMethod PaymentMethod      @default(CASH)
+  userId        String
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId    String
+  category      Category           @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  groupId       String?
+  group         Group?             @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  splitRule     SplitRule?
+  splits        TransactionSplit[]
+
+  // Credit Card relation
+  creditCardId String?
+  creditCard   CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: SetNull)
+
+  // Installment fields
+  installmentNumber   Int?
+  totalInstallments   Int?
+  parentTransactionId String?
+  parentTransaction   Transaction?  @relation("InstallmentGroup", fields: [parentTransactionId], references: [id], onDelete: SetNull)
+  childInstallments   Transaction[] @relation("InstallmentGroup")
+
+  // Recurring fields
+  isTemplate         Boolean         @default(false)
+  generatedFromId    String?
+  generatedFrom      Transaction?    @relation("RecurrenceGenerated", fields: [generatedFromId], references: [id], onDelete: SetNull)
+  generatedInstances Transaction[]   @relation("RecurrenceGenerated")
+  recurrenceRule     RecurrenceRule? @relation("RecurrenceTemplate")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, date])
+  @@index([userId, impactDate])
+  @@index([userId, type])
+  @@index([categoryId])
+  @@index([creditCardId])
+  @@index([parentTransactionId])
+  @@index([generatedFromId])
+  @@index([isTemplate])
+  @@index([groupId])
+  @@map("transactions")
+}
+
+model CreditCard {
+  id             String        @id @default(cuid())
+  name           String
+  lastFourDigits String        @db.VarChar(4)
+  brand          String
+  totalLimit     Int
+  closingDay     Int
+  paymentDay     Int
+  color          String
+  isActive       Boolean       @default(true)
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions   Transaction[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([userId])
+  @@map("credit_cards")
+}
+
+model RecurrenceRule {
+  id                 String              @id @default(cuid())
+  frequency          RecurrenceFrequency
+  interval           Int                 @default(1)
+  nextGenerationDate DateTime
+  endDate            DateTime?
+  isActive           Boolean             @default(true)
+  transactionId      String              @unique
+  transaction        Transaction         @relation("RecurrenceTemplate", fields: [transactionId], references: [id], onDelete: Cascade)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  @@map("recurrence_rules")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verifications")
+}
+
+model Alert {
+  id               String        @id @default(cuid())
+  type             AlertType
+  message          String
+  severity         AlertSeverity
+  status           AlertStatus   @default(PENDING)
+  referenceType    String
+  referenceId      String
+  deduplicationKey String
+  userId           String
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@unique([userId, type, referenceId, deduplicationKey])
+  @@index([userId, status])
+  @@index([userId, createdAt])
+  @@map("alerts")
+}
+
+model Group {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  currency    String   @default("USD")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members      GroupMember[]
+  invitations  GroupInvitation[]
+  categories   Category[]
+  transactions Transaction[]
+  goals        Goal[]
+
+  @@map("groups")
+}
+
+model GroupMember {
+  id       String    @id @default(cuid())
+  role     GroupRole @default(MEMBER)
+  joinedAt DateTime  @default(now())
+
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+  @@index([userId])
+  @@index([groupId])
+  @@map("group_members")
+}
+
+model TransactionSplit {
+  id            String      @id @default(cuid())
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount        Int
+  isPaid        Boolean     @default(false)
+  paidAt        DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([transactionId, userId])
+  @@index([transactionId])
+  @@index([userId])
+  @@map("transaction_splits")
+}
+
+model GroupInvitation {
+  id        String           @id @default(cuid())
+  email     String
+  token     String           @unique
+  status    InvitationStatus @default(PENDING)
+  expiresAt DateTime
+
+  groupId     String
+  group       Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  invitedById String
+  invitedBy   User   @relation(fields: [invitedById], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([groupId])
+  @@index([email])
+  @@index([token])
+  @@map("group_invitations")
+}
+
+model Goal {
+  id           String     @id @default(cuid())
+  name         String
+  description  String?
+  targetAmount Int
+  targetDate   DateTime?
+  status       GoalStatus @default(ACTIVE)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  groupId String?
+  group   Group?  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  contributions GoalContribution[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, status])
+  @@index([groupId])
+  @@map("goals")
+}
+
+model GoalContribution {
+  id     String   @id @default(cuid())
+  amount Int
+  date   DateTime
+  note   String?
+
+  goalId String
+  goal   Goal   @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([goalId])
+  @@index([userId])
+  @@map("goal_contributions")
+}
+
+model Investment {
+  id              String               @id @default(cuid())
+  type            InvestmentType
+  name            String
+  institution     String
+  initialAmount   Int
+  currentValue    Int
+  currency        String               @default("USD")
+  startDate       DateTime
+  maturityDate    DateTime?
+  estimatedReturn Int?
+  isActive        Boolean              @default(true)
+  userId          String
+  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snapshots       InvestmentSnapshot[]
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  @@index([userId])
+  @@index([userId, type])
+  @@index([userId, isActive])
+  @@map("investments")
+}
+
+model InvestmentSnapshot {
+  id           String     @id @default(cuid())
+  investmentId String
+  investment   Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+  date         DateTime
+  value        Int
+  createdAt    DateTime   @default(now())
+
+  @@index([investmentId, date])
+  @@map("investment_snapshots")
+}
