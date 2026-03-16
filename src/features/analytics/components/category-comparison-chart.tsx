@@ -107,13 +107,13 @@ export function CategoryComparisonChart({
 								dataKey="period1Total"
 								name={period1Label}
 								fill={CHART_COLORS.period1}
-								radius={[0, 4, 4, 0]}
+								radius={[0, 0, 0, 0]}
 							/>
 							<Bar
 								dataKey="period2Total"
 								name={period2Label}
 								fill={CHART_COLORS.period2}
-								radius={[0, 4, 4, 0]}
+								radius={[0, 0, 0, 0]}
 							/>
 						</BarChart>
 					</ResponsiveContainer>

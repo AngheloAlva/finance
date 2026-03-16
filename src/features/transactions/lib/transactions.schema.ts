@@ -20,6 +20,7 @@ export const createTransactionSchema = z.object({
 		error: "Please select a valid payment method",
 	}),
 	categoryId: z.string().min(1, { error: "Category is required" }),
+	creditCardId: z.string().optional(),
 })
 
 export const updateTransactionSchema = createTransactionSchema.extend({

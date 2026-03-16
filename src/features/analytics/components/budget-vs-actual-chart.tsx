@@ -120,9 +120,9 @@ export function BudgetVsActualChart({ data, currency }: BudgetVsActualChartProps
 								name="Budget"
 								fill={CHART_COLORS.budget}
 								fillOpacity={0.2}
-								radius={[0, 4, 4, 0]}
+								radius={[0, 0, 0, 0]}
 							/>
-							<Bar dataKey="actual" name="Actual" radius={[0, 4, 4, 0]}>
+							<Bar dataKey="actual" name="Actual" radius={[0, 0, 0, 0]}>
 								{chartData.map((entry) => (
 									<Cell key={entry.categoryId} fill={getBarColor(entry.percentage)} />
 								))}

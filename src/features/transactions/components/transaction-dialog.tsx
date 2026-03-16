@@ -35,6 +35,7 @@ export function TransactionDialog({
 				type: transaction.type,
 				paymentMethod: transaction.paymentMethod,
 				categoryId: transaction.categoryId,
+				creditCardId: transaction.creditCardId,
 			}
 		: undefined
 

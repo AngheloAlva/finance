@@ -48,7 +48,7 @@ export function GroupMonthlyFlowChart({ data, currency }: GroupMonthlyFlowChartP
 								width={80}
 							/>
 							<Tooltip content={<CurrencyBarTooltip currency={currency} />} />
-							<Bar dataKey="total" name="Expenses" fill={CHART_COLORS.bar} radius={[4, 4, 0, 0]} />
+							<Bar dataKey="total" name="Expenses" fill={CHART_COLORS.bar} radius={[0, 0, 0, 0]} />
 						</BarChart>
 					</ResponsiveContainer>
 				)}

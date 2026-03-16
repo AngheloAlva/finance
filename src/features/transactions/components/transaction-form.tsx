@@ -39,6 +39,7 @@ interface TransactionFormProps {
 		type: string
 		paymentMethod: string
 		categoryId: string
+		creditCardId: string | null
 	}
 	categories: CategoryWithChildren[]
 	creditCards?: CreditCard[]
@@ -207,12 +208,13 @@ export function TransactionForm({
 				</div>
 			</div>
 
-			{mode === FORM_MODE.CREATE && isCredit && creditCards.length > 0 && (
+			{isCredit && creditCards.length > 0 && (
 				<div className="flex flex-col gap-1.5">
 					<Label>Credit Card</Label>
 					<CreditCardSelect
 						creditCards={creditCards}
 						name="creditCardId"
+						defaultValue={defaultValues?.creditCardId ?? undefined}
 						error={!state.success ? state.fieldErrors?.creditCardId?.[0] : undefined}
 					/>
 				</div>

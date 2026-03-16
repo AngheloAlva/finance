@@ -25,6 +25,7 @@ export async function updateTransactionAction(
     type: formData.get("type"),
     paymentMethod: formData.get("paymentMethod"),
     categoryId: formData.get("categoryId"),
+    creditCardId: formData.get("creditCardId") || undefined,
   };
 
   const result = updateTransactionSchema.safeParse(raw);
@@ -33,7 +34,7 @@ export async function updateTransactionAction(
     return formatZodErrors(result.error);
   }
 
-  const { id, amount, description, notes, date, impactDate, type, paymentMethod, categoryId } =
+  const { id, amount, description, notes, date, impactDate, type, paymentMethod, categoryId, creditCardId } =
     result.data;
 
   const session = await requireSession();
@@ -82,6 +83,7 @@ export async function updateTransactionAction(
         type,
         paymentMethod,
         categoryId,
+        creditCardId: creditCardId ?? null,
       },
     });
 

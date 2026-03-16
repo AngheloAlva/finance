@@ -68,13 +68,13 @@ export function MonthlyFlowChart({ data, currency }: MonthlyFlowChartProps) {
 								dataKey="income"
 								name="Income"
 								fill={CHART_COLORS.income}
-								radius={[4, 4, 0, 0]}
+								radius={[0, 0, 0, 0]}
 							/>
 							<Bar
 								dataKey="expenses"
 								name="Expenses"
 								fill={CHART_COLORS.expense}
-								radius={[4, 4, 0, 0]}
+								radius={[0, 0, 0, 0]}
 							/>
 						</BarChart>
 					</ResponsiveContainer>

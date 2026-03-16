@@ -48,12 +48,13 @@ const TYPE_VARIANTS = {
 interface TransactionTableProps {
 	transactions: TransactionWithCategory[]
 	categories: CategoryWithChildren[]
+	creditCards?: import("@/generated/prisma/client").CreditCard[]
 	currency: CurrencyCode
 }
 
 type SortableColumn = "date" | "amount" | "description"
 
-export function TransactionTable({ transactions, categories, currency }: TransactionTableProps) {
+export function TransactionTable({ transactions, categories, creditCards, currency }: TransactionTableProps) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 
@@ -194,6 +195,7 @@ export function TransactionTable({ transactions, categories, currency }: Transac
 									mode="edit"
 									transaction={tx}
 									categories={categories}
+									creditCards={creditCards}
 									trigger={
 										<Button variant="ghost" size="icon-xs">
 											<Pencil className="size-3" />
