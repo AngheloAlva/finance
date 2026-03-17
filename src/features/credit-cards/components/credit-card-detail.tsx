@@ -65,6 +65,7 @@ export function CreditCardDetail({
           color={card.color}
           totalLimit={card.totalLimit}
           usedLimit={card.usedLimit}
+          currency={currency}
         />
       </div>
 

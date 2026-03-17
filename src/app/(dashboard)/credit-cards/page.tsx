@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { CreditCardDialog } from "@/features/credit-cards/components/credit-card-dialog";
 import { CreditCardList } from "@/features/credit-cards/components/credit-card-list";
 import { requireSession } from "@/shared/lib/auth";
+import type { CurrencyCode } from "@/shared/lib/constants";
 
 export default async function CreditCardsPage() {
   const session = await requireSession();
+  const currency = (session.user.currency ?? "USD") as CurrencyCode;
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -23,7 +25,7 @@ export default async function CreditCardsPage() {
         />
       </div>
 
-      <CreditCardList userId={session.user.id} />
+      <CreditCardList userId={session.user.id} currency={currency} />
     </div>
   );
 }

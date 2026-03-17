@@ -6,9 +6,10 @@ import { CreditCardVisual } from "@/features/credit-cards/components/credit-card
 
 interface CreditCardListProps {
 	userId: string
+	currency: import("@/shared/lib/constants").CurrencyCode
 }
 
-export async function CreditCardList({ userId }: CreditCardListProps) {
+export async function CreditCardList({ userId, currency }: CreditCardListProps) {
 	const cards = await getCreditCards(userId)
 
 	if (cards.length === 0) {
@@ -43,6 +44,7 @@ export async function CreditCardList({ userId }: CreditCardListProps) {
 							color={card.color}
 							totalLimit={card.totalLimit}
 							usedLimit={card.usedLimit}
+							currency={currency}
 							paymentDueDate={paymentDueDate}
 						/>
 					</Link>
