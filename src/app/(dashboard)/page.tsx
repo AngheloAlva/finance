@@ -69,7 +69,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 		getRecentTransactions(session.user.id),
 		getCreditCards(session.user.id),
 		getTopActiveGoals(session.user.id, 3),
-		getPortfolioSummary(session.user.id),
+		getPortfolioSummary(session.user.id, currency),
 		getFinancialHealthScore(session.user.id),
 	])
 

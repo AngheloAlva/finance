@@ -1,6 +1,7 @@
 import { TransactionType } from "@/generated/prisma/enums";
 import { prisma } from "@/shared/lib/prisma";
 import type { TransactionWithCategory } from "@/features/transactions/types/transactions.types";
+import { convertToBaseCurrency } from "@/features/investments/lib/investments.utils";
 
 import type {
   MonthlyOverview,
@@ -174,24 +175,43 @@ export async function getMonthlyFlow(
 
 export async function getPortfolioSummary(
   userId: string,
+  userCurrency: string,
 ): Promise<PortfolioSummary> {
   const investments = await prisma.investment.findMany({
     where: { userId, isActive: true },
-    select: { initialAmount: true, currentValue: true },
+    select: {
+      initialAmount: true,
+      currentValue: true,
+      currency: true,
+      purchaseExchangeRate: true,
+      currentExchangeRate: true,
+      totalFees: true,
+    },
   });
 
-  const totalInvested = investments.reduce(
-    (sum, i) => sum + i.initialAmount,
-    0,
-  );
-  const totalCurrentValue = investments.reduce(
-    (sum, i) => sum + i.currentValue,
-    0,
-  );
-  const absoluteReturn = totalCurrentValue - totalInvested;
+  let totalInvested = 0;
+  let totalCurrentValue = 0;
+  let totalFees = 0;
+
+  for (const inv of investments) {
+    if (inv.currency === userCurrency) {
+      totalInvested += inv.initialAmount;
+      totalCurrentValue += inv.currentValue;
+    } else {
+      totalInvested += convertToBaseCurrency(inv.initialAmount, inv.purchaseExchangeRate);
+      totalCurrentValue += convertToBaseCurrency(inv.currentValue, inv.currentExchangeRate);
+    }
+    const fees = inv.totalFees ?? 0;
+    totalFees += inv.currency === userCurrency
+      ? fees
+      : convertToBaseCurrency(fees, inv.currentExchangeRate);
+  }
+
+  const absoluteReturn = totalCurrentValue - totalInvested - totalFees;
+  const netValue = totalCurrentValue - totalFees;
   const returnPercentage =
     totalInvested > 0
-      ? ((totalCurrentValue - totalInvested) / totalInvested) * 100
+      ? ((netValue - totalInvested) / totalInvested) * 100
       : 0;
 
   return {

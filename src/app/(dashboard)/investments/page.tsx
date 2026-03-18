@@ -34,7 +34,7 @@ export default async function InvestmentsPage({ searchParams }: InvestmentsPageP
 
 	const investments = await getInvestments(session.user.id, filters)
 	const activeInvestments = investments.filter((inv) => inv.isActive)
-	const allocation = calculateAllocation(activeInvestments)
+	const allocation = calculateAllocation(activeInvestments, currency)
 
 	return (
 		<div className="mx-auto flex max-w-4xl flex-col gap-6">
@@ -51,7 +51,7 @@ export default async function InvestmentsPage({ searchParams }: InvestmentsPageP
 				/>
 			</div>
 
-			<InvestmentList investments={investments} />
+			<InvestmentList investments={investments} userCurrency={currency} />
 
 			{allocation.length > 0 && <PortfolioAllocationChart data={allocation} currency={currency} />}
 		</div>
