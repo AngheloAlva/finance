@@ -28,10 +28,12 @@ export type AggregateInvestmentSnapshot = {
 
 export type InvestmentSnapshotAvgAggregateOutputType = {
   value: number | null
+  exchangeRate: number | null
 }
 
 export type InvestmentSnapshotSumAggregateOutputType = {
   value: number | null
+  exchangeRate: number | null
 }
 
 export type InvestmentSnapshotMinAggregateOutputType = {
@@ -39,6 +41,7 @@ export type InvestmentSnapshotMinAggregateOutputType = {
   investmentId: string | null
   date: Date | null
   value: number | null
+  exchangeRate: number | null
   createdAt: Date | null
 }
 
@@ -47,6 +50,7 @@ export type InvestmentSnapshotMaxAggregateOutputType = {
   investmentId: string | null
   date: Date | null
   value: number | null
+  exchangeRate: number | null
   createdAt: Date | null
 }
 
@@ -55,6 +59,7 @@ export type InvestmentSnapshotCountAggregateOutputType = {
   investmentId: number
   date: number
   value: number
+  exchangeRate: number
   createdAt: number
   _all: number
 }
@@ -62,10 +67,12 @@ export type InvestmentSnapshotCountAggregateOutputType = {
 
 export type InvestmentSnapshotAvgAggregateInputType = {
   value?: true
+  exchangeRate?: true
 }
 
 export type InvestmentSnapshotSumAggregateInputType = {
   value?: true
+  exchangeRate?: true
 }
 
 export type InvestmentSnapshotMinAggregateInputType = {
@@ -73,6 +80,7 @@ export type InvestmentSnapshotMinAggregateInputType = {
   investmentId?: true
   date?: true
   value?: true
+  exchangeRate?: true
   createdAt?: true
 }
 
@@ -81,6 +89,7 @@ export type InvestmentSnapshotMaxAggregateInputType = {
   investmentId?: true
   date?: true
   value?: true
+  exchangeRate?: true
   createdAt?: true
 }
 
@@ -89,6 +98,7 @@ export type InvestmentSnapshotCountAggregateInputType = {
   investmentId?: true
   date?: true
   value?: true
+  exchangeRate?: true
   createdAt?: true
   _all?: true
 }
@@ -184,6 +194,7 @@ export type InvestmentSnapshotGroupByOutputType = {
   investmentId: string
   date: Date
   value: number
+  exchangeRate: number | null
   createdAt: Date
   _count: InvestmentSnapshotCountAggregateOutputType | null
   _avg: InvestmentSnapshotAvgAggregateOutputType | null
@@ -215,6 +226,7 @@ export type InvestmentSnapshotWhereInput = {
   investmentId?: Prisma.StringFilter<"InvestmentSnapshot"> | string
   date?: Prisma.DateTimeFilter<"InvestmentSnapshot"> | Date | string
   value?: Prisma.IntFilter<"InvestmentSnapshot"> | number
+  exchangeRate?: Prisma.IntNullableFilter<"InvestmentSnapshot"> | number | null
   createdAt?: Prisma.DateTimeFilter<"InvestmentSnapshot"> | Date | string
   investment?: Prisma.XOR<Prisma.InvestmentScalarRelationFilter, Prisma.InvestmentWhereInput>
 }
@@ -224,6 +236,7 @@ export type InvestmentSnapshotOrderByWithRelationInput = {
   investmentId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   value?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   investment?: Prisma.InvestmentOrderByWithRelationInput
 }
@@ -236,6 +249,7 @@ export type InvestmentSnapshotWhereUniqueInput = Prisma.AtLeast<{
   investmentId?: Prisma.StringFilter<"InvestmentSnapshot"> | string
   date?: Prisma.DateTimeFilter<"InvestmentSnapshot"> | Date | string
   value?: Prisma.IntFilter<"InvestmentSnapshot"> | number
+  exchangeRate?: Prisma.IntNullableFilter<"InvestmentSnapshot"> | number | null
   createdAt?: Prisma.DateTimeFilter<"InvestmentSnapshot"> | Date | string
   investment?: Prisma.XOR<Prisma.InvestmentScalarRelationFilter, Prisma.InvestmentWhereInput>
 }, "id">
@@ -245,6 +259,7 @@ export type InvestmentSnapshotOrderByWithAggregationInput = {
   investmentId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   value?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.InvestmentSnapshotCountOrderByAggregateInput
   _avg?: Prisma.InvestmentSnapshotAvgOrderByAggregateInput
@@ -261,6 +276,7 @@ export type InvestmentSnapshotScalarWhereWithAggregatesInput = {
   investmentId?: Prisma.StringWithAggregatesFilter<"InvestmentSnapshot"> | string
   date?: Prisma.DateTimeWithAggregatesFilter<"InvestmentSnapshot"> | Date | string
   value?: Prisma.IntWithAggregatesFilter<"InvestmentSnapshot"> | number
+  exchangeRate?: Prisma.IntNullableWithAggregatesFilter<"InvestmentSnapshot"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"InvestmentSnapshot"> | Date | string
 }
 
@@ -268,6 +284,7 @@ export type InvestmentSnapshotCreateInput = {
   id?: string
   date: Date | string
   value: number
+  exchangeRate?: number | null
   createdAt?: Date | string
   investment: Prisma.InvestmentCreateNestedOneWithoutSnapshotsInput
 }
@@ -277,6 +294,7 @@ export type InvestmentSnapshotUncheckedCreateInput = {
   investmentId: string
   date: Date | string
   value: number
+  exchangeRate?: number | null
   createdAt?: Date | string
 }
 
@@ -284,6 +302,7 @@ export type InvestmentSnapshotUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.IntFieldUpdateOperationsInput | number
+  exchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   investment?: Prisma.InvestmentUpdateOneRequiredWithoutSnapshotsNestedInput
 }
@@ -293,6 +312,7 @@ export type InvestmentSnapshotUncheckedUpdateInput = {
   investmentId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.IntFieldUpdateOperationsInput | number
+  exchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -301,6 +321,7 @@ export type InvestmentSnapshotCreateManyInput = {
   investmentId: string
   date: Date | string
   value: number
+  exchangeRate?: number | null
   createdAt?: Date | string
 }
 
@@ -308,6 +329,7 @@ export type InvestmentSnapshotUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.IntFieldUpdateOperationsInput | number
+  exchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -316,6 +338,7 @@ export type InvestmentSnapshotUncheckedUpdateManyInput = {
   investmentId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.IntFieldUpdateOperationsInput | number
+  exchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -334,11 +357,13 @@ export type InvestmentSnapshotCountOrderByAggregateInput = {
   investmentId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   value?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type InvestmentSnapshotAvgOrderByAggregateInput = {
   value?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
 }
 
 export type InvestmentSnapshotMaxOrderByAggregateInput = {
@@ -346,6 +371,7 @@ export type InvestmentSnapshotMaxOrderByAggregateInput = {
   investmentId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   value?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -354,11 +380,13 @@ export type InvestmentSnapshotMinOrderByAggregateInput = {
   investmentId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   value?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type InvestmentSnapshotSumOrderByAggregateInput = {
   value?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
 }
 
 export type InvestmentSnapshotCreateNestedManyWithoutInvestmentInput = {
@@ -407,6 +435,7 @@ export type InvestmentSnapshotCreateWithoutInvestmentInput = {
   id?: string
   date: Date | string
   value: number
+  exchangeRate?: number | null
   createdAt?: Date | string
 }
 
@@ -414,6 +443,7 @@ export type InvestmentSnapshotUncheckedCreateWithoutInvestmentInput = {
   id?: string
   date: Date | string
   value: number
+  exchangeRate?: number | null
   createdAt?: Date | string
 }
 
@@ -451,6 +481,7 @@ export type InvestmentSnapshotScalarWhereInput = {
   investmentId?: Prisma.StringFilter<"InvestmentSnapshot"> | string
   date?: Prisma.DateTimeFilter<"InvestmentSnapshot"> | Date | string
   value?: Prisma.IntFilter<"InvestmentSnapshot"> | number
+  exchangeRate?: Prisma.IntNullableFilter<"InvestmentSnapshot"> | number | null
   createdAt?: Prisma.DateTimeFilter<"InvestmentSnapshot"> | Date | string
 }
 
@@ -458,6 +489,7 @@ export type InvestmentSnapshotCreateManyInvestmentInput = {
   id?: string
   date: Date | string
   value: number
+  exchangeRate?: number | null
   createdAt?: Date | string
 }
 
@@ -465,6 +497,7 @@ export type InvestmentSnapshotUpdateWithoutInvestmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.IntFieldUpdateOperationsInput | number
+  exchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -472,6 +505,7 @@ export type InvestmentSnapshotUncheckedUpdateWithoutInvestmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.IntFieldUpdateOperationsInput | number
+  exchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -479,6 +513,7 @@ export type InvestmentSnapshotUncheckedUpdateManyWithoutInvestmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   value?: Prisma.IntFieldUpdateOperationsInput | number
+  exchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -489,6 +524,7 @@ export type InvestmentSnapshotSelect<ExtArgs extends runtime.Types.Extensions.In
   investmentId?: boolean
   date?: boolean
   value?: boolean
+  exchangeRate?: boolean
   createdAt?: boolean
   investment?: boolean | Prisma.InvestmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["investmentSnapshot"]>
@@ -498,6 +534,7 @@ export type InvestmentSnapshotSelectCreateManyAndReturn<ExtArgs extends runtime.
   investmentId?: boolean
   date?: boolean
   value?: boolean
+  exchangeRate?: boolean
   createdAt?: boolean
   investment?: boolean | Prisma.InvestmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["investmentSnapshot"]>
@@ -507,6 +544,7 @@ export type InvestmentSnapshotSelectUpdateManyAndReturn<ExtArgs extends runtime.
   investmentId?: boolean
   date?: boolean
   value?: boolean
+  exchangeRate?: boolean
   createdAt?: boolean
   investment?: boolean | Prisma.InvestmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["investmentSnapshot"]>
@@ -516,10 +554,11 @@ export type InvestmentSnapshotSelectScalar = {
   investmentId?: boolean
   date?: boolean
   value?: boolean
+  exchangeRate?: boolean
   createdAt?: boolean
 }
 
-export type InvestmentSnapshotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "investmentId" | "date" | "value" | "createdAt", ExtArgs["result"]["investmentSnapshot"]>
+export type InvestmentSnapshotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "investmentId" | "date" | "value" | "exchangeRate" | "createdAt", ExtArgs["result"]["investmentSnapshot"]>
 export type InvestmentSnapshotInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   investment?: boolean | Prisma.InvestmentDefaultArgs<ExtArgs>
 }
@@ -540,6 +579,7 @@ export type $InvestmentSnapshotPayload<ExtArgs extends runtime.Types.Extensions.
     investmentId: string
     date: Date
     value: number
+    exchangeRate: number | null
     createdAt: Date
   }, ExtArgs["result"]["investmentSnapshot"]>
   composites: {}
@@ -969,6 +1009,7 @@ export interface InvestmentSnapshotFieldRefs {
   readonly investmentId: Prisma.FieldRef<"InvestmentSnapshot", 'String'>
   readonly date: Prisma.FieldRef<"InvestmentSnapshot", 'DateTime'>
   readonly value: Prisma.FieldRef<"InvestmentSnapshot", 'Int'>
+  readonly exchangeRate: Prisma.FieldRef<"InvestmentSnapshot", 'Int'>
   readonly createdAt: Prisma.FieldRef<"InvestmentSnapshot", 'DateTime'>
 }
     

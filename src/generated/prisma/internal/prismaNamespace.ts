@@ -1962,6 +1962,9 @@ export const InvestmentScalarFieldEnum = {
   initialAmount: 'initialAmount',
   currentValue: 'currentValue',
   currency: 'currency',
+  purchaseExchangeRate: 'purchaseExchangeRate',
+  currentExchangeRate: 'currentExchangeRate',
+  totalFees: 'totalFees',
   startDate: 'startDate',
   maturityDate: 'maturityDate',
   estimatedReturn: 'estimatedReturn',
@@ -1979,6 +1982,7 @@ export const InvestmentSnapshotScalarFieldEnum = {
   investmentId: 'investmentId',
   date: 'date',
   value: 'value',
+  exchangeRate: 'exchangeRate',
   createdAt: 'createdAt'
 } as const
 

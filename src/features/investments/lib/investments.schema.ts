@@ -29,6 +29,9 @@ export const createInvestmentSchema = z.object({
 	startDate: z.coerce.date({ error: "Start date is required" }),
 	maturityDate: z.coerce.date().optional(),
 	estimatedReturn: z.string().optional().transform(toBasisPoints).pipe(z.number().int().optional()),
+	purchaseExchangeRate: z.coerce.number().int().positive().optional(),
+	currentExchangeRate: z.coerce.number().int().positive().optional(),
+	totalFees: z.coerce.number().int().nonnegative().optional(),
 })
 
 export const updateInvestmentSchema = createInvestmentSchema.omit({ initialAmount: true }).extend({
@@ -45,6 +48,7 @@ export const updateInvestmentValueSchema = z.object({
 		.number()
 		.int({ error: "Value must be a valid number" })
 		.nonnegative({ error: "Value cannot be negative" }),
+	currentExchangeRate: z.coerce.number().int().positive().optional(),
 })
 
 export type CreateInvestmentInput = z.infer<typeof createInvestmentSchema>

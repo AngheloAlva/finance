@@ -48,6 +48,10 @@ export function centsToDisplay(cents: number, currencyCode: CurrencyCode = "USD"
   return value.toFixed(2);
 }
 
+export function formatExchangeRate(rateInt: number): string {
+  return (rateInt / 10000).toFixed(4);
+}
+
 export function formatDate(
   date: Date | string,
   style: "short" | "long",

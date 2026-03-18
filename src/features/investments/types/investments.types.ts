@@ -30,6 +30,7 @@ export interface AllocationItem {
 	type: InvestmentType
 	label: string
 	totalValue: number
+	baseCurrencyValue: number
 	percentage: number
 	color: string
 }

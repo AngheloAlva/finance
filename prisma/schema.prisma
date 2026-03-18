@@ -422,22 +422,25 @@ model GoalContribution {
 }
 
 model Investment {
-  id              String               @id @default(cuid())
-  type            InvestmentType
-  name            String
-  institution     String
-  initialAmount   Int
-  currentValue    Int
-  currency        String               @default("USD")
-  startDate       DateTime
-  maturityDate    DateTime?
-  estimatedReturn Int?
-  isActive        Boolean              @default(true)
-  userId          String
-  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  snapshots       InvestmentSnapshot[]
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @updatedAt
+  id                   String               @id @default(cuid())
+  type                 InvestmentType
+  name                 String
+  institution          String
+  initialAmount        Int
+  currentValue         Int
+  currency             String               @default("USD")
+  purchaseExchangeRate Int?
+  currentExchangeRate  Int?
+  totalFees            Int?
+  startDate            DateTime
+  maturityDate         DateTime?
+  estimatedReturn      Int?
+  isActive             Boolean              @default(true)
+  userId               String
+  user                 User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snapshots            InvestmentSnapshot[]
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
 
   @@index([userId])
   @@index([userId, type])
@@ -451,6 +454,7 @@ model InvestmentSnapshot {
   investment   Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
   date         DateTime
   value        Int
+  exchangeRate Int?
   createdAt    DateTime   @default(now())
 
   @@index([investmentId, date])

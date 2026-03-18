@@ -29,12 +29,18 @@ export type AggregateInvestment = {
 export type InvestmentAvgAggregateOutputType = {
   initialAmount: number | null
   currentValue: number | null
+  purchaseExchangeRate: number | null
+  currentExchangeRate: number | null
+  totalFees: number | null
   estimatedReturn: number | null
 }
 
 export type InvestmentSumAggregateOutputType = {
   initialAmount: number | null
   currentValue: number | null
+  purchaseExchangeRate: number | null
+  currentExchangeRate: number | null
+  totalFees: number | null
   estimatedReturn: number | null
 }
 
@@ -46,6 +52,9 @@ export type InvestmentMinAggregateOutputType = {
   initialAmount: number | null
   currentValue: number | null
   currency: string | null
+  purchaseExchangeRate: number | null
+  currentExchangeRate: number | null
+  totalFees: number | null
   startDate: Date | null
   maturityDate: Date | null
   estimatedReturn: number | null
@@ -63,6 +72,9 @@ export type InvestmentMaxAggregateOutputType = {
   initialAmount: number | null
   currentValue: number | null
   currency: string | null
+  purchaseExchangeRate: number | null
+  currentExchangeRate: number | null
+  totalFees: number | null
   startDate: Date | null
   maturityDate: Date | null
   estimatedReturn: number | null
@@ -80,6 +92,9 @@ export type InvestmentCountAggregateOutputType = {
   initialAmount: number
   currentValue: number
   currency: number
+  purchaseExchangeRate: number
+  currentExchangeRate: number
+  totalFees: number
   startDate: number
   maturityDate: number
   estimatedReturn: number
@@ -94,12 +109,18 @@ export type InvestmentCountAggregateOutputType = {
 export type InvestmentAvgAggregateInputType = {
   initialAmount?: true
   currentValue?: true
+  purchaseExchangeRate?: true
+  currentExchangeRate?: true
+  totalFees?: true
   estimatedReturn?: true
 }
 
 export type InvestmentSumAggregateInputType = {
   initialAmount?: true
   currentValue?: true
+  purchaseExchangeRate?: true
+  currentExchangeRate?: true
+  totalFees?: true
   estimatedReturn?: true
 }
 
@@ -111,6 +132,9 @@ export type InvestmentMinAggregateInputType = {
   initialAmount?: true
   currentValue?: true
   currency?: true
+  purchaseExchangeRate?: true
+  currentExchangeRate?: true
+  totalFees?: true
   startDate?: true
   maturityDate?: true
   estimatedReturn?: true
@@ -128,6 +152,9 @@ export type InvestmentMaxAggregateInputType = {
   initialAmount?: true
   currentValue?: true
   currency?: true
+  purchaseExchangeRate?: true
+  currentExchangeRate?: true
+  totalFees?: true
   startDate?: true
   maturityDate?: true
   estimatedReturn?: true
@@ -145,6 +172,9 @@ export type InvestmentCountAggregateInputType = {
   initialAmount?: true
   currentValue?: true
   currency?: true
+  purchaseExchangeRate?: true
+  currentExchangeRate?: true
+  totalFees?: true
   startDate?: true
   maturityDate?: true
   estimatedReturn?: true
@@ -249,6 +279,9 @@ export type InvestmentGroupByOutputType = {
   initialAmount: number
   currentValue: number
   currency: string
+  purchaseExchangeRate: number | null
+  currentExchangeRate: number | null
+  totalFees: number | null
   startDate: Date
   maturityDate: Date | null
   estimatedReturn: number | null
@@ -289,6 +322,9 @@ export type InvestmentWhereInput = {
   initialAmount?: Prisma.IntFilter<"Investment"> | number
   currentValue?: Prisma.IntFilter<"Investment"> | number
   currency?: Prisma.StringFilter<"Investment"> | string
+  purchaseExchangeRate?: Prisma.IntNullableFilter<"Investment"> | number | null
+  currentExchangeRate?: Prisma.IntNullableFilter<"Investment"> | number | null
+  totalFees?: Prisma.IntNullableFilter<"Investment"> | number | null
   startDate?: Prisma.DateTimeFilter<"Investment"> | Date | string
   maturityDate?: Prisma.DateTimeNullableFilter<"Investment"> | Date | string | null
   estimatedReturn?: Prisma.IntNullableFilter<"Investment"> | number | null
@@ -308,6 +344,9 @@ export type InvestmentOrderByWithRelationInput = {
   initialAmount?: Prisma.SortOrder
   currentValue?: Prisma.SortOrder
   currency?: Prisma.SortOrder
+  purchaseExchangeRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  currentExchangeRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalFees?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrder
   maturityDate?: Prisma.SortOrderInput | Prisma.SortOrder
   estimatedReturn?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -330,6 +369,9 @@ export type InvestmentWhereUniqueInput = Prisma.AtLeast<{
   initialAmount?: Prisma.IntFilter<"Investment"> | number
   currentValue?: Prisma.IntFilter<"Investment"> | number
   currency?: Prisma.StringFilter<"Investment"> | string
+  purchaseExchangeRate?: Prisma.IntNullableFilter<"Investment"> | number | null
+  currentExchangeRate?: Prisma.IntNullableFilter<"Investment"> | number | null
+  totalFees?: Prisma.IntNullableFilter<"Investment"> | number | null
   startDate?: Prisma.DateTimeFilter<"Investment"> | Date | string
   maturityDate?: Prisma.DateTimeNullableFilter<"Investment"> | Date | string | null
   estimatedReturn?: Prisma.IntNullableFilter<"Investment"> | number | null
@@ -349,6 +391,9 @@ export type InvestmentOrderByWithAggregationInput = {
   initialAmount?: Prisma.SortOrder
   currentValue?: Prisma.SortOrder
   currency?: Prisma.SortOrder
+  purchaseExchangeRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  currentExchangeRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalFees?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrder
   maturityDate?: Prisma.SortOrderInput | Prisma.SortOrder
   estimatedReturn?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -374,6 +419,9 @@ export type InvestmentScalarWhereWithAggregatesInput = {
   initialAmount?: Prisma.IntWithAggregatesFilter<"Investment"> | number
   currentValue?: Prisma.IntWithAggregatesFilter<"Investment"> | number
   currency?: Prisma.StringWithAggregatesFilter<"Investment"> | string
+  purchaseExchangeRate?: Prisma.IntNullableWithAggregatesFilter<"Investment"> | number | null
+  currentExchangeRate?: Prisma.IntNullableWithAggregatesFilter<"Investment"> | number | null
+  totalFees?: Prisma.IntNullableWithAggregatesFilter<"Investment"> | number | null
   startDate?: Prisma.DateTimeWithAggregatesFilter<"Investment"> | Date | string
   maturityDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Investment"> | Date | string | null
   estimatedReturn?: Prisma.IntNullableWithAggregatesFilter<"Investment"> | number | null
@@ -391,6 +439,9 @@ export type InvestmentCreateInput = {
   initialAmount: number
   currentValue: number
   currency?: string
+  purchaseExchangeRate?: number | null
+  currentExchangeRate?: number | null
+  totalFees?: number | null
   startDate: Date | string
   maturityDate?: Date | string | null
   estimatedReturn?: number | null
@@ -409,6 +460,9 @@ export type InvestmentUncheckedCreateInput = {
   initialAmount: number
   currentValue: number
   currency?: string
+  purchaseExchangeRate?: number | null
+  currentExchangeRate?: number | null
+  totalFees?: number | null
   startDate: Date | string
   maturityDate?: Date | string | null
   estimatedReturn?: number | null
@@ -427,6 +481,9 @@ export type InvestmentUpdateInput = {
   initialAmount?: Prisma.IntFieldUpdateOperationsInput | number
   currentValue?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalFees?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   maturityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   estimatedReturn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -445,6 +502,9 @@ export type InvestmentUncheckedUpdateInput = {
   initialAmount?: Prisma.IntFieldUpdateOperationsInput | number
   currentValue?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalFees?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   maturityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   estimatedReturn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -463,6 +523,9 @@ export type InvestmentCreateManyInput = {
   initialAmount: number
   currentValue: number
   currency?: string
+  purchaseExchangeRate?: number | null
+  currentExchangeRate?: number | null
+  totalFees?: number | null
   startDate: Date | string
   maturityDate?: Date | string | null
   estimatedReturn?: number | null
@@ -480,6 +543,9 @@ export type InvestmentUpdateManyMutationInput = {
   initialAmount?: Prisma.IntFieldUpdateOperationsInput | number
   currentValue?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalFees?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   maturityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   estimatedReturn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -496,6 +562,9 @@ export type InvestmentUncheckedUpdateManyInput = {
   initialAmount?: Prisma.IntFieldUpdateOperationsInput | number
   currentValue?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalFees?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   maturityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   estimatedReturn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -523,6 +592,9 @@ export type InvestmentCountOrderByAggregateInput = {
   initialAmount?: Prisma.SortOrder
   currentValue?: Prisma.SortOrder
   currency?: Prisma.SortOrder
+  purchaseExchangeRate?: Prisma.SortOrder
+  currentExchangeRate?: Prisma.SortOrder
+  totalFees?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   maturityDate?: Prisma.SortOrder
   estimatedReturn?: Prisma.SortOrder
@@ -535,6 +607,9 @@ export type InvestmentCountOrderByAggregateInput = {
 export type InvestmentAvgOrderByAggregateInput = {
   initialAmount?: Prisma.SortOrder
   currentValue?: Prisma.SortOrder
+  purchaseExchangeRate?: Prisma.SortOrder
+  currentExchangeRate?: Prisma.SortOrder
+  totalFees?: Prisma.SortOrder
   estimatedReturn?: Prisma.SortOrder
 }
 
@@ -546,6 +621,9 @@ export type InvestmentMaxOrderByAggregateInput = {
   initialAmount?: Prisma.SortOrder
   currentValue?: Prisma.SortOrder
   currency?: Prisma.SortOrder
+  purchaseExchangeRate?: Prisma.SortOrder
+  currentExchangeRate?: Prisma.SortOrder
+  totalFees?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   maturityDate?: Prisma.SortOrder
   estimatedReturn?: Prisma.SortOrder
@@ -563,6 +641,9 @@ export type InvestmentMinOrderByAggregateInput = {
   initialAmount?: Prisma.SortOrder
   currentValue?: Prisma.SortOrder
   currency?: Prisma.SortOrder
+  purchaseExchangeRate?: Prisma.SortOrder
+  currentExchangeRate?: Prisma.SortOrder
+  totalFees?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   maturityDate?: Prisma.SortOrder
   estimatedReturn?: Prisma.SortOrder
@@ -575,6 +656,9 @@ export type InvestmentMinOrderByAggregateInput = {
 export type InvestmentSumOrderByAggregateInput = {
   initialAmount?: Prisma.SortOrder
   currentValue?: Prisma.SortOrder
+  purchaseExchangeRate?: Prisma.SortOrder
+  currentExchangeRate?: Prisma.SortOrder
+  totalFees?: Prisma.SortOrder
   estimatedReturn?: Prisma.SortOrder
 }
 
@@ -651,6 +735,9 @@ export type InvestmentCreateWithoutUserInput = {
   initialAmount: number
   currentValue: number
   currency?: string
+  purchaseExchangeRate?: number | null
+  currentExchangeRate?: number | null
+  totalFees?: number | null
   startDate: Date | string
   maturityDate?: Date | string | null
   estimatedReturn?: number | null
@@ -668,6 +755,9 @@ export type InvestmentUncheckedCreateWithoutUserInput = {
   initialAmount: number
   currentValue: number
   currency?: string
+  purchaseExchangeRate?: number | null
+  currentExchangeRate?: number | null
+  totalFees?: number | null
   startDate: Date | string
   maturityDate?: Date | string | null
   estimatedReturn?: number | null
@@ -714,6 +804,9 @@ export type InvestmentScalarWhereInput = {
   initialAmount?: Prisma.IntFilter<"Investment"> | number
   currentValue?: Prisma.IntFilter<"Investment"> | number
   currency?: Prisma.StringFilter<"Investment"> | string
+  purchaseExchangeRate?: Prisma.IntNullableFilter<"Investment"> | number | null
+  currentExchangeRate?: Prisma.IntNullableFilter<"Investment"> | number | null
+  totalFees?: Prisma.IntNullableFilter<"Investment"> | number | null
   startDate?: Prisma.DateTimeFilter<"Investment"> | Date | string
   maturityDate?: Prisma.DateTimeNullableFilter<"Investment"> | Date | string | null
   estimatedReturn?: Prisma.IntNullableFilter<"Investment"> | number | null
@@ -731,6 +824,9 @@ export type InvestmentCreateWithoutSnapshotsInput = {
   initialAmount: number
   currentValue: number
   currency?: string
+  purchaseExchangeRate?: number | null
+  currentExchangeRate?: number | null
+  totalFees?: number | null
   startDate: Date | string
   maturityDate?: Date | string | null
   estimatedReturn?: number | null
@@ -748,6 +844,9 @@ export type InvestmentUncheckedCreateWithoutSnapshotsInput = {
   initialAmount: number
   currentValue: number
   currency?: string
+  purchaseExchangeRate?: number | null
+  currentExchangeRate?: number | null
+  totalFees?: number | null
   startDate: Date | string
   maturityDate?: Date | string | null
   estimatedReturn?: number | null
@@ -781,6 +880,9 @@ export type InvestmentUpdateWithoutSnapshotsInput = {
   initialAmount?: Prisma.IntFieldUpdateOperationsInput | number
   currentValue?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalFees?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   maturityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   estimatedReturn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -798,6 +900,9 @@ export type InvestmentUncheckedUpdateWithoutSnapshotsInput = {
   initialAmount?: Prisma.IntFieldUpdateOperationsInput | number
   currentValue?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalFees?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   maturityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   estimatedReturn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -815,6 +920,9 @@ export type InvestmentCreateManyUserInput = {
   initialAmount: number
   currentValue: number
   currency?: string
+  purchaseExchangeRate?: number | null
+  currentExchangeRate?: number | null
+  totalFees?: number | null
   startDate: Date | string
   maturityDate?: Date | string | null
   estimatedReturn?: number | null
@@ -831,6 +939,9 @@ export type InvestmentUpdateWithoutUserInput = {
   initialAmount?: Prisma.IntFieldUpdateOperationsInput | number
   currentValue?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalFees?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   maturityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   estimatedReturn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -848,6 +959,9 @@ export type InvestmentUncheckedUpdateWithoutUserInput = {
   initialAmount?: Prisma.IntFieldUpdateOperationsInput | number
   currentValue?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalFees?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   maturityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   estimatedReturn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -865,6 +979,9 @@ export type InvestmentUncheckedUpdateManyWithoutUserInput = {
   initialAmount?: Prisma.IntFieldUpdateOperationsInput | number
   currentValue?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentExchangeRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalFees?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   maturityDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   estimatedReturn?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -912,6 +1029,9 @@ export type InvestmentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   initialAmount?: boolean
   currentValue?: boolean
   currency?: boolean
+  purchaseExchangeRate?: boolean
+  currentExchangeRate?: boolean
+  totalFees?: boolean
   startDate?: boolean
   maturityDate?: boolean
   estimatedReturn?: boolean
@@ -932,6 +1052,9 @@ export type InvestmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   initialAmount?: boolean
   currentValue?: boolean
   currency?: boolean
+  purchaseExchangeRate?: boolean
+  currentExchangeRate?: boolean
+  totalFees?: boolean
   startDate?: boolean
   maturityDate?: boolean
   estimatedReturn?: boolean
@@ -950,6 +1073,9 @@ export type InvestmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   initialAmount?: boolean
   currentValue?: boolean
   currency?: boolean
+  purchaseExchangeRate?: boolean
+  currentExchangeRate?: boolean
+  totalFees?: boolean
   startDate?: boolean
   maturityDate?: boolean
   estimatedReturn?: boolean
@@ -968,6 +1094,9 @@ export type InvestmentSelectScalar = {
   initialAmount?: boolean
   currentValue?: boolean
   currency?: boolean
+  purchaseExchangeRate?: boolean
+  currentExchangeRate?: boolean
+  totalFees?: boolean
   startDate?: boolean
   maturityDate?: boolean
   estimatedReturn?: boolean
@@ -977,7 +1106,7 @@ export type InvestmentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type InvestmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "name" | "institution" | "initialAmount" | "currentValue" | "currency" | "startDate" | "maturityDate" | "estimatedReturn" | "isActive" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["investment"]>
+export type InvestmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "name" | "institution" | "initialAmount" | "currentValue" | "currency" | "purchaseExchangeRate" | "currentExchangeRate" | "totalFees" | "startDate" | "maturityDate" | "estimatedReturn" | "isActive" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["investment"]>
 export type InvestmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   snapshots?: boolean | Prisma.Investment$snapshotsArgs<ExtArgs>
@@ -1004,6 +1133,9 @@ export type $InvestmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     initialAmount: number
     currentValue: number
     currency: string
+    purchaseExchangeRate: number | null
+    currentExchangeRate: number | null
+    totalFees: number | null
     startDate: Date
     maturityDate: Date | null
     estimatedReturn: number | null
@@ -1443,6 +1575,9 @@ export interface InvestmentFieldRefs {
   readonly initialAmount: Prisma.FieldRef<"Investment", 'Int'>
   readonly currentValue: Prisma.FieldRef<"Investment", 'Int'>
   readonly currency: Prisma.FieldRef<"Investment", 'String'>
+  readonly purchaseExchangeRate: Prisma.FieldRef<"Investment", 'Int'>
+  readonly currentExchangeRate: Prisma.FieldRef<"Investment", 'Int'>
+  readonly totalFees: Prisma.FieldRef<"Investment", 'Int'>
   readonly startDate: Prisma.FieldRef<"Investment", 'DateTime'>
   readonly maturityDate: Prisma.FieldRef<"Investment", 'DateTime'>
   readonly estimatedReturn: Prisma.FieldRef<"Investment", 'Int'>
