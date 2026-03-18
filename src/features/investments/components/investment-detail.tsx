@@ -10,25 +10,56 @@ import {
   INVESTMENT_TYPE_LABELS,
   buildChartData,
   calculateReturn,
+  convertToBaseCurrency,
 } from "@/features/investments/lib/investments.utils";
 import type { InvestmentWithSnapshots } from "@/features/investments/types/investments.types";
 import type { CurrencyCode } from "@/shared/lib/constants";
-import { formatCurrency, formatDate } from "@/shared/lib/formatters";
+import {
+  formatCurrency,
+  formatDate,
+  formatExchangeRate,
+} from "@/shared/lib/formatters";
 import { cn } from "@/lib/utils";
 
 interface InvestmentDetailProps {
   investment: InvestmentWithSnapshots;
+  userCurrency: CurrencyCode;
 }
 
-export function InvestmentDetail({ investment }: InvestmentDetailProps) {
+export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailProps) {
   const currency = investment.currency as CurrencyCode;
   const returnData = calculateReturn(
     investment.initialAmount,
     investment.currentValue,
     investment.startDate,
+    investment.totalFees,
   );
   const isPositive = returnData.percentageReturn >= 0;
   const chartData = buildChartData(investment.snapshots, investment.currentValue);
+
+  const isForeignCurrency =
+    investment.currency !== userCurrency &&
+    investment.currentExchangeRate != null;
+
+  const baseCurrentValue = isForeignCurrency
+    ? convertToBaseCurrency(investment.currentValue, investment.currentExchangeRate)
+    : null;
+  const baseInitialAmount = isForeignCurrency
+    ? convertToBaseCurrency(
+        investment.initialAmount,
+        investment.purchaseExchangeRate,
+      )
+    : null;
+  const baseAbsoluteReturn =
+    baseCurrentValue != null && baseInitialAmount != null
+      ? baseCurrentValue - baseInitialAmount
+      : null;
+
+  const isStaleRate =
+    isForeignCurrency &&
+    investment.updatedAt != null &&
+    Date.now() - new Date(investment.updatedAt).getTime() >
+      7 * 24 * 60 * 60 * 1000;
 
   return (
     <div className="flex flex-col gap-6">
@@ -65,6 +96,11 @@ export function InvestmentDetail({ investment }: InvestmentDetailProps) {
             <p className="text-sm font-semibold">
               {formatCurrency(investment.currentValue, currency)}
             </p>
+            {baseCurrentValue != null && (
+              <p className="text-xs text-muted-foreground">
+                ≈ {formatCurrency(baseCurrentValue, userCurrency)}
+              </p>
+            )}
           </CardContent>
         </Card>
 
@@ -78,6 +114,11 @@ export function InvestmentDetail({ investment }: InvestmentDetailProps) {
             <p className="text-sm font-semibold">
               {formatCurrency(investment.initialAmount, currency)}
             </p>
+            {baseInitialAmount != null && (
+              <p className="text-xs text-muted-foreground">
+                ≈ {formatCurrency(baseInitialAmount, userCurrency)}
+              </p>
+            )}
           </CardContent>
         </Card>
 
@@ -99,6 +140,12 @@ export function InvestmentDetail({ investment }: InvestmentDetailProps) {
               {isPositive ? "+" : ""}
               {returnData.percentageReturn.toFixed(2)}%)
             </p>
+            {baseAbsoluteReturn != null && (
+              <p className="text-xs text-muted-foreground">
+                ≈ {isPositive ? "+" : ""}
+                {formatCurrency(baseAbsoluteReturn, userCurrency)}
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -164,9 +211,49 @@ export function InvestmentDetail({ investment }: InvestmentDetailProps) {
                 {investment.isActive ? "Active" : "Inactive"}
               </dd>
             </div>
+            {isForeignCurrency && investment.purchaseExchangeRate != null && (
+              <div>
+                <dt className="text-muted-foreground">Purchase Rate</dt>
+                <dd className="font-medium">
+                  1 {investment.currency} ={" "}
+                  {formatExchangeRate(investment.purchaseExchangeRate)}{" "}
+                  {userCurrency}
+                </dd>
+              </div>
+            )}
+            {isForeignCurrency &&
+              investment.currentExchangeRate != null &&
+              investment.currentExchangeRate !==
+                investment.purchaseExchangeRate && (
+                <div>
+                  <dt className="text-muted-foreground">Current Rate</dt>
+                  <dd className="font-medium">
+                    1 {investment.currency} ={" "}
+                    {formatExchangeRate(investment.currentExchangeRate)}{" "}
+                    {userCurrency}
+                  </dd>
+                </div>
+              )}
+            {investment.totalFees != null && investment.totalFees > 0 && (
+              <div>
+                <dt className="text-muted-foreground">Broker Fees</dt>
+                <dd className="font-medium">
+                  {formatCurrency(investment.totalFees, currency)}
+                </dd>
+              </div>
+            )}
           </dl>
         </CardContent>
       </Card>
+
+      {/* Stale exchange rate warning */}
+      {isStaleRate && (
+        <div className="rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200">
+          Exchange rate may be outdated. Last updated:{" "}
+          {formatDate(investment.updatedAt, "short")}. Consider updating the
+          current value.
+        </div>
+      )}
 
       {/* Update value */}
       <Card>
@@ -177,6 +264,9 @@ export function InvestmentDetail({ investment }: InvestmentDetailProps) {
           <InvestmentValueForm
             investmentId={investment.id}
             currentValue={investment.currentValue}
+            investmentCurrency={investment.currency}
+            baseCurrency={userCurrency}
+            currentExchangeRate={investment.currentExchangeRate}
           />
         </CardContent>
       </Card>

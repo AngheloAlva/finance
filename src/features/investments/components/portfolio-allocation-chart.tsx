@@ -56,7 +56,7 @@ export function PortfolioAllocationChart({ data, currency }: PortfolioAllocation
 					<PieChart>
 						<Pie
 							data={data}
-							dataKey="totalValue"
+							dataKey="baseCurrencyValue"
 							nameKey="label"
 							cx="50%"
 							cy="50%"

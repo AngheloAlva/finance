@@ -14,6 +14,7 @@ import {
 	INVESTMENT_TYPE_COLORS,
 	INVESTMENT_TYPE_LABELS,
 	calculateReturn,
+	convertToBaseCurrency,
 } from "@/features/investments/lib/investments.utils"
 import type { Investment } from "@/features/investments/types/investments.types"
 import type { CurrencyCode } from "@/shared/lib/constants"
@@ -32,16 +33,23 @@ const TYPE_ICONS: Record<string, LucideIcon> = {
 
 interface InvestmentCardProps {
 	investment: Investment
+	userCurrency: CurrencyCode
 }
 
-export function InvestmentCard({ investment }: InvestmentCardProps) {
+export function InvestmentCard({ investment, userCurrency }: InvestmentCardProps) {
 	const Icon = TYPE_ICONS[investment.type] ?? HelpCircle
 	const returnData = calculateReturn(
 		investment.initialAmount,
 		investment.currentValue,
-		investment.startDate
+		investment.startDate,
+		investment.totalFees,
 	)
 	const isPositive = returnData.percentageReturn >= 0
+	const isForeignCurrency =
+		investment.currency !== userCurrency && investment.currentExchangeRate != null
+	const baseCurrencyValue = isForeignCurrency
+		? convertToBaseCurrency(investment.currentValue, investment.currentExchangeRate)
+		: null
 
 	return (
 		<Card className="relative transition-shadow hover:shadow-md">
@@ -55,9 +63,16 @@ export function InvestmentCard({ investment }: InvestmentCardProps) {
 				<div className="flex min-w-0 flex-1 flex-col gap-0.5">
 					<div className="flex items-center justify-between gap-2">
 						<p className="truncate text-sm font-semibold">{investment.name}</p>
-						<p className="shrink-0 text-sm font-semibold">
-							{formatCurrency(investment.currentValue, investment.currency as CurrencyCode)}
-						</p>
+						<div className="shrink-0 text-right">
+							<p className="text-sm font-semibold">
+								{formatCurrency(investment.currentValue, investment.currency as CurrencyCode)}
+							</p>
+							{baseCurrencyValue != null && (
+								<p className="text-xs text-muted-foreground">
+									≈ {formatCurrency(baseCurrencyValue, userCurrency)}
+								</p>
+							)}
+						</div>
 					</div>
 					<div className="flex items-center justify-between gap-2">
 						<p className="text-muted-foreground truncate text-xs">

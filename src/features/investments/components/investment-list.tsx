@@ -2,12 +2,14 @@ import Link from "next/link"
 
 import { InvestmentCard } from "@/features/investments/components/investment-card"
 import type { Investment } from "@/features/investments/types/investments.types"
+import type { CurrencyCode } from "@/shared/lib/constants"
 
 interface InvestmentListProps {
 	investments: Investment[]
+	userCurrency: CurrencyCode
 }
 
-export function InvestmentList({ investments }: InvestmentListProps) {
+export function InvestmentList({ investments, userCurrency }: InvestmentListProps) {
 	if (investments.length === 0) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-none border border-dashed p-12 text-center">
@@ -26,7 +28,7 @@ export function InvestmentList({ investments }: InvestmentListProps) {
 					href={`/investments/${investment.id}`}
 					className="transition-transform hover:scale-[1.02]"
 				>
-					<InvestmentCard investment={investment} />
+					<InvestmentCard investment={investment} userCurrency={userCurrency} />
 				</Link>
 			))}
 		</div>
