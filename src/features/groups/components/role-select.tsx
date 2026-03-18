@@ -54,13 +54,17 @@ export function RoleSelect({
       defaultValue={currentRole}
       onValueChange={handleChange}
       disabled={isPending}
+      items={[
+        { value: "ADMIN", label: "Admin" },
+        { value: "MEMBER", label: "Member" },
+      ]}
     >
       <SelectTrigger size="sm">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="ADMIN" label="Admin">Admin</SelectItem>
-        <SelectItem value="MEMBER" label="Member">Member</SelectItem>
+        <SelectItem value="ADMIN">Admin</SelectItem>
+        <SelectItem value="MEMBER">Member</SelectItem>
       </SelectContent>
     </Select>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
 
 import {
   Select,
@@ -26,9 +26,21 @@ export function CategorySelect({
 }: CategorySelectProps) {
   const rootCategories = categories.filter((c) => c.parentId === null);
 
+  const items = useMemo(
+    () =>
+      rootCategories.flatMap((category) => [
+        { value: category.id, label: category.name },
+        ...category.children.map((child) => ({
+          value: child.id,
+          label: child.name,
+        })),
+      ]),
+    [rootCategories],
+  );
+
   return (
     <div className="flex flex-col gap-1.5">
-      <Select name={name} defaultValue={defaultValue}>
+      <Select name={name} defaultValue={defaultValue} items={items}>
         <SelectTrigger
           className="w-full"
           aria-invalid={error ? true : undefined}
@@ -38,9 +50,9 @@ export function CategorySelect({
         <SelectContent>
           {rootCategories.map((category) => (
             <Fragment key={category.id}>
-              <SelectItem value={category.id} label={category.name}>{category.name}</SelectItem>
+              <SelectItem value={category.id}>{category.name}</SelectItem>
               {category.children.map((child) => (
-                <SelectItem key={child.id} value={child.id} label={child.name}>
+                <SelectItem key={child.id} value={child.id}>
                   <span className="pl-4">{child.name}</span>
                 </SelectItem>
               ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -34,6 +34,11 @@ export function GroupForm({ mode, defaultValues, onSuccess }: GroupFormProps) {
   const action =
     mode === FORM_MODE.CREATE ? createGroupAction : updateGroupAction;
   const [state, formAction, isPending] = useActionState(action, INITIAL_VOID_STATE);
+
+  const currencyItems = useMemo(
+    () => CURRENCIES.map((c) => ({ value: c.code, label: `${c.code} - ${c.name}` })),
+    [],
+  );
 
   useEffect(() => {
     if (state.success) {
@@ -96,13 +101,14 @@ export function GroupForm({ mode, defaultValues, onSuccess }: GroupFormProps) {
         <Select
           name="currency"
           defaultValue={defaultValues?.currency ?? "USD"}
+          items={currencyItems}
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select currency" />
           </SelectTrigger>
           <SelectContent>
             {CURRENCIES.map((currency) => (
-              <SelectItem key={currency.code} value={currency.code} label={`${currency.code} - ${currency.name}`}>
+              <SelectItem key={currency.code} value={currency.code}>
                 {currency.code} - {currency.name}
               </SelectItem>
             ))}

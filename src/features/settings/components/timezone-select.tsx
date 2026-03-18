@@ -22,13 +22,13 @@ export function TimezoneSelect({
 }: TimezoneSelectProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <Select name={name} defaultValue={defaultValue}>
+      <Select name={name} defaultValue={defaultValue} items={TIMEZONES}>
         <SelectTrigger className="w-full" aria-invalid={error ? true : undefined}>
           <SelectValue placeholder="Select timezone" />
         </SelectTrigger>
         <SelectContent>
           {TIMEZONES.map((tz) => (
-            <SelectItem key={tz.value} value={tz.value} label={tz.label}>
+            <SelectItem key={tz.value} value={tz.value}>
               {tz.label}
             </SelectItem>
           ))}

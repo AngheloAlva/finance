@@ -137,14 +137,18 @@ export function GroupTransactionForm({
 			<div className="grid grid-cols-2 gap-4">
 				<div className="flex flex-col gap-1.5">
 					<Label>Type</Label>
-					<Select name="type" defaultValue="EXPENSE">
+					<Select name="type" defaultValue="EXPENSE" items={[
+						{ value: "INCOME", label: "Income" },
+						{ value: "EXPENSE", label: "Expense" },
+						{ value: "TRANSFER", label: "Transfer" },
+					]}>
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder="Select type" />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="INCOME" label="Income">Income</SelectItem>
-							<SelectItem value="EXPENSE" label="Expense">Expense</SelectItem>
-							<SelectItem value="TRANSFER" label="Transfer">Transfer</SelectItem>
+							<SelectItem value="INCOME">Income</SelectItem>
+							<SelectItem value="EXPENSE">Expense</SelectItem>
+							<SelectItem value="TRANSFER">Transfer</SelectItem>
 						</SelectContent>
 					</Select>
 					{!state.success && state.fieldErrors?.type && (
@@ -154,16 +158,22 @@ export function GroupTransactionForm({
 
 				<div className="flex flex-col gap-1.5">
 					<Label>Payment Method</Label>
-					<Select name="paymentMethod" defaultValue="CASH">
+					<Select name="paymentMethod" defaultValue="CASH" items={[
+						{ value: "CASH", label: "Cash" },
+						{ value: "DEBIT", label: "Debit" },
+						{ value: "CREDIT", label: "Credit" },
+						{ value: "TRANSFER", label: "Transfer" },
+						{ value: "OTHER", label: "Other" },
+					]}>
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder="Select method" />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="CASH" label="Cash">Cash</SelectItem>
-							<SelectItem value="DEBIT" label="Debit">Debit</SelectItem>
-							<SelectItem value="CREDIT" label="Credit">Credit</SelectItem>
-							<SelectItem value="TRANSFER" label="Transfer">Transfer</SelectItem>
-							<SelectItem value="OTHER" label="Other">Other</SelectItem>
+							<SelectItem value="CASH">Cash</SelectItem>
+							<SelectItem value="DEBIT">Debit</SelectItem>
+							<SelectItem value="CREDIT">Credit</SelectItem>
+							<SelectItem value="TRANSFER">Transfer</SelectItem>
+							<SelectItem value="OTHER">Other</SelectItem>
 						</SelectContent>
 					</Select>
 					{!state.success && state.fieldErrors?.paymentMethod && (
@@ -204,14 +214,19 @@ export function GroupTransactionForm({
 					name="splitRule"
 					value={splitRule}
 					onValueChange={(value) => setSplitRule(value as SplitRule)}
+					items={[
+						{ value: "EQUAL", label: "Equal" },
+						{ value: "PROPORTIONAL", label: "Proportional" },
+						{ value: "CUSTOM", label: "Custom" },
+					]}
 				>
 					<SelectTrigger className="w-full">
 						<SelectValue placeholder="Select split rule" />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value="EQUAL" label="Equal">Equal</SelectItem>
-						<SelectItem value="PROPORTIONAL" label="Proportional">Proportional</SelectItem>
-						<SelectItem value="CUSTOM" label="Custom">Custom</SelectItem>
+						<SelectItem value="EQUAL">Equal</SelectItem>
+						<SelectItem value="PROPORTIONAL">Proportional</SelectItem>
+						<SelectItem value="CUSTOM">Custom</SelectItem>
 					</SelectContent>
 				</Select>
 				{!state.success && state.fieldErrors?.splitRule && (

@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+
 import {
   Select,
   SelectContent,
@@ -20,15 +22,24 @@ export function CurrencySelect({
   defaultValue,
   error,
 }: CurrencySelectProps) {
+  const items = useMemo(
+    () =>
+      CURRENCIES.map((currency) => ({
+        value: currency.code,
+        label: `${currency.code} - ${currency.name}`,
+      })),
+    []
+  );
+
   return (
     <div className="flex flex-col gap-1.5">
-      <Select name={name} defaultValue={defaultValue}>
+      <Select name={name} defaultValue={defaultValue} items={items}>
         <SelectTrigger className="w-full" aria-invalid={error ? true : undefined}>
           <SelectValue placeholder="Select currency" />
         </SelectTrigger>
         <SelectContent>
           {CURRENCIES.map((currency) => (
-            <SelectItem key={currency.code} value={currency.code} label={`${currency.code} - ${currency.name}`}>
+            <SelectItem key={currency.code} value={currency.code}>
               {currency.code} - {currency.name}
             </SelectItem>
           ))}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useEffect, useState } from "react"
+import { useActionState, useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -64,6 +64,14 @@ export function CategoryForm({
 	)
 
 	const rootCategories = categories.filter((c) => c.parentId === null)
+
+	const parentCategoryItems = useMemo(
+		() => [
+			{ value: "", label: "None (root category)" },
+			...rootCategories.map((c) => ({ value: c.id, label: c.name })),
+		],
+		[rootCategories]
+	)
 
 	useEffect(() => {
 		if (state.success) {
@@ -129,15 +137,19 @@ export function CategoryForm({
 					name="transactionType"
 					defaultValue={defaultValues?.transactionType ?? "EXPENSE"}
 					onValueChange={(value) => setTransactionType(value ?? "EXPENSE")}
+					items={[
+						{ value: "INCOME", label: "Income" },
+						{ value: "EXPENSE", label: "Expense" },
+					]}
 				>
 					<SelectTrigger className="w-full">
 						<SelectValue placeholder="Select type" />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value="INCOME" label="Income">
+						<SelectItem value="INCOME">
 							Income
 						</SelectItem>
-						<SelectItem value="EXPENSE" label="Expense">
+						<SelectItem value="EXPENSE">
 							Expense
 						</SelectItem>
 					</SelectContent>
@@ -193,16 +205,16 @@ export function CategoryForm({
 
 			<div className="flex flex-col gap-1.5">
 				<Label>Parent Category</Label>
-				<Select name="parentId" defaultValue={defaultValues?.parentId ?? ""}>
+				<Select name="parentId" defaultValue={defaultValues?.parentId ?? ""} items={parentCategoryItems}>
 					<SelectTrigger className="w-full">
 						<SelectValue placeholder="None (root category)" />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value="" label="None (root category)">
+						<SelectItem value="">
 							None (root category)
 						</SelectItem>
 						{rootCategories.map((category) => (
-							<SelectItem key={category.id} value={category.id} label={category.name}>
+							<SelectItem key={category.id} value={category.id}>
 								{category.name}
 							</SelectItem>
 						))}
