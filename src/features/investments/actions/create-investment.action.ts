@@ -21,6 +21,9 @@ export async function createInvestmentAction(
     startDate: formData.get("startDate"),
     maturityDate: formData.get("maturityDate") || undefined,
     estimatedReturn: formData.get("estimatedReturn") || undefined,
+    purchaseExchangeRate: formData.get("purchaseExchangeRate") || undefined,
+    currentExchangeRate: formData.get("currentExchangeRate") || undefined,
+    totalFees: formData.get("totalFees") || undefined,
   };
 
   const result = createInvestmentSchema.safeParse(raw);
@@ -38,6 +41,9 @@ export async function createInvestmentAction(
     startDate,
     maturityDate,
     estimatedReturn,
+    purchaseExchangeRate,
+    currentExchangeRate,
+    totalFees,
   } = result.data;
 
   const session = await requireSession();
@@ -54,6 +60,9 @@ export async function createInvestmentAction(
         startDate,
         maturityDate,
         estimatedReturn,
+        purchaseExchangeRate: purchaseExchangeRate ?? null,
+        currentExchangeRate: currentExchangeRate ?? purchaseExchangeRate ?? null,
+        totalFees: totalFees ?? null,
         userId: session.user.id,
       },
     });

@@ -1,7 +1,7 @@
 "use client"
 
 import { InvestmentType } from "@/generated/prisma/enums"
-import { useActionState, useEffect } from "react"
+import { useActionState, useEffect, useState, useCallback } from "react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -10,8 +10,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { createInvestmentAction } from "@/features/investments/actions/create-investment.action"
 import { updateInvestmentAction } from "@/features/investments/actions/update-investment.action"
-import { INVESTMENT_TYPE_LABELS } from "@/features/investments/lib/investments.utils"
+import {
+	INVESTMENT_TYPE_LABELS,
+	displayToRate,
+	rateToDisplay,
+} from "@/features/investments/lib/investments.utils"
 import { AmountInput } from "@/features/transactions/components/amount-input"
+import { useCurrency } from "@/shared/components/currency-provider"
+import { CURRENCIES } from "@/shared/lib/constants"
 import { FORM_MODE, INITIAL_VOID_STATE, type FormMode } from "@/shared/types/common.types"
 
 interface InvestmentFormProps {
@@ -27,13 +33,47 @@ interface InvestmentFormProps {
 		maturityDate?: string
 		estimatedReturn?: number
 		isActive: boolean
+		purchaseExchangeRate?: number
+		currentExchangeRate?: number
+		totalFees?: number
 	}
 	onSuccess?: () => void
 }
 
 export function InvestmentForm({ mode, defaultValues, onSuccess }: InvestmentFormProps) {
+	const baseCurrency = useCurrency()
 	const action = mode === FORM_MODE.CREATE ? createInvestmentAction : updateInvestmentAction
 	const [state, formAction, isPending] = useActionState(action, INITIAL_VOID_STATE)
+
+	const [selectedCurrency, setSelectedCurrency] = useState(
+		defaultValues?.currency ?? baseCurrency,
+	)
+
+	const isForeignCurrency = selectedCurrency !== baseCurrency
+
+	const [exchangeRateDisplay, setExchangeRateDisplay] = useState(() => {
+		if (defaultValues?.purchaseExchangeRate) {
+			return rateToDisplay(defaultValues.purchaseExchangeRate).toString()
+		}
+		return ""
+	})
+
+	const handleExchangeRateBlur = useCallback(() => {
+		const cleaned = exchangeRateDisplay.replace(/[^0-9.-]/g, "")
+		const value = parseFloat(cleaned)
+		if (!Number.isNaN(value) && value > 0) {
+			setExchangeRateDisplay(value.toFixed(4))
+		}
+	}, [exchangeRateDisplay])
+
+	const exchangeRateStored = (() => {
+		const cleaned = exchangeRateDisplay.replace(/[^0-9.-]/g, "")
+		const value = parseFloat(cleaned)
+		if (!Number.isNaN(value) && value > 0) {
+			return displayToRate(value)
+		}
+		return ""
+	})()
 
 	useEffect(() => {
 		if (state.success) {
@@ -115,7 +155,57 @@ export function InvestmentForm({ mode, defaultValues, onSuccess }: InvestmentFor
 				</div>
 			)}
 
-			<input type="hidden" name="currency" value={defaultValues?.currency ?? "USD"} />
+			<div className="flex flex-col gap-1.5">
+				<Label htmlFor="inv-currency">Currency</Label>
+				<select
+					id="inv-currency"
+					name="currency"
+					value={selectedCurrency}
+					onChange={(e) => setSelectedCurrency(e.target.value)}
+					className="border-input focus-visible:ring-ring flex h-9 w-full rounded-none border bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:ring-1 focus-visible:outline-none"
+				>
+					{CURRENCIES.map((c) => (
+						<option key={c.code} value={c.code}>
+							{c.code} — {c.name}
+						</option>
+					))}
+				</select>
+				{!state.success && state.fieldErrors?.currency && (
+					<p className="text-destructive text-xs">{state.fieldErrors.currency[0]}</p>
+				)}
+			</div>
+
+			{isForeignCurrency && (
+				<div className="flex flex-col gap-1.5">
+					<Label htmlFor="inv-exchangeRate">
+						Exchange Rate (1 {selectedCurrency} = ? {baseCurrency})
+					</Label>
+					<input type="hidden" name="purchaseExchangeRate" value={exchangeRateStored} />
+					<input type="hidden" name="currentExchangeRate" value={exchangeRateStored} />
+					<Input
+						id="inv-exchangeRate"
+						type="text"
+						inputMode="decimal"
+						placeholder="e.g. 950.2500"
+						value={exchangeRateDisplay}
+						onChange={(e) => setExchangeRateDisplay(e.target.value)}
+						onBlur={handleExchangeRateBlur}
+					/>
+					{!state.success && state.fieldErrors?.purchaseExchangeRate && (
+						<p className="text-destructive text-xs">
+							{state.fieldErrors.purchaseExchangeRate[0]}
+						</p>
+					)}
+				</div>
+			)}
+
+			<div className="flex flex-col gap-1.5">
+				<Label htmlFor="inv-totalFees">Broker Fees &amp; Commissions</Label>
+				<AmountInput name="totalFees" defaultValue={defaultValues?.totalFees} />
+				{!state.success && state.fieldErrors?.totalFees && (
+					<p className="text-destructive text-xs">{state.fieldErrors.totalFees[0]}</p>
+				)}
+			</div>
 
 			<div className="grid grid-cols-2 gap-4">
 				<div className="flex flex-col gap-1.5">

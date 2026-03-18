@@ -16,6 +16,7 @@ export async function updateInvestmentValueAction(
   const raw = {
     id: formData.get("id"),
     currentValue: formData.get("currentValue"),
+    currentExchangeRate: formData.get("currentExchangeRate") || undefined,
   };
 
   const result = updateInvestmentValueSchema.safeParse(raw);
@@ -24,7 +25,7 @@ export async function updateInvestmentValueAction(
     return formatZodErrors(result.error);
   }
 
-  const { id, currentValue: newValue } = result.data;
+  const { id, currentValue: newValue, currentExchangeRate: newExchangeRate } = result.data;
 
   const session = await requireSession();
 
@@ -55,11 +56,17 @@ export async function updateInvestmentValueAction(
           investmentId: investment.id,
           date: new Date(),
           value: investment.currentValue,
+          exchangeRate: investment.currentExchangeRate,
         },
       }),
       prisma.investment.update({
         where: { id: investment.id },
-        data: { currentValue: newValue },
+        data: {
+          currentValue: newValue,
+          ...(newExchangeRate !== undefined && {
+            currentExchangeRate: newExchangeRate,
+          }),
+        },
       }),
     ]);
 

@@ -20,6 +20,9 @@ interface InvestmentDialogProps {
 		maturityDate: Date | null
 		estimatedReturn: number | null
 		isActive: boolean
+		purchaseExchangeRate: number | null
+		currentExchangeRate: number | null
+		totalFees: number | null
 	}
 	trigger: ReactNode
 }
@@ -39,6 +42,9 @@ export function InvestmentDialog({ mode, investment, trigger }: InvestmentDialog
 					: undefined,
 				estimatedReturn: investment.estimatedReturn ?? undefined,
 				isActive: investment.isActive,
+				purchaseExchangeRate: investment.purchaseExchangeRate ?? undefined,
+				currentExchangeRate: investment.currentExchangeRate ?? undefined,
+				totalFees: investment.totalFees ?? undefined,
 			}
 		: undefined
 
