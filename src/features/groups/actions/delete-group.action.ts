@@ -33,7 +33,7 @@ export async function deleteGroupAction(
     if (memberCount > 1) {
       return {
         success: false,
-        error: "Cannot delete a group with other members. Remove all members first.",
+        error: "GROUP_DELETE_HAS_MEMBERS",
       };
     }
 
@@ -43,6 +43,6 @@ export async function deleteGroupAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to delete group" };
+    return { success: false, error: "GROUP_DELETE_FAILED" };
   }
 }

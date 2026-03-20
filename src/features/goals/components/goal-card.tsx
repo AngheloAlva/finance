@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CalendarDays, Pencil } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -50,6 +51,8 @@ export function GoalCard({
   detail,
   showUser = false,
 }: GoalCardProps) {
+  const t = useTranslations("goals.card");
+  const locale = useLocale();
   const [detailOpen, setDetailOpen] = useState(false);
 
   return (
@@ -64,7 +67,7 @@ export function GoalCard({
             {goal.targetDate && (
               <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                 <CalendarDays className="size-3" />
-                <span>{formatDate(goal.targetDate, "short")}</span>
+                <span>{formatDate(goal.targetDate, "short", locale)}</span>
               </div>
             )}
           </div>
@@ -80,6 +83,7 @@ export function GoalCard({
             targetAmount={goal.targetAmount}
             percentage={goal.percentage}
             currency={currency}
+            locale={locale}
           />
         </CardContent>
       </Card>
@@ -117,13 +121,14 @@ export function GoalCard({
             targetAmount={goal.targetAmount}
             percentage={goal.percentage}
             currency={currency}
+            locale={locale}
           />
 
           {goal.status === GoalStatus.ACTIVE && (
             <>
               <Separator />
               <div className="flex flex-col gap-2">
-                <h4 className="text-xs font-medium">Add Contribution</h4>
+                <h4 className="text-xs font-medium">{t("addContribution")}</h4>
                 <ContributionForm goalId={goal.id} />
               </div>
             </>
@@ -134,7 +139,7 @@ export function GoalCard({
               <Separator />
               <div className="flex flex-col gap-2">
                 <h4 className="text-xs font-medium">
-                  Contributions ({detail.contributionCount})
+                  {t("contributions", { count: detail.contributionCount })}
                 </h4>
                 <div className="max-h-48 overflow-y-auto">
                   <ContributionList

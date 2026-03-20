@@ -17,7 +17,7 @@ export async function updateGroupCategoryAction(
   const groupId = formData.get("groupId");
 
   if (typeof groupId !== "string" || groupId.length === 0) {
-    return { success: false, error: "Group ID is required" };
+    return { success: false, error: "FIELD_REQUIRED" };
   }
 
   const raw = {
@@ -70,13 +70,13 @@ export async function updateGroupCategoryAction(
     });
 
     if (!existing) {
-      return { success: false, error: "Category not found" };
+      return { success: false, error: "CATEGORY_NOT_FOUND" };
     }
 
     if (existing.scope !== CategoryScope.GROUP || existing.groupId !== groupId) {
       return {
         success: false,
-        error: "Category does not belong to this group",
+        error: "CATEGORY_WRONG_GROUP",
       };
     }
 
@@ -84,7 +84,7 @@ export async function updateGroupCategoryAction(
       if (parentId === id) {
         return {
           success: false,
-          error: "A category cannot be its own parent",
+          error: "CATEGORY_SELF_PARENT",
         };
       }
 
@@ -93,20 +93,20 @@ export async function updateGroupCategoryAction(
       });
 
       if (!parent) {
-        return { success: false, error: "Parent category not found" };
+        return { success: false, error: "CATEGORY_PARENT_NOT_FOUND" };
       }
 
       if (parent.scope !== CategoryScope.GROUP || parent.groupId !== groupId) {
         return {
           success: false,
-          error: "Parent category must belong to the same group",
+          error: "CATEGORY_PARENT_WRONG_GROUP",
         };
       }
 
       if (parent.parentId !== null) {
         return {
           success: false,
-          error: "Cannot nest more than 2 levels deep",
+          error: "CATEGORY_NESTING_TOO_DEEP",
         };
       }
     }
@@ -129,6 +129,6 @@ export async function updateGroupCategoryAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to update group category" };
+    return { success: false, error: "CATEGORY_UPDATE_FAILED" };
   }
 }

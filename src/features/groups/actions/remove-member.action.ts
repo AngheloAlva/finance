@@ -38,13 +38,13 @@ export async function removeMemberAction(
     });
 
     if (!targetMember) {
-      return { success: false, error: "Member not found" };
+      return { success: false, error: "MEMBER_NOT_FOUND" };
     }
 
     if (!canRemoveMember(permission.data.role, targetMember.role)) {
       return {
         success: false,
-        error: "You don't have permission to remove this member",
+        error: "MEMBER_REMOVE_PERMISSION_DENIED",
       };
     }
 
@@ -54,6 +54,6 @@ export async function removeMemberAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to remove member" };
+    return { success: false, error: "MEMBER_REMOVE_FAILED" };
   }
 }

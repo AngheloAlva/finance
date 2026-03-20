@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +14,7 @@ interface GenerateButtonProps {
 }
 
 export function GenerateButton({ pendingCount }: GenerateButtonProps) {
+  const t = useTranslations("recurring");
   const [isPending, setIsPending] = useState(false);
 
   async function handleGenerate() {
@@ -21,9 +23,7 @@ export function GenerateButton({ pendingCount }: GenerateButtonProps) {
     setIsPending(false);
 
     if (result.success) {
-      toast.success(
-        `Generated ${result.data.count} transaction${result.data.count === 1 ? "" : "s"}`,
-      );
+      toast.success(t("generateResult", { count: result.data.count }));
     } else {
       toast.error(result.error);
     }
@@ -40,7 +40,7 @@ export function GenerateButton({ pendingCount }: GenerateButtonProps) {
         className={`size-3.5 ${isPending ? "animate-spin" : ""}`}
         data-icon="inline-start"
       />
-      Generate
+      {t("generate")}
       {pendingCount > 0 && (
         <Badge variant="secondary" className="ml-1">
           {pendingCount}

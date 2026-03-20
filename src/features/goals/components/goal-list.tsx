@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Target } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GoalCard } from "@/features/goals/components/goal-card";
@@ -10,13 +11,6 @@ import type { CurrencyCode } from "@/shared/lib/constants";
 
 const STATUS_TABS = ["all", "ACTIVE", "COMPLETED", "CANCELLED"] as const;
 type StatusTab = (typeof STATUS_TABS)[number];
-
-const TAB_LABELS: Record<StatusTab, string> = {
-  all: "All",
-  ACTIVE: "Active",
-  COMPLETED: "Completed",
-  CANCELLED: "Cancelled",
-};
 
 interface GoalListProps {
   goals: GoalWithProgress[];
@@ -33,6 +27,8 @@ export function GoalList({
   userId,
   showUser = false,
 }: GoalListProps) {
+  const t = useTranslations("goals.tabs");
+  const te = useTranslations("goals.emptyState");
   const [tab, setTab] = useState<StatusTab>("all");
 
   const filtered = useMemo(() => {
@@ -43,9 +39,9 @@ export function GoalList({
   return (
     <Tabs value={tab} onValueChange={(v) => setTab(v as StatusTab)}>
       <TabsList>
-        {STATUS_TABS.map((t) => (
-          <TabsTrigger key={t} value={t}>
-            {TAB_LABELS[t]}
+        {STATUS_TABS.map((s) => (
+          <TabsTrigger key={s} value={s}>
+            {t(s === "all" ? "all" : s === "ACTIVE" ? "active" : s === "COMPLETED" ? "completed" : "cancelled")}
           </TabsTrigger>
         ))}
       </TabsList>
@@ -56,8 +52,8 @@ export function GoalList({
             <Target className="size-8" />
             <p className="text-sm">
               {tab === "all"
-                ? "No goals yet. Create your first goal to get started."
-                : `No ${TAB_LABELS[tab].toLowerCase()} goals.`}
+                ? te("noGoalsYet")
+                : te("noFilteredGoals", { status: t(tab === "ACTIVE" ? "active" : tab === "COMPLETED" ? "completed" : "cancelled").toLowerCase() })}
             </p>
           </div>
         ) : (

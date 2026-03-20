@@ -1,3 +1,7 @@
+"use client";
+
+import { useLocale, useTranslations } from "next-intl";
+
 import type { CurrencyCode } from "@/shared/lib/constants";
 import { formatCurrency, formatDate } from "@/shared/lib/formatters";
 import type { GoalContributionItem } from "@/features/goals/types/goals.types";
@@ -13,10 +17,13 @@ export function ContributionList({
   currency,
   showUser = false,
 }: ContributionListProps) {
+  const t = useTranslations("goals.contribution");
+  const locale = useLocale();
+
   if (contributions.length === 0) {
     return (
       <p className="py-4 text-center text-xs text-muted-foreground">
-        No contributions yet
+        {t("noContributions")}
       </p>
     );
   }
@@ -31,11 +38,11 @@ export function ContributionList({
           <div className="flex flex-col gap-0.5">
             <div className="flex items-center gap-1.5 text-xs">
               <span className="font-medium">
-                {formatCurrency(contribution.amount, currency)}
+                {formatCurrency(contribution.amount, currency, locale)}
               </span>
               {showUser && (
                 <span className="text-muted-foreground">
-                  by {contribution.user.name}
+                  {t("by", { name: contribution.user.name })}
                 </span>
               )}
             </div>
@@ -46,7 +53,7 @@ export function ContributionList({
             )}
           </div>
           <span className="text-[10px] text-muted-foreground">
-            {formatDate(contribution.date, "short")}
+            {formatDate(contribution.date, "short", locale)}
           </span>
         </div>
       ))}

@@ -23,7 +23,7 @@ export async function deleteGoalAction(
     const goal = await prisma.goal.findUnique({ where: { id } });
 
     if (!goal) {
-      return { success: false, error: "Goal not found" };
+      return { success: false, error: "GOAL_NOT_FOUND" };
     }
 
     if (goal.groupId) {
@@ -38,7 +38,7 @@ export async function deleteGoalAction(
         return { success: false, error: roleCheck.error };
       }
     } else if (goal.userId !== session.user.id) {
-      return { success: false, error: "You can only delete your own goals" };
+      return { success: false, error: "GOAL_NOT_OWNED" };
     }
 
     await prisma.goal.delete({ where: { id } });
@@ -51,6 +51,6 @@ export async function deleteGoalAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to delete goal" };
+    return { success: false, error: "GOAL_DELETE_FAILED" };
   }
 }

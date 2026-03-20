@@ -1,6 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
 
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
 import { TransactionForm } from "@/features/transactions/components/transaction-form"
@@ -24,6 +25,7 @@ export function TransactionDialog({
 	creditCards,
 	trigger,
 }: TransactionDialogProps) {
+	const t = useTranslations("transactions")
 	const defaultValues = transaction
 		? {
 				id: transaction.id,
@@ -42,11 +44,11 @@ export function TransactionDialog({
 	return (
 		<FormDialog
 			trigger={trigger}
-			title={mode === FORM_MODE.CREATE ? "New Transaction" : "Edit Transaction"}
+			title={mode === FORM_MODE.CREATE ? t("dialog.newTitle") : t("dialog.editTitle")}
 			description={
 				mode === FORM_MODE.CREATE
-					? "Record a new financial transaction."
-					: "Update the transaction details."
+					? t("dialog.newDescription")
+					: t("dialog.editDescription")
 			}
 			className="sm:max-w-md"
 		>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import {
   Tabs,
   TabsContent,
@@ -28,14 +30,16 @@ export function SimulationTabs({
   goals,
   currency,
 }: SimulationTabsProps) {
+  const t = useTranslations("simulations.tabs");
+
   return (
     <Tabs defaultValue="affordability">
       <TabsList className="w-full">
-        <TabsTrigger value="affordability">Affordability</TabsTrigger>
-        <TabsTrigger value="savings">Savings Goals</TabsTrigger>
-        <TabsTrigger value="debt">Debt Payoff</TabsTrigger>
-        <TabsTrigger value="income">Income Impact</TabsTrigger>
-        <TabsTrigger value="budget">Budget Optimizer</TabsTrigger>
+        <TabsTrigger value="affordability">{t("affordability")}</TabsTrigger>
+        <TabsTrigger value="savings">{t("savingsGoals")}</TabsTrigger>
+        <TabsTrigger value="debt">{t("debtPayoff")}</TabsTrigger>
+        <TabsTrigger value="income">{t("incomeImpact")}</TabsTrigger>
+        <TabsTrigger value="budget">{t("budgetOptimizer")}</TabsTrigger>
       </TabsList>
 
       <TabsContent value="affordability" className="mt-4">

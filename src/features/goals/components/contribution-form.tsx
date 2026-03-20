@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { addContributionAction } from "@/features/goals/actions/add-contribution.action";
 import { AmountInput } from "@/features/transactions/components/amount-input";
+import { FieldError } from "@/shared/components/field-error";
 import { INITIAL_VOID_STATE } from "@/shared/types/common.types";
 
 interface ContributionFormProps {
@@ -17,6 +19,8 @@ interface ContributionFormProps {
 }
 
 export function ContributionForm({ goalId, onSuccess }: ContributionFormProps) {
+  const t = useTranslations("goals.contribution");
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     addContributionAction,
     INITIAL_VOID_STATE,
@@ -25,7 +29,7 @@ export function ContributionForm({ goalId, onSuccess }: ContributionFormProps) {
 
   useEffect(() => {
     if (state.success) {
-      toast.success("Contribution added successfully");
+      toast.success(t("addedSuccess"));
       formRef.current?.reset();
       onSuccess?.();
     }
@@ -43,54 +47,42 @@ export function ContributionForm({ goalId, onSuccess }: ContributionFormProps) {
 
       {!state.success && state.error && (
         <div className="rounded-none border border-destructive/50 bg-destructive/10 px-3 py-2 text-xs text-destructive">
-          {state.error}
+          {tErrors(state.error as Parameters<typeof tErrors>[0])}
         </div>
       )}
 
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="contrib-amount">Amount</Label>
+          <Label htmlFor="contrib-amount">{t("amount")}</Label>
           <AmountInput name="amount" />
-          {!state.success && state.fieldErrors?.amount && (
-            <p className="text-xs text-destructive">
-              {state.fieldErrors.amount[0]}
-            </p>
-          )}
+          {!state.success && <FieldError errors={state.fieldErrors?.amount} />}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label>Date</Label>
+          <Label>{t("date")}</Label>
           <DatePicker
             name="date"
             defaultValue={today}
             required
-            placeholder="Select date"
+            placeholder={t("selectDate")}
           />
-          {!state.success && state.fieldErrors?.date && (
-            <p className="text-xs text-destructive">
-              {state.fieldErrors.date[0]}
-            </p>
-          )}
+          {!state.success && <FieldError errors={state.fieldErrors?.date} />}
         </div>
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="contrib-note">Note (optional)</Label>
+        <Label htmlFor="contrib-note">{t("note")}</Label>
         <Input
           id="contrib-note"
           name="note"
           type="text"
-          placeholder="e.g. Monthly savings deposit"
+          placeholder={t("notePlaceholder")}
         />
-        {!state.success && state.fieldErrors?.note && (
-          <p className="text-xs text-destructive">
-            {state.fieldErrors.note[0]}
-          </p>
-        )}
+        {!state.success && <FieldError errors={state.fieldErrors?.note} />}
       </div>
 
       <Button type="submit" disabled={isPending} size="sm" className="w-full">
-        {isPending ? "Adding..." : "Add Contribution"}
+        {isPending ? t("adding") : t("addContribution")}
       </Button>
     </form>
   );

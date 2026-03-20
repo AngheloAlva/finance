@@ -32,12 +32,12 @@ export async function simulateSavingsGoalAction(
     // Validate goal belongs to user
     const goal = snapshot.goals.find((g) => g.id === result.data.goalId);
     if (!goal) {
-      return { success: false, error: "Goal not found" };
+      return { success: false, error: "GOAL_NOT_FOUND" };
     }
 
     const simulation = computeSavingsGoal(snapshot, result.data);
     return { success: true, data: simulation };
   } catch {
-    return { success: false, error: "Failed to run savings goal simulation" };
+    return { success: false, error: "SIMULATION_SAVINGS_GOAL_FAILED" };
   }
 }

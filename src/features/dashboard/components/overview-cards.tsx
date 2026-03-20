@@ -1,9 +1,12 @@
+"use client";
+
 import {
   ArrowLeftRight,
   TrendingDown,
   TrendingUp,
   Wallet,
 } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import type { CurrencyCode } from "@/shared/lib/constants";
 import { formatCurrency } from "@/shared/lib/formatters";
@@ -18,11 +21,14 @@ interface OverviewCardsProps {
 }
 
 export function OverviewCards({ overview, currency }: OverviewCardsProps) {
+  const t = useTranslations("dashboard");
+  const locale = useLocale();
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <StatCard
-        title="Income"
-        value={formatCurrency(overview.totalIncome, currency)}
+        title={t("income")}
+        value={formatCurrency(overview.totalIncome, currency, locale)}
         icon={TrendingUp}
         className={cn(
           "[&_[data-slot=card-content]_.size-10]:bg-emerald-500/10",
@@ -30,8 +36,8 @@ export function OverviewCards({ overview, currency }: OverviewCardsProps) {
         )}
       />
       <StatCard
-        title="Expenses"
-        value={formatCurrency(overview.totalExpenses, currency)}
+        title={t("expenses")}
+        value={formatCurrency(overview.totalExpenses, currency, locale)}
         icon={TrendingDown}
         className={cn(
           "[&_[data-slot=card-content]_.size-10]:bg-red-500/10",
@@ -39,8 +45,8 @@ export function OverviewCards({ overview, currency }: OverviewCardsProps) {
         )}
       />
       <StatCard
-        title="Balance"
-        value={formatCurrency(overview.balance, currency)}
+        title={t("balance")}
+        value={formatCurrency(overview.balance, currency, locale)}
         icon={Wallet}
         className={cn(
           overview.balance >= 0
@@ -49,7 +55,7 @@ export function OverviewCards({ overview, currency }: OverviewCardsProps) {
         )}
       />
       <StatCard
-        title="Transactions"
+        title={t("transactionCount")}
         value={overview.transactionCount.toString()}
         icon={ArrowLeftRight}
       />

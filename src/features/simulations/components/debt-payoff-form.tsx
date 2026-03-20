@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -21,6 +22,8 @@ const initialState: ActionResult<DebtPayoffResult> = {
 };
 
 export function DebtPayoffForm({ currency }: DebtPayoffFormProps) {
+  const t = useTranslations("simulations.debtPayoff");
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     simulateDebtPayoffAction,
     initialState,
@@ -33,15 +36,15 @@ export function DebtPayoffForm({ currency }: DebtPayoffFormProps) {
           {isPending ? (
             <>
               <Spinner className="mr-2" />
-              Analyzing...
+              {t("analyzing")}
             </>
           ) : (
-            "Analyze Debt"
+            t("analyzeDebt")
           )}
         </Button>
 
         {!state.success && state.error && (
-          <p className="mt-2 text-xs text-destructive">{state.error}</p>
+          <p className="mt-2 text-xs text-destructive">{tErrors(state.error as Parameters<typeof tErrors>[0])}</p>
         )}
       </form>
 
@@ -49,8 +52,8 @@ export function DebtPayoffForm({ currency }: DebtPayoffFormProps) {
         <DebtPayoffResults result={state.data} currency={currency} />
       ) : (
         <SimulationEmptyState
-          title="Debt Payoff Calculator"
-          description="Click 'Analyze Debt' to see your outstanding installment obligations, monthly payments, and projected payoff timeline."
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
         />
       )}
     </div>

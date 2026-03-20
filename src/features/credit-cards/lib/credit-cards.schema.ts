@@ -3,34 +3,34 @@ import { z } from "zod";
 export const createCreditCardSchema = z.object({
   name: z
     .string()
-    .min(1, { error: "Name is required" })
-    .max(50, { error: "Name must be at most 50 characters" }),
+    .min(1, { error: "required" })
+    .max(50, { error: "maxLength50" }),
   lastFourDigits: z
     .string()
-    .regex(/^\d{4}$/, { error: "Must be exactly 4 digits" }),
+    .regex(/^\d{4}$/, { error: "exactDigits4" }),
   brand: z
     .string()
-    .min(1, { error: "Brand is required" })
-    .max(30, { error: "Brand must be at most 30 characters" }),
+    .min(1, { error: "required" })
+    .max(30, { error: "maxLength30" }),
   totalLimit: z.coerce
     .number()
-    .int({ error: "Limit must be a valid number" })
-    .positive({ error: "Limit must be greater than zero" }),
+    .int({ error: "invalidNumber" })
+    .positive({ error: "positive" }),
   closingDay: z.coerce
     .number()
-    .int({ error: "Closing day must be a whole number" })
-    .min(1, { error: "Closing day must be between 1 and 31" })
-    .max(31, { error: "Closing day must be between 1 and 31" }),
+    .int({ error: "wholeNumber" })
+    .min(1, { error: "dayRange" })
+    .max(31, { error: "dayRange" }),
   paymentDay: z.coerce
     .number()
-    .int({ error: "Payment day must be a whole number" })
-    .min(1, { error: "Payment day must be between 1 and 31" })
-    .max(31, { error: "Payment day must be between 1 and 31" }),
-  color: z.string().min(1, { error: "Color is required" }),
+    .int({ error: "wholeNumber" })
+    .min(1, { error: "dayRange" })
+    .max(31, { error: "dayRange" }),
+  color: z.string().min(1, { error: "required" }),
 });
 
 export const updateCreditCardSchema = createCreditCardSchema.extend({
-  id: z.string().min(1, { error: "Credit card ID is required" }),
+  id: z.string().min(1, { error: "requiredId" }),
 });
 
 export type CreateCreditCardInput = z.infer<typeof createCreditCardSchema>;

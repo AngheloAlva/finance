@@ -66,8 +66,8 @@ export function getDateRangePresets(): DateRangePreset[] {
   ];
 }
 
-export function formatDateRange(from: Date, to: Date): string {
-  const fmt = new Intl.DateTimeFormat("en-US", {
+export function formatDateRange(from: Date, to: Date, locale = "en-US"): string {
+  const fmt = new Intl.DateTimeFormat(locale, {
     month: "short",
     day: "numeric",
     year: "numeric",

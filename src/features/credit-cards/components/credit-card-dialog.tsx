@@ -1,6 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
 
 import { CreditCardForm } from "@/features/credit-cards/components/credit-card-form"
 import type { CreditCardWithUsage } from "@/features/credit-cards/types/credit-cards.types"
@@ -14,6 +15,7 @@ interface CreditCardDialogProps {
 }
 
 export function CreditCardDialog({ mode, creditCard, trigger }: CreditCardDialogProps) {
+	const t = useTranslations("creditCards")
 	const defaultValues = creditCard
 		? {
 				id: creditCard.id,
@@ -30,11 +32,11 @@ export function CreditCardDialog({ mode, creditCard, trigger }: CreditCardDialog
 	return (
 		<FormDialog
 			trigger={trigger}
-			title={mode === FORM_MODE.CREATE ? "New Credit Card" : "Edit Credit Card"}
+			title={mode === FORM_MODE.CREATE ? t("dialog.newTitle") : t("dialog.editTitle")}
 			description={
 				mode === FORM_MODE.CREATE
-					? "Add a new credit card to track your spending."
-					: "Update the credit card details."
+					? t("dialog.newDescription")
+					: t("dialog.editDescription")
 			}
 			className="sm:max-w-md"
 		>

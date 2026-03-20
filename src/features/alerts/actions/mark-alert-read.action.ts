@@ -19,7 +19,7 @@ export async function markAlertReadAction(
   const result = markAlertReadSchema.safeParse(raw);
 
   if (!result.success) {
-    return { success: false, error: "Invalid alert ID" };
+    return { success: false, error: "FIELD_REQUIRED" };
   }
 
   const { alertId } = result.data;
@@ -32,11 +32,11 @@ export async function markAlertReadAction(
     });
 
     if (!alert) {
-      return { success: false, error: "Alert not found" };
+      return { success: false, error: "ALERT_NOT_FOUND" };
     }
 
     if (alert.userId !== session.user.id) {
-      return { success: false, error: "You can only manage your own alerts" };
+      return { success: false, error: "ALERT_NOT_OWNED" };
     }
 
     await prisma.alert.update({
@@ -48,6 +48,6 @@ export async function markAlertReadAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to mark alert as read" };
+    return { success: false, error: "ALERT_MARK_READ_FAILED" };
   }
 }

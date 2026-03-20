@@ -1,6 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ interface MonthSelectorProps {
 
 export function MonthSelector({ month, year, buildHref }: MonthSelectorProps) {
   const router = useRouter();
+  const t = useTranslations("dashboard");
 
   function navigateMonth(direction: -1 | 1) {
     let newMonth = month + direction;
@@ -40,7 +42,7 @@ export function MonthSelector({ month, year, buildHref }: MonthSelectorProps) {
         variant="ghost"
         size="icon"
         onClick={() => navigateMonth(-1)}
-        aria-label="Previous month"
+        aria-label={t("previousMonth")}
       >
         <ChevronLeft className="size-4" />
       </Button>
@@ -51,7 +53,7 @@ export function MonthSelector({ month, year, buildHref }: MonthSelectorProps) {
         variant="ghost"
         size="icon"
         onClick={() => navigateMonth(1)}
-        aria-label="Next month"
+        aria-label={t("nextMonth")}
       >
         <ChevronRight className="size-4" />
       </Button>

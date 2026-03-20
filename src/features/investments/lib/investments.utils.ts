@@ -38,14 +38,14 @@ export const INVESTMENT_TYPE_COLORS: Record<InvestmentType, string> = {
 	OTHER: "#6b7280",
 }
 
-export const INVESTMENT_TYPE_LABELS: Record<InvestmentType, string> = {
-	STOCKS: "Stocks",
-	BONDS: "Bonds",
-	CRYPTO: "Crypto",
-	REAL_ESTATE: "Real Estate",
-	FUND: "Funds",
-	SAVINGS: "Savings",
-	OTHER: "Other",
+export const INVESTMENT_TYPE_KEYS: Record<InvestmentType, string> = {
+	STOCKS: "stocks",
+	BONDS: "bonds",
+	CRYPTO: "crypto",
+	REAL_ESTATE: "realEstate",
+	FUND: "funds",
+	SAVINGS: "savings",
+	OTHER: "other",
 }
 
 export function calculateReturn(
@@ -118,7 +118,7 @@ export function calculateAllocation(
 	return Array.from(byType.entries())
 		.map(([type, { totalValue: rawValue, baseCurrencyValue }]) => ({
 			type,
-			label: INVESTMENT_TYPE_LABELS[type],
+			label: INVESTMENT_TYPE_KEYS[type],
 			totalValue: rawValue,
 			baseCurrencyValue,
 			percentage: Math.round((baseCurrencyValue / totalValue) * 10000) / 100,

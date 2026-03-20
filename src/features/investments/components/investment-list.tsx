@@ -1,5 +1,8 @@
-import Link from "next/link"
+"use client"
 
+import { useLocale, useTranslations } from "next-intl"
+
+import { Link } from "@/i18n/navigation"
 import { InvestmentCard } from "@/features/investments/components/investment-card"
 import type { Investment } from "@/features/investments/types/investments.types"
 import type { CurrencyCode } from "@/shared/lib/constants"
@@ -10,11 +13,14 @@ interface InvestmentListProps {
 }
 
 export function InvestmentList({ investments, userCurrency }: InvestmentListProps) {
+	const t = useTranslations("investments")
+	const locale = useLocale()
+
 	if (investments.length === 0) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-none border border-dashed p-12 text-center">
 				<p className="text-muted-foreground text-sm">
-					No investments yet. Add your first investment to start tracking your portfolio.
+					{t("noInvestmentsYet")}
 				</p>
 			</div>
 		)
@@ -28,7 +34,7 @@ export function InvestmentList({ investments, userCurrency }: InvestmentListProp
 					href={`/investments/${investment.id}`}
 					className="transition-transform hover:scale-[1.02]"
 				>
-					<InvestmentCard investment={investment} userCurrency={userCurrency} />
+					<InvestmentCard investment={investment} userCurrency={userCurrency} locale={locale} />
 				</Link>
 			))}
 		</div>

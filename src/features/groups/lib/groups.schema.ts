@@ -3,31 +3,31 @@ import { z } from "zod";
 export const createGroupSchema = z.object({
   name: z
     .string()
-    .min(2, { error: "Name must be at least 2 characters" })
-    .max(100, { error: "Name must be at most 100 characters" }),
+    .min(2, { error: "minLength2" })
+    .max(100, { error: "maxLength100" }),
   description: z
     .string()
-    .max(500, { error: "Description must be at most 500 characters" })
+    .max(500, { error: "maxLength500" })
     .optional(),
   currency: z
     .string()
-    .length(3, { error: "Currency must be a 3-letter code" }),
+    .length(3, { error: "currencyLength3" }),
 });
 
 export const updateGroupSchema = createGroupSchema.extend({
-  id: z.string().min(1, { error: "Group ID is required" }),
+  id: z.string().min(1, { error: "requiredId" }),
 });
 
 export const inviteMemberSchema = z.object({
-  groupId: z.string().min(1, { error: "Group ID is required" }),
-  email: z.email({ error: "Invalid email address" }),
+  groupId: z.string().min(1, { error: "requiredId" }),
+  email: z.email({ error: "invalidEmail" }),
 });
 
 export const changeRoleSchema = z.object({
-  groupId: z.string().min(1, { error: "Group ID is required" }),
-  memberId: z.string().min(1, { error: "Member ID is required" }),
+  groupId: z.string().min(1, { error: "requiredId" }),
+  memberId: z.string().min(1, { error: "requiredId" }),
   role: z.enum(["ADMIN", "MEMBER"], {
-    error: "Role must be ADMIN or MEMBER",
+    error: "invalidRole",
   }),
 });
 

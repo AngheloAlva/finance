@@ -57,7 +57,7 @@ export async function createInstallmentPurchaseAction(
     const creditCard = await getCreditCardById(creditCardId, session.user.id);
 
     if (!creditCard) {
-      return { success: false, error: "Credit card not found" };
+      return { success: false, error: "CREDIT_CARD_NOT_FOUND" };
     }
 
     const rows = generateInstallmentRows({
@@ -127,6 +127,6 @@ export async function createInstallmentPurchaseAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to create installment purchase" };
+    return { success: false, error: "INSTALLMENT_CREATE_FAILED" };
   }
 }

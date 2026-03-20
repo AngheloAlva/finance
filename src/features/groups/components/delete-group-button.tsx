@@ -1,3 +1,7 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 import { deleteGroupAction } from "@/features/groups/actions/delete-group.action";
 import { DeleteEntityButton } from "@/shared/components/delete-entity-button";
 
@@ -10,13 +14,14 @@ export function DeleteGroupButton({
   groupId,
   groupName,
 }: DeleteGroupButtonProps) {
+  const t = useTranslations("groups.settings.deleteDialog");
   return (
     <DeleteEntityButton
       action={deleteGroupAction}
       formEntries={{ id: groupId }}
-      dialogTitle="Delete Group"
-      dialogDescription={`Are you sure you want to delete "${groupName}"? This action cannot be undone. All group data will be permanently removed.`}
-      successMessage="Group deleted successfully"
+      dialogTitle={t("title")}
+      dialogDescription={t("description", { name: groupName })}
+      successMessage={t("success")}
     />
   );
 }

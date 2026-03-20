@@ -12,11 +12,18 @@ import {
 	YAxis,
 } from "recharts"
 
+import { useLocale, useTranslations } from "next-intl"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { formatCurrency } from "@/shared/lib/formatters"
 
 import type { ForecastPoint } from "@/features/analytics/types/analytics.types"
+
+function formatMonthLabel(monthKey: string, locale: string): string {
+	const [year, month] = monthKey.split("-").map(Number)
+	return new Date(year, month - 1).toLocaleDateString(locale, { month: "short" })
+}
 
 interface CashFlowForecastChartProps {
 	data: ForecastPoint[]
@@ -44,25 +51,29 @@ function CustomTooltip({
 	label,
 	currency,
 	data,
+	projectedLabel,
+	locale,
 }: {
 	active?: boolean
 	payload?: TooltipPayloadItem[]
 	label?: string
 	currency: CurrencyCode
 	data: ForecastPoint[]
+	projectedLabel: string
+	locale?: string
 }) {
 	if (!active || !payload?.length || !label) return null
 
-	const point = data.find((d) => d.label === label)
+	const point = data.find((d) => d.month === label)
 
 	return (
 		<div className="bg-popover rounded-none border px-3 py-2 text-sm shadow-md">
 			<p className="mb-1 font-medium">
-				{label} {point?.isProjected ? "(Projected)" : ""}
+				{label ? formatMonthLabel(label, locale ?? "en") : label} {point?.isProjected ? projectedLabel : ""}
 			</p>
 			{payload.map((entry) => (
 				<p key={entry.name} style={{ color: entry.color }}>
-					{entry.name}: {formatCurrency(entry.value, currency)}
+					{entry.name}: {formatCurrency(entry.value, currency, locale)}
 				</p>
 			))}
 		</div>
@@ -70,6 +81,8 @@ function CustomTooltip({
 }
 
 export function CashFlowForecastChart({ data, currency }: CashFlowForecastChartProps) {
+	const t = useTranslations("analytics.cashFlowForecast")
+	const locale = useLocale()
 	// Split into actual and projected segments for visual distinction
 	const chartData = data.map((point) => ({
 		...point,
@@ -94,19 +107,20 @@ export function CashFlowForecastChart({ data, currency }: CashFlowForecastChartP
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Cash Flow Forecast</CardTitle>
+				<CardTitle>{t("title")}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{data.length === 0 ? (
 					<div className="flex h-[300px] items-center justify-center">
-						<p className="text-muted-foreground text-sm">Not enough data to forecast</p>
+						<p className="text-muted-foreground text-sm">{t("noData")}</p>
 					</div>
 				) : (
 					<ResponsiveContainer width="100%" height={300}>
 						<ComposedChart data={chartData}>
 							<CartesianGrid strokeDasharray="3 3" stroke={CHART_COLORS.grid} vertical={false} />
 							<XAxis
-								dataKey="label"
+								dataKey="month"
+								tickFormatter={(value: string) => formatMonthLabel(value, locale)}
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
@@ -115,10 +129,10 @@ export function CashFlowForecastChart({ data, currency }: CashFlowForecastChartP
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
-								tickFormatter={(value: number) => formatCurrency(value, currency)}
+								tickFormatter={(value: number) => formatCurrency(value, currency, locale)}
 								width={80}
 							/>
-							<Tooltip content={<CustomTooltip currency={currency} data={data} />} />
+							<Tooltip content={<CustomTooltip currency={currency} data={data} projectedLabel={t("projected")} locale={locale} />} />
 							<Legend
 								formatter={(value: string) => (
 									<span className="text-foreground text-xs">{value}</span>
@@ -128,7 +142,7 @@ export function CashFlowForecastChart({ data, currency }: CashFlowForecastChartP
 							<Line
 								type="monotone"
 								dataKey="actualIncome"
-								name="Income"
+								name={t("income")}
 								stroke={CHART_COLORS.income}
 								strokeWidth={2}
 								dot={false}
@@ -137,7 +151,7 @@ export function CashFlowForecastChart({ data, currency }: CashFlowForecastChartP
 							<Line
 								type="monotone"
 								dataKey="actualExpenses"
-								name="Expenses"
+								name={t("expenses")}
 								stroke={CHART_COLORS.expense}
 								strokeWidth={2}
 								dot={false}
@@ -147,7 +161,7 @@ export function CashFlowForecastChart({ data, currency }: CashFlowForecastChartP
 							<Line
 								type="monotone"
 								dataKey="projectedIncome"
-								name="Projected Income"
+								name={t("projectedIncome")}
 								stroke={CHART_COLORS.income}
 								strokeWidth={2}
 								strokeDasharray="6 3"
@@ -157,7 +171,7 @@ export function CashFlowForecastChart({ data, currency }: CashFlowForecastChartP
 							<Line
 								type="monotone"
 								dataKey="projectedExpenses"
-								name="Projected Expenses"
+								name={t("projectedExpenses")}
 								stroke={CHART_COLORS.expense}
 								strokeWidth={2}
 								strokeDasharray="6 3"

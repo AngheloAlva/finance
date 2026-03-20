@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { ChevronRight, Pencil } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -28,6 +29,7 @@ export function CategoryTreeItem({
 	groupId,
 	canEdit,
 }: CategoryTreeItemProps) {
+	const t = useTranslations("categories")
 	const hasChildren = category.children.length > 0
 	const isGroupScope = category.scope === CategoryScope.GROUP
 	const isUserScope = category.scope === CategoryScope.USER
@@ -76,19 +78,19 @@ export function CategoryTreeItem({
 
 				{category.scope === CategoryScope.SYSTEM && (
 					<Badge variant="secondary" className="text-[10px]">
-						System
+						{t("badges.system")}
 					</Badge>
 				)}
 
 				{category.isRecurring && (
 					<Badge variant="secondary" className="text-[10px]">
-						Recurring
+						{t("badges.recurring")}
 					</Badge>
 				)}
 
 				{category.isAvoidable && (
 					<Badge variant="secondary" className="text-[10px]">
-						Avoidable
+						{t("badges.avoidable")}
 					</Badge>
 				)}
 			</div>

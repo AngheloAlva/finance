@@ -31,7 +31,7 @@ export async function simulateIncomeChangeAction(
   } catch {
     return {
       success: false,
-      error: "Failed to run income change simulation",
+      error: "SIMULATION_INCOME_CHANGE_FAILED",
     };
   }
 }

@@ -42,11 +42,11 @@ export async function changeRoleAction(
     });
 
     if (!targetMember) {
-      return { success: false, error: "Member not found" };
+      return { success: false, error: "MEMBER_NOT_FOUND" };
     }
 
     if (targetMember.role === GroupRole.OWNER) {
-      return { success: false, error: "Cannot change the role of the group owner" };
+      return { success: false, error: "MEMBER_ROLE_OWNER_IMMUTABLE" };
     }
 
     await prisma.groupMember.update({
@@ -58,6 +58,6 @@ export async function changeRoleAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to change member role" };
+    return { success: false, error: "MEMBER_ROLE_CHANGE_FAILED" };
   }
 }

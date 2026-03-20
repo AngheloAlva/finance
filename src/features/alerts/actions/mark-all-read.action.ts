@@ -20,6 +20,6 @@ export async function markAllReadAction(): Promise<ActionResult<{ count: number 
 
     return { success: true, data: { count: result.count } };
   } catch {
-    return { success: false, error: "Failed to mark alerts as read" };
+    return { success: false, error: "ALERT_MARK_ALL_READ_FAILED" };
   }
 }

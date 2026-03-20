@@ -48,6 +48,6 @@ export async function createGroupAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to create group" };
+    return { success: false, error: "GROUP_CREATE_FAILED" };
   }
 }

@@ -1,4 +1,5 @@
 import type { Alert } from "@/generated/prisma/client"
+import { useTranslations } from "next-intl"
 
 import { AlertCard } from "@/features/alerts/components/alert-card"
 
@@ -7,10 +8,11 @@ interface AlertListProps {
 }
 
 export function AlertList({ alerts }: AlertListProps) {
+	const t = useTranslations("alerts")
 	if (alerts.length === 0) {
 		return (
 			<div className="flex items-center justify-center rounded-none border py-12">
-				<p className="text-muted-foreground text-sm">No alerts to show</p>
+				<p className="text-muted-foreground text-sm">{t("noAlerts")}</p>
 			</div>
 		)
 	}

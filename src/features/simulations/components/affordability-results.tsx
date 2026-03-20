@@ -1,11 +1,17 @@
 "use client"
 
 import { AlertTriangle, CheckCircle } from "lucide-react"
+import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { AffordabilityResult } from "@/features/simulations/types/simulations.types"
 import { formatCurrency } from "@/shared/lib/formatters"
 import type { CurrencyCode } from "@/shared/lib/constants"
+
+function formatMonthLabel(monthKey: string, locale: string): string {
+	const [year, month] = monthKey.split("-").map(Number)
+	return new Date(year, month - 1).toLocaleDateString(locale, { month: "short" })
+}
 
 interface AffordabilityResultsProps {
 	result: AffordabilityResult
@@ -13,6 +19,9 @@ interface AffordabilityResultsProps {
 }
 
 export function AffordabilityResults({ result, currency }: AffordabilityResultsProps) {
+	const t = useTranslations("simulations.affordability")
+	const locale = useLocale()
+
 	return (
 		<div className="space-y-4">
 			{/* Summary */}
@@ -22,33 +31,33 @@ export function AffordabilityResults({ result, currency }: AffordabilityResultsP
 						{result.canAfford ? (
 							<>
 								<CheckCircle className="size-4 text-green-500" />
-								You can afford this purchase
+								{t("canAfford")}
 							</>
 						) : (
 							<>
 								<AlertTriangle className="text-destructive size-4" />
-								This purchase may strain your budget
+								{t("cannotAfford")}
 							</>
 						)}
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-2 text-xs">
 					<div className="flex justify-between">
-						<span className="text-muted-foreground">Monthly impact</span>
-						<span className="font-medium">{formatCurrency(result.monthlyImpact, currency)}</span>
+						<span className="text-muted-foreground">{t("monthlyImpact")}</span>
+						<span className="font-medium">{formatCurrency(result.monthlyImpact, currency, locale)}</span>
 					</div>
 					<div className="flex justify-between">
-						<span className="text-muted-foreground">Current monthly balance</span>
+						<span className="text-muted-foreground">{t("currentMonthlyBalance")}</span>
 						<span className="font-medium">
-							{formatCurrency(result.currentMonthlyBalance, currency)}
+							{formatCurrency(result.currentMonthlyBalance, currency, locale)}
 						</span>
 					</div>
 					<div className="flex justify-between">
-						<span className="text-muted-foreground">Projected monthly balance</span>
+						<span className="text-muted-foreground">{t("projectedMonthlyBalance")}</span>
 						<span
 							className={`font-medium ${result.projectedMonthlyBalance < 0 ? "text-destructive" : ""}`}
 						>
-							{formatCurrency(result.projectedMonthlyBalance, currency)}
+							{formatCurrency(result.projectedMonthlyBalance, currency, locale)}
 						</span>
 					</div>
 				</CardContent>
@@ -59,21 +68,21 @@ export function AffordabilityResults({ result, currency }: AffordabilityResultsP
 				<Card>
 					<CardHeader className="pb-3">
 						<CardTitle className="text-sm">
-							Credit Card: {result.creditCardImpact.cardName}
+							{t("creditCardImpact", { name: result.creditCardImpact.cardName })}
 						</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-2 text-xs">
 						<div className="flex justify-between">
-							<span className="text-muted-foreground">Current utilization</span>
+							<span className="text-muted-foreground">{t("currentUtilization")}</span>
 							<span className="font-medium">{result.creditCardImpact.currentUtilization}%</span>
 						</div>
 						<div className="flex justify-between">
-							<span className="text-muted-foreground">Projected utilization</span>
+							<span className="text-muted-foreground">{t("projectedUtilization")}</span>
 							<span
 								className={`font-medium ${result.creditCardImpact.exceedsLimit ? "text-destructive" : ""}`}
 							>
 								{result.creditCardImpact.projectedUtilization}%
-								{result.creditCardImpact.exceedsLimit && " (exceeds limit)"}
+								{result.creditCardImpact.exceedsLimit && ` ${t("exceedsLimit")}`}
 							</span>
 						</div>
 					</CardContent>
@@ -83,28 +92,28 @@ export function AffordabilityResults({ result, currency }: AffordabilityResultsP
 			{/* 3-Month Cash Flow Projection */}
 			<Card>
 				<CardHeader className="pb-3">
-					<CardTitle className="text-sm">3-Month Cash Flow Projection</CardTitle>
+					<CardTitle className="text-sm">{t("cashFlowProjection")}</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<div className="space-y-3">
 						{result.cashFlowProjection.map((month) => (
 							<div key={month.month} className="space-y-1">
 								<div className="flex items-center justify-between text-xs">
-									<span className="font-medium">{month.label}</span>
+									<span className="font-medium">{formatMonthLabel(month.month, locale)}</span>
 									<span className="text-muted-foreground">{month.month}</span>
 								</div>
 								<div className="flex justify-between text-xs">
-									<span className="text-muted-foreground">Without purchase</span>
+									<span className="text-muted-foreground">{t("withoutPurchase")}</span>
 									<span className="font-medium">
-										{formatCurrency(month.balanceWithout, currency)}
+										{formatCurrency(month.balanceWithout, currency, locale)}
 									</span>
 								</div>
 								<div className="flex justify-between text-xs">
-									<span className="text-muted-foreground">With purchase</span>
+									<span className="text-muted-foreground">{t("withPurchase")}</span>
 									<span
 										className={`font-medium ${month.balanceWithPurchase < 0 ? "text-destructive" : ""}`}
 									>
-										{formatCurrency(month.balanceWithPurchase, currency)}
+										{formatCurrency(month.balanceWithPurchase, currency, locale)}
 									</span>
 								</div>
 							</div>
@@ -116,10 +125,7 @@ export function AffordabilityResults({ result, currency }: AffordabilityResultsP
 			{result.budgetWarning && (
 				<div className="bg-destructive/10 text-destructive flex items-center gap-2 rounded-none p-3 text-xs">
 					<AlertTriangle className="size-4 shrink-0" />
-					<span>
-						Warning: Your projected balance is negative. Consider reducing expenses or increasing
-						income before this purchase.
-					</span>
+					<span>{t("budgetWarning")}</span>
 				</div>
 			)}
 		</div>

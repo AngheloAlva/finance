@@ -1,5 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
+import { FieldError } from "@/shared/components/field-error";
 import {
   Select,
   SelectContent,
@@ -20,11 +23,13 @@ export function TimezoneSelect({
   defaultValue,
   error,
 }: TimezoneSelectProps) {
+  const t = useTranslations("settings");
+
   return (
     <div className="flex flex-col gap-1.5">
       <Select name={name} defaultValue={defaultValue} items={TIMEZONES}>
         <SelectTrigger className="w-full" aria-invalid={error ? true : undefined}>
-          <SelectValue placeholder="Select timezone" />
+          <SelectValue placeholder={t("selectTimezone")} />
         </SelectTrigger>
         <SelectContent>
           {TIMEZONES.map((tz) => (
@@ -34,7 +39,7 @@ export function TimezoneSelect({
           ))}
         </SelectContent>
       </Select>
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      <FieldError errors={error} />
     </div>
   );
 }

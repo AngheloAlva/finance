@@ -1,4 +1,7 @@
+"use client";
+
 import { Pencil } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +10,7 @@ import { InvestmentDialog } from "@/features/investments/components/investment-d
 import { InvestmentValueForm } from "@/features/investments/components/investment-value-form";
 import { ValueEvolutionChart } from "@/features/investments/components/value-evolution-chart";
 import {
-  INVESTMENT_TYPE_LABELS,
+  INVESTMENT_TYPE_KEYS,
   buildChartData,
   calculateReturn,
   convertToBaseCurrency,
@@ -27,6 +30,10 @@ interface InvestmentDetailProps {
 }
 
 export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailProps) {
+  const t = useTranslations("investments.detail");
+  const tTypes = useTranslations("investments.types");
+  const tc = useTranslations("common");
+  const locale = useLocale();
   const currency = investment.currency as CurrencyCode;
   const returnData = calculateReturn(
     investment.initialAmount,
@@ -73,7 +80,7 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
             trigger={
               <Button variant="outline" size="sm">
                 <Pencil className="size-3.5" data-icon="inline-start" />
-                Edit
+                {tc("edit")}
               </Button>
             }
           />
@@ -89,16 +96,16 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-medium text-muted-foreground">
-              Current Value
+              {t("currentValue")}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm font-semibold">
-              {formatCurrency(investment.currentValue, currency)}
+              {formatCurrency(investment.currentValue, currency, locale)}
             </p>
             {baseCurrentValue != null && (
               <p className="text-xs text-muted-foreground">
-                ≈ {formatCurrency(baseCurrentValue, userCurrency)}
+                ≈ {formatCurrency(baseCurrentValue, userCurrency, locale)}
               </p>
             )}
           </CardContent>
@@ -107,16 +114,16 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-medium text-muted-foreground">
-              Initial Amount
+              {t("initialAmount")}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm font-semibold">
-              {formatCurrency(investment.initialAmount, currency)}
+              {formatCurrency(investment.initialAmount, currency, locale)}
             </p>
             {baseInitialAmount != null && (
               <p className="text-xs text-muted-foreground">
-                ≈ {formatCurrency(baseInitialAmount, userCurrency)}
+                ≈ {formatCurrency(baseInitialAmount, userCurrency, locale)}
               </p>
             )}
           </CardContent>
@@ -125,7 +132,7 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-medium text-muted-foreground">
-              Return
+              {t("return")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -136,14 +143,14 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
               )}
             >
               {isPositive ? "+" : ""}
-              {formatCurrency(returnData.absoluteReturn, currency)} (
+              {formatCurrency(returnData.absoluteReturn, currency, locale)} (
               {isPositive ? "+" : ""}
               {returnData.percentageReturn.toFixed(2)}%)
             </p>
             {baseAbsoluteReturn != null && (
               <p className="text-xs text-muted-foreground">
                 ≈ {isPositive ? "+" : ""}
-                {formatCurrency(baseAbsoluteReturn, userCurrency)}
+                {formatCurrency(baseAbsoluteReturn, userCurrency, locale)}
               </p>
             )}
           </CardContent>
@@ -153,45 +160,45 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
       {/* Details */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm">Details</CardTitle>
+          <CardTitle className="text-sm">{t("details")}</CardTitle>
         </CardHeader>
         <CardContent>
           <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
             <div>
-              <dt className="text-muted-foreground">Type</dt>
+              <dt className="text-muted-foreground">{t("type")}</dt>
               <dd className="font-medium">
-                {INVESTMENT_TYPE_LABELS[investment.type]}
+                {tTypes(INVESTMENT_TYPE_KEYS[investment.type] as Parameters<typeof tTypes>[0])}
               </dd>
             </div>
             <div>
-              <dt className="text-muted-foreground">Institution</dt>
+              <dt className="text-muted-foreground">{t("institution")}</dt>
               <dd className="font-medium">{investment.institution}</dd>
             </div>
             <div>
-              <dt className="text-muted-foreground">Start Date</dt>
+              <dt className="text-muted-foreground">{t("startDate")}</dt>
               <dd className="font-medium">
-                {formatDate(investment.startDate, "short")}
+                {formatDate(investment.startDate, "short", locale)}
               </dd>
             </div>
             {investment.maturityDate && (
               <div>
-                <dt className="text-muted-foreground">Maturity Date</dt>
+                <dt className="text-muted-foreground">{t("maturityDate")}</dt>
                 <dd className="font-medium">
-                  {formatDate(investment.maturityDate, "short")}
+                  {formatDate(investment.maturityDate, "short", locale)}
                 </dd>
               </div>
             )}
             {investment.estimatedReturn != null && (
               <div>
-                <dt className="text-muted-foreground">Estimated Return</dt>
+                <dt className="text-muted-foreground">{t("estimatedReturn")}</dt>
                 <dd className="font-medium">
-                  {(investment.estimatedReturn / 100).toFixed(2)}% / year
+                  {(investment.estimatedReturn / 100).toFixed(2)}% {t("perYear")}
                 </dd>
               </div>
             )}
             {returnData.annualizedReturn != null && (
               <div>
-                <dt className="text-muted-foreground">Annualized Return</dt>
+                <dt className="text-muted-foreground">{t("annualizedReturn")}</dt>
                 <dd
                   className={cn(
                     "font-medium",
@@ -206,14 +213,14 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
               </div>
             )}
             <div>
-              <dt className="text-muted-foreground">Status</dt>
+              <dt className="text-muted-foreground">{t("status")}</dt>
               <dd className="font-medium">
-                {investment.isActive ? "Active" : "Inactive"}
+                {investment.isActive ? t("active") : t("inactive")}
               </dd>
             </div>
             {isForeignCurrency && investment.purchaseExchangeRate != null && (
               <div>
-                <dt className="text-muted-foreground">Purchase Rate</dt>
+                <dt className="text-muted-foreground">{t("purchaseRate")}</dt>
                 <dd className="font-medium">
                   1 {investment.currency} ={" "}
                   {formatExchangeRate(investment.purchaseExchangeRate)}{" "}
@@ -226,7 +233,7 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
               investment.currentExchangeRate !==
                 investment.purchaseExchangeRate && (
                 <div>
-                  <dt className="text-muted-foreground">Current Rate</dt>
+                  <dt className="text-muted-foreground">{t("currentRate")}</dt>
                   <dd className="font-medium">
                     1 {investment.currency} ={" "}
                     {formatExchangeRate(investment.currentExchangeRate)}{" "}
@@ -236,9 +243,9 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
               )}
             {investment.totalFees != null && investment.totalFees > 0 && (
               <div>
-                <dt className="text-muted-foreground">Broker Fees</dt>
+                <dt className="text-muted-foreground">{t("brokerFees")}</dt>
                 <dd className="font-medium">
-                  {formatCurrency(investment.totalFees, currency)}
+                  {formatCurrency(investment.totalFees, currency, locale)}
                 </dd>
               </div>
             )}
@@ -249,16 +256,14 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
       {/* Stale exchange rate warning */}
       {isStaleRate && (
         <div className="rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200">
-          Exchange rate may be outdated. Last updated:{" "}
-          {formatDate(investment.updatedAt, "short")}. Consider updating the
-          current value.
+          {t("staleRateWarning", { date: formatDate(investment.updatedAt, "short", locale) })}
         </div>
       )}
 
       {/* Update value */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm">Update Current Value</CardTitle>
+          <CardTitle className="text-sm">{t("updateCurrentValue")}</CardTitle>
         </CardHeader>
         <CardContent>
           <InvestmentValueForm

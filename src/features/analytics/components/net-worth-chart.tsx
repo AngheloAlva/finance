@@ -12,6 +12,8 @@ import {
 	YAxis,
 } from "recharts"
 
+import { useLocale, useTranslations } from "next-intl"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { formatCurrency } from "@/shared/lib/formatters"
@@ -42,11 +44,13 @@ function CustomTooltip({
 	payload,
 	label,
 	currency,
+	locale,
 }: {
 	active?: boolean
 	payload?: TooltipPayloadItem[]
 	label?: string
 	currency: CurrencyCode
+	locale?: string
 }) {
 	if (!active || !payload?.length) return null
 
@@ -55,7 +59,7 @@ function CustomTooltip({
 			<p className="mb-1 font-medium">{label}</p>
 			{payload.map((entry) => (
 				<p key={entry.name} style={{ color: entry.color }}>
-					{entry.name}: {formatCurrency(entry.value, currency)}
+					{entry.name}: {formatCurrency(entry.value, currency, locale)}
 				</p>
 			))}
 		</div>
@@ -63,16 +67,19 @@ function CustomTooltip({
 }
 
 export function NetWorthChart({ data, currency }: NetWorthChartProps) {
+	const t = useTranslations("analytics.netWorth")
+	const locale = useLocale()
+
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Net Worth Timeline</CardTitle>
+				<CardTitle>{t("title")}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{data.length === 0 ? (
 					<div className="flex h-[300px] items-center justify-center">
 						<p className="text-muted-foreground text-sm">
-							No investment data available. Add investments to track your net worth.
+							{t("noData")}
 						</p>
 					</div>
 				) : (
@@ -89,10 +96,10 @@ export function NetWorthChart({ data, currency }: NetWorthChartProps) {
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
-								tickFormatter={(value: number) => formatCurrency(value, currency)}
+								tickFormatter={(value: number) => formatCurrency(value, currency, locale)}
 								width={80}
 							/>
-							<Tooltip content={<CustomTooltip currency={currency} />} />
+							<Tooltip content={<CustomTooltip currency={currency} locale={locale} />} />
 							<Legend
 								formatter={(value: string) => (
 									<span className="text-foreground text-xs">{value}</span>
@@ -101,7 +108,7 @@ export function NetWorthChart({ data, currency }: NetWorthChartProps) {
 							<Area
 								type="monotone"
 								dataKey="assets"
-								name="Assets"
+								name={t("assets")}
 								fill={CHART_COLORS.assets}
 								fillOpacity={0.15}
 								stroke={CHART_COLORS.assets}
@@ -110,7 +117,7 @@ export function NetWorthChart({ data, currency }: NetWorthChartProps) {
 							<Area
 								type="monotone"
 								dataKey="liabilities"
-								name="Liabilities"
+								name={t("liabilities")}
 								fill={CHART_COLORS.liabilities}
 								fillOpacity={0.1}
 								stroke={CHART_COLORS.liabilities}
@@ -119,7 +126,7 @@ export function NetWorthChart({ data, currency }: NetWorthChartProps) {
 							<Line
 								type="monotone"
 								dataKey="netWorth"
-								name="Net Worth"
+								name={t("netWorth")}
 								stroke={CHART_COLORS.netWorth}
 								strokeWidth={2}
 								dot={false}

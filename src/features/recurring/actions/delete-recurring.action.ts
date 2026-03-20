@@ -13,7 +13,7 @@ export async function deleteRecurringAction(
   const id = formData.get("id");
 
   if (typeof id !== "string" || id.length === 0) {
-    return { success: false, error: "Template ID is required" };
+    return { success: false, error: "FIELD_REQUIRED" };
   }
 
   const session = await requireSession();
@@ -24,11 +24,11 @@ export async function deleteRecurringAction(
     });
 
     if (!template) {
-      return { success: false, error: "Recurring template not found" };
+      return { success: false, error: "RECURRING_NOT_FOUND" };
     }
 
     if (template.userId !== session.user.id) {
-      return { success: false, error: "You can only delete your own templates" };
+      return { success: false, error: "RECURRING_NOT_OWNED" };
     }
 
     // Delete template — RecurrenceRule cascades via onDelete: Cascade
@@ -41,6 +41,6 @@ export async function deleteRecurringAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to delete recurring template" };
+    return { success: false, error: "RECURRING_DELETE_FAILED" };
   }
 }

@@ -2,6 +2,7 @@
 
 import { useActionState, useCallback, useEffect, useMemo, useState } from "react"
 import { SplitRule } from "@/generated/prisma/enums"
+import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -22,6 +23,7 @@ import { createGroupTransactionAction } from "@/features/group-finances/actions/
 import { SplitInput } from "@/features/group-finances/components/split-input"
 import type { SplitMember } from "@/features/group-finances/lib/split.utils"
 import { AmountInput } from "@/features/transactions/components/amount-input"
+import { FieldError } from "@/shared/components/field-error"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { parseCurrencyInput } from "@/shared/lib/formatters"
 import { INITIAL_VOID_STATE } from "@/shared/types/common.types"
@@ -47,6 +49,11 @@ export function GroupTransactionForm({
 	currency,
 	onSuccess,
 }: GroupTransactionFormProps) {
+	const t = useTranslations("groupFinances.form")
+	const tTypes = useTranslations("groupFinances.types")
+	const tMethods = useTranslations("groupFinances.paymentMethods")
+	const tSplitRules = useTranslations("groupFinances.splitRules")
+	const tErrors = useTranslations("errors")
 	const [state, formAction, isPending] = useActionState(createGroupTransactionAction, INITIAL_VOID_STATE)
 
 	const [splitRule, setSplitRule] = useState<SplitRule>(SplitRule.EQUAL)
@@ -63,10 +70,10 @@ export function GroupTransactionForm({
 
 	useEffect(() => {
 		if (state.success) {
-			toast.success("Group transaction created successfully")
+			toast.success(t("createdSuccess"))
 			onSuccess?.()
 		}
-	}, [state, onSuccess])
+	}, [state, onSuccess, t])
 
 	function handleSubmit(formData: FormData) {
 		// Inject splits as JSON
@@ -80,12 +87,12 @@ export function GroupTransactionForm({
 
 			{!state.success && state.error && (
 				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-none border px-3 py-2 text-xs">
-					{state.error}
+					{tErrors(state.error as Parameters<typeof tErrors>[0])}
 				</div>
 			)}
 
 			<div className="flex flex-col gap-1.5">
-				<Label htmlFor="gtx-amount">Amount</Label>
+				<Label htmlFor="gtx-amount">{t("amount")}</Label>
 				<AmountInput name="amount" />
 				<input
 					type="hidden"
@@ -115,75 +122,67 @@ export function GroupTransactionForm({
 						}
 					}}
 				/>
-				{!state.success && state.fieldErrors?.amount && (
-					<p className="text-destructive text-xs">{state.fieldErrors.amount[0]}</p>
-				)}
+				{!state.success && <FieldError errors={state.fieldErrors?.amount} />}
 			</div>
 
 			<div className="flex flex-col gap-1.5">
-				<Label htmlFor="gtx-description">Description</Label>
+				<Label htmlFor="gtx-description">{t("description")}</Label>
 				<Input
 					id="gtx-description"
 					name="description"
 					type="text"
 					required
-					placeholder="e.g. Dinner at restaurant"
+					placeholder={t("descriptionPlaceholder")}
 				/>
-				{!state.success && state.fieldErrors?.description && (
-					<p className="text-destructive text-xs">{state.fieldErrors.description[0]}</p>
-				)}
+				{!state.success && <FieldError errors={state.fieldErrors?.description} />}
 			</div>
 
 			<div className="grid grid-cols-2 gap-4">
 				<div className="flex flex-col gap-1.5">
-					<Label>Type</Label>
+					<Label>{t("type")}</Label>
 					<Select name="type" defaultValue="EXPENSE" items={[
-						{ value: "INCOME", label: "Income" },
-						{ value: "EXPENSE", label: "Expense" },
-						{ value: "TRANSFER", label: "Transfer" },
+						{ value: "INCOME", label: tTypes("income") },
+						{ value: "EXPENSE", label: tTypes("expense") },
+						{ value: "TRANSFER", label: tTypes("transfer") },
 					]}>
 						<SelectTrigger className="w-full">
-							<SelectValue placeholder="Select type" />
+							<SelectValue placeholder={t("selectType")} />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="INCOME">Income</SelectItem>
-							<SelectItem value="EXPENSE">Expense</SelectItem>
-							<SelectItem value="TRANSFER">Transfer</SelectItem>
+							<SelectItem value="INCOME">{tTypes("income")}</SelectItem>
+							<SelectItem value="EXPENSE">{tTypes("expense")}</SelectItem>
+							<SelectItem value="TRANSFER">{tTypes("transfer")}</SelectItem>
 						</SelectContent>
 					</Select>
-					{!state.success && state.fieldErrors?.type && (
-						<p className="text-destructive text-xs">{state.fieldErrors.type[0]}</p>
-					)}
+					{!state.success && <FieldError errors={state.fieldErrors?.type} />}
 				</div>
 
 				<div className="flex flex-col gap-1.5">
-					<Label>Payment Method</Label>
+					<Label>{t("paymentMethod")}</Label>
 					<Select name="paymentMethod" defaultValue="CASH" items={[
-						{ value: "CASH", label: "Cash" },
-						{ value: "DEBIT", label: "Debit" },
-						{ value: "CREDIT", label: "Credit" },
-						{ value: "TRANSFER", label: "Transfer" },
-						{ value: "OTHER", label: "Other" },
+						{ value: "CASH", label: tMethods("cash") },
+						{ value: "DEBIT", label: tMethods("debit") },
+						{ value: "CREDIT", label: tMethods("credit") },
+						{ value: "TRANSFER", label: tMethods("transfer") },
+						{ value: "OTHER", label: tMethods("other") },
 					]}>
 						<SelectTrigger className="w-full">
-							<SelectValue placeholder="Select method" />
+							<SelectValue placeholder={t("selectMethod")} />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="CASH">Cash</SelectItem>
-							<SelectItem value="DEBIT">Debit</SelectItem>
-							<SelectItem value="CREDIT">Credit</SelectItem>
-							<SelectItem value="TRANSFER">Transfer</SelectItem>
-							<SelectItem value="OTHER">Other</SelectItem>
+							<SelectItem value="CASH">{tMethods("cash")}</SelectItem>
+							<SelectItem value="DEBIT">{tMethods("debit")}</SelectItem>
+							<SelectItem value="CREDIT">{tMethods("credit")}</SelectItem>
+							<SelectItem value="TRANSFER">{tMethods("transfer")}</SelectItem>
+							<SelectItem value="OTHER">{tMethods("other")}</SelectItem>
 						</SelectContent>
 					</Select>
-					{!state.success && state.fieldErrors?.paymentMethod && (
-						<p className="text-destructive text-xs">{state.fieldErrors.paymentMethod[0]}</p>
-					)}
+					{!state.success && <FieldError errors={state.fieldErrors?.paymentMethod} />}
 				</div>
 			</div>
 
 			<div className="flex flex-col gap-1.5">
-				<Label>Category</Label>
+				<Label>{t("category")}</Label>
 				<CategorySelect
 					categories={categories}
 					name="categoryId"
@@ -192,46 +191,40 @@ export function GroupTransactionForm({
 			</div>
 
 			<div className="flex flex-col gap-1.5">
-				<Label>Date</Label>
-				<DatePicker name="date" required placeholder="Select date" />
-				{!state.success && state.fieldErrors?.date && (
-					<p className="text-destructive text-xs">{state.fieldErrors.date[0]}</p>
-				)}
+				<Label>{t("date")}</Label>
+				<DatePicker name="date" required placeholder={t("selectDate")} />
+				{!state.success && <FieldError errors={state.fieldErrors?.date} />}
 			</div>
 
 			<div className="flex flex-col gap-1.5">
-				<Label htmlFor="gtx-notes">Notes (optional)</Label>
-				<Textarea id="gtx-notes" name="notes" placeholder="Any additional details..." />
-				{!state.success && state.fieldErrors?.notes && (
-					<p className="text-destructive text-xs">{state.fieldErrors.notes[0]}</p>
-				)}
+				<Label htmlFor="gtx-notes">{t("notes")}</Label>
+				<Textarea id="gtx-notes" name="notes" placeholder={t("notesPlaceholder")} />
+				{!state.success && <FieldError errors={state.fieldErrors?.notes} />}
 			</div>
 
 			{/* Split Rule */}
 			<div className="flex flex-col gap-1.5">
-				<Label>Split Rule</Label>
+				<Label>{t("splitRule")}</Label>
 				<Select
 					name="splitRule"
 					value={splitRule}
 					onValueChange={(value) => setSplitRule(value as SplitRule)}
 					items={[
-						{ value: "EQUAL", label: "Equal" },
-						{ value: "PROPORTIONAL", label: "Proportional" },
-						{ value: "CUSTOM", label: "Custom" },
+						{ value: "EQUAL", label: tSplitRules("equal") },
+						{ value: "PROPORTIONAL", label: tSplitRules("proportional") },
+						{ value: "CUSTOM", label: tSplitRules("custom") },
 					]}
 				>
 					<SelectTrigger className="w-full">
-						<SelectValue placeholder="Select split rule" />
+						<SelectValue placeholder={t("selectSplitRule")} />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value="EQUAL">Equal</SelectItem>
-						<SelectItem value="PROPORTIONAL">Proportional</SelectItem>
-						<SelectItem value="CUSTOM">Custom</SelectItem>
+						<SelectItem value="EQUAL">{tSplitRules("equal")}</SelectItem>
+						<SelectItem value="PROPORTIONAL">{tSplitRules("proportional")}</SelectItem>
+						<SelectItem value="CUSTOM">{tSplitRules("custom")}</SelectItem>
 					</SelectContent>
 				</Select>
-				{!state.success && state.fieldErrors?.splitRule && (
-					<p className="text-destructive text-xs">{state.fieldErrors.splitRule[0]}</p>
-				)}
+				{!state.success && <FieldError errors={state.fieldErrors?.splitRule} />}
 			</div>
 
 			{/* Split Input */}
@@ -242,12 +235,10 @@ export function GroupTransactionForm({
 				onChange={handleSplitChange}
 			/>
 
-			{!state.success && state.fieldErrors?.splits && (
-				<p className="text-destructive text-xs">{state.fieldErrors.splits[0]}</p>
-			)}
+			{!state.success && <FieldError errors={state.fieldErrors?.splits} />}
 
 			<Button type="submit" disabled={isPending} className="mt-2 w-full">
-				{isPending ? "Creating..." : "Create Transaction"}
+				{isPending ? t("creating") : t("createTransaction")}
 			</Button>
 		</form>
 	)

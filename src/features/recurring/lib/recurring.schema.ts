@@ -9,38 +9,38 @@ const endDateRefinement = (data: { startDate: Date; endDate?: Date }) => {
 }
 
 const endDateRefinementConfig = {
-	message: "End date must be after start date",
+	message: "endDateAfterStart",
 	path: ["endDate"] as string[],
 }
 
 const baseRecurringFields = {
 	amount: z.coerce
 		.number()
-		.int({ error: "Amount must be a valid number" })
-		.positive({ error: "Amount must be greater than zero" }),
+		.int({ error: "invalidNumber" })
+		.positive({ error: "positive" }),
 	description: z
 		.string()
-		.min(1, { error: "Description is required" })
-		.max(200, { error: "Description must be at most 200 characters" }),
-	notes: z.string().max(500, { error: "Notes must be at most 500 characters" }).optional(),
+		.min(1, { error: "required" })
+		.max(200, { error: "maxLength200" }),
+	notes: z.string().max(500, { error: "maxLength500" }).optional(),
 	type: z.nativeEnum(TransactionType, {
-		error: "Please select a valid transaction type",
+		error: "invalidType",
 	}),
 	paymentMethod: z.nativeEnum(PaymentMethod, {
-		error: "Please select a valid payment method",
+		error: "invalidPaymentMethod",
 	}),
-	categoryId: z.string().min(1, { error: "Category is required" }),
+	categoryId: z.string().min(1, { error: "required" }),
 	frequency: z.nativeEnum(RecurrenceFrequency, {
-		error: "Please select a valid frequency",
+		error: "invalidFrequency",
 	}),
 	interval: z.coerce
 		.number()
-		.int({ error: "Interval must be a whole number" })
-		.min(1, { error: "Interval must be at least 1" })
-		.max(365, { error: "Interval must be at most 365" })
+		.int({ error: "wholeNumber" })
+		.min(1, { error: "minInterval1" })
+		.max(365, { error: "maxInterval365" })
 		.default(1),
-	startDate: z.coerce.date({ error: "A valid start date is required" }),
-	endDate: z.coerce.date({ error: "A valid end date is required" }).optional(),
+	startDate: z.coerce.date({ error: "validDate" }),
+	endDate: z.coerce.date({ error: "validDate" }).optional(),
 }
 
 export const createRecurringSchema = z
@@ -50,7 +50,7 @@ export const createRecurringSchema = z
 export const updateRecurringSchema = z
 	.object({
 		...baseRecurringFields,
-		id: z.string().min(1, { error: "Template ID is required" }),
+		id: z.string().min(1, { error: "requiredId" }),
 	})
 	.refine(endDateRefinement, endDateRefinementConfig)
 

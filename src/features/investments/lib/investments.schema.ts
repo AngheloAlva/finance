@@ -11,22 +11,22 @@ function toBasisPoints(val: string | undefined): number | undefined {
 
 export const createInvestmentSchema = z.object({
 	type: z.nativeEnum(InvestmentType, {
-		error: "Invalid investment type",
+		error: "invalidInvestmentType",
 	}),
 	name: z
 		.string()
-		.min(1, { error: "Name is required" })
-		.max(100, { error: "Name must be at most 100 characters" }),
+		.min(1, { error: "required" })
+		.max(100, { error: "maxLength100" }),
 	institution: z
 		.string()
-		.min(1, { error: "Institution is required" })
-		.max(100, { error: "Institution must be at most 100 characters" }),
+		.min(1, { error: "required" })
+		.max(100, { error: "maxLength100" }),
 	initialAmount: z.coerce
 		.number()
-		.int({ error: "Amount must be a valid number" })
-		.positive({ error: "Amount must be greater than zero" }),
-	currency: z.string().length(3, { error: "Currency must be 3 characters" }).default("USD"),
-	startDate: z.coerce.date({ error: "Start date is required" }),
+		.int({ error: "invalidNumber" })
+		.positive({ error: "positive" }),
+	currency: z.string().length(3, { error: "currencyLength3" }).default("USD"),
+	startDate: z.coerce.date({ error: "validDate" }),
 	maturityDate: z.coerce.date().optional(),
 	estimatedReturn: z.string().optional().transform(toBasisPoints).pipe(z.number().int().optional()),
 	purchaseExchangeRate: z.coerce.number().int().positive().optional(),
@@ -35,7 +35,7 @@ export const createInvestmentSchema = z.object({
 })
 
 export const updateInvestmentSchema = createInvestmentSchema.omit({ initialAmount: true }).extend({
-	id: z.string().min(1, { error: "Investment ID is required" }),
+	id: z.string().min(1, { error: "requiredId" }),
 	isActive: z
 		.string()
 		.optional()
@@ -43,11 +43,11 @@ export const updateInvestmentSchema = createInvestmentSchema.omit({ initialAmoun
 })
 
 export const updateInvestmentValueSchema = z.object({
-	id: z.string().min(1, { error: "Investment ID is required" }),
+	id: z.string().min(1, { error: "requiredId" }),
 	currentValue: z.coerce
 		.number()
-		.int({ error: "Value must be a valid number" })
-		.nonnegative({ error: "Value cannot be negative" }),
+		.int({ error: "invalidNumber" })
+		.nonnegative({ error: "nonnegative" }),
 	currentExchangeRate: z.coerce.number().int().positive().optional(),
 })
 

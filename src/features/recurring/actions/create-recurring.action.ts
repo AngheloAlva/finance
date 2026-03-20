@@ -83,6 +83,6 @@ export async function createRecurringAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to create recurring transaction" };
+    return { success: false, error: "RECURRING_CREATE_FAILED" };
   }
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
 
 import type { InvestmentType } from "@/generated/prisma/enums"
 import { InvestmentForm } from "@/features/investments/components/investment-form"
@@ -28,6 +29,7 @@ interface InvestmentDialogProps {
 }
 
 export function InvestmentDialog({ mode, investment, trigger }: InvestmentDialogProps) {
+	const t = useTranslations("investments.dialog")
 	const defaultValues = investment
 		? {
 				id: investment.id,
@@ -51,11 +53,11 @@ export function InvestmentDialog({ mode, investment, trigger }: InvestmentDialog
 	return (
 		<FormDialog
 			trigger={trigger}
-			title={mode === FORM_MODE.CREATE ? "New Investment" : "Edit Investment"}
+			title={mode === FORM_MODE.CREATE ? t("newTitle") : t("editTitle")}
 			description={
 				mode === FORM_MODE.CREATE
-					? "Add a new investment to track your portfolio."
-					: "Update the investment details."
+					? t("newDescription")
+					: t("editDescription")
 			}
 			className="sm:max-w-md"
 		>

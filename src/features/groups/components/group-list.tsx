@@ -1,4 +1,5 @@
 import { Users } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +17,7 @@ import { requireSession } from "@/shared/lib/auth";
 export async function GroupList() {
   const session = await requireSession();
   const groups = await getUserGroups(session.user.id);
+  const t = await getTranslations("groups");
 
   if (groups.length === 0) {
     return (
@@ -24,14 +26,14 @@ export async function GroupList() {
           <EmptyMedia variant="icon">
             <Users />
           </EmptyMedia>
-          <EmptyTitle>No groups yet</EmptyTitle>
+          <EmptyTitle>{t("noGroupsYet")}</EmptyTitle>
           <EmptyDescription>
-            Create your first group to start sharing expenses with others.
+            {t("noGroupsDescription")}
           </EmptyDescription>
         </EmptyHeader>
         <GroupDialog
           mode="create"
-          trigger={<Button size="sm">Create Group</Button>}
+          trigger={<Button size="sm">{t("createGroup")}</Button>}
         />
       </Empty>
     );

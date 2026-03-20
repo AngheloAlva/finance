@@ -10,6 +10,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts"
+import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
@@ -17,6 +18,11 @@ import { formatCurrency } from "@/shared/lib/formatters"
 import { CurrencyBarTooltip } from "@/shared/components/chart-tooltip"
 
 import type { MonthlyFlowItem } from "@/features/dashboard/types/dashboard.types"
+
+function formatMonthLabel(monthKey: string, locale: string): string {
+	const [year, month] = monthKey.split("-").map(Number)
+	return new Date(year, month - 1).toLocaleDateString(locale, { month: "short" })
+}
 
 interface MonthlyFlowChartProps {
 	data: MonthlyFlowItem[]
@@ -31,22 +37,26 @@ const CHART_COLORS = {
 } as const
 
 export function MonthlyFlowChart({ data, currency }: MonthlyFlowChartProps) {
+	const t = useTranslations("dashboard")
+	const locale = useLocale()
+
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Monthly Flow</CardTitle>
+				<CardTitle>{t("monthlyFlow")}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{data.length === 0 ? (
 					<div className="flex h-[300px] items-center justify-center">
-						<p className="text-muted-foreground text-sm">No data available</p>
+						<p className="text-muted-foreground text-sm">{t("noData")}</p>
 					</div>
 				) : (
 					<ResponsiveContainer width="100%" height={300}>
 						<BarChart data={data} barGap={4}>
 							<CartesianGrid strokeDasharray="3 3" stroke={CHART_COLORS.grid} vertical={false} />
 							<XAxis
-								dataKey="label"
+								dataKey="month"
+								tickFormatter={(value: string) => formatMonthLabel(value, locale)}
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
@@ -55,7 +65,7 @@ export function MonthlyFlowChart({ data, currency }: MonthlyFlowChartProps) {
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
-								tickFormatter={(value: number) => formatCurrency(value, currency)}
+								tickFormatter={(value: number) => formatCurrency(value, currency, locale)}
 								width={80}
 							/>
 							<Tooltip content={<CurrencyBarTooltip currency={currency} />} />
@@ -66,13 +76,13 @@ export function MonthlyFlowChart({ data, currency }: MonthlyFlowChartProps) {
 							/>
 							<Bar
 								dataKey="income"
-								name="Income"
+								name={t("income")}
 								fill={CHART_COLORS.income}
 								radius={[0, 0, 0, 0]}
 							/>
 							<Bar
 								dataKey="expenses"
-								name="Expenses"
+								name={t("expenses")}
 								fill={CHART_COLORS.expense}
 								radius={[0, 0, 0, 0]}
 							/>

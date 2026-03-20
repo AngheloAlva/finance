@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo } from "react"
 import { SplitRule } from "@/generated/prisma/enums"
+import { useTranslations } from "next-intl"
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -23,6 +24,7 @@ interface SplitInputProps {
 }
 
 export function SplitInput({ splitRule, members, totalAmount, onChange }: SplitInputProps) {
+	const t = useTranslations("groupFinances.split")
 	// EQUAL mode: compute and report splits on mount / when inputs change
 	const equalSplits = useMemo(() => {
 		if (splitRule !== SplitRule.EQUAL || members.length === 0 || totalAmount <= 0) {
@@ -46,7 +48,7 @@ export function SplitInput({ splitRule, members, totalAmount, onChange }: SplitI
 		return (
 			<div className="flex flex-col gap-2">
 				<Label className="text-muted-foreground text-xs">
-					Split equally among {members.length} members
+					{t("equalLabel", { count: members.length })}
 				</Label>
 				{members.map((member) => {
 					const split = equalSplits.find((s) => s.userId === member.userId)
@@ -55,7 +57,7 @@ export function SplitInput({ splitRule, members, totalAmount, onChange }: SplitI
 							key={member.userId}
 							className="flex items-center justify-between rounded-none border px-3 py-2 text-sm"
 						>
-							<span>{member.name || "Unknown"}</span>
+							<span>{member.name || t("unknown")}</span>
 							<span className="text-muted-foreground">
 								{split ? centsToDisplay(split.amount) : "0.00"}
 							</span>
@@ -88,6 +90,7 @@ function ProportionalInput({
 	members: SplitMember[]
 	onChange: (splits: SplitData[]) => void
 }) {
+	const t = useTranslations("groupFinances.split")
 	const initialPercentages = useMemo(
 		() => Object.fromEntries(members.map((m) => [m.userId, ""])),
 		[members]
@@ -115,11 +118,11 @@ function ProportionalInput({
 	return (
 		<div className="flex flex-col gap-2">
 			<Label className="text-muted-foreground text-xs">
-				Percentage per member (must sum to 100%)
+				{t("proportionalLabel")}
 			</Label>
 			{members.map((member) => (
 				<div key={member.userId} className="flex items-center gap-2">
-					<span className="min-w-24 text-sm">{member.name || "Unknown"}</span>
+					<span className="min-w-24 text-sm">{member.name || t("unknown")}</span>
 					<Input
 						type="number"
 						min={0}
@@ -133,7 +136,7 @@ function ProportionalInput({
 				</div>
 			))}
 			<p className={`text-xs ${isValid ? "text-muted-foreground" : "text-destructive"}`}>
-				Total: {totalPercentage.toFixed(1)}% {!isValid && "(must be 100%)"}
+				{t("total", { value: totalPercentage.toFixed(1) })} {!isValid && t("mustBe100")}
 			</p>
 		</div>
 	)
@@ -152,6 +155,7 @@ function CustomInput({
 	totalAmount: number
 	onChange: (splits: SplitData[]) => void
 }) {
+	const t = useTranslations("groupFinances.split")
 	const amounts = useMemo(() => Object.fromEntries(members.map((m) => [m.userId, ""])), [members])
 
 	function handleChange(userId: string, value: string) {
@@ -178,11 +182,11 @@ function CustomInput({
 	return (
 		<div className="flex flex-col gap-2">
 			<Label className="text-muted-foreground text-xs">
-				Custom amount per member (must sum to total)
+				{t("customLabel")}
 			</Label>
 			{members.map((member) => (
 				<div key={member.userId} className="flex items-center gap-2">
-					<span className="min-w-24 text-sm">{member.name || "Unknown"}</span>
+					<span className="min-w-24 text-sm">{member.name || t("unknown")}</span>
 					<Input
 						type="text"
 						inputMode="decimal"
@@ -193,8 +197,8 @@ function CustomInput({
 				</div>
 			))}
 			<p className={`text-xs ${isValid ? "text-muted-foreground" : "text-destructive"}`}>
-				Allocated: {centsToDisplay(totalAllocated)} / {centsToDisplay(totalAmount)}{" "}
-				{!isValid && `(${centsToDisplay(Math.abs(totalAmount - totalAllocated))} remaining)`}
+				{t("allocated", { allocated: centsToDisplay(totalAllocated), total: centsToDisplay(totalAmount) })}{" "}
+				{!isValid && t("remaining", { amount: centsToDisplay(Math.abs(totalAmount - totalAllocated)) })}
 			</p>
 		</div>
 	)

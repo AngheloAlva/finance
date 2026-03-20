@@ -52,6 +52,6 @@ export async function createCreditCardAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to create credit card" };
+    return { success: false, error: "CREDIT_CARD_CREATE_FAILED" };
   }
 }

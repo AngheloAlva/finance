@@ -50,11 +50,11 @@ export async function assertCategoryAccess(
   });
 
   if (!category) {
-    return { success: false, error: "Category not found" };
+    return { success: false, error: "CATEGORY_NOT_FOUND" };
   }
 
   if (category.scope !== CategoryScope.SYSTEM && category.userId !== userId) {
-    return { success: false, error: "You cannot use this category" };
+    return { success: false, error: "CATEGORY_ACCESS_DENIED" };
   }
 
   return { success: true, data: category };

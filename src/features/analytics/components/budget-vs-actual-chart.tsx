@@ -13,6 +13,8 @@ import {
 	YAxis,
 } from "recharts"
 
+import { useLocale, useTranslations } from "next-intl"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { formatCurrency } from "@/shared/lib/formatters"
@@ -50,10 +52,16 @@ function CustomTooltip({
 	active,
 	payload,
 	currency,
+	budgetLabel,
+	actualLabel,
+	locale,
 }: {
 	active?: boolean
 	payload?: TooltipPayloadItem[]
 	currency: CurrencyCode
+	budgetLabel: string
+	actualLabel: string
+	locale?: string
 }) {
 	if (!active || !payload?.length) return null
 
@@ -62,15 +70,17 @@ function CustomTooltip({
 	return (
 		<div className="bg-popover rounded-none border px-3 py-2 text-sm shadow-md">
 			<p className="mb-1 font-medium">{item.categoryName}</p>
-			<p className="text-muted-foreground">Budget: {formatCurrency(item.budget, currency)}</p>
+			<p className="text-muted-foreground">{budgetLabel}: {formatCurrency(item.budget, currency, locale)}</p>
 			<p style={{ color: getBarColor(item.percentage) }}>
-				Actual: {formatCurrency(item.actual, currency)} ({item.percentage}%)
+				{actualLabel}: {formatCurrency(item.actual, currency, locale)} ({item.percentage}%)
 			</p>
 		</div>
 	)
 }
 
 export function BudgetVsActualChart({ data, currency }: BudgetVsActualChartProps) {
+	const t = useTranslations("analytics.budgetVsActual")
+	const locale = useLocale()
 	// Create chart data with both budget and actual for overlay
 	const chartData = data.map((item) => ({
 		...item,
@@ -81,13 +91,13 @@ export function BudgetVsActualChart({ data, currency }: BudgetVsActualChartProps
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Budget vs Actual</CardTitle>
+				<CardTitle>{t("title")}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{data.length === 0 ? (
 					<div className="flex h-[300px] items-center justify-center">
 						<p className="text-muted-foreground text-sm">
-							No budget thresholds set. Set category alert thresholds to track budgets.
+							{t("noData")}
 						</p>
 					</div>
 				) : (
@@ -99,7 +109,7 @@ export function BudgetVsActualChart({ data, currency }: BudgetVsActualChartProps
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
-								tickFormatter={(value: number) => formatCurrency(value, currency)}
+								tickFormatter={(value: number) => formatCurrency(value, currency, locale)}
 							/>
 							<YAxis
 								type="category"
@@ -109,7 +119,7 @@ export function BudgetVsActualChart({ data, currency }: BudgetVsActualChartProps
 								axisLine={false}
 								width={100}
 							/>
-							<Tooltip content={<CustomTooltip currency={currency} />} />
+							<Tooltip content={<CustomTooltip currency={currency} budgetLabel={t("budget")} actualLabel={t("actual")} locale={locale} />} />
 							<Legend
 								formatter={(value: string) => (
 									<span className="text-foreground text-xs">{value}</span>
@@ -117,12 +127,12 @@ export function BudgetVsActualChart({ data, currency }: BudgetVsActualChartProps
 							/>
 							<Bar
 								dataKey="budget"
-								name="Budget"
+								name={t("budget")}
 								fill={CHART_COLORS.budget}
 								fillOpacity={0.2}
 								radius={[0, 0, 0, 0]}
 							/>
-							<Bar dataKey="actual" name="Actual" radius={[0, 0, 0, 0]}>
+							<Bar dataKey="actual" name={t("actual")} radius={[0, 0, 0, 0]}>
 								{chartData.map((entry) => (
 									<Cell key={entry.categoryId} fill={getBarColor(entry.percentage)} />
 								))}

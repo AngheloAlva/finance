@@ -72,6 +72,6 @@ export async function createInvestmentAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to create investment" };
+    return { success: false, error: "INVESTMENT_CREATE_FAILED" };
   }
 }

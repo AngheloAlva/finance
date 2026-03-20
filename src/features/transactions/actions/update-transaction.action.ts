@@ -45,11 +45,11 @@ export async function updateTransactionAction(
     });
 
     if (!existing) {
-      return { success: false, error: "Transaction not found" };
+      return { success: false, error: "TRANSACTION_NOT_FOUND" };
     }
 
     if (existing.userId !== session.user.id) {
-      return { success: false, error: "You can only edit your own transactions" };
+      return { success: false, error: "TRANSACTION_NOT_OWNED" };
     }
 
     if (existing.totalInstallments != null && existing.totalInstallments > 0) {
@@ -63,8 +63,7 @@ export async function updateTransactionAction(
       if (amountChanged || dateChanged || impactDateChanged) {
         return {
           success: false,
-          error:
-            "Cannot modify amount or date of installment transactions. Delete the group and recreate instead.",
+          error: "TRANSACTION_INSTALLMENT_IMMUTABLE",
         };
       }
     }
@@ -109,6 +108,6 @@ export async function updateTransactionAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to update transaction" };
+    return { success: false, error: "TRANSACTION_UPDATE_FAILED" };
   }
 }

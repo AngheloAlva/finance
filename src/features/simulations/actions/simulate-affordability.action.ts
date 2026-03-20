@@ -32,6 +32,6 @@ export async function simulateAffordabilityAction(
     const simulation = computeAffordability(snapshot, result.data);
     return { success: true, data: simulation };
   } catch {
-    return { success: false, error: "Failed to run affordability simulation" };
+    return { success: false, error: "SIMULATION_AFFORDABILITY_FAILED" };
   }
 }

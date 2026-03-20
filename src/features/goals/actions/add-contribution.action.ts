@@ -36,13 +36,13 @@ export async function addContributionAction(
     const goal = await prisma.goal.findUnique({ where: { id: goalId } });
 
     if (!goal) {
-      return { success: false, error: "Goal not found" };
+      return { success: false, error: "GOAL_NOT_FOUND" };
     }
 
     if (goal.status !== GoalStatus.ACTIVE) {
       return {
         success: false,
-        error: "Contributions can only be added to active goals",
+        error: "GOAL_NOT_ACTIVE",
       };
     }
 
@@ -61,7 +61,7 @@ export async function addContributionAction(
     } else if (goal.userId !== session.user.id) {
       return {
         success: false,
-        error: "You can only contribute to your own goals",
+        error: "GOAL_NOT_OWNED",
       };
     }
 
@@ -105,6 +105,6 @@ export async function addContributionAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to add contribution" };
+    return { success: false, error: "CONTRIBUTION_CREATE_FAILED" };
   }
 }

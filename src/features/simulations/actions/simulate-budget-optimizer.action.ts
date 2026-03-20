@@ -18,7 +18,7 @@ export async function simulateBudgetOptimizerAction(
   } catch {
     return {
       success: false,
-      error: "Failed to run budget optimization simulation",
+      error: "SIMULATION_BUDGET_OPTIMIZER_FAILED",
     };
   }
 }

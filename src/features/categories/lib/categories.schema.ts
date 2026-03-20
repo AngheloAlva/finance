@@ -7,12 +7,12 @@ import type { CurrencyCode } from "@/shared/lib/constants"
 const baseCategoryFields = {
 	name: z
 		.string()
-		.min(2, { error: "Name must be at least 2 characters" })
-		.max(50, { error: "Name must be at most 50 characters" }),
-	icon: z.string().min(1, { error: "Icon is required" }),
-	color: z.string().regex(/^#[0-9a-f]{6}$/i, { error: "Color must be a valid hex color" }),
+		.min(2, { error: "minLength2" })
+		.max(50, { error: "maxLength50" }),
+	icon: z.string().min(1, { error: "required" }),
+	color: z.string().regex(/^#[0-9a-f]{6}$/i, { error: "invalidHexColor" }),
 	transactionType: z.nativeEnum(TransactionType, {
-		error: "Please select a valid transaction type",
+		error: "invalidType",
 	}),
 	isRecurring: z.coerce.boolean(),
 	isAvoidable: z.coerce.boolean(),
@@ -20,7 +20,7 @@ const baseCategoryFields = {
 		(val) => (val === "" || val === null || val === undefined ? undefined : val),
 		z.coerce
 			.number()
-			.positive({ error: "Threshold must be positive" })
+			.positive({ error: "positive" })
 			.optional()
 	),
 	currencyCode: z.string().default("USD"),
@@ -43,7 +43,7 @@ export const createCategorySchema = z
 export const updateCategorySchema = z
 	.object({
 		...baseCategoryFields,
-		id: z.string().min(1, { error: "Category ID is required" }),
+		id: z.string().min(1, { error: "requiredId" }),
 	})
 	.transform(transformAlertThreshold)
 

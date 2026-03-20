@@ -1,6 +1,7 @@
 "use client"
 
 import { GroupRole } from "@/generated/prisma/enums"
+import { useTranslations } from "next-intl"
 
 import { Badge } from "@/components/ui/badge"
 import { RemoveMemberButton } from "@/features/groups/components/remove-member-button"
@@ -24,7 +25,14 @@ const ROLE_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
 	MEMBER: "outline",
 }
 
+const ROLE_KEYS: Record<string, string> = {
+	OWNER: "roleOwner",
+	ADMIN: "roleAdmin",
+	MEMBER: "roleMember",
+}
+
 export function MemberList({ members, currentUserRole, groupId }: MemberListProps) {
+	const t = useTranslations("groups.members")
 	const showActions = canManageMembers(currentUserRole)
 	const showRoleChange = canChangeRoles(currentUserRole)
 
@@ -43,7 +51,9 @@ export function MemberList({ members, currentUserRole, groupId }: MemberListProp
 						{showRoleChange && member.role !== GroupRole.OWNER ? (
 							<RoleSelect groupId={groupId} memberId={member.id} currentRole={member.role} />
 						) : (
-							<Badge variant={ROLE_VARIANT[member.role] ?? "outline"}>{member.role}</Badge>
+							<Badge variant={ROLE_VARIANT[member.role] ?? "outline"}>
+								{t(ROLE_KEYS[member.role] ?? "roleMember")}
+							</Badge>
 						)}
 						{showActions && canRemoveMember(currentUserRole, member.role) && (
 							<RemoveMemberButton

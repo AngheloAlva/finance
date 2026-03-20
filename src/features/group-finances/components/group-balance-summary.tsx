@@ -1,3 +1,5 @@
+import { useLocale, useTranslations } from "next-intl";
+
 import { Card, CardContent } from "@/components/ui/card";
 import type { MemberBalance } from "@/features/group-finances/types/group-finances.types";
 import { CurrencyDisplay } from "@/shared/components/currency-display";
@@ -13,10 +15,12 @@ export function GroupBalanceSummary({
   balances,
   currency,
 }: GroupBalanceSummaryProps) {
+  const t = useTranslations("groupFinances.balance");
+  const locale = useLocale();
   if (balances.length === 0) {
     return (
       <p className="py-8 text-center text-sm text-muted-foreground">
-        No member balances to display.
+        {t("noBalances")}
       </p>
     );
   }
@@ -38,27 +42,30 @@ export function GroupBalanceSummary({
             </p>
             <div className="flex flex-col gap-1 text-xs">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Owed to them</span>
+                <span className="text-muted-foreground">{t("owedToThem")}</span>
                 <CurrencyDisplay
                   cents={balance.totalOwed}
                   currency={currency}
                   className="text-emerald-500"
+                  locale={locale}
                 />
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">They owe</span>
+                <span className="text-muted-foreground">{t("theyOwe")}</span>
                 <CurrencyDisplay
                   cents={balance.totalOwes}
                   currency={currency}
                   className="text-red-500"
+                  locale={locale}
                 />
               </div>
               <div className="mt-1 flex justify-between border-t pt-1">
-                <span className="font-medium">Net balance</span>
+                <span className="font-medium">{t("netBalance")}</span>
                 <CurrencyDisplay
                   cents={balance.netBalance}
                   currency={currency}
                   colorize
+                  locale={locale}
                 />
               </div>
             </div>

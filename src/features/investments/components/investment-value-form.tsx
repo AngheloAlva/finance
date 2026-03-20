@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import {
   rateToDisplay,
 } from "@/features/investments/lib/investments.utils";
 import { AmountInput } from "@/features/transactions/components/amount-input";
+import { FieldError } from "@/shared/components/field-error";
 import { INITIAL_VOID_STATE } from "@/shared/types/common.types";
 
 interface InvestmentValueFormProps {
@@ -29,6 +31,8 @@ export function InvestmentValueForm({
   baseCurrency,
   currentExchangeRate,
 }: InvestmentValueFormProps) {
+  const t = useTranslations("investments.valueForm");
+  const tf = useTranslations("investments.form");
   const [state, formAction, isPending] = useActionState(
     updateInvestmentValueAction,
     INITIAL_VOID_STATE,
@@ -65,7 +69,7 @@ export function InvestmentValueForm({
 
   useEffect(() => {
     if (state.success) {
-      toast.success("Investment value updated");
+      toast.success(t("updatedSuccess"));
     }
   }, [state]);
 
@@ -75,20 +79,16 @@ export function InvestmentValueForm({
       <div className="flex items-end gap-2">
         <div className="flex flex-1 flex-col gap-1.5">
           <AmountInput name="currentValue" defaultValue={currentValue} />
-          {!state.success && state.fieldErrors?.currentValue && (
-            <p className="text-xs text-destructive">
-              {state.fieldErrors.currentValue[0]}
-            </p>
-          )}
+          {!state.success && <FieldError errors={state.fieldErrors?.currentValue} />}
         </div>
         <Button type="submit" size="sm" disabled={isPending}>
-          {isPending ? "Updating..." : "Update Value"}
+          {isPending ? t("updating") : t("updateValue")}
         </Button>
       </div>
       {isForeignCurrency && (
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="inv-value-exchangeRate">
-            Exchange Rate (1 {investmentCurrency} = ? {baseCurrency})
+            {tf("exchangeRate", { from: investmentCurrency, to: baseCurrency })}
           </Label>
           <input
             type="hidden"
@@ -99,16 +99,12 @@ export function InvestmentValueForm({
             id="inv-value-exchangeRate"
             type="text"
             inputMode="decimal"
-            placeholder="e.g. 950.2500"
+            placeholder={tf("exchangeRatePlaceholder")}
             value={exchangeRateDisplay}
             onChange={(e) => setExchangeRateDisplay(e.target.value)}
             onBlur={handleExchangeRateBlur}
           />
-          {!state.success && state.fieldErrors?.currentExchangeRate && (
-            <p className="text-xs text-destructive">
-              {state.fieldErrors.currentExchangeRate[0]}
-            </p>
-          )}
+          {!state.success && <FieldError errors={state.fieldErrors?.currentExchangeRate} />}
         </div>
       )}
     </form>

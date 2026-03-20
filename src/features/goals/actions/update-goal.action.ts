@@ -39,13 +39,13 @@ export async function updateGoalAction(
     const existing = await prisma.goal.findUnique({ where: { id } });
 
     if (!existing) {
-      return { success: false, error: "Goal not found" };
+      return { success: false, error: "GOAL_NOT_FOUND" };
     }
 
     if (existing.status !== GoalStatus.ACTIVE) {
       return {
         success: false,
-        error: "Only active goals can be updated",
+        error: "GOAL_NOT_ACTIVE",
       };
     }
 
@@ -61,7 +61,7 @@ export async function updateGoalAction(
         return { success: false, error: roleCheck.error };
       }
     } else if (existing.userId !== session.user.id) {
-      return { success: false, error: "You can only edit your own goals" };
+      return { success: false, error: "GOAL_NOT_OWNED" };
     }
 
     await prisma.goal.update({
@@ -83,6 +83,6 @@ export async function updateGoalAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to update goal" };
+    return { success: false, error: "GOAL_UPDATE_FAILED" };
   }
 }

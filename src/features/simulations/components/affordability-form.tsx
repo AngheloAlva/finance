@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,7 @@ import type {
   AffordabilityResult,
   CreditCardSnapshot,
 } from "@/features/simulations/types/simulations.types";
+import { FieldError } from "@/shared/components/field-error";
 import type { CurrencyCode } from "@/shared/lib/constants";
 import type { ActionResult } from "@/shared/types/common.types";
 
@@ -31,6 +33,8 @@ export function AffordabilityForm({
   creditCards,
   currency,
 }: AffordabilityFormProps) {
+  const t = useTranslations("simulations.affordability");
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     simulateAffordabilityAction,
     initialState,
@@ -42,7 +46,7 @@ export function AffordabilityForm({
         <form action={formAction} className="space-y-4">
           <input type="hidden" name="currencyCode" value={currency} />
           <div className="space-y-2">
-            <Label htmlFor="purchaseAmount">Purchase Amount</Label>
+            <Label htmlFor="purchaseAmount">{t("purchaseAmount")}</Label>
             <Input
               id="purchaseAmount"
               name="purchaseAmount"
@@ -52,15 +56,11 @@ export function AffordabilityForm({
               required
               disabled={isPending}
             />
-            {!state.success && state.fieldErrors?.purchaseAmount && (
-              <p className="text-xs text-destructive">
-                {state.fieldErrors.purchaseAmount[0]}
-              </p>
-            )}
+            {!state.success && <FieldError errors={state.fieldErrors?.purchaseAmount} />}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="installments">Installments</Label>
+            <Label htmlFor="installments">{t("installments")}</Label>
             <Input
               id="installments"
               name="installments"
@@ -74,14 +74,14 @@ export function AffordabilityForm({
 
           {creditCards.length > 0 && (
             <div className="space-y-2">
-              <Label htmlFor="creditCardId">Credit Card (optional)</Label>
+              <Label htmlFor="creditCardId">{t("creditCard")}</Label>
               <NativeSelect
                 className="w-full"
                 id="creditCardId"
                 name="creditCardId"
                 disabled={isPending}
               >
-                <option value="">None (Cash/Debit)</option>
+                <option value="">{t("noneCashDebit")}</option>
                 {creditCards.map((card) => (
                   <option key={card.id} value={card.id}>
                     {card.name} (*{card.lastFourDigits})
@@ -95,15 +95,15 @@ export function AffordabilityForm({
             {isPending ? (
               <>
                 <Spinner className="mr-2" />
-                Simulating...
+                {t("simulating")}
               </>
             ) : (
-              "Simulate Purchase"
+              t("simulate")
             )}
           </Button>
 
           {!state.success && state.error && !state.fieldErrors && (
-            <p className="text-xs text-destructive">{state.error}</p>
+            <p className="text-xs text-destructive">{tErrors(state.error as Parameters<typeof tErrors>[0])}</p>
           )}
         </form>
       </div>
@@ -113,8 +113,8 @@ export function AffordabilityForm({
           <AffordabilityResults result={state.data} currency={currency} />
         ) : (
           <SimulationEmptyState
-            title="Affordability Simulator"
-            description="Enter a purchase amount to see how it impacts your monthly budget and cash flow over the next 3 months."
+            title={t("emptyTitle")}
+            description={t("emptyDescription")}
           />
         )}
       </div>

@@ -1,6 +1,7 @@
 "use client"
 
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts"
+import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
@@ -22,10 +23,12 @@ function CustomTooltip({
 	active,
 	payload,
 	currency,
+	locale,
 }: {
 	active?: boolean
 	payload?: TooltipPayloadItem[]
 	currency: CurrencyCode
+	locale?: string
 }) {
 	if (!active || !payload?.length) return null
 
@@ -35,27 +38,37 @@ function CustomTooltip({
 		<div className="bg-popover rounded-none border px-3 py-2 text-sm shadow-md">
 			<p className="font-medium">{item.name}</p>
 			<p style={{ color: item.payload.color }}>
-				{formatCurrency(item.value, currency)} ({item.payload.percentage}%)
+				{formatCurrency(item.value, currency, locale)} ({item.payload.percentage}%)
 			</p>
 		</div>
 	)
 }
 
 export function PortfolioAllocationChart({ data, currency }: PortfolioAllocationChartProps) {
+	const t = useTranslations("investments.chart")
+	const tTypes = useTranslations("investments.types")
+	const locale = useLocale()
+
 	if (data.length === 0) {
 		return null
 	}
 
+	// Translate allocation labels (they are now translation keys)
+	const translatedData = data.map((item) => ({
+		...item,
+		label: tTypes(item.label as Parameters<typeof tTypes>[0]),
+	}))
+
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle className="text-sm">Portfolio Allocation</CardTitle>
+				<CardTitle className="text-sm">{t("portfolioAllocation")}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<ResponsiveContainer width="100%" height={250}>
 					<PieChart>
 						<Pie
-							data={data}
+							data={translatedData}
 							dataKey="baseCurrencyValue"
 							nameKey="label"
 							cx="50%"
@@ -63,11 +76,11 @@ export function PortfolioAllocationChart({ data, currency }: PortfolioAllocation
 							outerRadius={90}
 							innerRadius={50}
 						>
-							{data.map((item) => (
+							{translatedData.map((item) => (
 								<Cell key={item.type} fill={item.color} />
 							))}
 						</Pie>
-						<Tooltip content={<CustomTooltip currency={currency} />} />
+						<Tooltip content={<CustomTooltip currency={currency} locale={locale} />} />
 						<Legend
 							formatter={(value: string) => (
 								<span className="text-foreground text-xs">{value}</span>

@@ -3,6 +3,7 @@
 import type { ReactElement } from "react";
 import { useActionState, useEffect } from "react";
 import { Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ export function DeleteEntityButton({
   successMessage,
   trigger,
 }: DeleteEntityButtonProps) {
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     action,
     INITIAL_VOID_STATE,
@@ -41,9 +43,9 @@ export function DeleteEntityButton({
     }
 
     if (!state.success && state.error) {
-      toast.error(state.error);
+      toast.error(tErrors(state.error as Parameters<typeof tErrors>[0]));
     }
-  }, [state, successMessage]);
+  }, [state, successMessage, tErrors]);
 
   function handleConfirm() {
     const formData = new FormData();

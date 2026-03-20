@@ -6,7 +6,7 @@ import { z } from "zod"
 // ---------------------------------------------------------------------------
 
 export const splitItemSchema = z.object({
-	userId: z.string().min(1, { error: "User ID is required" }),
+	userId: z.string().min(1, { error: "requiredId" }),
 	amount: z.number().int().optional(),
 	percentage: z.number().optional(),
 })
@@ -18,26 +18,26 @@ export const splitItemSchema = z.object({
 export const createGroupTransactionSchema = z.object({
 	description: z
 		.string()
-		.min(1, { error: "Description is required" })
-		.max(200, { error: "Description must be at most 200 characters" }),
+		.min(1, { error: "required" })
+		.max(200, { error: "maxLength200" }),
 	amount: z.coerce
 		.number()
-		.int({ error: "Amount must be a valid number" })
-		.positive({ error: "Amount must be greater than zero" }),
+		.int({ error: "invalidNumber" })
+		.positive({ error: "positive" }),
 	type: z.nativeEnum(TransactionType, {
-		error: "Please select a valid transaction type",
+		error: "invalidType",
 	}),
-	categoryId: z.string().min(1, { error: "Category is required" }),
+	categoryId: z.string().min(1, { error: "required" }),
 	paymentMethod: z.nativeEnum(PaymentMethod, {
-		error: "Please select a valid payment method",
+		error: "invalidPaymentMethod",
 	}),
-	notes: z.string().max(500, { error: "Notes must be at most 500 characters" }).optional(),
-	date: z.coerce.date({ error: "A valid date is required" }),
-	groupId: z.string().min(1, { error: "Group ID is required" }),
+	notes: z.string().max(500, { error: "maxLength500" }).optional(),
+	date: z.coerce.date({ error: "validDate" }),
+	groupId: z.string().min(1, { error: "requiredId" }),
 	splitRule: z.nativeEnum(SplitRule, {
-		error: "Please select a valid split rule",
+		error: "invalidSplitRule",
 	}),
-	splits: z.array(splitItemSchema).min(1, { error: "At least one split member is required" }),
+	splits: z.array(splitItemSchema).min(1, { error: "minSplitMembers1" }),
 })
 
 // ---------------------------------------------------------------------------
@@ -45,7 +45,7 @@ export const createGroupTransactionSchema = z.object({
 // ---------------------------------------------------------------------------
 
 export const settleSplitSchema = z.object({
-	splitId: z.string().min(1, { error: "Split ID is required" }),
+	splitId: z.string().min(1, { error: "requiredId" }),
 })
 
 // ---------------------------------------------------------------------------

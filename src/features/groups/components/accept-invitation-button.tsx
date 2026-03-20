@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,8 @@ interface AcceptInvitationButtonProps {
 export function AcceptInvitationButton({
   token,
 }: AcceptInvitationButtonProps) {
+  const t = useTranslations("groups.invitation");
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     acceptInvitationAction,
     INITIAL_VOID_STATE,
@@ -21,7 +24,7 @@ export function AcceptInvitationButton({
 
   useEffect(() => {
     if (!state.success && state.error) {
-      toast.error(state.error);
+      toast.error(tErrors(state.error as Parameters<typeof tErrors>[0]));
     }
   }, [state]);
 
@@ -31,12 +34,12 @@ export function AcceptInvitationButton({
 
       {!state.success && state.error && (
         <div className="mb-4 rounded-none border border-destructive/50 bg-destructive/10 px-3 py-2 text-xs text-destructive">
-          {state.error}
+          {tErrors(state.error as Parameters<typeof tErrors>[0])}
         </div>
       )}
 
       <Button type="submit" disabled={isPending} className="w-full">
-        {isPending ? "Accepting..." : "Accept Invitation"}
+        {isPending ? t("accepting") : t("accept")}
       </Button>
     </form>
   );

@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 import type { CategoryBreakdownItem } from "@/features/dashboard/types/dashboard.types"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { CategoryPieChart } from "@/shared/components/category-pie-chart"
@@ -10,12 +12,16 @@ interface CategoryChartProps {
 }
 
 export function CategoryChart({ data, currency }: CategoryChartProps) {
+	const t = useTranslations("dashboard")
+
 	return (
 		<CategoryPieChart
 			data={data as unknown as Record<string, unknown>[]}
 			currency={currency}
 			nameKey="categoryName"
 			colorKey="categoryColor"
+			title={t("expensesByCategory")}
+			emptyMessage={t("noExpenses")}
 		/>
 	)
 }

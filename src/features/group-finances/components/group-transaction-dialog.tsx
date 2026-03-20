@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useState, type ReactNode } from "react"
+import { useTranslations } from "next-intl"
 
 import {
 	Dialog,
@@ -31,6 +32,7 @@ export function GroupTransactionDialog({
 	trigger,
 }: GroupTransactionDialogProps) {
 	const [open, setOpen] = useState(false)
+	const t = useTranslations("groupFinances.dialog")
 
 	const handleSuccess = useCallback(() => {
 		setOpen(false)
@@ -41,9 +43,9 @@ export function GroupTransactionDialog({
 			<DialogTrigger>{trigger}</DialogTrigger>
 			<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
 				<DialogHeader>
-					<DialogTitle>New Group Transaction</DialogTitle>
+					<DialogTitle>{t("title")}</DialogTitle>
 					<DialogDescription>
-						Record a shared expense and split it among group members.
+						{t("description")}
 					</DialogDescription>
 				</DialogHeader>
 				<GroupTransactionForm

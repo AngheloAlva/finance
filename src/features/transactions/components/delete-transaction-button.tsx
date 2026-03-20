@@ -1,3 +1,7 @@
+"use client"
+
+import { useTranslations } from "next-intl"
+
 import { deleteTransactionAction } from "@/features/transactions/actions/delete-transaction.action";
 import { DeleteEntityButton } from "@/shared/components/delete-entity-button";
 
@@ -10,13 +14,15 @@ export function DeleteTransactionButton({
   transactionId,
   transactionDescription,
 }: DeleteTransactionButtonProps) {
+  const t = useTranslations("transactions");
+
   return (
     <DeleteEntityButton
       action={deleteTransactionAction}
       formEntries={{ id: transactionId }}
-      dialogTitle="Delete Transaction"
-      dialogDescription={`Are you sure you want to delete "${transactionDescription}"? This action cannot be undone.`}
-      successMessage="Transaction deleted successfully"
+      dialogTitle={t("deleteDialog.title")}
+      dialogDescription={t("deleteDialog.description", { name: transactionDescription })}
+      successMessage={t("deleteDialog.success")}
     />
   );
 }

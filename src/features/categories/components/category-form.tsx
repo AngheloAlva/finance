@@ -1,6 +1,7 @@
 "use client"
 
 import { useActionState, useEffect, useMemo, useState } from "react"
+import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -22,6 +23,7 @@ import { CategoryColorPicker } from "@/features/categories/components/category-c
 import { CategoryIconPicker } from "@/features/categories/components/category-icon-picker"
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
 import { useCurrency } from "@/shared/components/currency-provider"
+import { FieldError } from "@/shared/components/field-error"
 import { centsToDisplay } from "@/shared/lib/formatters"
 import { FORM_MODE, INITIAL_VOID_STATE, type FormMode } from "@/shared/types/common.types"
 
@@ -50,6 +52,9 @@ export function CategoryForm({
 	groupId,
 	onSuccess,
 }: CategoryFormProps) {
+	const t = useTranslations("categories")
+	const tc = useTranslations("common")
+	const tErrors = useTranslations("errors")
 	const action = groupId
 		? mode === FORM_MODE.CREATE
 			? createGroupCategoryAction
@@ -67,22 +72,22 @@ export function CategoryForm({
 
 	const parentCategoryItems = useMemo(
 		() => [
-			{ value: "", label: "None (root category)" },
+			{ value: "", label: t("form.noneRoot") },
 			...rootCategories.map((c) => ({ value: c.id, label: c.name })),
 		],
-		[rootCategories]
+		[rootCategories, t]
 	)
 
 	useEffect(() => {
 		if (state.success) {
 			const message =
 				mode === FORM_MODE.CREATE
-					? "Category created successfully"
-					: "Category updated successfully"
+					? t("form.createdSuccess")
+					: t("form.updatedSuccess")
 			toast.success(message)
 			onSuccess?.()
 		}
-	}, [state, mode, onSuccess])
+	}, [state, mode, onSuccess, t])
 
 	return (
 		<form action={formAction} className="flex flex-col gap-4">
@@ -95,72 +100,64 @@ export function CategoryForm({
 
 			{!state.success && state.error && (
 				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-none border px-3 py-2 text-xs">
-					{state.error}
+					{tErrors(state.error as Parameters<typeof tErrors>[0])}
 				</div>
 			)}
 
 			<div className="flex flex-col gap-1.5">
-				<Label htmlFor="category-name">Name</Label>
+				<Label htmlFor="category-name">{t("form.name")}</Label>
 				<Input
 					id="category-name"
 					name="name"
 					type="text"
 					defaultValue={defaultValues?.name}
 					required
-					placeholder="e.g. Groceries"
+					placeholder={t("form.namePlaceholder")}
 					aria-invalid={!state.success && state.fieldErrors?.name ? true : undefined}
 				/>
-				{!state.success && state.fieldErrors?.name && (
-					<p className="text-destructive text-xs">{state.fieldErrors.name[0]}</p>
-				)}
+				{!state.success && <FieldError errors={state.fieldErrors?.name} />}
 			</div>
 
 			<div className="flex flex-col gap-1.5">
-				<Label>Icon</Label>
+				<Label>{t("form.icon")}</Label>
 				<CategoryIconPicker name="icon" value={defaultValues?.icon} />
-				{!state.success && state.fieldErrors?.icon && (
-					<p className="text-destructive text-xs">{state.fieldErrors.icon[0]}</p>
-				)}
+				{!state.success && <FieldError errors={state.fieldErrors?.icon} />}
 			</div>
 
 			<div className="flex flex-col gap-1.5">
-				<Label>Color</Label>
+				<Label>{t("form.color")}</Label>
 				<CategoryColorPicker name="color" value={defaultValues?.color} />
-				{!state.success && state.fieldErrors?.color && (
-					<p className="text-destructive text-xs">{state.fieldErrors.color[0]}</p>
-				)}
+				{!state.success && <FieldError errors={state.fieldErrors?.color} />}
 			</div>
 
 			<div className="flex flex-col gap-1.5">
-				<Label>Transaction Type</Label>
+				<Label>{t("form.transactionType")}</Label>
 				<Select
 					name="transactionType"
 					defaultValue={defaultValues?.transactionType ?? "EXPENSE"}
 					onValueChange={(value) => setTransactionType(value ?? "EXPENSE")}
 					items={[
-						{ value: "INCOME", label: "Income" },
-						{ value: "EXPENSE", label: "Expense" },
+						{ value: "INCOME", label: t("form.income") },
+						{ value: "EXPENSE", label: t("form.expense") },
 					]}
 				>
 					<SelectTrigger className="w-full">
-						<SelectValue placeholder="Select type" />
+						<SelectValue placeholder={t("form.selectType")} />
 					</SelectTrigger>
 					<SelectContent>
 						<SelectItem value="INCOME">
-							Income
+							{t("form.income")}
 						</SelectItem>
 						<SelectItem value="EXPENSE">
-							Expense
+							{t("form.expense")}
 						</SelectItem>
 					</SelectContent>
 				</Select>
-				{!state.success && state.fieldErrors?.transactionType && (
-					<p className="text-destructive text-xs">{state.fieldErrors.transactionType[0]}</p>
-				)}
+				{!state.success && <FieldError errors={state.fieldErrors?.transactionType} />}
 			</div>
 
 			<div className="flex items-center justify-between">
-				<Label htmlFor="isRecurring">Recurring</Label>
+				<Label htmlFor="isRecurring">{t("form.recurring")}</Label>
 				<Switch
 					id="isRecurring"
 					name="isRecurring"
@@ -169,7 +166,7 @@ export function CategoryForm({
 			</div>
 
 			<div className="flex items-center justify-between">
-				<Label htmlFor="isAvoidable">Avoidable</Label>
+				<Label htmlFor="isAvoidable">{t("form.avoidable")}</Label>
 				<Switch
 					id="isAvoidable"
 					name="isAvoidable"
@@ -179,14 +176,14 @@ export function CategoryForm({
 
 			{transactionType === "EXPENSE" && (
 				<div className="flex flex-col gap-1.5">
-					<Label htmlFor="alertThreshold">Alert threshold (optional)</Label>
+					<Label htmlFor="alertThreshold">{t("form.alertThreshold")}</Label>
 					<Input
 						id="alertThreshold"
 						name="alertThreshold"
 						type="number"
 						min="1"
 						step="1"
-						placeholder="e.g. 500"
+						placeholder={t("form.alertThresholdPlaceholder")}
 						defaultValue={
 							defaultValues?.alertThreshold
 								? centsToDisplay(defaultValues.alertThreshold, currencyCode)
@@ -195,23 +192,21 @@ export function CategoryForm({
 						aria-invalid={!state.success && state.fieldErrors?.alertThreshold ? true : undefined}
 					/>
 					<p className="text-muted-foreground text-xs">
-						Get alerted when monthly spending in this category exceeds this amount
+						{t("form.alertThresholdHelp")}
 					</p>
-					{!state.success && state.fieldErrors?.alertThreshold && (
-						<p className="text-destructive text-xs">{state.fieldErrors.alertThreshold[0]}</p>
-					)}
+					{!state.success && <FieldError errors={state.fieldErrors?.alertThreshold} />}
 				</div>
 			)}
 
 			<div className="flex flex-col gap-1.5">
-				<Label>Parent Category</Label>
+				<Label>{t("form.parentCategory")}</Label>
 				<Select name="parentId" defaultValue={defaultValues?.parentId ?? ""} items={parentCategoryItems}>
 					<SelectTrigger className="w-full">
-						<SelectValue placeholder="None (root category)" />
+						<SelectValue placeholder={t("form.noneRoot")} />
 					</SelectTrigger>
 					<SelectContent>
 						<SelectItem value="">
-							None (root category)
+							{t("form.noneRoot")}
 						</SelectItem>
 						{rootCategories.map((category) => (
 							<SelectItem key={category.id} value={category.id}>
@@ -224,10 +219,10 @@ export function CategoryForm({
 
 			<Button type="submit" disabled={isPending} className="mt-2 w-full">
 				{isPending
-					? "Saving..."
+					? tc("saving")
 					: mode === FORM_MODE.CREATE
-						? "Create Category"
-						: "Update Category"}
+						? t("form.createCategory")
+						: t("form.updateCategory")}
 			</Button>
 		</form>
 	)

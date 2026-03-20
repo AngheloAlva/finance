@@ -1,6 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
 
 import { CategoryForm } from "@/features/categories/components/category-form"
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
@@ -22,6 +23,7 @@ export function CategoryDialog({
 	groupId,
 	trigger,
 }: CategoryDialogProps) {
+	const t = useTranslations("categories")
 	const defaultValues = category
 		? {
 				id: category.id,
@@ -39,11 +41,11 @@ export function CategoryDialog({
 	return (
 		<FormDialog
 			trigger={trigger}
-			title={mode === FORM_MODE.CREATE ? "New Category" : "Edit Category"}
+			title={mode === FORM_MODE.CREATE ? t("dialog.newTitle") : t("dialog.editTitle")}
 			description={
 				mode === FORM_MODE.CREATE
-					? "Create a new category to organize your transactions."
-					: "Update the category details."
+					? t("dialog.newDescription")
+					: t("dialog.editDescription")
 			}
 		>
 			{(onSuccess) => (

@@ -1,6 +1,7 @@
 "use client"
 
 import { AlertTriangle, TrendingDown, TrendingUp } from "lucide-react"
+import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { IncomeImpactResult } from "@/features/simulations/types/simulations.types"
@@ -13,6 +14,8 @@ interface IncomeChangeResultsProps {
 }
 
 export function IncomeChangeResults({ result, currency }: IncomeChangeResultsProps) {
+	const t = useTranslations("simulations.incomeChange")
+	const locale = useLocale()
 	const isIncrease = result.projectedIncome >= result.currentIncome
 
 	return (
@@ -26,17 +29,17 @@ export function IncomeChangeResults({ result, currency }: IncomeChangeResultsPro
 						) : (
 							<TrendingDown className="text-destructive size-4" />
 						)}
-						Income Comparison
+						{t("incomeComparison")}
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-2 text-xs">
 					<div className="flex justify-between">
-						<span className="text-muted-foreground">Current income</span>
-						<span className="font-medium">{formatCurrency(result.currentIncome, currency)}</span>
+						<span className="text-muted-foreground">{t("currentIncome")}</span>
+						<span className="font-medium">{formatCurrency(result.currentIncome, currency, locale)}</span>
 					</div>
 					<div className="flex justify-between">
-						<span className="text-muted-foreground">Projected income</span>
-						<span className="font-medium">{formatCurrency(result.projectedIncome, currency)}</span>
+						<span className="text-muted-foreground">{t("projectedIncome")}</span>
+						<span className="font-medium">{formatCurrency(result.projectedIncome, currency, locale)}</span>
 					</div>
 				</CardContent>
 			</Card>
@@ -44,15 +47,15 @@ export function IncomeChangeResults({ result, currency }: IncomeChangeResultsPro
 			{/* Savings Impact */}
 			<Card>
 				<CardHeader className="pb-3">
-					<CardTitle className="text-sm">Savings Impact</CardTitle>
+					<CardTitle className="text-sm">{t("savingsImpact")}</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-2 text-xs">
 					<div className="flex justify-between">
-						<span className="text-muted-foreground">Current savings rate</span>
+						<span className="text-muted-foreground">{t("currentSavingsRate")}</span>
 						<span className="font-medium">{result.currentSavingsRate}%</span>
 					</div>
 					<div className="flex justify-between">
-						<span className="text-muted-foreground">Projected savings rate</span>
+						<span className="text-muted-foreground">{t("projectedSavingsRate")}</span>
 						<span
 							className={`font-medium ${result.projectedSavingsRate < 0 ? "text-destructive" : ""}`}
 						>
@@ -60,21 +63,21 @@ export function IncomeChangeResults({ result, currency }: IncomeChangeResultsPro
 						</span>
 					</div>
 					<div className="flex justify-between">
-						<span className="text-muted-foreground">Current monthly savings</span>
+						<span className="text-muted-foreground">{t("currentMonthlySavings")}</span>
 						<span className="font-medium">
-							{formatCurrency(result.currentMonthlySavings, currency)}
+							{formatCurrency(result.currentMonthlySavings, currency, locale)}
 						</span>
 					</div>
 					<div className="flex justify-between">
-						<span className="text-muted-foreground">Projected monthly savings</span>
+						<span className="text-muted-foreground">{t("projectedMonthlySavings")}</span>
 						<span
 							className={`font-medium ${result.projectedMonthlySavings < 0 ? "text-destructive" : ""}`}
 						>
-							{formatCurrency(result.projectedMonthlySavings, currency)}
+							{formatCurrency(result.projectedMonthlySavings, currency, locale)}
 						</span>
 					</div>
 					<div className="flex justify-between">
-						<span className="text-muted-foreground">Debt coverage ratio</span>
+						<span className="text-muted-foreground">{t("debtCoverageRatio")}</span>
 						<span className="font-medium">{Math.round(result.debtCoverageRatio * 100)}%</span>
 					</div>
 				</CardContent>
@@ -84,7 +87,7 @@ export function IncomeChangeResults({ result, currency }: IncomeChangeResultsPro
 			{result.goalImpacts.length > 0 && (
 				<Card>
 					<CardHeader className="pb-3">
-						<CardTitle className="text-sm">Goal Timeline Changes</CardTitle>
+						<CardTitle className="text-sm">{t("goalTimelineChanges")}</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-3">
 						{result.goalImpacts.map((goal, index) => (
@@ -92,16 +95,18 @@ export function IncomeChangeResults({ result, currency }: IncomeChangeResultsPro
 								<p className="text-xs font-medium">{goal.goalName}</p>
 								<div className="text-muted-foreground flex justify-between text-xs">
 									<span>
-										Current:{" "}
-										{goal.currentMonthsToGoal !== null
-											? `${goal.currentMonthsToGoal} months`
-											: "Unreachable"}
+										{t("current", {
+											value: goal.currentMonthsToGoal !== null
+												? t("months", { count: goal.currentMonthsToGoal })
+												: t("unreachable"),
+										})}
 									</span>
 									<span>
-										Projected:{" "}
-										{goal.projectedMonthsToGoal !== null
-											? `${goal.projectedMonthsToGoal} months`
-											: "Unreachable"}
+										{t("projected", {
+											value: goal.projectedMonthsToGoal !== null
+												? t("months", { count: goal.projectedMonthsToGoal })
+												: t("unreachable"),
+										})}
 									</span>
 								</div>
 								{goal.changeMonths !== 0 && (
@@ -109,8 +114,8 @@ export function IncomeChangeResults({ result, currency }: IncomeChangeResultsPro
 										className={`text-xs ${goal.changeMonths < 0 ? "text-green-600" : "text-destructive"}`}
 									>
 										{goal.changeMonths < 0
-											? `${Math.abs(goal.changeMonths)} months faster`
-											: `${goal.changeMonths} months slower`}
+											? t("monthsFaster", { count: Math.abs(goal.changeMonths) })
+											: t("monthsSlower", { count: goal.changeMonths })}
 									</p>
 								)}
 							</div>
@@ -122,10 +127,7 @@ export function IncomeChangeResults({ result, currency }: IncomeChangeResultsPro
 			{result.deficit && (
 				<div className="bg-destructive/10 text-destructive flex items-center gap-2 rounded-none p-3 text-xs">
 					<AlertTriangle className="size-4 shrink-0" />
-					<span>
-						At this income level, your expenses exceed your income. Goals are unreachable and debt
-						obligations may become unsustainable.
-					</span>
+					<span>{t("deficitWarning")}</span>
 				</div>
 			)}
 		</div>

@@ -15,7 +15,7 @@ export function formatZodErrors(error: ZodLikeError): ActionResult<never> {
     }
   }
 
-  return { success: false, error: "Please fix the errors below", fieldErrors };
+  return { success: false, error: "VALIDATION_ERROR", fieldErrors };
 }
 
 export function requireFormId(
@@ -24,7 +24,7 @@ export function requireFormId(
 ): ActionResult<string> {
   const id = formData.get(field);
   if (typeof id !== "string" || id.length === 0) {
-    return { success: false, error: `${field} is required` };
+    return { success: false, error: "FIELD_REQUIRED" };
   }
   return { success: true, data: id };
 }

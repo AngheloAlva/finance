@@ -1,3 +1,7 @@
+"use client"
+
+import { useTranslations } from "next-intl"
+
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
 import { RecurringTemplateCard } from "@/features/recurring/components/recurring-template-card"
 import type { RecurringTemplateWithRule } from "@/features/recurring/types/recurring.types"
@@ -10,12 +14,13 @@ interface RecurringListProps {
 }
 
 export function RecurringList({ templates, currency, categories }: RecurringListProps) {
+	const t = useTranslations("recurring")
+
 	if (templates.length === 0) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-none border border-dashed p-12 text-center">
 				<p className="text-muted-foreground text-sm">
-					No recurring transactions yet. Create a template to automate your regular expenses and
-					income.
+					{t("noRecurringYet")}
 				</p>
 			</div>
 		)

@@ -66,6 +66,6 @@ export async function createGoalAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to create goal" };
+    return { success: false, error: "GOAL_CREATE_FAILED" };
   }
 }

@@ -1,4 +1,5 @@
 import type { GroupRole } from "@/generated/prisma/enums"
+import { getTranslations } from "next-intl/server"
 
 import { CategoryTreeItem } from "@/features/categories/components/category-tree-item"
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
@@ -10,18 +11,19 @@ interface GroupCategoryTreeProps {
 	currentUserRole: GroupRole
 }
 
-export function GroupCategoryTree({
+export async function GroupCategoryTree({
 	groupId,
 	categories,
 	currentUserRole,
 }: GroupCategoryTreeProps) {
+	const t = await getTranslations("groups.categories")
 	const rootCategories = categories.filter((c) => c.parentId === null)
 	const canEdit = canManageCategories(currentUserRole)
 
 	if (rootCategories.length === 0) {
 		return (
 			<p className="text-muted-foreground py-8 text-center text-xs">
-				No group categories yet. {canEdit && "Create the first category to get started."}
+				{t("noCategories")} {canEdit && t("createFirstCategory")}
 			</p>
 		)
 	}

@@ -1,6 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
 
 import { GoalForm } from "@/features/goals/components/goal-form"
 import type { GoalWithProgress } from "@/features/goals/types/goals.types"
@@ -15,6 +16,7 @@ interface GoalDialogProps {
 }
 
 export function GoalDialog({ mode, goal, groupId, trigger }: GoalDialogProps) {
+	const t = useTranslations("goals.dialog")
 	const defaultValues = goal
 		? {
 				id: goal.id,
@@ -29,11 +31,11 @@ export function GoalDialog({ mode, goal, groupId, trigger }: GoalDialogProps) {
 	return (
 		<FormDialog
 			trigger={trigger}
-			title={mode === FORM_MODE.CREATE ? "New Goal" : "Edit Goal"}
+			title={mode === FORM_MODE.CREATE ? t("newTitle") : t("editTitle")}
 			description={
 				mode === FORM_MODE.CREATE
-					? "Set a financial target to work towards."
-					: "Update the goal details."
+					? t("newDescription")
+					: t("editDescription")
 			}
 			className="sm:max-w-md"
 		>

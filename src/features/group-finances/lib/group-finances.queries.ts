@@ -291,20 +291,6 @@ export async function getGroupCategoryBreakdown(
 // 4.5 — getGroupMonthlyFlow
 // ---------------------------------------------------------------------------
 
-const MONTH_LABELS = [
-	"Jan",
-	"Feb",
-	"Mar",
-	"Apr",
-	"May",
-	"Jun",
-	"Jul",
-	"Aug",
-	"Sep",
-	"Oct",
-	"Nov",
-	"Dec",
-] as const
 
 export async function getGroupMonthlyFlow(
 	groupId: string,
@@ -340,7 +326,7 @@ export async function getGroupMonthlyFlow(
 			})
 
 			return {
-				month: `${MONTH_LABELS[month - 1]} ${year}`,
+				month: `${year}-${String(month).padStart(2, "0")}`,
 				total: result._sum.amount ?? 0,
 			}
 		})

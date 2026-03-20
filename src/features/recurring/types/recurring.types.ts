@@ -22,13 +22,13 @@ export interface RecurrenceFormValues {
 	endDate?: string
 }
 
-export const FREQUENCY_LABELS: Record<RecurrenceFrequency, string> = {
-	DAILY: "Daily",
-	WEEKLY: "Weekly",
-	BIWEEKLY: "Biweekly",
-	MONTHLY: "Monthly",
-	BIMONTHLY: "Bimonthly",
-	QUARTERLY: "Quarterly",
-	SEMIANNUAL: "Semiannual",
-	ANNUAL: "Annual",
+export const FREQUENCY_KEYS: Record<RecurrenceFrequency, string> = {
+	DAILY: "daily",
+	WEEKLY: "weekly",
+	BIWEEKLY: "biweekly",
+	MONTHLY: "monthly",
+	BIMONTHLY: "bimonthly",
+	QUARTERLY: "quarterly",
+	SEMIANNUAL: "semiannual",
+	ANNUAL: "annual",
 } as const

@@ -2,11 +2,11 @@ import { AlertStatus } from "@/generated/prisma/enums"
 import { z } from "zod"
 
 export const markAlertReadSchema = z.object({
-	alertId: z.string().min(1, { error: "Alert ID is required" }),
+	alertId: z.string().min(1, { error: "requiredId" }),
 })
 
 export const dismissAlertSchema = z.object({
-	alertId: z.string().min(1, { error: "Alert ID is required" }),
+	alertId: z.string().min(1, { error: "requiredId" }),
 })
 
 export const alertFilterSchema = z.object({

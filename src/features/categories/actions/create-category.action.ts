@@ -43,13 +43,13 @@ export async function createCategoryAction(
       });
 
       if (!parent) {
-        return { success: false, error: "Parent category not found" };
+        return { success: false, error: "CATEGORY_PARENT_NOT_FOUND" };
       }
 
       if (parent.parentId !== null) {
         return {
           success: false,
-          error: "Cannot nest more than 2 levels deep",
+          error: "CATEGORY_NESTING_TOO_DEEP",
         };
       }
     }
@@ -73,6 +73,6 @@ export async function createCategoryAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to create category" };
+    return { success: false, error: "CATEGORY_CREATE_FAILED" };
   }
 }

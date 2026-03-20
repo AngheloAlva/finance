@@ -1,3 +1,5 @@
+import { getLocale, getTranslations } from "next-intl/server"
+
 import { cn } from "@/lib/utils"
 import { formatCurrency } from "@/shared/lib/formatters"
 import type { CurrencyCode } from "@/shared/lib/constants"
@@ -21,7 +23,7 @@ function getDaysUntilDue(dueDate: Date): number {
 	return Math.round((dueStart.getTime() - todayStart.getTime()) / (1000 * 60 * 60 * 24))
 }
 
-export function CreditCardVisual({
+export async function CreditCardVisual({
 	name,
 	brand,
 	lastFourDigits,
@@ -32,6 +34,8 @@ export function CreditCardVisual({
 	paymentDueDate,
 	className,
 }: CreditCardVisualProps) {
+	const t = await getTranslations("creditCards")
+	const locale = await getLocale()
 	const usagePercentage = totalLimit > 0 ? (usedLimit / totalLimit) * 100 : 0
 	const available = Math.max(0, totalLimit - usedLimit)
 	const daysUntilDue = paymentDueDate ? getDaysUntilDue(paymentDueDate) : null
@@ -49,7 +53,7 @@ export function CreditCardVisual({
 				<span className="text-xs font-medium tracking-wider uppercase opacity-80">{brand}</span>
 				{daysUntilDue != null && daysUntilDue >= 0 && daysUntilDue <= 3 && (
 					<span className="rounded-none bg-yellow-400/90 px-2 py-0.5 text-[10px] font-semibold text-yellow-900">
-						{daysUntilDue === 0 ? "Payment due today" : `Payment due in ${daysUntilDue}d`}
+						{daysUntilDue === 0 ? t("visual.paymentDueToday") : t("visual.paymentDueIn", { days: daysUntilDue })}
 					</span>
 				)}
 			</div>
@@ -82,8 +86,8 @@ export function CreditCardVisual({
 						/>
 					</div>
 					<div className="flex items-center justify-between text-[10px] opacity-80">
-						<span>Used: {formatCurrency(usedLimit, currency)}</span>
-						<span>Available: {formatCurrency(available, currency)}</span>
+						<span>{t("visual.used", { amount: formatCurrency(usedLimit, currency, locale) })}</span>
+						<span>{t("visual.available", { amount: formatCurrency(available, currency, locale) })}</span>
 					</div>
 				</div>
 			</div>

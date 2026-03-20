@@ -46,7 +46,7 @@ export async function inviteMemberAction(
     });
 
     if (existingMember) {
-      return { success: false, error: "This user is already a member of this group" };
+      return { success: false, error: "GROUP_MEMBER_ALREADY_EXISTS" };
     }
 
     const pendingInvitation = await prisma.groupInvitation.findFirst({
@@ -58,7 +58,7 @@ export async function inviteMemberAction(
     });
 
     if (pendingInvitation) {
-      return { success: false, error: "A pending invitation already exists for this email" };
+      return { success: false, error: "INVITATION_ALREADY_PENDING" };
     }
 
     const token = crypto.randomUUID();
@@ -78,6 +78,6 @@ export async function inviteMemberAction(
 
     return { success: true, data: { token } };
   } catch {
-    return { success: false, error: "Failed to send invitation" };
+    return { success: false, error: "INVITATION_CREATE_FAILED" };
   }
 }

@@ -13,7 +13,7 @@ export async function toggleRecurringAction(
   const id = formData.get("id");
 
   if (typeof id !== "string" || id.length === 0) {
-    return { success: false, error: "Template ID is required" };
+    return { success: false, error: "FIELD_REQUIRED" };
   }
 
   const session = await requireSession();
@@ -25,15 +25,15 @@ export async function toggleRecurringAction(
     });
 
     if (!template) {
-      return { success: false, error: "Recurring template not found" };
+      return { success: false, error: "RECURRING_NOT_FOUND" };
     }
 
     if (template.userId !== session.user.id) {
-      return { success: false, error: "You can only modify your own templates" };
+      return { success: false, error: "RECURRING_NOT_OWNED" };
     }
 
     if (!template.recurrenceRule) {
-      return { success: false, error: "This transaction has no recurrence rule" };
+      return { success: false, error: "RECURRING_NO_RULE" };
     }
 
     await prisma.recurrenceRule.update({
@@ -45,6 +45,6 @@ export async function toggleRecurringAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to toggle recurring status" };
+    return { success: false, error: "RECURRING_TOGGLE_FAILED" };
   }
 }

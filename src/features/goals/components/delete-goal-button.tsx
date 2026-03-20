@@ -1,3 +1,7 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 import { deleteGoalAction } from "@/features/goals/actions/delete-goal.action";
 import { DeleteEntityButton } from "@/shared/components/delete-entity-button";
 
@@ -7,13 +11,15 @@ interface DeleteGoalButtonProps {
 }
 
 export function DeleteGoalButton({ goalId, goalName }: DeleteGoalButtonProps) {
+  const t = useTranslations("goals.deleteDialog");
+
   return (
     <DeleteEntityButton
       action={deleteGoalAction}
       formEntries={{ id: goalId }}
-      dialogTitle="Delete Goal"
-      dialogDescription={`Are you sure you want to delete "${goalName}"? This will also delete all contributions. This action cannot be undone.`}
-      successMessage="Goal deleted successfully"
+      dialogTitle={t("title")}
+      dialogDescription={t("description", { name: goalName })}
+      successMessage={t("success")}
     />
   );
 }

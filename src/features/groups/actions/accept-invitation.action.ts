@@ -14,7 +14,7 @@ export async function acceptInvitationAction(
   const token = formData.get("token");
 
   if (typeof token !== "string" || token.length === 0) {
-    return { success: false, error: "Invitation token is required" };
+    return { success: false, error: "FIELD_REQUIRED" };
   }
 
   const session = await requireSession();
@@ -25,15 +25,15 @@ export async function acceptInvitationAction(
     });
 
     if (!invitation) {
-      return { success: false, error: "Invitation not found" };
+      return { success: false, error: "INVITATION_NOT_FOUND" };
     }
 
     if (invitation.status !== InvitationStatus.PENDING) {
-      return { success: false, error: "This invitation has already been used" };
+      return { success: false, error: "INVITATION_ALREADY_USED" };
     }
 
     if (invitation.expiresAt < new Date()) {
-      return { success: false, error: "This invitation has expired" };
+      return { success: false, error: "INVITATION_EXPIRED" };
     }
 
     const existingMember = await prisma.groupMember.findUnique({
@@ -46,7 +46,7 @@ export async function acceptInvitationAction(
     });
 
     if (existingMember) {
-      return { success: false, error: "You are already a member of this group" };
+      return { success: false, error: "GROUP_MEMBER_ALREADY_EXISTS" };
     }
 
     await prisma.$transaction(async (tx) => {
@@ -69,6 +69,6 @@ export async function acceptInvitationAction(
     if (error instanceof Error && "digest" in error) {
       throw error;
     }
-    return { success: false, error: "Failed to accept invitation" };
+    return { success: false, error: "INVITATION_ACCEPT_FAILED" };
   }
 }

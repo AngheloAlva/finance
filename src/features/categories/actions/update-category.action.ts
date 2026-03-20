@@ -43,22 +43,22 @@ export async function updateCategoryAction(
     });
 
     if (!existing) {
-      return { success: false, error: "Category not found" };
+      return { success: false, error: "CATEGORY_NOT_FOUND" };
     }
 
     if (existing.scope === CategoryScope.SYSTEM) {
-      return { success: false, error: "Cannot edit system categories" };
+      return { success: false, error: "CATEGORY_SYSTEM_IMMUTABLE" };
     }
 
     if (existing.userId !== session.user.id) {
-      return { success: false, error: "You can only edit your own categories" };
+      return { success: false, error: "CATEGORY_NOT_OWNED" };
     }
 
     if (parentId) {
       if (parentId === id) {
         return {
           success: false,
-          error: "A category cannot be its own parent",
+          error: "CATEGORY_SELF_PARENT",
         };
       }
 
@@ -67,13 +67,13 @@ export async function updateCategoryAction(
       });
 
       if (!parent) {
-        return { success: false, error: "Parent category not found" };
+        return { success: false, error: "CATEGORY_PARENT_NOT_FOUND" };
       }
 
       if (parent.parentId !== null) {
         return {
           success: false,
-          error: "Cannot nest more than 2 levels deep",
+          error: "CATEGORY_NESTING_TOO_DEEP",
         };
       }
     }
@@ -96,6 +96,6 @@ export async function updateCategoryAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to update category" };
+    return { success: false, error: "CATEGORY_UPDATE_FAILED" };
   }
 }

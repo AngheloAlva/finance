@@ -7,6 +7,7 @@ interface CurrencyDisplayProps {
   currency: CurrencyCode;
   colorize?: boolean;
   className?: string;
+  locale?: string;
 }
 
 export function CurrencyDisplay({
@@ -14,8 +15,9 @@ export function CurrencyDisplay({
   currency,
   colorize = false,
   className,
+  locale,
 }: CurrencyDisplayProps) {
-  const formatted = formatCurrency(cents, currency);
+  const formatted = formatCurrency(cents, currency, locale);
 
   return (
     <span

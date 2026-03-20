@@ -35,13 +35,13 @@ export async function updateInvestmentValueAction(
     });
 
     if (!investment) {
-      return { success: false, error: "Investment not found" };
+      return { success: false, error: "INVESTMENT_NOT_FOUND" };
     }
 
     if (investment.userId !== session.user.id) {
       return {
         success: false,
-        error: "You can only update your own investments",
+        error: "INVESTMENT_NOT_OWNED",
       };
     }
 
@@ -83,6 +83,6 @@ export async function updateInvestmentValueAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to update investment value" };
+    return { success: false, error: "INVESTMENT_VALUE_UPDATE_FAILED" };
   }
 }

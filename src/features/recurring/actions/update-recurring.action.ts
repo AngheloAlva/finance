@@ -56,15 +56,15 @@ export async function updateRecurringAction(
     });
 
     if (!existing) {
-      return { success: false, error: "Recurring template not found" };
+      return { success: false, error: "RECURRING_NOT_FOUND" };
     }
 
     if (existing.userId !== session.user.id) {
-      return { success: false, error: "You can only edit your own templates" };
+      return { success: false, error: "RECURRING_NOT_OWNED" };
     }
 
     if (!existing.recurrenceRule) {
-      return { success: false, error: "This transaction has no recurrence rule" };
+      return { success: false, error: "RECURRING_NO_RULE" };
     }
 
     const categoryCheck = await assertCategoryAccess(categoryId, session.user.id);
@@ -100,6 +100,6 @@ export async function updateRecurringAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to update recurring transaction" };
+    return { success: false, error: "RECURRING_UPDATE_FAILED" };
   }
 }

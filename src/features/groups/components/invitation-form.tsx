@@ -1,12 +1,14 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { inviteMemberAction } from "@/features/groups/actions/invite-member.action";
+import { FieldError } from "@/shared/components/field-error";
 import type { ActionResult } from "@/shared/types/common.types";
 
 interface InvitationFormProps {
@@ -19,6 +21,8 @@ const initialState: ActionResult<{ token: string }> = {
 };
 
 export function InvitationForm({ groupId }: InvitationFormProps) {
+  const t = useTranslations("groups.invitation");
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     inviteMemberAction,
     initialState,
@@ -26,9 +30,9 @@ export function InvitationForm({ groupId }: InvitationFormProps) {
 
   useEffect(() => {
     if (state.success) {
-      toast.success("Invitation sent successfully");
+      toast.success(t("sentSuccess"));
     }
-  }, [state]);
+  }, [state, t]);
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
@@ -36,15 +40,15 @@ export function InvitationForm({ groupId }: InvitationFormProps) {
 
       {!state.success && state.error && (
         <div className="rounded-none border border-destructive/50 bg-destructive/10 px-3 py-2 text-xs text-destructive">
-          {state.error}
+          {tErrors(state.error as Parameters<typeof tErrors>[0])}
         </div>
       )}
 
       {state.success && (
         <div className="rounded-none border border-emerald-500/50 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-700 dark:text-emerald-400">
-          <p className="font-medium">Invitation created!</p>
+          <p className="font-medium">{t("created")}</p>
           <p className="mt-1 break-all">
-            Share this link:{" "}
+            {t("shareLink")}{" "}
             <code className="rounded bg-muted px-1 py-0.5">
               {typeof window !== "undefined"
                 ? `${window.location.origin}/invite/${state.data.token}`
@@ -55,23 +59,19 @@ export function InvitationForm({ groupId }: InvitationFormProps) {
       )}
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="invite-email">Email Address</Label>
+        <Label htmlFor="invite-email">{t("emailLabel")}</Label>
         <Input
           id="invite-email"
           name="email"
           type="email"
           required
-          placeholder="member@example.com"
+          placeholder={t("emailPlaceholder")}
         />
-        {!state.success && state.fieldErrors?.email && (
-          <p className="text-xs text-destructive">
-            {state.fieldErrors.email[0]}
-          </p>
-        )}
+        {!state.success && <FieldError errors={state.fieldErrors?.email} />}
       </div>
 
       <Button type="submit" disabled={isPending} className="w-full">
-        {isPending ? "Sending..." : "Send Invitation"}
+        {isPending ? t("sending") : t("sendInvitation")}
       </Button>
     </form>
   );

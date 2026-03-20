@@ -6,29 +6,10 @@ import type {
   FinancialSnapshot,
 } from "@/features/simulations/types/simulations.types";
 
-const MONTH_LABELS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-] as const;
-
 function formatMonthKey(date: Date): string {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, "0");
   return `${y}-${m}`;
-}
-
-function formatMonthLabel(date: Date): string {
-  return MONTH_LABELS[date.getMonth()]!;
 }
 
 export function computeAffordability(
@@ -90,9 +71,10 @@ export function computeAffordability(
 
     const balanceWithPurchase = balanceWithout - purchaseExpenseThisMonth;
 
+    const mk = formatMonthKey(projDate);
     cashFlowProjection.push({
-      month: formatMonthKey(projDate),
-      label: formatMonthLabel(projDate),
+      month: mk,
+      label: mk,
       income: monthlyIncome,
       expenses: monthlyExpenses + purchaseExpenseThisMonth,
       balanceWithPurchase,

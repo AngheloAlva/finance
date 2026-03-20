@@ -24,13 +24,13 @@ export async function deleteInvestmentAction(
     });
 
     if (!investment) {
-      return { success: false, error: "Investment not found" };
+      return { success: false, error: "INVESTMENT_NOT_FOUND" };
     }
 
     if (investment.userId !== session.user.id) {
       return {
         success: false,
-        error: "You can only delete your own investments",
+        error: "INVESTMENT_NOT_OWNED",
       };
     }
 
@@ -39,7 +39,7 @@ export async function deleteInvestmentAction(
     revalidatePath("/investments");
     revalidatePath("/");
   } catch {
-    return { success: false, error: "Failed to delete investment" };
+    return { success: false, error: "INVESTMENT_DELETE_FAILED" };
   }
 
   redirect("/investments");

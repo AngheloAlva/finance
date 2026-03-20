@@ -9,10 +9,10 @@ import { formatZodErrors } from "@/shared/lib/action-utils";
 import type { ActionResult } from "@/shared/types/common.types";
 
 const loginSchema = z.object({
-  email: z.email({ error: "Please enter a valid email address" }),
+  email: z.email({ error: "invalidEmail" }),
   password: z
     .string()
-    .min(8, { error: "Password must be at least 8 characters" }),
+    .min(8, { error: "minLength8" }),
 });
 
 export async function loginAction(
@@ -40,7 +40,7 @@ export async function loginAction(
   } catch {
     return {
       success: false,
-      error: "Invalid credentials",
+      error: "AUTH_INVALID_CREDENTIALS",
     };
   }
 

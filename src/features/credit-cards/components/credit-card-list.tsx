@@ -1,5 +1,6 @@
-import Link from "next/link"
+import { getTranslations } from "next-intl/server"
 
+import { Link } from "@/i18n/navigation"
 import { computeStatementDates } from "@/features/credit-cards/lib/billing-cycle.utils"
 import { getCreditCards } from "@/features/credit-cards/lib/credit-cards.queries"
 import { CreditCardVisual } from "@/features/credit-cards/components/credit-card-visual"
@@ -10,13 +11,13 @@ interface CreditCardListProps {
 }
 
 export async function CreditCardList({ userId, currency }: CreditCardListProps) {
-	const cards = await getCreditCards(userId)
+	const [cards, t] = await Promise.all([getCreditCards(userId), getTranslations("creditCards")])
 
 	if (cards.length === 0) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-none border border-dashed p-12 text-center">
 				<p className="text-muted-foreground text-sm">
-					No credit cards yet. Add your first card to start tracking your spending.
+					{t("noCardsYet")}
 				</p>
 			</div>
 		)

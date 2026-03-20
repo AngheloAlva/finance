@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -9,6 +9,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import type { GroupWithMemberCount } from "@/features/groups/types/groups.types";
 
 interface GroupCardProps {
@@ -21,7 +22,15 @@ const ROLE_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
   MEMBER: "outline",
 };
 
+const ROLE_KEYS: Record<string, string> = {
+  OWNER: "roleOwner",
+  ADMIN: "roleAdmin",
+  MEMBER: "roleMember",
+};
+
 export function GroupCard({ group }: GroupCardProps) {
+  const t = useTranslations("groups");
+  const tMembers = useTranslations("groups.members");
   return (
     <Link href={`/groups/${group.id}`}>
       <Card className="transition-colors hover:bg-muted/50">
@@ -29,7 +38,7 @@ export function GroupCard({ group }: GroupCardProps) {
           <div className="flex items-center justify-between">
             <CardTitle>{group.name}</CardTitle>
             <Badge variant={ROLE_VARIANT[group.currentUserRole] ?? "outline"}>
-              {group.currentUserRole}
+              {tMembers(ROLE_KEYS[group.currentUserRole] ?? "roleMember")}
             </Badge>
           </div>
           {group.description && (
@@ -43,8 +52,7 @@ export function GroupCard({ group }: GroupCardProps) {
             <div className="flex items-center gap-1">
               <Users className="size-3.5" />
               <span>
-                {group.memberCount}{" "}
-                {group.memberCount === 1 ? "member" : "members"}
+                {t("member", { count: group.memberCount })}
               </span>
             </div>
             <span>{group.currency}</span>

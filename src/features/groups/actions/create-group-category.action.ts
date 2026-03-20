@@ -17,7 +17,7 @@ export async function createGroupCategoryAction(
   const groupId = formData.get("groupId");
 
   if (typeof groupId !== "string" || groupId.length === 0) {
-    return { success: false, error: "Group ID is required" };
+    return { success: false, error: "FIELD_REQUIRED" };
   }
 
   const raw = {
@@ -69,20 +69,20 @@ export async function createGroupCategoryAction(
       });
 
       if (!parent) {
-        return { success: false, error: "Parent category not found" };
+        return { success: false, error: "CATEGORY_PARENT_NOT_FOUND" };
       }
 
       if (parent.scope !== CategoryScope.GROUP || parent.groupId !== groupId) {
         return {
           success: false,
-          error: "Parent category must belong to the same group",
+          error: "CATEGORY_PARENT_WRONG_GROUP",
         };
       }
 
       if (parent.parentId !== null) {
         return {
           success: false,
-          error: "Cannot nest more than 2 levels deep",
+          error: "CATEGORY_NESTING_TOO_DEEP",
         };
       }
     }
@@ -107,6 +107,6 @@ export async function createGroupCategoryAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to create group category" };
+    return { success: false, error: "CATEGORY_CREATE_FAILED" };
   }
 }

@@ -1,4 +1,5 @@
 import { Pencil } from "lucide-react";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,13 +20,15 @@ interface CreditCardDetailProps {
   currency: CurrencyCode;
 }
 
-export function CreditCardDetail({
+export async function CreditCardDetail({
   card,
   transactions,
   cycleStart,
   cycleEnd,
   currency,
 }: CreditCardDetailProps) {
+  const t = await getTranslations("creditCards");
+  const locale = await getLocale();
   const today = new Date();
   const statementDates = computeStatementDates(
     card.closingDay,
@@ -45,7 +48,7 @@ export function CreditCardDetail({
             trigger={
               <Button variant="outline" size="sm">
                 <Pencil className="size-3.5" data-icon="inline-start" />
-                Edit
+                {t("detail.edit")}
               </Button>
             }
           />
@@ -74,12 +77,12 @@ export function CreditCardDetail({
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-medium text-muted-foreground">
-              Closing Date
+              {t("detail.closingDate")}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm font-semibold">
-              {formatDate(statementDates.cycleEnd, "short")}
+              {formatDate(statementDates.cycleEnd, "short", locale)}
             </p>
           </CardContent>
         </Card>
@@ -87,12 +90,12 @@ export function CreditCardDetail({
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-medium text-muted-foreground">
-              Payment Due
+              {t("detail.paymentDue")}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm font-semibold">
-              {formatDate(statementDates.paymentDueDate, "short")}
+              {formatDate(statementDates.paymentDueDate, "short", locale)}
             </p>
           </CardContent>
         </Card>
@@ -100,12 +103,12 @@ export function CreditCardDetail({
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-medium text-muted-foreground">
-              Available Limit
+              {t("detail.availableLimit")}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm font-semibold">
-              {formatCurrency(card.availableLimit, currency)}
+              {formatCurrency(card.availableLimit, currency, locale)}
             </p>
           </CardContent>
         </Card>
@@ -115,14 +118,14 @@ export function CreditCardDetail({
       <Card>
         <CardHeader>
           <CardTitle className="text-sm">
-            Current Cycle Transactions ({formatDate(cycleStart, "short")} -{" "}
-            {formatDate(cycleEnd, "short")})
+            {t("detail.currentCycleTransactions")} ({formatDate(cycleStart, "short", locale)} -{" "}
+            {formatDate(cycleEnd, "short", locale)})
           </CardTitle>
         </CardHeader>
         <CardContent>
           {transactions.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No transactions in the current billing cycle.
+              {t("detail.noCycleTransactions")}
             </p>
           ) : (
             <div className="flex flex-col divide-y">
@@ -136,11 +139,11 @@ export function CreditCardDetail({
                       {tx.description}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {formatDate(tx.date, "short")} - {tx.category.name}
+                      {formatDate(tx.date, "short", locale)} - {tx.category.name}
                     </span>
                   </div>
                   <span className="text-sm font-semibold">
-                    {formatCurrency(tx.amount, currency)}
+                    {formatCurrency(tx.amount, currency, locale)}
                   </span>
                 </div>
               ))}

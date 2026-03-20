@@ -46,7 +46,7 @@ export async function updateProfileAction(
   } catch {
     return {
       success: false,
-      error: "Failed to update profile",
+      error: "PROFILE_UPDATE_FAILED",
     };
   }
 }

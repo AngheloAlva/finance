@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { CalendarIcon } from "lucide-react"
+import { useLocale } from "next-intl"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -48,10 +49,11 @@ function DatePicker({
 		parseDateString(controlledValue ?? defaultValue)
 	)
 
+	const locale = useLocale()
 	const isControlled = controlledValue !== undefined
 	const selectedDate = isControlled ? parseDateString(controlledValue) : internalDate
 	const displayValue = selectedDate
-		? selectedDate.toLocaleDateString("en-US", {
+		? selectedDate.toLocaleDateString(locale, {
 				year: "numeric",
 				month: "short",
 				day: "numeric",

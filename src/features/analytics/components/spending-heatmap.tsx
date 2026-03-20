@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
@@ -15,21 +16,22 @@ interface SpendingHeatmapProps {
 	to: string
 }
 
-const DAY_LABELS = ["Mon", "", "Wed", "", "Fri", "", "Sun"] as const
-const MONTH_LABELS = [
-	"Jan",
-	"Feb",
-	"Mar",
-	"Apr",
-	"May",
-	"Jun",
-	"Jul",
-	"Aug",
-	"Sep",
-	"Oct",
-	"Nov",
-	"Dec",
-] as const
+function getLocaleDayLabels(locale: string): string[] {
+	// Generate Mon, "", Wed, "", Fri, "", Sun using Intl
+	const baseDate = new Date(2024, 0, 1) // Monday Jan 1 2024
+	const labels: string[] = []
+	for (let i = 0; i < 7; i++) {
+		const d = new Date(baseDate)
+		d.setDate(baseDate.getDate() + i)
+		// Only show Mon(0), Wed(2), Fri(4), Sun(6)
+		labels.push(i % 2 === 0 ? d.toLocaleDateString(locale, { weekday: "short" }) : "")
+	}
+	return labels
+}
+
+function getLocaleMonthLabel(monthIndex: number, locale: string): string {
+	return new Date(2024, monthIndex).toLocaleDateString(locale, { month: "short" })
+}
 
 function getIntensityClass(amount: number, thresholds: number[]): string {
 	if (amount === 0) return "bg-muted"
@@ -46,12 +48,16 @@ function getPercentile(sorted: number[], p: number): number {
 }
 
 export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapProps) {
+	const t = useTranslations("analytics.spendingHeatmap")
+	const locale = useLocale()
 	const [tooltip, setTooltip] = useState<{
 		date: string
 		amount: number
 		x: number
 		y: number
 	} | null>(null)
+
+	const dayLabels = useMemo(() => getLocaleDayLabels(locale), [locale])
 
 	const { grid, monthHeaders, thresholds } = useMemo(() => {
 		// Build a map of date -> amount
@@ -110,7 +116,7 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 			// Track month headers
 			const currentMonthIdx = current.getMonth()
 			if (currentMonthIdx !== lastMonth) {
-				months.push({ label: MONTH_LABELS[currentMonthIdx], weekIndex })
+				months.push({ label: getLocaleMonthLabel(currentMonthIdx, locale), weekIndex })
 				lastMonth = currentMonthIdx
 			}
 
@@ -136,17 +142,17 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 		}
 
 		return { grid: gridData, monthHeaders: months, thresholds: t }
-	}, [data, from, to])
+	}, [data, from, to, locale])
 
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Spending Heatmap</CardTitle>
+				<CardTitle>{t("title")}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{data.length === 0 ? (
 					<div className="flex h-[300px] items-center justify-center">
-						<p className="text-muted-foreground text-sm">No spending data for this period</p>
+						<p className="text-muted-foreground text-sm">{t("noData")}</p>
 					</div>
 				) : (
 					<div className="relative overflow-x-auto">
@@ -170,7 +176,7 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 						<div className="mt-5 flex gap-0">
 							{/* Day labels */}
 							<div className="flex w-8 shrink-0 flex-col gap-[2px]">
-								{DAY_LABELS.map((label, i) => (
+								{dayLabels.map((label, i) => (
 									<div key={i} className="text-muted-foreground flex h-3 items-center text-[10px]">
 										{label}
 									</div>
@@ -224,20 +230,20 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 								}}
 							>
 								<p className="font-medium">{tooltip.date}</p>
-								<p className="text-muted-foreground">{formatCurrency(tooltip.amount, currency)}</p>
+								<p className="text-muted-foreground">{formatCurrency(tooltip.amount, currency, locale)}</p>
 							</div>
 						)}
 
 						{/* Legend */}
 						<div className="text-muted-foreground mt-3 flex items-center gap-1 text-[10px]">
-							<span>Less</span>
+							<span>{t("less")}</span>
 							<div className="bg-muted size-3 rounded-none" />
 							<div className="size-3 rounded-none bg-emerald-200 dark:bg-emerald-900" />
 							<div className="size-3 rounded-none bg-emerald-400 dark:bg-emerald-700" />
 							<div className="size-3 rounded-none bg-red-300 dark:bg-red-800" />
 							<div className="size-3 rounded-none bg-red-400 dark:bg-red-600" />
 							<div className="size-3 rounded-none bg-red-500" />
-							<span>More</span>
+							<span>{t("more")}</span>
 						</div>
 					</div>
 				)}

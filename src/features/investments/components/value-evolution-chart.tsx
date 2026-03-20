@@ -9,6 +9,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts"
+import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
@@ -35,11 +36,15 @@ function CustomTooltip({
 	payload,
 	label,
 	currency,
+	valueLabel,
+	locale,
 }: {
 	active?: boolean
 	payload?: TooltipPayloadItem[]
 	label?: string
 	currency: CurrencyCode
+	valueLabel: string
+	locale?: string
 }) {
 	if (!active || !payload?.length) return null
 
@@ -47,25 +52,27 @@ function CustomTooltip({
 		<div className="bg-popover rounded-none border px-3 py-2 text-sm shadow-md">
 			<p className="mb-1 font-medium">{label}</p>
 			<p style={{ color: CHART_COLORS.line }}>
-				Value: {formatCurrency(payload[0].value, currency)}
+				{valueLabel}: {formatCurrency(payload[0].value, currency, locale)}
 			</p>
 		</div>
 	)
 }
 
 export function ValueEvolutionChart({ data, currency }: ValueEvolutionChartProps) {
+	const t = useTranslations("investments.chart")
+	const locale = useLocale()
 	const hasHistory = data.length > 1
 
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle className="text-sm">Value Evolution</CardTitle>
+				<CardTitle className="text-sm">{t("valueEvolution")}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{!hasHistory ? (
 					<div className="flex h-[250px] items-center justify-center">
 						<p className="text-muted-foreground text-sm">
-							No historical data yet. Update the value to start tracking.
+							{t("noHistoricalData")}
 						</p>
 					</div>
 				) : (
@@ -82,10 +89,10 @@ export function ValueEvolutionChart({ data, currency }: ValueEvolutionChartProps
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
-								tickFormatter={(value: number) => formatCurrency(value, currency)}
+								tickFormatter={(value: number) => formatCurrency(value, currency, locale)}
 								width={80}
 							/>
-							<Tooltip content={<CustomTooltip currency={currency} />} />
+							<Tooltip content={<CustomTooltip currency={currency} valueLabel={t("value")} locale={locale} />} />
 							<Line
 								type="monotone"
 								dataKey="value"

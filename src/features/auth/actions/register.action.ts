@@ -10,15 +10,15 @@ import type { ActionResult } from "@/shared/types/common.types";
 
 const registerSchema = z
   .object({
-    name: z.string().min(2, { error: "Name must be at least 2 characters" }),
-    email: z.email({ error: "Please enter a valid email address" }),
+    name: z.string().min(2, { error: "minLength2" }),
+    email: z.email({ error: "invalidEmail" }),
     password: z
       .string()
-      .min(8, { error: "Password must be at least 8 characters" }),
+      .min(8, { error: "minLength8" }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: "passwordsMismatch",
     path: ["confirmPassword"],
   });
 
@@ -49,7 +49,7 @@ export async function registerAction(
   } catch {
     return {
       success: false,
-      error: "Could not create account. Please try again.",
+      error: "AUTH_REGISTER_FAILED",
     };
   }
 

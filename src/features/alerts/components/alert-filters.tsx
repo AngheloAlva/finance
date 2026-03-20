@@ -1,18 +1,21 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const FILTER_TABS = [
-  { label: "All", value: "" },
-  { label: "Pending", value: "PENDING" },
-  { label: "Read", value: "READ" },
-  { label: "Dismissed", value: "DISMISSED" },
+  { labelKey: "all", value: "" },
+  { labelKey: "pending", value: "PENDING" },
+  { labelKey: "read", value: "READ" },
+  { labelKey: "dismissed", value: "DISMISSED" },
 ] as const;
 
 export function AlertFilters() {
+  const t = useTranslations("alerts.filters");
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentStatus = searchParams.get("status") ?? "";
@@ -38,7 +41,7 @@ export function AlertFilters() {
             currentStatus === tab.value && "bg-muted",
           )}
         >
-          {tab.label}
+          {t(tab.labelKey)}
         </Button>
       ))}
     </div>

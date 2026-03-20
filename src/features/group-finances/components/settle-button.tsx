@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect } from "react";
 import { Check, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,8 @@ interface SettleButtonProps {
 }
 
 export function SettleButton({ splitId, isPaid, onSettle }: SettleButtonProps) {
+  const t = useTranslations("groupFinances.settle");
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     settleSplitAction,
     INITIAL_VOID_STATE,
@@ -22,14 +25,14 @@ export function SettleButton({ splitId, isPaid, onSettle }: SettleButtonProps) {
 
   useEffect(() => {
     if (state.success) {
-      toast.success(isPaid ? "Split marked as unpaid" : "Split marked as paid");
+      toast.success(isPaid ? t("markedUnpaid") : t("markedPaid"));
       onSettle?.();
     }
 
     if (!state.success && state.error) {
-      toast.error(state.error);
+      toast.error(tErrors(state.error as Parameters<typeof tErrors>[0]));
     }
-  }, [state, isPaid, onSettle]);
+  }, [state, isPaid, onSettle, t]);
 
   function handleClick() {
     const formData = new FormData();
@@ -48,12 +51,12 @@ export function SettleButton({ splitId, isPaid, onSettle }: SettleButtonProps) {
       {isPaid ? (
         <>
           <Check className="size-3" />
-          Paid
+          {t("paid")}
         </>
       ) : (
         <>
           <X className="size-3" />
-          Unpaid
+          {t("unpaid")}
         </>
       )}
     </Button>

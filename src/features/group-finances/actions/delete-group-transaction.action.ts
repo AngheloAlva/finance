@@ -26,11 +26,11 @@ export async function deleteGroupTransactionAction(
     });
 
     if (!transaction) {
-      return { success: false, error: "Transaction not found" };
+      return { success: false, error: "TRANSACTION_NOT_FOUND" };
     }
 
     if (!transaction.groupId) {
-      return { success: false, error: "This is not a group transaction" };
+      return { success: false, error: "TRANSACTION_NOT_GROUP" };
     }
 
     // Verify the user is a member of the group
@@ -40,7 +40,7 @@ export async function deleteGroupTransactionAction(
     );
 
     if (!membership) {
-      return { success: false, error: "You are not a member of this group" };
+      return { success: false, error: "GROUP_NOT_MEMBER" };
     }
 
     // Only the payer or an admin/owner can delete
@@ -50,7 +50,7 @@ export async function deleteGroupTransactionAction(
     ) {
       return {
         success: false,
-        error: "Only the payer or a group admin can delete this transaction",
+        error: "GROUP_TRANSACTION_DELETE_PERMISSION_DENIED",
       };
     }
 
@@ -62,6 +62,6 @@ export async function deleteGroupTransactionAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to delete group transaction" };
+    return { success: false, error: "GROUP_TRANSACTION_DELETE_FAILED" };
   }
 }

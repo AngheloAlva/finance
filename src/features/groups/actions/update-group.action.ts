@@ -48,6 +48,6 @@ export async function updateGroupAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to update group" };
+    return { success: false, error: "GROUP_UPDATE_FAILED" };
   }
 }

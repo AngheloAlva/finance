@@ -5,13 +5,13 @@ import type { CurrencyCode } from "@/shared/lib/constants";
 
 export const affordabilityInputSchema = z
   .object({
-    purchaseAmount: z.string().min(1, { error: "Amount is required" }),
+    purchaseAmount: z.string().min(1, { error: "required" }),
     currencyCode: z.string().default("USD"),
     installments: z.coerce
       .number()
       .int()
-      .min(1, { error: "Minimum 1 installment" })
-      .max(48, { error: "Maximum 48 installments" })
+      .min(1, { error: "minInstallments1" })
+      .max(48, { error: "maxInstallments48" })
       .default(1),
     creditCardId: z.string().optional(),
   })
@@ -21,7 +21,7 @@ export const affordabilityInputSchema = z
   }))
   .pipe(
     z.object({
-      purchaseAmount: z.number().int().positive({ error: "Amount must be greater than zero" }),
+      purchaseAmount: z.number().int().positive({ error: "positive" }),
       currencyCode: z.string(),
       installments: z.number().int(),
       creditCardId: z.string().optional(),
@@ -29,7 +29,7 @@ export const affordabilityInputSchema = z
   );
 
 export const savingsGoalInputSchema = z.object({
-  goalId: z.string().min(1, { error: "Please select a goal" }),
+  goalId: z.string().min(1, { error: "required" }),
   adjustedMonthlyContribution: z
     .string()
     .optional()
@@ -60,8 +60,8 @@ export const debtPayoffInputSchema = z.object({
 export const incomeChangeInputSchema = z.object({
   changePercent: z.coerce
     .number()
-    .min(-100, { error: "Cannot decrease by more than 100%" })
-    .max(1000, { error: "Maximum 1000% increase" }),
+    .min(-100, { error: "minPercent100" })
+    .max(1000, { error: "maxPercent1000" }),
 });
 
 export const budgetOptimizerInputSchema = z.object({

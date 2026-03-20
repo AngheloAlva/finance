@@ -1,8 +1,11 @@
-import Link from "next/link"
+"use client"
+
+import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { CategoryIcon } from "@/shared/components/category-icon"
 import { CurrencyDisplay } from "@/shared/components/currency-display"
+import { Link } from "@/i18n/navigation"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { formatDate } from "@/shared/lib/formatters"
 
@@ -15,20 +18,23 @@ interface RecentTransactionsProps {
 }
 
 export function RecentTransactions({ transactions, currency }: RecentTransactionsProps) {
+	const t = useTranslations("dashboard")
+	const locale = useLocale()
+
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Recent Transactions</CardTitle>
+				<CardTitle>{t("recentTransactions")}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{transactions.length === 0 ? (
 					<div className="flex flex-col items-center gap-2 py-8 text-center">
-						<p className="text-muted-foreground text-sm">No transactions yet</p>
+						<p className="text-muted-foreground text-sm">{t("noTransactions")}</p>
 						<Link
 							href="/transactions"
 							className="text-primary text-sm font-medium underline-offset-4 hover:underline"
 						>
-							Add your first transaction
+							{t("addFirstTransaction")}
 						</Link>
 					</div>
 				) : (
@@ -43,13 +49,14 @@ export function RecentTransactions({ transactions, currency }: RecentTransaction
 								</div>
 								<div className="flex min-w-0 flex-1 flex-col">
 									<p className="truncate text-sm font-medium">{tx.description}</p>
-									<p className="text-muted-foreground text-xs">{formatDate(tx.date, "short")}</p>
+									<p className="text-muted-foreground text-xs">{formatDate(tx.date, "short", locale)}</p>
 								</div>
 								<CurrencyDisplay
 									cents={tx.type === TransactionType.EXPENSE ? -tx.amount : tx.amount}
 									currency={currency}
 									colorize
 									className="text-sm font-medium"
+								locale={locale}
 								/>
 							</li>
 						))}
@@ -62,7 +69,7 @@ export function RecentTransactions({ transactions, currency }: RecentTransaction
 						href="/transactions"
 						className="text-primary text-sm font-medium underline-offset-4 hover:underline"
 					>
-						View all transactions
+						{t("viewAllTransactions")}
 					</Link>
 				</CardFooter>
 			)}

@@ -1,6 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
 
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
 import { RecurringForm } from "@/features/recurring/components/recurring-form"
@@ -16,6 +17,7 @@ interface RecurringDialogProps {
 }
 
 export function RecurringDialog({ mode, template, categories, trigger }: RecurringDialogProps) {
+	const t = useTranslations("recurring.dialog")
 	const defaultValues = template
 		? {
 				id: template.id,
@@ -36,12 +38,12 @@ export function RecurringDialog({ mode, template, categories, trigger }: Recurri
 		<FormDialog
 			trigger={trigger}
 			title={
-				mode === FORM_MODE.CREATE ? "New Recurring Transaction" : "Edit Recurring Transaction"
+				mode === FORM_MODE.CREATE ? t("newTitle") : t("editTitle")
 			}
 			description={
 				mode === FORM_MODE.CREATE
-					? "Set up a recurring transaction template."
-					: "Update the recurring transaction details."
+					? t("newDescription")
+					: t("editDescription")
 			}
 			className="max-h-[90vh] overflow-y-auto sm:max-w-md"
 		>

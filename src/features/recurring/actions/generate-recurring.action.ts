@@ -20,6 +20,6 @@ export async function generateRecurringAction(): Promise<
 
     return { success: true, data: { count } };
   } catch {
-    return { success: false, error: "Failed to generate recurring transactions" };
+    return { success: false, error: "RECURRING_GENERATE_FAILED" };
   }
 }

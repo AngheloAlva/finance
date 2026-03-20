@@ -56,7 +56,7 @@ export async function createGroupTransactionAction(
     const membership = await getGroupMembership(session.user.id, groupId);
 
     if (!membership) {
-      return { success: false, error: "You are not a member of this group" };
+      return { success: false, error: "GROUP_NOT_MEMBER" };
     }
 
     // Fetch all active group members for split generation
@@ -126,6 +126,6 @@ export async function createGroupTransactionAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to create group transaction" };
+    return { success: false, error: "GROUP_TRANSACTION_CREATE_FAILED" };
   }
 }

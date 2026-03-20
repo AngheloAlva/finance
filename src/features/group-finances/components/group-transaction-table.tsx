@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronRight, Trash2 } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,10 +22,10 @@ import { CurrencyDisplay } from "@/shared/components/currency-display";
 import type { CurrencyCode } from "@/shared/lib/constants";
 import { formatDate } from "@/shared/lib/formatters";
 
-const SPLIT_RULE_LABELS = {
-  EQUAL: "Equal",
-  PROPORTIONAL: "Proportional",
-  CUSTOM: "Custom",
+const SPLIT_RULE_KEYS = {
+  EQUAL: "equal",
+  PROPORTIONAL: "proportional",
+  CUSTOM: "custom",
 } as const;
 
 interface GroupTransactionTableProps {
@@ -36,6 +37,9 @@ export function GroupTransactionTable({
   transactions,
   currency,
 }: GroupTransactionTableProps) {
+  const t = useTranslations("groupFinances.table");
+  const tSplit = useTranslations("groupFinances.splitRules");
+  const locale = useLocale();
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
 
   function toggleRow(id: string) {
@@ -56,13 +60,13 @@ export function GroupTransactionTable({
         <TableHeader>
           <TableRow>
             <TableHead />
-            <TableHead>Date</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Payer</TableHead>
-            <TableHead>Split</TableHead>
-            <TableHead className="w-20">Actions</TableHead>
+            <TableHead>{t("date")}</TableHead>
+            <TableHead>{t("description")}</TableHead>
+            <TableHead>{t("amount")}</TableHead>
+            <TableHead>{t("category")}</TableHead>
+            <TableHead>{t("payer")}</TableHead>
+            <TableHead>{t("split")}</TableHead>
+            <TableHead className="w-20">{t("actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -71,7 +75,7 @@ export function GroupTransactionTable({
               colSpan={8}
               className="py-8 text-center text-muted-foreground"
             >
-              No transactions found.
+              {t("noTransactions")}
             </TableCell>
           </TableRow>
         </TableBody>
@@ -84,13 +88,13 @@ export function GroupTransactionTable({
       <TableHeader>
         <TableRow>
           <TableHead className="w-8" />
-          <TableHead>Date</TableHead>
-          <TableHead>Description</TableHead>
-          <TableHead>Amount</TableHead>
-          <TableHead>Category</TableHead>
-          <TableHead>Payer</TableHead>
-          <TableHead>Split</TableHead>
-          <TableHead className="w-20">Actions</TableHead>
+          <TableHead>{t("date")}</TableHead>
+          <TableHead>{t("description")}</TableHead>
+          <TableHead>{t("amount")}</TableHead>
+          <TableHead>{t("category")}</TableHead>
+          <TableHead>{t("payer")}</TableHead>
+          <TableHead>{t("split")}</TableHead>
+          <TableHead className="w-20">{t("actions")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -127,6 +131,8 @@ function TransactionRow({
   isExpanded: boolean;
   onToggle: () => void;
 }) {
+  const tSplit = useTranslations("groupFinances.splitRules");
+  const locale = useLocale();
   return (
     <>
       <TableRow>
@@ -139,10 +145,10 @@ function TransactionRow({
             )}
           </Button>
         </TableCell>
-        <TableCell>{formatDate(tx.date, "short")}</TableCell>
+        <TableCell>{formatDate(tx.date, "short", locale)}</TableCell>
         <TableCell className="max-w-48 truncate">{tx.description}</TableCell>
         <TableCell>
-          <CurrencyDisplay cents={tx.amount} currency={currency} />
+          <CurrencyDisplay cents={tx.amount} currency={currency} locale={locale} />
         </TableCell>
         <TableCell>
           <span className="inline-flex items-center gap-1.5">
@@ -153,8 +159,7 @@ function TransactionRow({
         <TableCell>{tx.payer.name ?? tx.payer.email}</TableCell>
         <TableCell>
           <Badge variant="outline">
-            {SPLIT_RULE_LABELS[tx.splitRule as keyof typeof SPLIT_RULE_LABELS] ??
-              tx.splitRule}
+            {tSplit(SPLIT_RULE_KEYS[tx.splitRule as keyof typeof SPLIT_RULE_KEYS] ?? tx.splitRule)}
           </Badge>
         </TableCell>
         <TableCell>
@@ -173,7 +178,7 @@ function TransactionRow({
               {split.userName ?? split.userEmail}
             </TableCell>
             <TableCell>
-              <CurrencyDisplay cents={split.amount} currency={currency} />
+              <CurrencyDisplay cents={split.amount} currency={currency} locale={locale} />
             </TableCell>
             <TableCell colSpan={2} />
             <TableCell colSpan={2}>

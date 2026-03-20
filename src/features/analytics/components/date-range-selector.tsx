@@ -1,10 +1,21 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
-import { getDateRangePresets } from "@/features/analytics/lib/analytics.utils";
+
+const PRESET_VALUES = ["30d", "3m", "6m", "12m", "ytd"] as const;
+
+const PRESET_LABEL_KEYS: Record<string, string> = {
+  "30d": "last30Days",
+  "3m": "last3Months",
+  "6m": "last6Months",
+  "12m": "last12Months",
+  ytd: "yearToDate",
+} as const;
 
 interface DateRangeSelectorProps {
   currentPreset: string;
@@ -17,9 +28,9 @@ export function DateRangeSelector({
   from,
   to,
 }: DateRangeSelectorProps) {
+  const t = useTranslations("analytics.dateRange");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const presets = getDateRangePresets();
 
   function selectPreset(value: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -45,14 +56,14 @@ export function DateRangeSelector({
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      {presets.map((preset) => (
+      {PRESET_VALUES.map((value) => (
         <Button
-          key={preset.value}
-          variant={currentPreset === preset.value ? "default" : "outline"}
+          key={value}
+          variant={currentPreset === value ? "default" : "outline"}
           size="sm"
-          onClick={() => selectPreset(preset.value)}
+          onClick={() => selectPreset(value)}
         >
-          {preset.label}
+          {t(PRESET_LABEL_KEYS[value])}
         </Button>
       ))}
 
@@ -61,14 +72,14 @@ export function DateRangeSelector({
           value={from}
           onChange={(value) => handleCustomDate("from", value)}
           className="h-8 w-[160px] text-xs"
-          placeholder="From"
+          placeholder={t("from")}
         />
-        <span className="text-xs text-muted-foreground">to</span>
+        <span className="text-xs text-muted-foreground">{t("to")}</span>
         <DatePicker
           value={to}
           onChange={(value) => handleCustomDate("to", value)}
           className="h-8 w-[160px] text-xs"
-          placeholder="To"
+          placeholder={t("from")}
         />
       </div>
     </div>

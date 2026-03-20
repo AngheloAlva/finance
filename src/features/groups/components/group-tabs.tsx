@@ -1,10 +1,10 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { useTranslations } from "next-intl"
 import type { GroupRole } from "@/generated/prisma/enums"
 
 import { cn } from "@/lib/utils"
+import { Link, usePathname } from "@/i18n/navigation"
 import { canManageCategories } from "@/features/groups/lib/groups.permissions.shared"
 
 interface GroupTabsProps {
@@ -14,15 +14,16 @@ interface GroupTabsProps {
 
 export function GroupTabs({ groupId, currentUserRole }: GroupTabsProps) {
 	const pathname = usePathname()
+	const t = useTranslations("groups.tabs")
 	const showSettings = canManageCategories(currentUserRole)
 
 	const tabs = [
-		{ label: "Members", href: `/groups/${groupId}` },
-		{ label: "Transactions", href: `/groups/${groupId}/transactions` },
-		{ label: "Dashboard", href: `/groups/${groupId}/dashboard` },
-		{ label: "Goals", href: `/groups/${groupId}/goals` },
-		{ label: "Categories", href: `/groups/${groupId}/categories` },
-		...(showSettings ? [{ label: "Settings", href: `/groups/${groupId}/settings` }] : []),
+		{ label: t("members"), href: `/groups/${groupId}` },
+		{ label: t("transactions"), href: `/groups/${groupId}/transactions` },
+		{ label: t("dashboard"), href: `/groups/${groupId}/dashboard` },
+		{ label: t("goals"), href: `/groups/${groupId}/goals` },
+		{ label: t("categories"), href: `/groups/${groupId}/categories` },
+		...(showSettings ? [{ label: t("settings"), href: `/groups/${groupId}/settings` }] : []),
 	]
 
 	return (

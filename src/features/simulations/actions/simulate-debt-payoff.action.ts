@@ -16,6 +16,6 @@ export async function simulateDebtPayoffAction(
     const simulation = computeDebtPayoff(snapshot);
     return { success: true, data: simulation };
   } catch {
-    return { success: false, error: "Failed to run debt payoff simulation" };
+    return { success: false, error: "SIMULATION_DEBT_PAYOFF_FAILED" };
   }
 }

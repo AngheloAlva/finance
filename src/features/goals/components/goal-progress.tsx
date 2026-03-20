@@ -8,6 +8,7 @@ interface GoalProgressProps {
 	percentage: number
 	currency: CurrencyCode
 	compact?: boolean
+	locale?: string
 }
 
 export function GoalProgress({
@@ -16,6 +17,7 @@ export function GoalProgress({
 	percentage,
 	currency,
 	compact = false,
+	locale,
 }: GoalProgressProps) {
 	return (
 		<div className="flex flex-col gap-1.5">
@@ -42,7 +44,7 @@ export function GoalProgress({
 			>
 				<span>{percentage}%</span>
 				<span>
-					{formatCurrency(currentAmount, currency)} / {formatCurrency(targetAmount, currency)}
+					{formatCurrency(currentAmount, currency, locale)} / {formatCurrency(targetAmount, currency, locale)}
 				</span>
 			</div>
 		</div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,7 @@ import { simulateIncomeChangeAction } from "@/features/simulations/actions/simul
 import { IncomeChangeResults } from "@/features/simulations/components/income-change-results";
 import { SimulationEmptyState } from "@/features/simulations/components/simulation-empty-state";
 import type { IncomeImpactResult } from "@/features/simulations/types/simulations.types";
+import { FieldError } from "@/shared/components/field-error";
 import type { CurrencyCode } from "@/shared/lib/constants";
 import type { ActionResult } from "@/shared/types/common.types";
 
@@ -23,6 +25,8 @@ const initialState: ActionResult<IncomeImpactResult> = {
 };
 
 export function IncomeChangeForm({ currency }: IncomeChangeFormProps) {
+  const t = useTranslations("simulations.incomeChange");
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     simulateIncomeChangeAction,
     initialState,
@@ -34,7 +38,7 @@ export function IncomeChangeForm({ currency }: IncomeChangeFormProps) {
         <form action={formAction} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="changePercent">
-              Income Change (%)
+              {t("changePercent")}
             </Label>
             <Input
               id="changePercent"
@@ -43,34 +47,29 @@ export function IncomeChangeForm({ currency }: IncomeChangeFormProps) {
               min={-100}
               max={1000}
               step={1}
-              placeholder="e.g. 20 for +20%, -30 for -30%"
+              placeholder={t("changePlaceholder")}
               required
               disabled={isPending}
             />
             <p className="text-xs text-muted-foreground">
-              Positive for increase, negative for decrease. Range: -100% to
-              +1000%.
+              {t("changeHelp")}
             </p>
-            {!state.success && state.fieldErrors?.changePercent && (
-              <p className="text-xs text-destructive">
-                {state.fieldErrors.changePercent[0]}
-              </p>
-            )}
+            {!state.success && <FieldError errors={state.fieldErrors?.changePercent} />}
           </div>
 
           <Button type="submit" disabled={isPending} className="w-full">
             {isPending ? (
               <>
                 <Spinner className="mr-2" />
-                Simulating...
+                {t("simulating")}
               </>
             ) : (
-              "Simulate Income Change"
+              t("simulate")
             )}
           </Button>
 
           {!state.success && state.error && !state.fieldErrors && (
-            <p className="text-xs text-destructive">{state.error}</p>
+            <p className="text-xs text-destructive">{tErrors(state.error as Parameters<typeof tErrors>[0])}</p>
           )}
         </form>
       </div>
@@ -80,8 +79,8 @@ export function IncomeChangeForm({ currency }: IncomeChangeFormProps) {
           <IncomeChangeResults result={state.data} currency={currency} />
         ) : (
           <SimulationEmptyState
-            title="Income Impact Simulator"
-            description="Enter a percentage change to see how it affects your savings rate, goal timelines, and debt coverage."
+            title={t("emptyTitle")}
+            description={t("emptyDescription")}
           />
         )}
       </div>

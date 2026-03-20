@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { CheckCheck } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { markAllReadAction } from "@/features/alerts/actions/mark-all-read.action";
@@ -13,6 +14,7 @@ const initialState: ActionResult<{ count: number }> = {
 };
 
 export function MarkAllReadButton() {
+  const t = useTranslations("alerts");
   const [, action, isPending] = useActionState(
     async () => {
       return markAllReadAction();
@@ -24,7 +26,7 @@ export function MarkAllReadButton() {
     <form action={action}>
       <Button type="submit" variant="outline" size="sm" disabled={isPending}>
         <CheckCheck className="size-4" />
-        {isPending ? "Marking..." : "Mark All as Read"}
+        {isPending ? t("marking") : t("markAllRead")}
       </Button>
     </form>
   );

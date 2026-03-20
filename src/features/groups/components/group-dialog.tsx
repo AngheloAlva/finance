@@ -1,6 +1,7 @@
 "use client"
 
 import type { ReactNode } from "react"
+import { useTranslations } from "next-intl"
 
 import { GroupForm } from "@/features/groups/components/group-form"
 import type { GroupWithMemberCount } from "@/features/groups/types/groups.types"
@@ -14,6 +15,7 @@ interface GroupDialogProps {
 }
 
 export function GroupDialog({ mode, group, trigger }: GroupDialogProps) {
+	const t = useTranslations("groups.dialog")
 	const defaultValues = group
 		? {
 				id: group.id,
@@ -26,11 +28,11 @@ export function GroupDialog({ mode, group, trigger }: GroupDialogProps) {
 	return (
 		<FormDialog
 			trigger={trigger}
-			title={mode === FORM_MODE.CREATE ? "New Group" : "Edit Group"}
+			title={mode === FORM_MODE.CREATE ? t("newTitle") : t("editTitle")}
 			description={
 				mode === FORM_MODE.CREATE
-					? "Create a new group to share expenses with others."
-					: "Update the group details."
+					? t("newDescription")
+					: t("editDescription")
 			}
 			className="sm:max-w-md"
 		>

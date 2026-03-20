@@ -102,10 +102,6 @@ export async function getCategoryBreakdown(
     .sort((a, b) => b.total - a.total);
 }
 
-const MONTH_LABELS = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-] as const;
 
 export async function getMonthlyFlow(
   userId: string,
@@ -166,7 +162,7 @@ export async function getMonthlyFlow(
 
     return {
       month: monthKey,
-      label: MONTH_LABELS[month - 1],
+      label: monthKey,
       income: bucket.income,
       expenses: bucket.expenses,
     };

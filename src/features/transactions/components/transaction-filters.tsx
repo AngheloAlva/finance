@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -26,6 +27,7 @@ export function TransactionFilters({
   categories,
   currentFilters,
 }: TransactionFiltersProps) {
+  const t = useTranslations("transactions");
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -58,84 +60,84 @@ export function TransactionFilters({
   return (
     <form ref={formRef} action={handleApply} className="flex flex-wrap items-end gap-3">
       <div className="flex flex-col gap-1">
-        <Label className="text-xs">From</Label>
+        <Label className="text-xs">{t("filter.from")}</Label>
         <DatePicker
           name="dateFrom"
           defaultValue={currentFilters.dateFrom ?? undefined}
           className="w-36"
-          placeholder="From"
+          placeholder={t("filter.from")}
         />
       </div>
 
       <div className="flex flex-col gap-1">
-        <Label className="text-xs">To</Label>
+        <Label className="text-xs">{t("filter.to")}</Label>
         <DatePicker
           name="dateTo"
           defaultValue={currentFilters.dateTo ?? undefined}
           className="w-36"
-          placeholder="To"
+          placeholder={t("filter.to")}
         />
       </div>
 
       <div className="flex flex-col gap-1">
-        <Label className="text-xs">Type</Label>
+        <Label className="text-xs">{t("filter.type")}</Label>
         <Select
           name="type"
           defaultValue={currentFilters.type ?? "ALL"}
           items={[
-            { value: "ALL", label: "All" },
-            { value: "INCOME", label: "Income" },
-            { value: "EXPENSE", label: "Expense" },
-            { value: "TRANSFER", label: "Transfer" },
+            { value: "ALL", label: t("filter.all") },
+            { value: "INCOME", label: t("types.income") },
+            { value: "EXPENSE", label: t("types.expense") },
+            { value: "TRANSFER", label: t("types.transfer") },
           ]}
         >
           <SelectTrigger className="w-28">
-            <SelectValue placeholder="All" />
+            <SelectValue placeholder={t("filter.all")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">All</SelectItem>
-            <SelectItem value="INCOME">Income</SelectItem>
-            <SelectItem value="EXPENSE">Expense</SelectItem>
-            <SelectItem value="TRANSFER">Transfer</SelectItem>
+            <SelectItem value="ALL">{t("filter.all")}</SelectItem>
+            <SelectItem value="INCOME">{t("types.income")}</SelectItem>
+            <SelectItem value="EXPENSE">{t("types.expense")}</SelectItem>
+            <SelectItem value="TRANSFER">{t("types.transfer")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div className="flex flex-col gap-1">
-        <Label className="text-xs">Method</Label>
+        <Label className="text-xs">{t("filter.method")}</Label>
         <Select
           name="paymentMethod"
           defaultValue={currentFilters.paymentMethod ?? "ALL"}
           items={[
-            { value: "ALL", label: "All" },
-            { value: "CASH", label: "Cash" },
-            { value: "DEBIT", label: "Debit" },
-            { value: "CREDIT", label: "Credit" },
-            { value: "TRANSFER", label: "Transfer" },
-            { value: "OTHER", label: "Other" },
+            { value: "ALL", label: t("filter.all") },
+            { value: "CASH", label: t("paymentMethods.cash") },
+            { value: "DEBIT", label: t("paymentMethods.debit") },
+            { value: "CREDIT", label: t("paymentMethods.credit") },
+            { value: "TRANSFER", label: t("paymentMethods.transfer") },
+            { value: "OTHER", label: t("paymentMethods.other") },
           ]}
         >
           <SelectTrigger className="w-28">
-            <SelectValue placeholder="All" />
+            <SelectValue placeholder={t("filter.all")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">All</SelectItem>
-            <SelectItem value="CASH">Cash</SelectItem>
-            <SelectItem value="DEBIT">Debit</SelectItem>
-            <SelectItem value="CREDIT">Credit</SelectItem>
-            <SelectItem value="TRANSFER">Transfer</SelectItem>
-            <SelectItem value="OTHER">Other</SelectItem>
+            <SelectItem value="ALL">{t("filter.all")}</SelectItem>
+            <SelectItem value="CASH">{t("paymentMethods.cash")}</SelectItem>
+            <SelectItem value="DEBIT">{t("paymentMethods.debit")}</SelectItem>
+            <SelectItem value="CREDIT">{t("paymentMethods.credit")}</SelectItem>
+            <SelectItem value="TRANSFER">{t("paymentMethods.transfer")}</SelectItem>
+            <SelectItem value="OTHER">{t("paymentMethods.other")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div className="flex flex-col gap-1">
-        <Label className="text-xs">Category</Label>
+        <Label className="text-xs">{t("filter.category")}</Label>
         <Select
           name="categoryId"
           defaultValue={currentFilters.categoryId ?? "ALL"}
           items={[
-            { value: "ALL", label: "All" },
+            { value: "ALL", label: t("filter.all") },
             ...rootCategories.flatMap((cat) => [
               { value: cat.id, label: cat.name },
               ...cat.children.map((child) => ({
@@ -146,10 +148,10 @@ export function TransactionFilters({
           ]}
         >
           <SelectTrigger className="w-36">
-            <SelectValue placeholder="All" />
+            <SelectValue placeholder={t("filter.all")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">All</SelectItem>
+            <SelectItem value="ALL">{t("filter.all")}</SelectItem>
             {rootCategories.map((cat) => (
               <span key={cat.id}>
                 <SelectItem value={cat.id}>{cat.name}</SelectItem>
@@ -166,10 +168,10 @@ export function TransactionFilters({
 
       <div className="flex gap-2">
         <Button type="submit" size="sm">
-          Apply
+          {t("filter.apply")}
         </Button>
         <Button type="button" variant="outline" size="sm" onClick={handleClear}>
-          Clear
+          {t("filter.clear")}
         </Button>
       </div>
     </form>

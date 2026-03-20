@@ -79,6 +79,6 @@ export async function createTransactionAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to create transaction" };
+    return { success: false, error: "TRANSACTION_CREATE_FAILED" };
   }
 }

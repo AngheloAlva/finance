@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -21,6 +22,8 @@ const initialState: ActionResult<BudgetOptimizerResult> = {
 };
 
 export function BudgetOptimizerForm({ currency }: BudgetOptimizerFormProps) {
+  const t = useTranslations("simulations.budgetOptimizer");
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     simulateBudgetOptimizerAction,
     initialState,
@@ -33,15 +36,15 @@ export function BudgetOptimizerForm({ currency }: BudgetOptimizerFormProps) {
           {isPending ? (
             <>
               <Spinner className="mr-2" />
-              Analyzing...
+              {t("analyzing")}
             </>
           ) : (
-            "Analyze Budget"
+            t("analyzeBudget")
           )}
         </Button>
 
         {!state.success && state.error && (
-          <p className="mt-2 text-xs text-destructive">{state.error}</p>
+          <p className="mt-2 text-xs text-destructive">{tErrors(state.error as Parameters<typeof tErrors>[0])}</p>
         )}
       </form>
 
@@ -49,8 +52,8 @@ export function BudgetOptimizerForm({ currency }: BudgetOptimizerFormProps) {
         <BudgetOptimizerResults result={state.data} currency={currency} />
       ) : (
         <SimulationEmptyState
-          title="Budget Optimizer"
-          description="Click 'Analyze Budget' to see your spending breakdown, identify avoidable expenses, and discover potential savings."
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
         />
       )}
     </div>

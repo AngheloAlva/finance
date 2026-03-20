@@ -23,11 +23,11 @@ export async function deleteCreditCardAction(
     });
 
     if (!card) {
-      return { success: false, error: "Credit card not found" };
+      return { success: false, error: "CREDIT_CARD_NOT_FOUND" };
     }
 
     if (card.userId !== session.user.id) {
-      return { success: false, error: "You can only delete your own credit cards" };
+      return { success: false, error: "CREDIT_CARD_NOT_OWNED" };
     }
 
     const linkedTransactions = await prisma.transaction.count({
@@ -37,7 +37,7 @@ export async function deleteCreditCardAction(
     if (linkedTransactions > 0) {
       return {
         success: false,
-        error: `Cannot delete this card. It has ${linkedTransactions} linked transaction${linkedTransactions === 1 ? "" : "s"}. Remove or reassign them first.`,
+        error: "CREDIT_CARD_DELETE_HAS_TRANSACTIONS",
       };
     }
 
@@ -48,6 +48,6 @@ export async function deleteCreditCardAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to delete credit card" };
+    return { success: false, error: "CREDIT_CARD_DELETE_FAILED" };
   }
 }

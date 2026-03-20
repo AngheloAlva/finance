@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 import { CategoryTreeItem } from "@/features/categories/components/category-tree-item";
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types";
 
@@ -5,13 +7,14 @@ interface CategoryTreeProps {
   categories: CategoryWithChildren[];
 }
 
-export function CategoryTree({ categories }: CategoryTreeProps) {
+export async function CategoryTree({ categories }: CategoryTreeProps) {
+  const t = await getTranslations("categories");
   const rootCategories = categories.filter((c) => c.parentId === null);
 
   if (rootCategories.length === 0) {
     return (
       <p className="py-8 text-center text-xs text-muted-foreground">
-        No categories found. Create your first category to get started.
+        {t("noCategoriesFound")}
       </p>
     );
   }

@@ -1,3 +1,5 @@
+"use client"
+
 import {
 	BarChart3,
 	Building2,
@@ -8,11 +10,12 @@ import {
 	HelpCircle,
 	type LucideIcon,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Card, CardContent } from "@/components/ui/card"
 import {
 	INVESTMENT_TYPE_COLORS,
-	INVESTMENT_TYPE_LABELS,
+	INVESTMENT_TYPE_KEYS,
 	calculateReturn,
 	convertToBaseCurrency,
 } from "@/features/investments/lib/investments.utils"
@@ -34,9 +37,11 @@ const TYPE_ICONS: Record<string, LucideIcon> = {
 interface InvestmentCardProps {
 	investment: Investment
 	userCurrency: CurrencyCode
+	locale?: string
 }
 
-export function InvestmentCard({ investment, userCurrency }: InvestmentCardProps) {
+export function InvestmentCard({ investment, userCurrency, locale }: InvestmentCardProps) {
+	const tTypes = useTranslations("investments.types")
 	const Icon = TYPE_ICONS[investment.type] ?? HelpCircle
 	const returnData = calculateReturn(
 		investment.initialAmount,
@@ -65,18 +70,18 @@ export function InvestmentCard({ investment, userCurrency }: InvestmentCardProps
 						<p className="truncate text-sm font-semibold">{investment.name}</p>
 						<div className="shrink-0 text-right">
 							<p className="text-sm font-semibold">
-								{formatCurrency(investment.currentValue, investment.currency as CurrencyCode)}
+								{formatCurrency(investment.currentValue, investment.currency as CurrencyCode, locale)}
 							</p>
 							{baseCurrencyValue != null && (
 								<p className="text-xs text-muted-foreground">
-									≈ {formatCurrency(baseCurrencyValue, userCurrency)}
+									≈ {formatCurrency(baseCurrencyValue, userCurrency, locale)}
 								</p>
 							)}
 						</div>
 					</div>
 					<div className="flex items-center justify-between gap-2">
 						<p className="text-muted-foreground truncate text-xs">
-							{INVESTMENT_TYPE_LABELS[investment.type]} &middot; {investment.institution}
+							{tTypes(INVESTMENT_TYPE_KEYS[investment.type] as Parameters<typeof tTypes>[0])} &middot; {investment.institution}
 						</p>
 						<p
 							className={cn(

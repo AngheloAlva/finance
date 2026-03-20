@@ -1,6 +1,8 @@
 "use client"
 
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
+import { useRouter } from "@/i18n/navigation"
+import { useLocale, useTranslations } from "next-intl"
 import { ArrowDown, ArrowUp, ArrowUpDown, Pencil } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -25,20 +27,6 @@ import { CurrencyDisplay } from "@/shared/components/currency-display"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { formatDate } from "@/shared/lib/formatters"
 
-const PAYMENT_METHOD_LABELS = {
-	CASH: "Cash",
-	DEBIT: "Debit",
-	CREDIT: "Credit",
-	TRANSFER: "Transfer",
-	OTHER: "Other",
-} as const
-
-const TYPE_LABELS = {
-	INCOME: "Income",
-	EXPENSE: "Expense",
-	TRANSFER: "Transfer",
-} as const
-
 const TYPE_VARIANTS = {
 	INCOME: "default",
 	EXPENSE: "destructive",
@@ -54,7 +42,23 @@ interface TransactionTableProps {
 
 type SortableColumn = "date" | "amount" | "description"
 
+const PAYMENT_METHOD_KEYS = {
+	CASH: "paymentMethods.cash",
+	DEBIT: "paymentMethods.debit",
+	CREDIT: "paymentMethods.credit",
+	TRANSFER: "paymentMethods.transfer",
+	OTHER: "paymentMethods.other",
+} as const
+
+const TYPE_KEYS = {
+	INCOME: "types.income",
+	EXPENSE: "types.expense",
+	TRANSFER: "types.transfer",
+} as const
+
 export function TransactionTable({ transactions, categories, creditCards, currency }: TransactionTableProps) {
+	const t = useTranslations("transactions")
+	const locale = useLocale()
 	const router = useRouter()
 	const searchParams = useSearchParams()
 
@@ -89,19 +93,19 @@ export function TransactionTable({ transactions, categories, creditCards, curren
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead>Date</TableHead>
-						<TableHead>Description</TableHead>
-						<TableHead>Category</TableHead>
-						<TableHead>Amount</TableHead>
-						<TableHead>Type</TableHead>
-						<TableHead>Method</TableHead>
-						<TableHead className="w-20">Actions</TableHead>
+						<TableHead>{t("table.date")}</TableHead>
+						<TableHead>{t("table.description")}</TableHead>
+						<TableHead>{t("table.category")}</TableHead>
+						<TableHead>{t("table.amount")}</TableHead>
+						<TableHead>{t("table.type")}</TableHead>
+						<TableHead>{t("table.method")}</TableHead>
+						<TableHead className="w-20">{t("table.actions")}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
 					<TableRow>
 						<TableCell colSpan={7} className="text-muted-foreground py-8 text-center">
-							No transactions found.
+							{t("noTransactionsFound")}
 						</TableCell>
 					</TableRow>
 				</TableBody>
@@ -119,7 +123,7 @@ export function TransactionTable({ transactions, categories, creditCards, curren
 							className="inline-flex items-center gap-1"
 							onClick={() => handleSort("date")}
 						>
-							Date {renderSortIcon("date")}
+							{t("table.date")} {renderSortIcon("date")}
 						</button>
 					</TableHead>
 					<TableHead>
@@ -128,28 +132,28 @@ export function TransactionTable({ transactions, categories, creditCards, curren
 							className="inline-flex items-center gap-1"
 							onClick={() => handleSort("description")}
 						>
-							Description {renderSortIcon("description")}
+							{t("table.description")} {renderSortIcon("description")}
 						</button>
 					</TableHead>
-					<TableHead>Category</TableHead>
+					<TableHead>{t("table.category")}</TableHead>
 					<TableHead>
 						<button
 							type="button"
 							className="inline-flex items-center gap-1"
 							onClick={() => handleSort("amount")}
 						>
-							Amount {renderSortIcon("amount")}
+							{t("table.amount")} {renderSortIcon("amount")}
 						</button>
 					</TableHead>
-					<TableHead>Type</TableHead>
-					<TableHead>Method</TableHead>
-					<TableHead className="w-20">Actions</TableHead>
+					<TableHead>{t("table.type")}</TableHead>
+					<TableHead>{t("table.method")}</TableHead>
+					<TableHead className="w-20">{t("table.actions")}</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
 				{transactions.map((tx) => (
 					<TableRow key={tx.id}>
-						<TableCell>{formatDate(tx.date, "short")}</TableCell>
+						<TableCell>{formatDate(tx.date, "short", locale)}</TableCell>
 						<TableCell className="max-w-48">
 							<span className="flex items-center gap-1.5 truncate">
 								<span className="truncate">{tx.description}</span>
@@ -170,14 +174,15 @@ export function TransactionTable({ transactions, categories, creditCards, curren
 								cents={tx.type === TransactionType.EXPENSE ? -tx.amount : tx.amount}
 								currency={currency}
 								colorize
+								locale={locale}
 							/>
 						</TableCell>
 						<TableCell>
-							<Badge variant={TYPE_VARIANTS[tx.type]}>{TYPE_LABELS[tx.type]}</Badge>
+							<Badge variant={TYPE_VARIANTS[tx.type]}>{t(TYPE_KEYS[tx.type])}</Badge>
 						</TableCell>
 						<TableCell>
 							<div className="flex items-center gap-1.5">
-								<Badge variant="outline">{PAYMENT_METHOD_LABELS[tx.paymentMethod]}</Badge>
+								<Badge variant="outline">{t(PAYMENT_METHOD_KEYS[tx.paymentMethod])}</Badge>
 								{tx.creditCard && (
 									<span className="text-muted-foreground inline-flex items-center gap-1 text-xs">
 										<span

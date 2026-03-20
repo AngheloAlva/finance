@@ -1,6 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
+
+import { FieldError } from "@/shared/components/field-error";
 
 import {
   Select,
@@ -22,6 +25,7 @@ export function CurrencySelect({
   defaultValue,
   error,
 }: CurrencySelectProps) {
+  const t = useTranslations("settings");
   const items = useMemo(
     () =>
       CURRENCIES.map((currency) => ({
@@ -35,7 +39,7 @@ export function CurrencySelect({
     <div className="flex flex-col gap-1.5">
       <Select name={name} defaultValue={defaultValue} items={items}>
         <SelectTrigger className="w-full" aria-invalid={error ? true : undefined}>
-          <SelectValue placeholder="Select currency" />
+          <SelectValue placeholder={t("selectCurrency")} />
         </SelectTrigger>
         <SelectContent>
           {CURRENCIES.map((currency) => (
@@ -45,7 +49,7 @@ export function CurrencySelect({
           ))}
         </SelectContent>
       </Select>
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      <FieldError errors={error} />
     </div>
   );
 }

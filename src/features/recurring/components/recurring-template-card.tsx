@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect } from "react"
 import { Pencil, Trash2 } from "lucide-react"
+import { useLocale, useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { Badge } from "@/components/ui/badge"
@@ -11,7 +12,7 @@ import { deleteRecurringAction } from "@/features/recurring/actions/delete-recur
 import { toggleRecurringAction } from "@/features/recurring/actions/toggle-recurring.action"
 import { RecurringDialog } from "@/features/recurring/components/recurring-dialog"
 import {
-	FREQUENCY_LABELS,
+	FREQUENCY_KEYS,
 	type RecurringTemplateWithRule,
 } from "@/features/recurring/types/recurring.types"
 import { ConfirmDialog } from "@/shared/components/confirm-dialog"
@@ -31,6 +32,10 @@ export function RecurringTemplateCard({
 	currency,
 	categories,
 }: RecurringTemplateCardProps) {
+	const t = useTranslations("recurring.card")
+	const tFreq = useTranslations("recurring.frequencies")
+	const td = useTranslations("recurring.deleteDialog")
+	const locale = useLocale()
 	const [deleteState, deleteAction, isDeleting] = useActionState(
 		deleteRecurringAction,
 		INITIAL_VOID_STATE
@@ -45,21 +50,21 @@ export function RecurringTemplateCard({
 
 	useEffect(() => {
 		if (deleteState.success) {
-			toast.success("Recurring template deleted")
+			toast.success(t("deletedSuccess"))
 		}
 		if (!deleteState.success && deleteState.error) {
 			toast.error(deleteState.error)
 		}
-	}, [deleteState])
+	}, [deleteState, t])
 
 	useEffect(() => {
 		if (toggleState.success) {
-			toast.success(isActive ? "Recurring template paused" : "Recurring template activated")
+			toast.success(isActive ? t("pausedSuccess") : t("activatedSuccess"))
 		}
 		if (!toggleState.success && toggleState.error) {
 			toast.error(toggleState.error)
 		}
-	}, [toggleState, isActive])
+	}, [toggleState, isActive, t])
 
 	function handleDelete() {
 		const formData = new FormData()
@@ -73,10 +78,11 @@ export function RecurringTemplateCard({
 		toggleAction(formData)
 	}
 
+	const frequencyLabel = tFreq(FREQUENCY_KEYS[rule.frequency] as Parameters<typeof tFreq>[0])
 	const frequencyText =
 		rule.interval > 1
-			? `Every ${rule.interval} ${FREQUENCY_LABELS[rule.frequency].toLowerCase()}`
-			: FREQUENCY_LABELS[rule.frequency]
+			? t("everyInterval", { interval: rule.interval, frequency: frequencyLabel.toLowerCase() })
+			: frequencyLabel
 
 	return (
 		<div className="flex items-center justify-between rounded-none border p-4">
@@ -84,7 +90,7 @@ export function RecurringTemplateCard({
 				<div className="flex items-center gap-2">
 					<span className="text-sm font-medium">{template.description}</span>
 					<Badge variant={isActive ? "default" : "secondary"}>
-						{isActive ? "Active" : "Paused"}
+						{isActive ? t("active") : t("paused")}
 					</Badge>
 				</div>
 
@@ -99,8 +105,8 @@ export function RecurringTemplateCard({
 				</div>
 
 				<div className="text-muted-foreground text-xs">
-					Next: {formatDate(rule.nextGenerationDate, "short")}
-					{rule.endDate && <span> - Ends: {formatDate(rule.endDate, "short")}</span>}
+					{t("next", { date: formatDate(rule.nextGenerationDate, "short", locale) })}
+					{rule.endDate && <span> - {t("ends", { date: formatDate(rule.endDate, "short", locale) })}</span>}
 				</div>
 			</div>
 
@@ -109,6 +115,7 @@ export function RecurringTemplateCard({
 					cents={template.amount}
 					currency={currency}
 					className="text-sm font-medium"
+					locale={locale}
 				/>
 
 				<Button
@@ -116,7 +123,7 @@ export function RecurringTemplateCard({
 					size="icon-xs"
 					onClick={handleToggle}
 					disabled={isToggling}
-					title={isActive ? "Pause" : "Activate"}
+					title={isActive ? t("pause") : t("activate")}
 				>
 					{isActive ? (
 						<span className="text-xs">||</span>
@@ -142,8 +149,8 @@ export function RecurringTemplateCard({
 							<Trash2 className="size-3" />
 						</Button>
 					}
-					title="Delete Recurring Template"
-					description={`Are you sure you want to delete "${template.description}"? Generated transactions will not be deleted.`}
+					title={td("title")}
+					description={td("description", { name: template.description })}
 					onConfirm={handleDelete}
 					destructive
 					loading={isDeleting}

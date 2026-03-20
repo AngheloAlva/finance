@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -19,8 +20,9 @@ import { CategorySelect } from "@/features/categories/components/category-select
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types";
 import { createRecurringAction } from "@/features/recurring/actions/create-recurring.action";
 import { updateRecurringAction } from "@/features/recurring/actions/update-recurring.action";
-import { FREQUENCY_LABELS } from "@/features/recurring/types/recurring.types";
+import { FREQUENCY_KEYS } from "@/features/recurring/types/recurring.types";
 import { AmountInput } from "@/features/transactions/components/amount-input";
+import { FieldError } from "@/shared/components/field-error";
 import { FORM_MODE, INITIAL_VOID_STATE, type FormMode } from "@/shared/types/common.types";
 
 interface RecurringFormProps {
@@ -53,6 +55,12 @@ export function RecurringForm({
   categories,
   onSuccess,
 }: RecurringFormProps) {
+  const t = useTranslations("recurring.form");
+  const tt = useTranslations("recurring.types");
+  const tp = useTranslations("recurring.paymentMethods");
+  const tFreq = useTranslations("recurring.frequencies");
+  const tc = useTranslations("common");
+  const tErrors = useTranslations("errors");
   const action =
     mode === FORM_MODE.CREATE ? createRecurringAction : updateRecurringAction;
   const [state, formAction, isPending] = useActionState(action, INITIAL_VOID_STATE);
@@ -61,8 +69,8 @@ export function RecurringForm({
     if (state.success) {
       const message =
         mode === FORM_MODE.CREATE
-          ? "Recurring transaction created successfully"
-          : "Recurring transaction updated successfully";
+          ? t("createdSuccess")
+          : t("updatedSuccess");
       toast.success(message);
       onSuccess?.();
     }
@@ -76,126 +84,102 @@ export function RecurringForm({
 
       {!state.success && state.error && (
         <div className="rounded-none border border-destructive/50 bg-destructive/10 px-3 py-2 text-xs text-destructive">
-          {state.error}
+          {tErrors(state.error as Parameters<typeof tErrors>[0])}
         </div>
       )}
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="rec-amount">Amount</Label>
+        <Label htmlFor="rec-amount">{t("amount")}</Label>
         <AmountInput name="amount" defaultValue={defaultValues?.amount} />
-        {!state.success && state.fieldErrors?.amount && (
-          <p className="text-xs text-destructive">
-            {state.fieldErrors.amount[0]}
-          </p>
-        )}
+        {!state.success && <FieldError errors={state.fieldErrors?.amount} />}
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="rec-description">Description</Label>
+        <Label htmlFor="rec-description">{t("description")}</Label>
         <Input
           id="rec-description"
           name="description"
           type="text"
           defaultValue={defaultValues?.description}
           required
-          placeholder="e.g. Netflix subscription"
+          placeholder={t("descriptionPlaceholder")}
         />
-        {!state.success && state.fieldErrors?.description && (
-          <p className="text-xs text-destructive">
-            {state.fieldErrors.description[0]}
-          </p>
-        )}
+        {!state.success && <FieldError errors={state.fieldErrors?.description} />}
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="rec-notes">Notes (optional)</Label>
+        <Label htmlFor="rec-notes">{t("notes")}</Label>
         <Textarea
           id="rec-notes"
           name="notes"
           defaultValue={defaultValues?.notes ?? ""}
-          placeholder="Any additional details..."
+          placeholder={t("notesPlaceholder")}
         />
-        {!state.success && state.fieldErrors?.notes && (
-          <p className="text-xs text-destructive">
-            {state.fieldErrors.notes[0]}
-          </p>
-        )}
+        {!state.success && <FieldError errors={state.fieldErrors?.notes} />}
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>Type</Label>
-          <Select name="type" defaultValue={defaultValues?.type ?? "EXPENSE"} items={[{ value: "INCOME", label: "Income" }, { value: "EXPENSE", label: "Expense" }, { value: "TRANSFER", label: "Transfer" }]}>
+          <Label>{t("type")}</Label>
+          <Select name="type" defaultValue={defaultValues?.type ?? "EXPENSE"} items={[{ value: "INCOME", label: tt("income") }, { value: "EXPENSE", label: tt("expense") }, { value: "TRANSFER", label: tt("transfer") }]}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select type" />
+              <SelectValue placeholder={t("selectType")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="INCOME">Income</SelectItem>
-              <SelectItem value="EXPENSE">Expense</SelectItem>
-              <SelectItem value="TRANSFER">Transfer</SelectItem>
+              <SelectItem value="INCOME">{tt("income")}</SelectItem>
+              <SelectItem value="EXPENSE">{tt("expense")}</SelectItem>
+              <SelectItem value="TRANSFER">{tt("transfer")}</SelectItem>
             </SelectContent>
           </Select>
-          {!state.success && state.fieldErrors?.type && (
-            <p className="text-xs text-destructive">
-              {state.fieldErrors.type[0]}
-            </p>
-          )}
+          {!state.success && <FieldError errors={state.fieldErrors?.type} />}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label>Payment Method</Label>
+          <Label>{t("paymentMethod")}</Label>
           <Select
             name="paymentMethod"
             defaultValue={defaultValues?.paymentMethod ?? "CASH"}
-            items={[{ value: "CASH", label: "Cash" }, { value: "DEBIT", label: "Debit" }, { value: "CREDIT", label: "Credit" }, { value: "TRANSFER", label: "Transfer" }, { value: "OTHER", label: "Other" }]}
+            items={[{ value: "CASH", label: tp("cash") }, { value: "DEBIT", label: tp("debit") }, { value: "CREDIT", label: tp("credit") }, { value: "TRANSFER", label: tp("transfer") }, { value: "OTHER", label: tp("other") }]}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select method" />
+              <SelectValue placeholder={t("selectMethod")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="CASH">Cash</SelectItem>
-              <SelectItem value="DEBIT">Debit</SelectItem>
-              <SelectItem value="CREDIT">Credit</SelectItem>
-              <SelectItem value="TRANSFER">Transfer</SelectItem>
-              <SelectItem value="OTHER">Other</SelectItem>
+              <SelectItem value="CASH">{tp("cash")}</SelectItem>
+              <SelectItem value="DEBIT">{tp("debit")}</SelectItem>
+              <SelectItem value="CREDIT">{tp("credit")}</SelectItem>
+              <SelectItem value="TRANSFER">{tp("transfer")}</SelectItem>
+              <SelectItem value="OTHER">{tp("other")}</SelectItem>
             </SelectContent>
           </Select>
-          {!state.success && state.fieldErrors?.paymentMethod && (
-            <p className="text-xs text-destructive">
-              {state.fieldErrors.paymentMethod[0]}
-            </p>
-          )}
+          {!state.success && <FieldError errors={state.fieldErrors?.paymentMethod} />}
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>Frequency</Label>
+          <Label>{t("frequency")}</Label>
           <Select
             name="frequency"
             defaultValue={defaultValues?.frequency ?? "MONTHLY"}
-            items={Object.entries(FREQUENCY_LABELS).map(([value, label]) => ({ value, label }))}
+            items={Object.entries(FREQUENCY_KEYS).map(([value, key]) => ({ value, label: tFreq(key as Parameters<typeof tFreq>[0]) }))}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select frequency" />
+              <SelectValue placeholder={t("selectFrequency")} />
             </SelectTrigger>
             <SelectContent>
-              {Object.entries(FREQUENCY_LABELS).map(([value, label]) => (
+              {Object.entries(FREQUENCY_KEYS).map(([value, key]) => (
                 <SelectItem key={value} value={value}>
-                  {label}
+                  {tFreq(key as Parameters<typeof tFreq>[0])}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          {!state.success && state.fieldErrors?.frequency && (
-            <p className="text-xs text-destructive">
-              {state.fieldErrors.frequency[0]}
-            </p>
-          )}
+          {!state.success && <FieldError errors={state.fieldErrors?.frequency} />}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="rec-interval">Interval</Label>
+          <Label htmlFor="rec-interval">{t("interval")}</Label>
           <Input
             id="rec-interval"
             name="interval"
@@ -205,17 +189,13 @@ export function RecurringForm({
             defaultValue={defaultValues?.interval ?? 1}
             required
           />
-          {!state.success && state.fieldErrors?.interval && (
-            <p className="text-xs text-destructive">
-              {state.fieldErrors.interval[0]}
-            </p>
-          )}
+          {!state.success && <FieldError errors={state.fieldErrors?.interval} />}
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>Start Date</Label>
+          <Label>{t("startDate")}</Label>
           <DatePicker
             name="startDate"
             defaultValue={
@@ -224,17 +204,13 @@ export function RecurringForm({
                 : undefined
             }
             required
-            placeholder="Select start date"
+            placeholder={t("selectStartDate")}
           />
-          {!state.success && state.fieldErrors?.startDate && (
-            <p className="text-xs text-destructive">
-              {state.fieldErrors.startDate[0]}
-            </p>
-          )}
+          {!state.success && <FieldError errors={state.fieldErrors?.startDate} />}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label>End Date (optional)</Label>
+          <Label>{t("endDate")}</Label>
           <DatePicker
             name="endDate"
             defaultValue={
@@ -242,18 +218,14 @@ export function RecurringForm({
                 ? formatDateForInput(defaultValues.endDate)
                 : undefined
             }
-            placeholder="Select end date"
+            placeholder={t("selectEndDate")}
           />
-          {!state.success && state.fieldErrors?.endDate && (
-            <p className="text-xs text-destructive">
-              {state.fieldErrors.endDate[0]}
-            </p>
-          )}
+          {!state.success && <FieldError errors={state.fieldErrors?.endDate} />}
         </div>
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label>Category</Label>
+        <Label>{t("category")}</Label>
         <CategorySelect
           categories={categories}
           name="categoryId"
@@ -266,10 +238,10 @@ export function RecurringForm({
 
       <Button type="submit" disabled={isPending} className="mt-2 w-full">
         {isPending
-          ? "Saving..."
+          ? tc("saving")
           : mode === FORM_MODE.CREATE
-            ? "Create Recurring"
-            : "Update Recurring"}
+            ? t("createRecurring")
+            : t("updateRecurring")}
       </Button>
     </form>
   );

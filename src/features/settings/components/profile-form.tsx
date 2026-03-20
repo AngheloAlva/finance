@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { CurrencySelect } from "@/features/settings/components/currency-select";
 import { TimezoneSelect } from "@/features/settings/components/timezone-select";
 import { updateProfileAction } from "@/features/settings/actions/update-profile.action";
+import { FieldError } from "@/shared/components/field-error";
 import { INITIAL_VOID_STATE } from "@/shared/types/common.types";
 
 interface ProfileFormProps {
@@ -22,6 +24,8 @@ interface ProfileFormProps {
 }
 
 export function ProfileForm({ user }: ProfileFormProps) {
+  const t = useTranslations("settings");
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     updateProfileAction,
     INITIAL_VOID_STATE,
@@ -29,20 +33,20 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
   useEffect(() => {
     if (state.success) {
-      toast.success("Profile updated successfully");
+      toast.success(t("profileUpdated"));
     }
-  }, [state]);
+  }, [state, t]);
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
       {!state.success && state.error && (
         <div className="rounded-none border border-destructive/50 bg-destructive/10 px-3 py-2 text-xs text-destructive">
-          {state.error}
+          {tErrors(state.error as Parameters<typeof tErrors>[0])}
         </div>
       )}
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="name">Name</Label>
+        <Label htmlFor="name">{t("name")}</Label>
         <Input
           id="name"
           name="name"
@@ -54,15 +58,11 @@ export function ProfileForm({ user }: ProfileFormProps) {
             !state.success && state.fieldErrors?.name ? true : undefined
           }
         />
-        {!state.success && state.fieldErrors?.name && (
-          <p className="text-xs text-destructive">
-            {state.fieldErrors.name[0]}
-          </p>
-        )}
+        {!state.success && <FieldError errors={state.fieldErrors?.name} />}
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">{t("email")}</Label>
         <Input
           id="email"
           name="email"
@@ -72,32 +72,28 @@ export function ProfileForm({ user }: ProfileFormProps) {
           autoComplete="email"
         />
         <p className="text-xs text-muted-foreground">
-          Email cannot be changed here
+          {t("emailCannotChange")}
         </p>
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="image">Avatar URL</Label>
+        <Label htmlFor="image">{t("avatarUrl")}</Label>
         <Input
           id="image"
           name="image"
           type="text"
           defaultValue={user.image ?? ""}
-          placeholder="https://..."
+          placeholder={t("avatarPlaceholder")}
           autoComplete="photo"
           aria-invalid={
             !state.success && state.fieldErrors?.image ? true : undefined
           }
         />
-        {!state.success && state.fieldErrors?.image && (
-          <p className="text-xs text-destructive">
-            {state.fieldErrors.image[0]}
-          </p>
-        )}
+        {!state.success && <FieldError errors={state.fieldErrors?.image} />}
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label>Currency</Label>
+        <Label>{t("currency")}</Label>
         <CurrencySelect
           name="currency"
           defaultValue={user.currency}
@@ -108,7 +104,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label>Timezone</Label>
+        <Label>{t("timezone")}</Label>
         <TimezoneSelect
           name="timezone"
           defaultValue={user.timezone}
@@ -119,7 +115,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
       </div>
 
       <Button type="submit" disabled={isPending} className="mt-2 w-fit">
-        {isPending ? "Saving..." : "Save changes"}
+        {isPending ? t("saving") : t("saveChanges")}
       </Button>
     </form>
   );

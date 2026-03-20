@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,7 @@ import type {
   GoalSnapshot,
   SavingsProjectionResult,
 } from "@/features/simulations/types/simulations.types";
+import { FieldError } from "@/shared/components/field-error";
 import type { CurrencyCode } from "@/shared/lib/constants";
 import type { ActionResult } from "@/shared/types/common.types";
 
@@ -28,6 +30,8 @@ const initialState: ActionResult<SavingsProjectionResult> = {
 };
 
 export function SavingsGoalForm({ goals, currency }: SavingsGoalFormProps) {
+  const t = useTranslations("simulations.savingsGoal");
+  const tErrors = useTranslations("errors");
   const [state, formAction, isPending] = useActionState(
     simulateSavingsGoalAction,
     initialState,
@@ -36,8 +40,8 @@ export function SavingsGoalForm({ goals, currency }: SavingsGoalFormProps) {
   if (goals.length === 0) {
     return (
       <SimulationEmptyState
-        title="No Active Goals"
-        description="Create a savings goal first, then come back to project your timeline."
+        title={t("noActiveGoals")}
+        description={t("noActiveGoalsDescription")}
       />
     );
   }
@@ -47,7 +51,7 @@ export function SavingsGoalForm({ goals, currency }: SavingsGoalFormProps) {
       <div>
         <form action={formAction} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="goalId">Select Goal</Label>
+            <Label htmlFor="goalId">{t("selectGoal")}</Label>
             <NativeSelect
               className="w-full"
               id="goalId"
@@ -55,30 +59,26 @@ export function SavingsGoalForm({ goals, currency }: SavingsGoalFormProps) {
               required
               disabled={isPending}
             >
-              <option value="">Choose a goal...</option>
+              <option value="">{t("chooseGoal")}</option>
               {goals.map((goal) => (
                 <option key={goal.id} value={goal.id}>
                   {goal.name}
                 </option>
               ))}
             </NativeSelect>
-            {!state.success && state.fieldErrors?.goalId && (
-              <p className="text-xs text-destructive">
-                {state.fieldErrors.goalId[0]}
-              </p>
-            )}
+            {!state.success && <FieldError errors={state.fieldErrors?.goalId} />}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="adjustedMonthlyContribution">
-              Adjusted Monthly Contribution (optional)
+              {t("adjustedContribution")}
             </Label>
             <Input
               id="adjustedMonthlyContribution"
               name="adjustedMonthlyContribution"
               type="text"
               inputMode="decimal"
-              placeholder="Leave empty to use current savings rate"
+              placeholder={t("adjustedPlaceholder")}
               disabled={isPending}
             />
           </div>
@@ -87,15 +87,15 @@ export function SavingsGoalForm({ goals, currency }: SavingsGoalFormProps) {
             {isPending ? (
               <>
                 <Spinner className="mr-2" />
-                Projecting...
+                {t("projecting")}
               </>
             ) : (
-              "Project Timeline"
+              t("projectTimeline")
             )}
           </Button>
 
           {!state.success && state.error && !state.fieldErrors && (
-            <p className="text-xs text-destructive">{state.error}</p>
+            <p className="text-xs text-destructive">{tErrors(state.error as Parameters<typeof tErrors>[0])}</p>
           )}
         </form>
       </div>
@@ -105,8 +105,8 @@ export function SavingsGoalForm({ goals, currency }: SavingsGoalFormProps) {
           <SavingsGoalResults result={state.data} currency={currency} />
         ) : (
           <SimulationEmptyState
-            title="Savings Goal Projector"
-            description="Select a goal and optionally adjust your monthly contribution to see when you will reach your target."
+            title={t("emptyTitle")}
+            description={t("emptyDescription")}
           />
         )}
       </div>

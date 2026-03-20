@@ -8,17 +8,18 @@ function isZeroDecimal(currencyCode: CurrencyCode): boolean {
 
 const formatterCache = new Map<string, Intl.NumberFormat>();
 
-function getCurrencyFormatter(currencyCode: CurrencyCode): Intl.NumberFormat {
-  let formatter = formatterCache.get(currencyCode);
+function getCurrencyFormatter(currencyCode: CurrencyCode, locale = "en-US"): Intl.NumberFormat {
+  const cacheKey = `${locale}:${currencyCode}`;
+  let formatter = formatterCache.get(cacheKey);
   if (!formatter) {
     const zeroDecimal = isZeroDecimal(currencyCode);
-    formatter = new Intl.NumberFormat("en-US", {
+    formatter = new Intl.NumberFormat(locale, {
       style: "currency",
       currency: currencyCode,
       minimumFractionDigits: zeroDecimal ? 0 : 2,
       maximumFractionDigits: zeroDecimal ? 0 : 2,
     });
-    formatterCache.set(currencyCode, formatter);
+    formatterCache.set(cacheKey, formatter);
   }
   return formatter;
 }
@@ -26,9 +27,10 @@ function getCurrencyFormatter(currencyCode: CurrencyCode): Intl.NumberFormat {
 export function formatCurrency(
   cents: number,
   currencyCode: CurrencyCode,
+  locale = "en-US",
 ): string {
   const amount = isZeroDecimal(currencyCode) ? cents : cents / 100;
-  return getCurrencyFormatter(currencyCode).format(amount);
+  return getCurrencyFormatter(currencyCode, locale).format(amount);
 }
 
 export function parseCurrencyInput(display: string, currencyCode: CurrencyCode = "USD"): number {
@@ -55,6 +57,7 @@ export function formatExchangeRate(rateInt: number): string {
 export function formatDate(
   date: Date | string,
   style: "short" | "long",
+  locale = "en-US",
 ): string {
   const d = typeof date === "string" ? new Date(date) : date;
 
@@ -68,5 +71,5 @@ export function formatDate(
           year: "numeric",
         };
 
-  return new Intl.DateTimeFormat("en-US", options).format(d);
+  return new Intl.DateTimeFormat(locale, options).format(d);
 }

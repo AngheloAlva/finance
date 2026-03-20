@@ -1,7 +1,10 @@
+"use client"
+
 import { TrendingUp } from "lucide-react"
-import Link from "next/link"
+import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent } from "@/components/ui/card"
+import { Link } from "@/i18n/navigation"
 import type { PortfolioSummary } from "@/features/dashboard/types/dashboard.types"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { formatCurrency } from "@/shared/lib/formatters"
@@ -13,6 +16,9 @@ interface PortfolioSummaryCardProps {
 }
 
 export function PortfolioSummaryCard({ portfolio, currency }: PortfolioSummaryCardProps) {
+	const t = useTranslations("dashboard")
+	const locale = useLocale()
+
 	if (portfolio.count === 0) {
 		return null
 	}
@@ -27,9 +33,9 @@ export function PortfolioSummaryCard({ portfolio, currency }: PortfolioSummaryCa
 						<TrendingUp className="text-muted-foreground size-5" />
 					</div>
 					<div className="flex flex-col gap-0.5">
-						<p className="text-muted-foreground text-xs">Portfolio Value</p>
+						<p className="text-muted-foreground text-xs">{t("portfolioValue")}</p>
 						<p className="text-lg font-semibold tracking-tight">
-							{formatCurrency(portfolio.totalCurrentValue, currency)}
+							{formatCurrency(portfolio.totalCurrentValue, currency, locale)}
 						</p>
 					</div>
 					<div className="ml-auto text-right">
@@ -43,7 +49,7 @@ export function PortfolioSummaryCard({ portfolio, currency }: PortfolioSummaryCa
 							{portfolio.returnPercentage.toFixed(2)}%
 						</p>
 						<p className="text-muted-foreground text-xs">
-							{portfolio.count} investment{portfolio.count !== 1 ? "s" : ""}
+							{t("investment", { count: portfolio.count })}
 						</p>
 					</div>
 				</CardContent>

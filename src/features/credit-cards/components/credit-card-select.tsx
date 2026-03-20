@@ -1,7 +1,10 @@
 "use client"
 
 import { useMemo } from "react"
+import { useTranslations } from "next-intl"
 import type { CreditCard } from "@/generated/prisma/client"
+
+import { FieldError } from "@/shared/components/field-error"
 
 import {
 	Select,
@@ -28,6 +31,7 @@ export function CreditCardSelect({
 	defaultValue,
 	error,
 }: CreditCardSelectProps) {
+	const t = useTranslations("creditCards")
 	const items = useMemo(
 		() =>
 			creditCards.map((card) => ({
@@ -41,7 +45,7 @@ export function CreditCardSelect({
 		<div className="flex flex-col gap-1.5">
 			<Select name={name} value={value} onValueChange={onChange} defaultValue={defaultValue} items={items}>
 				<SelectTrigger className="w-full" aria-invalid={error ? true : undefined}>
-					<SelectValue placeholder="Select credit card" />
+					<SelectValue placeholder={t("select.placeholder")} />
 				</SelectTrigger>
 				<SelectContent>
 					{creditCards.map((card) => (
@@ -51,7 +55,7 @@ export function CreditCardSelect({
 					))}
 				</SelectContent>
 			</Select>
-			{error && <p className="text-destructive text-xs">{error}</p>}
+			<FieldError errors={error} />
 		</div>
 	)
 }

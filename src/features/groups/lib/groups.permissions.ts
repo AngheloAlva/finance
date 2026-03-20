@@ -31,13 +31,13 @@ export async function assertGroupRole(
 	const membership = await getGroupMembership(userId, groupId)
 
 	if (!membership) {
-		return { success: false, error: "You are not a member of this group" }
+		return { success: false, error: "GROUP_NOT_MEMBER" }
 	}
 
 	if (!requiredRoles.includes(membership.role)) {
 		return {
 			success: false,
-			error: "You don't have permission to perform this action",
+			error: "GROUP_PERMISSION_DENIED",
 		}
 	}
 

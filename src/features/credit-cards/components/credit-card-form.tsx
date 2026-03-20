@@ -1,6 +1,7 @@
 "use client"
 
 import { useActionState, useEffect } from "react"
+import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -9,17 +10,18 @@ import { Label } from "@/components/ui/label"
 import { createCreditCardAction } from "@/features/credit-cards/actions/create-credit-card.action"
 import { updateCreditCardAction } from "@/features/credit-cards/actions/update-credit-card.action"
 import { AmountInput } from "@/features/transactions/components/amount-input"
+import { FieldError } from "@/shared/components/field-error"
 import { FORM_MODE, INITIAL_VOID_STATE, type FormMode } from "@/shared/types/common.types"
 
 const CARD_COLORS = [
-	{ value: "#1e293b", label: "Slate" },
-	{ value: "#1e3a5f", label: "Navy" },
-	{ value: "#064e3b", label: "Emerald" },
-	{ value: "#7c2d12", label: "Amber" },
-	{ value: "#581c87", label: "Purple" },
-	{ value: "#9f1239", label: "Rose" },
-	{ value: "#0f172a", label: "Dark" },
-	{ value: "#334155", label: "Gray" },
+	{ value: "#1e293b", labelKey: "slate" },
+	{ value: "#1e3a5f", labelKey: "navy" },
+	{ value: "#064e3b", labelKey: "emerald" },
+	{ value: "#7c2d12", labelKey: "amber" },
+	{ value: "#581c87", labelKey: "purple" },
+	{ value: "#9f1239", labelKey: "rose" },
+	{ value: "#0f172a", labelKey: "dark" },
+	{ value: "#334155", labelKey: "gray" },
 ] as const
 
 interface CreditCardFormProps {
@@ -38,6 +40,9 @@ interface CreditCardFormProps {
 }
 
 export function CreditCardForm({ mode, defaultValues, onSuccess }: CreditCardFormProps) {
+	const t = useTranslations("creditCards")
+	const tc = useTranslations("common")
+	const tErrors = useTranslations("errors")
 	const action = mode === FORM_MODE.CREATE ? createCreditCardAction : updateCreditCardAction
 	const [state, formAction, isPending] = useActionState(action, INITIAL_VOID_STATE)
 
@@ -45,12 +50,12 @@ export function CreditCardForm({ mode, defaultValues, onSuccess }: CreditCardFor
 		if (state.success) {
 			const message =
 				mode === FORM_MODE.CREATE
-					? "Credit card created successfully"
-					: "Credit card updated successfully"
+					? t("form.createdSuccess")
+					: t("form.updatedSuccess")
 			toast.success(message)
 			onSuccess?.()
 		}
-	}, [state, mode, onSuccess])
+	}, [state, mode, onSuccess, t])
 
 	return (
 		<form action={formAction} className="flex flex-col gap-4">
@@ -60,28 +65,26 @@ export function CreditCardForm({ mode, defaultValues, onSuccess }: CreditCardFor
 
 			{!state.success && state.error && (
 				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-none border px-3 py-2 text-xs">
-					{state.error}
+					{tErrors(state.error as Parameters<typeof tErrors>[0])}
 				</div>
 			)}
 
 			<div className="flex flex-col gap-1.5">
-				<Label htmlFor="cc-name">Card Name</Label>
+				<Label htmlFor="cc-name">{t("form.cardName")}</Label>
 				<Input
 					id="cc-name"
 					name="name"
 					type="text"
 					defaultValue={defaultValues?.name}
 					required
-					placeholder="e.g. My Visa Card"
+					placeholder={t("form.cardNamePlaceholder")}
 				/>
-				{!state.success && state.fieldErrors?.name && (
-					<p className="text-destructive text-xs">{state.fieldErrors.name[0]}</p>
-				)}
+				{!state.success && <FieldError errors={state.fieldErrors?.name} />}
 			</div>
 
 			<div className="grid grid-cols-2 gap-4">
 				<div className="flex flex-col gap-1.5">
-					<Label htmlFor="cc-lastFourDigits">Last 4 Digits</Label>
+					<Label htmlFor="cc-lastFourDigits">{t("form.lastFourDigits")}</Label>
 					<Input
 						id="cc-lastFourDigits"
 						name="lastFourDigits"
@@ -89,40 +92,34 @@ export function CreditCardForm({ mode, defaultValues, onSuccess }: CreditCardFor
 						maxLength={4}
 						defaultValue={defaultValues?.lastFourDigits}
 						required
-						placeholder="1234"
+						placeholder={t("form.lastFourDigitsPlaceholder")}
 					/>
-					{!state.success && state.fieldErrors?.lastFourDigits && (
-						<p className="text-destructive text-xs">{state.fieldErrors.lastFourDigits[0]}</p>
-					)}
+					{!state.success && <FieldError errors={state.fieldErrors?.lastFourDigits} />}
 				</div>
 
 				<div className="flex flex-col gap-1.5">
-					<Label htmlFor="cc-brand">Brand</Label>
+					<Label htmlFor="cc-brand">{t("form.brand")}</Label>
 					<Input
 						id="cc-brand"
 						name="brand"
 						type="text"
 						defaultValue={defaultValues?.brand}
 						required
-						placeholder="e.g. Visa, Mastercard"
+						placeholder={t("form.brandPlaceholder")}
 					/>
-					{!state.success && state.fieldErrors?.brand && (
-						<p className="text-destructive text-xs">{state.fieldErrors.brand[0]}</p>
-					)}
+					{!state.success && <FieldError errors={state.fieldErrors?.brand} />}
 				</div>
 			</div>
 
 			<div className="flex flex-col gap-1.5">
-				<Label htmlFor="cc-totalLimit">Credit Limit</Label>
+				<Label htmlFor="cc-totalLimit">{t("form.creditLimit")}</Label>
 				<AmountInput name="totalLimit" defaultValue={defaultValues?.totalLimit} />
-				{!state.success && state.fieldErrors?.totalLimit && (
-					<p className="text-destructive text-xs">{state.fieldErrors.totalLimit[0]}</p>
-				)}
+				{!state.success && <FieldError errors={state.fieldErrors?.totalLimit} />}
 			</div>
 
 			<div className="grid grid-cols-2 gap-4">
 				<div className="flex flex-col gap-1.5">
-					<Label htmlFor="cc-closingDay">Closing Day</Label>
+					<Label htmlFor="cc-closingDay">{t("form.closingDay")}</Label>
 					<Input
 						id="cc-closingDay"
 						name="closingDay"
@@ -131,15 +128,13 @@ export function CreditCardForm({ mode, defaultValues, onSuccess }: CreditCardFor
 						max={31}
 						defaultValue={defaultValues?.closingDay}
 						required
-						placeholder="1-31"
+						placeholder={t("form.closingDayPlaceholder")}
 					/>
-					{!state.success && state.fieldErrors?.closingDay && (
-						<p className="text-destructive text-xs">{state.fieldErrors.closingDay[0]}</p>
-					)}
+					{!state.success && <FieldError errors={state.fieldErrors?.closingDay} />}
 				</div>
 
 				<div className="flex flex-col gap-1.5">
-					<Label htmlFor="cc-paymentDay">Payment Day</Label>
+					<Label htmlFor="cc-paymentDay">{t("form.paymentDay")}</Label>
 					<Input
 						id="cc-paymentDay"
 						name="paymentDay"
@@ -148,16 +143,14 @@ export function CreditCardForm({ mode, defaultValues, onSuccess }: CreditCardFor
 						max={31}
 						defaultValue={defaultValues?.paymentDay}
 						required
-						placeholder="1-31"
+						placeholder={t("form.paymentDayPlaceholder")}
 					/>
-					{!state.success && state.fieldErrors?.paymentDay && (
-						<p className="text-destructive text-xs">{state.fieldErrors.paymentDay[0]}</p>
-					)}
+					{!state.success && <FieldError errors={state.fieldErrors?.paymentDay} />}
 				</div>
 			</div>
 
 			<div className="flex flex-col gap-1.5">
-				<Label>Card Color</Label>
+				<Label>{t("form.cardColor")}</Label>
 				<div className="flex flex-wrap gap-2">
 					{CARD_COLORS.map((cardColor) => (
 						<label key={cardColor.value} className="cursor-pointer">
@@ -175,22 +168,20 @@ export function CreditCardForm({ mode, defaultValues, onSuccess }: CreditCardFor
 							<div
 								className="peer-checked:border-primary peer-checked:ring-primary/30 size-8 rounded-none border-2 border-transparent transition-all peer-checked:ring-2"
 								style={{ backgroundColor: cardColor.value }}
-								title={cardColor.label}
+								title={t(`colors.${cardColor.labelKey}` as Parameters<typeof t>[0])}
 							/>
 						</label>
 					))}
 				</div>
-				{!state.success && state.fieldErrors?.color && (
-					<p className="text-destructive text-xs">{state.fieldErrors.color[0]}</p>
-				)}
+				{!state.success && <FieldError errors={state.fieldErrors?.color} />}
 			</div>
 
 			<Button type="submit" disabled={isPending} className="mt-2 w-full">
 				{isPending
-					? "Saving..."
+					? tc("saving")
 					: mode === FORM_MODE.CREATE
-						? "Create Credit Card"
-						: "Update Credit Card"}
+						? t("form.createCreditCard")
+						: t("form.updateCreditCard")}
 			</Button>
 		</form>
 	)

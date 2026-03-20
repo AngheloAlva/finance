@@ -1,6 +1,7 @@
 "use client"
 
 import { RadialBar, RadialBarChart, ResponsiveContainer } from "recharts"
+import { useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -35,6 +36,7 @@ function getFactorBarColor(score: number): string {
 }
 
 export function FinancialHealthGauge({ score, compact = false }: FinancialHealthGaugeProps) {
+	const t = useTranslations("analytics.financialHealth")
 	const gaugeData = [
 		{
 			name: "Score",
@@ -48,13 +50,13 @@ export function FinancialHealthGauge({ score, compact = false }: FinancialHealth
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Financial Health</CardTitle>
+				<CardTitle>{t("title")}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				{!score.hasEnoughData ? (
 					<div className="flex items-center justify-center" style={{ height: gaugeHeight }}>
 						<p className="text-muted-foreground text-sm">
-							Not enough data yet. Keep tracking for at least 2 months.
+							{t("noData")}
 						</p>
 					</div>
 				) : (

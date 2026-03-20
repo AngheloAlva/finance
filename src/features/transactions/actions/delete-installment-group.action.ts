@@ -23,13 +23,13 @@ export async function deleteInstallmentGroupAction(
     });
 
     if (!parentTransaction) {
-      return { success: false, error: "Installment group not found" };
+      return { success: false, error: "INSTALLMENT_GROUP_NOT_FOUND" };
     }
 
     if (parentTransaction.userId !== session.user.id) {
       return {
         success: false,
-        error: "You can only delete your own transactions",
+        error: "TRANSACTION_NOT_OWNED",
       };
     }
 
@@ -48,6 +48,6 @@ export async function deleteInstallmentGroupAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to delete installment group" };
+    return { success: false, error: "INSTALLMENT_GROUP_DELETE_FAILED" };
   }
 }

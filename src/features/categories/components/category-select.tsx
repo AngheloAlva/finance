@@ -1,6 +1,9 @@
 "use client";
 
 import { Fragment, useMemo } from "react";
+import { useTranslations } from "next-intl";
+
+import { FieldError } from "@/shared/components/field-error";
 
 import {
   Select,
@@ -24,6 +27,7 @@ export function CategorySelect({
   defaultValue,
   error,
 }: CategorySelectProps) {
+  const t = useTranslations("categories");
   const rootCategories = categories.filter((c) => c.parentId === null);
 
   const items = useMemo(
@@ -45,7 +49,7 @@ export function CategorySelect({
           className="w-full"
           aria-invalid={error ? true : undefined}
         >
-          <SelectValue placeholder="Select category" />
+          <SelectValue placeholder={t("select.placeholder")} />
         </SelectTrigger>
         <SelectContent>
           {rootCategories.map((category) => (
@@ -60,7 +64,7 @@ export function CategorySelect({
           ))}
         </SelectContent>
       </Select>
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      <FieldError errors={error} />
     </div>
   );
 }

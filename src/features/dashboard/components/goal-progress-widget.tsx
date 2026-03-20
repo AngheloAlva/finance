@@ -1,5 +1,7 @@
+"use client";
+
 import { Target } from "lucide-react";
-import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   Card,
@@ -9,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { GoalProgress } from "@/features/goals/components/goal-progress";
 import type { GoalWithProgress } from "@/features/goals/types/goals.types";
+import { Link } from "@/i18n/navigation";
 import type { CurrencyCode } from "@/shared/lib/constants";
 
 interface GoalProgressWidgetProps {
@@ -20,22 +23,25 @@ export function GoalProgressWidget({
   goals,
   currency,
 }: GoalProgressWidgetProps) {
+  const t = useTranslations("dashboard");
+  const locale = useLocale();
+
   if (goals.length === 0) {
     return (
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-sm font-medium">
             <Target className="size-4" />
-            Active Goals
+            {t("activeGoals")}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-xs text-muted-foreground">
-            No active goals.{" "}
+            {t("noActiveGoals")}{" "}
             <Link href="/goals" className="underline hover:text-foreground">
-              Create one
+              {t("createGoal")}
             </Link>{" "}
-            to start tracking.
+            {t("startTracking")}
           </p>
         </CardContent>
       </Card>
@@ -47,13 +53,13 @@ export function GoalProgressWidget({
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2 text-sm font-medium">
           <Target className="size-4" />
-          Active Goals
+          {t("activeGoals")}
         </CardTitle>
         <Link
           href="/goals"
           className="text-xs text-muted-foreground underline hover:text-foreground"
         >
-          View all
+          {t("viewAll")}
         </Link>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
@@ -66,6 +72,7 @@ export function GoalProgressWidget({
               percentage={goal.percentage}
               currency={currency}
               compact
+              locale={locale}
             />
           </div>
         ))}

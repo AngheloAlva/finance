@@ -3,16 +3,16 @@ import { z } from "zod";
 export const createGoalSchema = z.object({
   name: z
     .string()
-    .min(1, { error: "Name is required" })
-    .max(100, { error: "Name must be at most 100 characters" }),
+    .min(1, { error: "required" })
+    .max(100, { error: "maxLength100" }),
   description: z
     .string()
-    .max(500, { error: "Description must be at most 500 characters" })
+    .max(500, { error: "maxLength500" })
     .optional(),
   targetAmount: z.coerce
     .number()
-    .int({ error: "Amount must be a valid number" })
-    .positive({ error: "Amount must be greater than zero" }),
+    .int({ error: "invalidNumber" })
+    .positive({ error: "positive" }),
   targetDate: z
     .string()
     .optional()
@@ -21,23 +21,23 @@ export const createGoalSchema = z.object({
 });
 
 export const updateGoalSchema = createGoalSchema.extend({
-  id: z.string().min(1, { error: "Goal ID is required" }),
+  id: z.string().min(1, { error: "requiredId" }),
   status: z.enum(["ACTIVE", "COMPLETED", "CANCELLED"]).optional(),
 });
 
 export const addContributionSchema = z.object({
-  goalId: z.string().min(1, { error: "Goal ID is required" }),
+  goalId: z.string().min(1, { error: "requiredId" }),
   amount: z.coerce
     .number()
-    .int({ error: "Amount must be a valid number" })
-    .positive({ error: "Amount must be greater than zero" }),
+    .int({ error: "invalidNumber" })
+    .positive({ error: "positive" }),
   date: z
     .string()
-    .min(1, { error: "Date is required" })
+    .min(1, { error: "required" })
     .transform((val) => new Date(val)),
   note: z
     .string()
-    .max(200, { error: "Note must be at most 200 characters" })
+    .max(200, { error: "maxLength200" })
     .optional(),
 });
 

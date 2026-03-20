@@ -1,3 +1,6 @@
+"use client"
+
+import { useTranslations } from "next-intl"
 import { Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,15 +16,17 @@ export function DeleteInstallmentGroupButton({
   parentTransactionId,
   description,
 }: DeleteInstallmentGroupButtonProps) {
+  const t = useTranslations("transactions");
+
   return (
     <DeleteEntityButton
       action={deleteInstallmentGroupAction}
       formEntries={{ parentTransactionId }}
-      dialogTitle="Delete Installment Group"
-      dialogDescription={`Are you sure you want to delete ALL installments for "${description}"? This action cannot be undone.`}
-      successMessage="Installment group deleted successfully"
+      dialogTitle={t("deleteInstallmentDialog.title")}
+      dialogDescription={t("deleteInstallmentDialog.description", { name: description })}
+      successMessage={t("deleteInstallmentDialog.success")}
       trigger={
-        <Button variant="ghost" size="icon-xs" title="Delete all installments">
+        <Button variant="ghost" size="icon-xs" title={t("deleteInstallmentDialog.deleteAll")}>
           <Trash2 className="size-3 text-destructive" />
         </Button>
       }

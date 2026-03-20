@@ -48,29 +48,27 @@ export async function deleteGroupCategoryAction(
     });
 
     if (!category) {
-      return { success: false, error: "Category not found" };
+      return { success: false, error: "CATEGORY_NOT_FOUND" };
     }
 
     if (category.scope !== CategoryScope.GROUP || category.groupId !== groupId) {
       return {
         success: false,
-        error: "Category does not belong to this group",
+        error: "CATEGORY_WRONG_GROUP",
       };
     }
 
     if (category._count.transactions > 0) {
       return {
         success: false,
-        error:
-          "Cannot delete a category with existing transactions. Reassign them first.",
+        error: "CATEGORY_DELETE_HAS_TRANSACTIONS",
       };
     }
 
     if (category._count.children > 0) {
       return {
         success: false,
-        error:
-          "Cannot delete a category with subcategories. Delete them first.",
+        error: "CATEGORY_DELETE_HAS_CHILDREN",
       };
     }
 
@@ -80,6 +78,6 @@ export async function deleteGroupCategoryAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to delete group category" };
+    return { success: false, error: "CATEGORY_DELETE_FAILED" };
   }
 }

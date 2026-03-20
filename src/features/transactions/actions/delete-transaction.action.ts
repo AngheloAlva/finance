@@ -23,11 +23,11 @@ export async function deleteTransactionAction(
     });
 
     if (!transaction) {
-      return { success: false, error: "Transaction not found" };
+      return { success: false, error: "TRANSACTION_NOT_FOUND" };
     }
 
     if (transaction.userId !== session.user.id) {
-      return { success: false, error: "You can only delete your own transactions" };
+      return { success: false, error: "TRANSACTION_NOT_OWNED" };
     }
 
     await prisma.transaction.delete({ where: { id } });
@@ -37,6 +37,6 @@ export async function deleteTransactionAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to delete transaction" };
+    return { success: false, error: "TRANSACTION_DELETE_FAILED" };
   }
 }

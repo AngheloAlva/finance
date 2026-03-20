@@ -17,7 +17,7 @@ export async function settleSplitAction(
   const result = settleSplitSchema.safeParse(raw);
 
   if (!result.success) {
-    return { success: false, error: "Split ID is required" };
+    return { success: false, error: "FIELD_REQUIRED" };
   }
 
   const { splitId } = result.data;
@@ -35,11 +35,11 @@ export async function settleSplitAction(
     });
 
     if (!split) {
-      return { success: false, error: "Split not found" };
+      return { success: false, error: "SPLIT_NOT_FOUND" };
     }
 
     if (!split.transaction.groupId) {
-      return { success: false, error: "This split is not part of a group transaction" };
+      return { success: false, error: "SPLIT_NOT_GROUP" };
     }
 
     // Verify user is a member of the group
@@ -49,7 +49,7 @@ export async function settleSplitAction(
     );
 
     if (!membership) {
-      return { success: false, error: "You are not a member of this group" };
+      return { success: false, error: "GROUP_NOT_MEMBER" };
     }
 
     // Toggle isPaid status
@@ -66,6 +66,6 @@ export async function settleSplitAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to settle split" };
+    return { success: false, error: "SPLIT_SETTLE_FAILED" };
   }
 }

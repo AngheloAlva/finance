@@ -13,10 +13,6 @@ import type {
 } from "@/features/analytics/types/analytics.types";
 import { computeHealthSubScore } from "@/features/analytics/lib/analytics.utils";
 
-const MONTH_LABELS = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-] as const;
 
 function getMonthRange(month: number, year: number) {
   const start = new Date(year, month - 1, 1);
@@ -84,7 +80,7 @@ export async function getIncomeVsExpensesTrend(
 
     return {
       month: monthKey,
-      label: MONTH_LABELS[month - 1],
+      label: monthKey,
       income: bucket.income,
       expenses: bucket.expenses,
       netSavings: bucket.income - bucket.expenses,
@@ -141,9 +137,10 @@ export async function getCashFlowForecast(
       const income = incomeResult._sum.amount ?? 0;
       const expenses = Math.abs(expenseResult._sum.amount ?? 0);
 
+      const mk = `${year}-${String(month).padStart(2, "0")}`;
       return {
-        month: `${year}-${String(month).padStart(2, "0")}`,
-        label: MONTH_LABELS[month - 1],
+        month: mk,
+        label: mk,
         income,
         expenses,
         netFlow: income - expenses,
@@ -223,9 +220,10 @@ export async function getCashFlowForecast(
     const projectedExpenses =
       recurringExpenses + installmentExpenses + nonRecurringExpenseAvg;
 
+    const pmk = `${py}-${String(pm).padStart(2, "0")}`;
     projected.push({
-      month: `${py}-${String(pm).padStart(2, "0")}`,
-      label: MONTH_LABELS[pm - 1],
+      month: pmk,
+      label: pmk,
       income: projectedIncome,
       expenses: projectedExpenses,
       netFlow: projectedIncome - projectedExpenses,

@@ -40,11 +40,11 @@ export async function updateCreditCardAction(
     });
 
     if (!existing) {
-      return { success: false, error: "Credit card not found" };
+      return { success: false, error: "CREDIT_CARD_NOT_FOUND" };
     }
 
     if (existing.userId !== session.user.id) {
-      return { success: false, error: "You can only edit your own credit cards" };
+      return { success: false, error: "CREDIT_CARD_NOT_OWNED" };
     }
 
     await prisma.creditCard.update({
@@ -65,6 +65,6 @@ export async function updateCreditCardAction(
 
     return { success: true, data: undefined };
   } catch {
-    return { success: false, error: "Failed to update credit card" };
+    return { success: false, error: "CREDIT_CARD_UPDATE_FAILED" };
   }
 }
