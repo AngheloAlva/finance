@@ -20,6 +20,8 @@ import { DeleteInstallmentGroupButton } from "@/features/transactions/components
 import { DeleteTransactionButton } from "@/features/transactions/components/delete-transaction-button"
 import { InstallmentBadge } from "@/features/transactions/components/installment-badge"
 import { TransactionDialog } from "@/features/transactions/components/transaction-dialog"
+import { TagBadge } from "@/features/tags/components/tag-badge"
+import type { TagOption } from "@/features/tags/types/tags.types"
 import type { TransactionWithCategory } from "@/features/transactions/types/transactions.types"
 import { TransactionType } from "@/generated/prisma/enums"
 import { CategoryIcon } from "@/shared/components/category-icon"
@@ -37,6 +39,7 @@ interface TransactionTableProps {
 	transactions: TransactionWithCategory[]
 	categories: CategoryWithChildren[]
 	creditCards?: import("@/generated/prisma/client").CreditCard[]
+	tags?: TagOption[]
 	currency: CurrencyCode
 }
 
@@ -56,7 +59,7 @@ const TYPE_KEYS = {
 	TRANSFER: "types.transfer",
 } as const
 
-export function TransactionTable({ transactions, categories, creditCards, currency }: TransactionTableProps) {
+export function TransactionTable({ transactions, categories, creditCards, tags, currency }: TransactionTableProps) {
 	const t = useTranslations("transactions")
 	const locale = useLocale()
 	const router = useRouter()
@@ -155,13 +158,22 @@ export function TransactionTable({ transactions, categories, creditCards, curren
 					<TableRow key={tx.id}>
 						<TableCell>{formatDate(tx.date, "short", locale)}</TableCell>
 						<TableCell className="max-w-48">
-							<span className="flex items-center gap-1.5 truncate">
-								<span className="truncate">{tx.description}</span>
-								<InstallmentBadge
-									installmentNumber={tx.installmentNumber}
-									totalInstallments={tx.totalInstallments}
-								/>
-							</span>
+							<div className="flex flex-col gap-0.5">
+								<span className="flex items-center gap-1.5 truncate">
+									<span className="truncate">{tx.description}</span>
+									<InstallmentBadge
+										installmentNumber={tx.installmentNumber}
+										totalInstallments={tx.totalInstallments}
+									/>
+								</span>
+								{tx.tags.length > 0 && (
+									<div className="flex flex-wrap gap-0.5">
+										{tx.tags.map(({ tag }) => (
+											<TagBadge key={tag.id} name={tag.name} color={tag.color} className="text-[10px] px-1 py-0" />
+										))}
+									</div>
+								)}
+							</div>
 						</TableCell>
 						<TableCell>
 							<span className="inline-flex items-center gap-1.5">
@@ -201,6 +213,7 @@ export function TransactionTable({ transactions, categories, creditCards, curren
 									transaction={tx}
 									categories={categories}
 									creditCards={creditCards}
+									tags={tags}
 									trigger={
 										<Button variant="ghost" size="icon-xs">
 											<Pencil className="size-3" />

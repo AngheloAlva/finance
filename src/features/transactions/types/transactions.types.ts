@@ -1,9 +1,10 @@
-import type { Category, CreditCard, Transaction } from "@/generated/prisma/client"
+import type { Category, CreditCard, Tag, Transaction } from "@/generated/prisma/client"
 import type { PaymentMethod, TransactionType } from "@/generated/prisma/enums"
 
 export type TransactionWithCategory = Transaction & {
 	category: Pick<Category, "id" | "name" | "icon" | "color">
 	creditCard: Pick<CreditCard, "name" | "lastFourDigits" | "color"> | null
+	tags: Array<{ tag: Pick<Tag, "id" | "name" | "color"> }>
 }
 
 export interface TransactionFilters {
@@ -13,6 +14,7 @@ export interface TransactionFilters {
 	paymentMethod?: PaymentMethod
 	categoryId?: string
 	creditCardId?: string
+	tagId?: string
 	sortBy?: "date" | "amount" | "description"
 	sortDir?: "asc" | "desc"
 }

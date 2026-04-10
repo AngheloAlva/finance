@@ -16,15 +16,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types";
+import type { TagOption } from "@/features/tags/types/tags.types";
 import type { TransactionFilters as Filters } from "@/features/transactions/types/transactions.types";
 
 interface TransactionFiltersProps {
   categories: CategoryWithChildren[];
+  tags?: TagOption[];
   currentFilters: Filters;
 }
 
 export function TransactionFilters({
   categories,
+  tags = [],
   currentFilters,
 }: TransactionFiltersProps) {
   const t = useTranslations("transactions");
@@ -41,12 +44,14 @@ export function TransactionFilters({
     const type = formData.get("type") as string;
     const paymentMethod = formData.get("paymentMethod") as string;
     const categoryId = formData.get("categoryId") as string;
+    const tagId = formData.get("tagId") as string;
 
     if (dateFrom) params.set("dateFrom", dateFrom);
     if (dateTo) params.set("dateTo", dateTo);
     if (type && type !== "ALL") params.set("type", type);
     if (paymentMethod && paymentMethod !== "ALL") params.set("paymentMethod", paymentMethod);
     if (categoryId && categoryId !== "ALL") params.set("categoryId", categoryId);
+    if (tagId && tagId !== "ALL") params.set("tagId", tagId);
 
     params.set("page", "1");
 
@@ -165,6 +170,38 @@ export function TransactionFilters({
           </SelectContent>
         </Select>
       </div>
+
+      {tags.length > 0 && (
+        <div className="flex flex-col gap-1">
+          <Label className="text-xs">{t("filter.tag")}</Label>
+          <Select
+            name="tagId"
+            defaultValue={currentFilters.tagId ?? "ALL"}
+            items={[
+              { value: "ALL", label: t("filter.all") },
+              ...tags.map((tag) => ({ value: tag.id, label: tag.name })),
+            ]}
+          >
+            <SelectTrigger className="w-36">
+              <SelectValue placeholder={t("filter.all")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">{t("filter.all")}</SelectItem>
+              {tags.map((tag) => (
+                <SelectItem key={tag.id} value={tag.id}>
+                  <span className="flex items-center gap-1.5">
+                    <span
+                      className="inline-block size-2 rounded-none"
+                      style={{ backgroundColor: tag.color }}
+                    />
+                    {tag.name}
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       <div className="flex gap-2">
         <Button type="submit" size="sm">

@@ -1,10 +1,12 @@
-import { Plus } from "lucide-react"
+import { Download, Plus } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
 import { Link } from "@/i18n/navigation"
 
 import { getCreditCards } from "@/features/credit-cards/lib/credit-cards.queries"
+import { ExportDialog } from "@/features/export/components/export-dialog"
 import { getUserCategories } from "@/features/categories/lib/categories.queries"
+import { getUserTagOptions } from "@/features/tags/lib/tags.queries"
 import { requireSession } from "@/shared/lib/auth"
 import {
 	getTransactions,
@@ -31,10 +33,11 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 	const rawParams = await searchParams
 	const { filters, pagination } = parseSearchParams(rawParams)
 
-	const [result, categories, creditCards] = await Promise.all([
+	const [result, categories, creditCards, tags] = await Promise.all([
 		getTransactions(session.user.id, filters, pagination),
 		getUserCategories(session.user.id),
 		getCreditCards(session.user.id),
+		getUserTagOptions(session.user.id),
 	])
 
 	const currency = (session.user.currency ?? "USD") as CurrencyCode
@@ -45,7 +48,8 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 		filters.dateTo ??
 		filters.type ??
 		filters.paymentMethod ??
-		filters.categoryId
+		filters.categoryId ??
+		filters.tagId
 
 	const isEmpty = result.total === 0
 
@@ -53,17 +57,30 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 		<div className="mx-auto max-w-5xl">
 			<div className="mb-6 flex items-center justify-between">
 				<h1 className="text-lg font-semibold">{t("title")}</h1>
-				<TransactionDialog
-					mode="create"
-					categories={typedCategories}
-					creditCards={creditCards}
-					trigger={
-						<Button size="sm">
-							<Plus className="size-3.5" data-icon="inline-start" />
-							{t("newTransaction")}
-						</Button>
-					}
-				/>
+				<div className="flex items-center gap-2">
+					<ExportDialog
+						categories={typedCategories}
+						tags={tags}
+						trigger={
+							<Button variant="outline" size="sm">
+								<Download className="size-3.5" data-icon="inline-start" />
+								{t("export")}
+							</Button>
+						}
+					/>
+					<TransactionDialog
+						mode="create"
+						categories={typedCategories}
+						creditCards={creditCards}
+						tags={tags}
+						trigger={
+							<Button size="sm">
+								<Plus className="size-3.5" data-icon="inline-start" />
+								{t("newTransaction")}
+							</Button>
+						}
+					/>
+				</div>
 			</div>
 
 			<Card>
@@ -71,7 +88,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 					<CardTitle>{t("filters")}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<TransactionFilters categories={typedCategories} currentFilters={filters} />
+					<TransactionFilters categories={typedCategories} tags={tags} currentFilters={filters} />
 				</CardContent>
 			</Card>
 
@@ -85,6 +102,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 							<TransactionDialog
 								mode="create"
 								categories={typedCategories}
+								tags={tags}
 								trigger={
 									<Button size="sm">
 										<Plus className="size-3.5" data-icon="inline-start" />
@@ -105,6 +123,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 							transactions={result.data}
 							categories={typedCategories}
 							creditCards={creditCards}
+							tags={tags}
 							currency={currency}
 						/>
 					)}

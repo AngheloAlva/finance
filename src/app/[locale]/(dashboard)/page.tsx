@@ -7,7 +7,11 @@ import {
 	checkFinancialHealthAlerts,
 } from "@/features/alerts/lib/alert-generation"
 import { getCreditCards } from "@/features/credit-cards/lib/credit-cards.queries"
+import { getBudgetSummary } from "@/features/budgets/lib/budgets.queries"
+import { BudgetSummaryWidget } from "@/features/budgets/components/budget-summary-widget"
 import { generatePendingRecurring } from "@/features/recurring/lib/generate-recurring"
+import { getPendingSuggestions } from "@/features/recurring/lib/recurring.queries"
+import { SuggestionDrawer } from "@/features/recurring/components/suggestion-drawer"
 
 import {
 	getCategoryBreakdown,
@@ -17,8 +21,9 @@ import {
 	getRecentTransactions,
 	getTopActiveGoals,
 } from "@/features/dashboard/lib/dashboard.queries"
-import { getFinancialHealthScore } from "@/features/analytics/lib/analytics.queries"
+import { getFinancialHealthScore, getMonthComparison } from "@/features/analytics/lib/analytics.queries"
 import { FinancialHealthGauge } from "@/features/analytics/components/financial-health-gauge"
+import { MonthComparisonWidget } from "@/features/analytics/components/month-comparison-widget"
 import { CategoryChart } from "@/features/dashboard/components/category-chart"
 import { GoalProgressWidget } from "@/features/dashboard/components/goal-progress-widget"
 import { MonthSelector } from "@/features/dashboard/components/month-selector"
@@ -65,6 +70,9 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 		topGoals,
 		portfolioSummary,
 		healthScore,
+		pendingSuggestions,
+		budgetSummary,
+		monthComparison,
 	] = await Promise.all([
 		getMonthlyOverview(session.user.id, month, year),
 		getCategoryBreakdown(session.user.id, month, year),
@@ -74,6 +82,9 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 		getTopActiveGoals(session.user.id, 3),
 		getPortfolioSummary(session.user.id, currency),
 		getFinancialHealthScore(session.user.id),
+		getPendingSuggestions(session.user.id),
+		getBudgetSummary(session.user.id, month, year),
+		getMonthComparison(session.user.id, month, year),
 	])
 
 	// Check alerts in the background (fire-and-forget)
@@ -99,7 +110,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 		<div className="mx-auto flex max-w-5xl flex-col gap-6">
 			<div className="flex items-center justify-between">
 				<h1 className="text-lg font-semibold">{t("title")}</h1>
-				<MonthSelector month={month} year={year} />
+				<div className="flex items-center gap-2">
+					<SuggestionDrawer suggestions={pendingSuggestions} currency={currency} />
+					<MonthSelector month={month} year={year} />
+				</div>
 			</div>
 
 			<OverviewCards overview={overview} currency={currency} />
@@ -111,7 +125,11 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 				<MonthlyFlowChart data={monthlyFlow} currency={currency} />
 			</div>
 
+			<MonthComparisonWidget comparison={monthComparison} currency={currency} />
+
 			<GoalProgressWidget goals={topGoals} currency={currency} />
+
+			<BudgetSummaryWidget summary={budgetSummary} currency={currency} />
 
 			<PortfolioSummaryCard portfolio={portfolioSummary} currency={currency} />
 

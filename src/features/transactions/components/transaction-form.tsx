@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useEffect, useState } from "react"
+import { useActionState, useEffect, useRef, useState } from "react"
 import type { CreditCard } from "@/generated/prisma/client"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
@@ -18,9 +18,14 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
+import { suggestCategoryAction } from "@/features/categorization/actions/suggest-category.action"
+import { CategorySuggestion } from "@/features/categorization/components/category-suggestion"
+import type { CategorySuggestion as CategorySuggestionType } from "@/features/categorization/types/categorization.types"
 import { CategorySelect } from "@/features/categories/components/category-select"
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
 import { CreditCardSelect } from "@/features/credit-cards/components/credit-card-select"
+import { TagSelect } from "@/features/tags/components/tag-select"
+import type { TagOption } from "@/features/tags/types/tags.types"
 import { createInstallmentPurchaseAction } from "@/features/transactions/actions/create-installment.action"
 import { createTransactionAction } from "@/features/transactions/actions/create-transaction.action"
 import { updateTransactionAction } from "@/features/transactions/actions/update-transaction.action"
@@ -42,9 +47,11 @@ interface TransactionFormProps {
 		paymentMethod: string
 		categoryId: string
 		creditCardId: string | null
+		tagIds?: string[]
 	}
 	categories: CategoryWithChildren[]
 	creditCards?: CreditCard[]
+	tags?: TagOption[]
 	onSuccess?: () => void
 }
 
@@ -58,6 +65,7 @@ export function TransactionForm({
 	defaultValues,
 	categories,
 	creditCards = [],
+	tags = [],
 	onSuccess,
 }: TransactionFormProps) {
 	const t = useTranslations("transactions")
@@ -65,6 +73,11 @@ export function TransactionForm({
 	const tErrors = useTranslations("errors")
 	const [paymentMethod, setPaymentMethod] = useState(defaultValues?.paymentMethod ?? "CASH")
 	const [installmentsEnabled, setInstallmentsEnabled] = useState(false)
+	const [description, setDescription] = useState(defaultValues?.description ?? "")
+	const [categoryId, setCategoryId] = useState(defaultValues?.categoryId ?? "")
+	const [suggestion, setSuggestion] = useState<CategorySuggestionType | null>(null)
+	const [dismissedPatterns, setDismissedPatterns] = useState<Set<string>>(() => new Set())
+	const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
 	const isCredit = paymentMethod === "CREDIT"
 	const showInstallmentFields = mode === FORM_MODE.CREATE && isCredit && installmentsEnabled
@@ -87,6 +100,50 @@ export function TransactionForm({
 			onSuccess?.()
 		}
 	}, [state, mode, onSuccess, t])
+
+	// Debounced category suggestion from description
+	useEffect(() => {
+		if (mode === FORM_MODE.EDIT) return
+		if (!description || description.trim().length < 2) {
+			setSuggestion(null)
+			return
+		}
+		if (dismissedPatterns.has(description.trim().toLowerCase())) {
+			setSuggestion(null)
+			return
+		}
+
+		if (debounceRef.current) clearTimeout(debounceRef.current)
+		debounceRef.current = setTimeout(async () => {
+			try {
+				const result = await suggestCategoryAction(description)
+				// Only show if the category is different from what's already selected
+				if (result && result.categoryId !== categoryId) {
+					setSuggestion(result)
+				} else {
+					setSuggestion(null)
+				}
+			} catch {
+				setSuggestion(null)
+			}
+		}, 500)
+
+		return () => {
+			if (debounceRef.current) clearTimeout(debounceRef.current)
+		}
+	}, [description, categoryId, dismissedPatterns, mode])
+
+	function handleAcceptSuggestion(selectedCategoryId: string) {
+		setCategoryId(selectedCategoryId)
+		setSuggestion(null)
+	}
+
+	function handleDismissSuggestion() {
+		if (description) {
+			setDismissedPatterns((prev) => new Set(prev).add(description.trim().toLowerCase()))
+		}
+		setSuggestion(null)
+	}
 
 	return (
 		<form action={formAction} className="flex flex-col gap-4">
@@ -112,11 +169,19 @@ export function TransactionForm({
 					id="tx-description"
 					name="description"
 					type="text"
-					defaultValue={defaultValues?.description}
+					value={description}
+					onChange={(e) => setDescription(e.target.value)}
 					required
 					placeholder={t("form.descriptionPlaceholder")}
 				/>
 				{!state.success && <FieldError errors={state.fieldErrors?.description} />}
+				{suggestion && (
+					<CategorySuggestion
+						suggestion={suggestion}
+						onAccept={handleAcceptSuggestion}
+						onDismiss={handleDismissSuggestion}
+					/>
+				)}
 			</div>
 
 			<div className="flex flex-col gap-1.5">
@@ -260,10 +325,18 @@ export function TransactionForm({
 				<CategorySelect
 					categories={categories}
 					name="categoryId"
-					defaultValue={defaultValues?.categoryId}
+					value={categoryId}
+					onValueChange={(value) => setCategoryId(value ?? "")}
 					error={!state.success ? state.fieldErrors?.categoryId?.[0] : undefined}
 				/>
 			</div>
+
+			{tags.length > 0 && (
+				<div className="flex flex-col gap-1.5">
+					<Label>{t("form.tags")}</Label>
+					<TagSelect tags={tags} defaultValue={defaultValues?.tagIds} />
+				</div>
+			)}
 
 			<Button type="submit" disabled={isPending} className="mt-2 w-full">
 				{isPending

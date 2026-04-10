@@ -24,6 +24,7 @@
 		"transactions": "Transacciones",
 		"recurring": "Recurrentes",
 		"categories": "Categorías",
+		"budgets": "Presupuestos",
 		"creditCards": "Tarjetas de crédito",
 		"investments": "Inversiones",
 		"analytics": "Análisis",
@@ -106,6 +107,7 @@
 		"clearFilters": "Limpiar filtros",
 		"noTransactionsFound": "No se encontraron transacciones.",
 		"filters": "Filtros",
+		"export": "Exportar",
 		"form": {
 			"amount": "Monto",
 			"description": "Descripción",
@@ -124,6 +126,7 @@
 			"category": "Categoría",
 			"payInInstallments": "Pagar en cuotas",
 			"numberOfInstallments": "Cantidad de cuotas",
+			"tags": "Etiquetas",
 			"createTransaction": "Crear Transacción",
 			"updateTransaction": "Actualizar Transacción",
 			"createdSuccess": "Transacción creada correctamente",
@@ -173,9 +176,108 @@
 			"type": "Tipo",
 			"method": "Método",
 			"category": "Categoría",
+			"tag": "Etiqueta",
 			"all": "Todos",
 			"apply": "Aplicar",
 			"clear": "Limpiar"
+		}
+	},
+	"tags": {
+		"title": "Etiquetas",
+		"manage": "Gestionar Etiquetas",
+		"manageDescription": "Creá, editá y eliminá etiquetas para organizar tus transacciones.",
+		"name": "Nombre",
+		"color": "Color",
+		"namePlaceholder": "Ej. vacaciones",
+		"noTags": "No hay etiquetas",
+		"selectTags": "Seleccionar etiquetas...",
+		"create": "Crear Etiqueta",
+		"deleteConfirmTitle": "Eliminar Etiqueta",
+		"deleteConfirmDescription": "¿Eliminar la etiqueta \"{name}\"? Se quitará de todas las transacciones.",
+		"createdSuccess": "Etiqueta creada",
+		"updatedSuccess": "Etiqueta actualizada",
+		"deletedSuccess": "Etiqueta eliminada"
+	},
+	"categorization": {
+		"title": "Auto-categorización",
+		"manage": "Gestionar reglas",
+		"pageDescription": "Sugerí categorías automáticamente para nuevas transacciones según patrones de descripción.",
+		"rules": "Reglas",
+		"newRule": "Nueva Regla",
+		"editRule": "Editar Regla",
+		"ruleDescription": "Creá un patrón que coincida con descripciones de transacciones y las auto-categorice.",
+		"noRules": "No hay reglas aún. Creá una para empezar a auto-categorizar.",
+		"pattern": "Patrón",
+		"patternPlaceholder": "Ej. uber",
+		"patternHint": "Texto a buscar en descripciones de transacciones (sin distinción de mayúsculas).",
+		"matchType": "Tipo de coincidencia",
+		"category": "Categoría",
+		"createRule": "Crear Regla",
+		"updateRule": "Actualizar Regla",
+		"createdSuccess": "Regla creada",
+		"updatedSuccess": "Regla actualizada",
+		"deletedSuccess": "Regla eliminada",
+		"deleteConfirmTitle": "Eliminar Regla",
+		"deleteConfirmDescription": "¿Eliminar la regla de \"{pattern}\"? Las transacciones existentes no se modificarán.",
+		"hitCount": "usada {count, plural, one {# vez} other {# veces}}",
+		"matchTypes": {
+			"exact": "Coincidencia exacta",
+			"contains": "Contiene",
+			"startsWith": "Empieza con"
+		},
+		"suggestionLabel": "Auto-categorizar como",
+		"accept": "Aceptar",
+		"dismiss": "Descartar"
+	},
+	"comparison": {
+		"title": "Mes vs Mes",
+		"spentMore": "Gastaste {percent}% más que el mes pasado",
+		"spentLess": "Gastaste {percent}% menos que el mes pasado",
+		"spentSame": "Tu gasto es similar al del mes pasado",
+		"risingTrend": "+{percent}% en 3 meses",
+		"risingTrendsCount": "{count, plural, one {# tendencia al alza detectada} other {# tendencias al alza detectadas}}",
+		"category": "Categoría",
+		"thisMonth": "Este Mes",
+		"previousMonth": "Mes Pasado",
+		"change": "Cambio",
+		"noData": "No hay datos suficientes para comparar",
+		"viewAll": "Ver detalle"
+	},
+	"export": {
+		"title": "Exportar Transacciones",
+		"description": "Descargá tus transacciones como archivo CSV.",
+		"export": "Exportar CSV",
+		"exporting": "Exportando...",
+		"success": "Descarga lista",
+		"error": "Error al exportar las transacciones"
+	},
+	"budgets": {
+		"title": "Presupuestos",
+		"noBudgets": "No hay presupuestos para este mes.",
+		"setBudget": "Crear Presupuesto",
+		"setBudgetDescription": "Establecé un límite de gasto mensual por categoría.",
+		"category": "Categoría",
+		"amount": "Límite Mensual",
+		"copyFromLastMonth": "Copiar del mes anterior",
+		"copySuccess": "Se {count, plural, one {copió # presupuesto} other {copiaron # presupuestos}} del mes anterior",
+		"createdSuccess": "Presupuesto guardado",
+		"deletedSuccess": "Presupuesto eliminado",
+		"deleteConfirmTitle": "Eliminar Presupuesto",
+		"deleteConfirmDescription": "¿Eliminar el presupuesto de {name}?",
+		"status": {
+			"ok": "En orden",
+			"warning": "Atención",
+			"exceeded": "Excedido"
+		},
+		"widget": {
+			"title": "Presupuestos",
+			"noBudgets": "No hay presupuestos configurados.",
+			"createBudget": "Crear uno",
+			"viewAll": "Ver todos",
+			"spent": "Gastado",
+			"onTrack": "{count} en orden",
+			"warning": "{count} en atención",
+			"exceeded": "{count} excedidos"
 		}
 	},
 	"creditCards": {
@@ -446,7 +548,10 @@
 			"createRecurring": "Crear Recurrente",
 			"updateRecurring": "Actualizar Recurrente",
 			"createdSuccess": "Transacción recurrente creada correctamente",
-			"updatedSuccess": "Transacción recurrente actualizada correctamente"
+			"updatedSuccess": "Transacción recurrente actualizada correctamente",
+			"generationMode": "Modo de Generación",
+			"selectGenerationMode": "Seleccionar modo",
+			"generationModeHint": "Automático genera transacciones automáticamente. Sugerir muestra un recordatorio para que confirmes."
 		},
 		"dialog": {
 			"newTitle": "Nueva Transacción Recurrente",
@@ -492,6 +597,20 @@
 			"credit": "Crédito",
 			"transfer": "Transferencia",
 			"other": "Otro"
+		},
+		"generationModes": {
+			"auto": "Automático",
+			"suggest": "Sugerir antes de agregar"
+		},
+		"suggestions": {
+			"title": "Sugerencias Pendientes",
+			"description": "Estas transacciones recurrentes necesitan tu confirmación.",
+			"empty": "No hay sugerencias pendientes",
+			"accept": "Agregar",
+			"skip": "Omitir",
+			"accepted": "Transacción agregada correctamente",
+			"skipped": "Sugerencia omitida",
+			"badge": "{count, plural, one {# sugerencia} other {# sugerencias}}"
 		}
 	},
 	"groups": {
@@ -716,7 +835,9 @@
 			"futureOverload": "Sobrecarga Futura",
 			"installmentLoad": "Carga de Cuotas",
 			"investmentChange": "Cambio de Inversión",
-			"missingIncome": "Ingreso Faltante"
+			"missingIncome": "Ingreso Faltante",
+			"budgetWarning": "Alerta de Presupuesto",
+			"budgetExceeded": "Presupuesto Excedido"
 		},
 		"time": {
 			"justNow": "ahora",
@@ -780,6 +901,20 @@
 			"from": "Desde",
 			"to": "hasta"
 		}
+	},
+	"projection": {
+		"title": "Proyección de flujo de caja",
+		"subtitle": "Saldo diario proyectado para los próximos 90 días usando transacciones recurrentes, cuotas y movimientos programados.",
+		"noData": "No hay suficientes datos para proyectar tu flujo de caja.",
+		"today": "Hoy",
+		"balance": "Saldo",
+		"startingBalance": "Saldo inicial",
+		"days30": "En 30 días",
+		"days60": "En 60 días",
+		"days90": "En 90 días",
+		"negativeWarning": "Tu saldo proyectado va a quedar en negativo.",
+		"lowestPointMessage": "Punto más bajo: {amount} el {date}.",
+		"firstNegativeMessage": "Primer día en negativo: {date}."
 	},
 	"simulations": {
 		"title": "Simulaciones",
@@ -1009,6 +1144,30 @@
 		"RECURRING_DELETE_FAILED": "Error al eliminar la plantilla recurrente",
 		"RECURRING_TOGGLE_FAILED": "Error al cambiar el estado de recurrencia",
 		"RECURRING_GENERATE_FAILED": "Error al generar las transacciones recurrentes",
+		"SUGGESTION_MISSING_TEMPLATE": "Se requiere el ID de la plantilla",
+		"SUGGESTION_NOT_SUGGEST_MODE": "Esta plantilla no está en modo sugerir",
+		"SUGGESTION_ACCEPT_FAILED": "Error al agregar la transacción sugerida",
+		"SUGGESTION_SKIP_FAILED": "Error al omitir la sugerencia",
+		"TAG_NOT_FOUND": "Etiqueta no encontrada",
+		"TAG_NOT_OWNED": "Solo podés gestionar tus propias etiquetas",
+		"TAG_ALREADY_EXISTS": "Ya existe una etiqueta con ese nombre",
+		"TAG_CREATE_FAILED": "Error al crear la etiqueta",
+		"TAG_UPDATE_FAILED": "Error al actualizar la etiqueta",
+		"TAG_DELETE_FAILED": "Error al eliminar la etiqueta",
+		"BUDGET_NOT_FOUND": "Presupuesto no encontrado",
+		"BUDGET_NOT_OWNED": "Solo podés gestionar tus propios presupuestos",
+		"BUDGET_UPSERT_FAILED": "Error al guardar el presupuesto",
+		"BUDGET_DELETE_FAILED": "Error al eliminar el presupuesto",
+		"BUDGET_COPY_INVALID_PARAMS": "Mes o año inválidos",
+		"BUDGET_COPY_NO_PREVIOUS": "No se encontraron presupuestos en el mes anterior",
+		"BUDGET_COPY_FAILED": "Error al copiar presupuestos",
+		"RULE_NOT_FOUND": "Regla no encontrada",
+		"RULE_NOT_OWNED": "Solo podés gestionar tus propias reglas",
+		"RULE_ALREADY_EXISTS": "Ya existe una regla con ese patrón",
+		"RULE_EMPTY_PATTERN": "El patrón no puede estar vacío",
+		"RULE_CREATE_FAILED": "Error al crear la regla",
+		"RULE_UPDATE_FAILED": "Error al actualizar la regla",
+		"RULE_DELETE_FAILED": "Error al eliminar la regla",
 		"GROUP_NOT_MEMBER": "No sos miembro de este grupo",
 		"GROUP_PERMISSION_DENIED": "No tenés permiso para realizar esta acción",
 		"GROUP_CREATE_FAILED": "Error al crear el grupo",

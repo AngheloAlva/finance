@@ -25,6 +25,7 @@ export async function createTransactionAction(
     paymentMethod: formData.get("paymentMethod"),
     categoryId: formData.get("categoryId"),
     creditCardId: formData.get("creditCardId") || undefined,
+    tagIds: formData.getAll("tagIds").filter((v) => typeof v === "string" && v.length > 0),
   };
 
   const result = createTransactionSchema.safeParse(raw);
@@ -33,7 +34,7 @@ export async function createTransactionAction(
     return formatZodErrors(result.error);
   }
 
-  const { amount, description, notes, date, impactDate, type, paymentMethod, categoryId, creditCardId } =
+  const { amount, description, notes, date, impactDate, type, paymentMethod, categoryId, creditCardId, tagIds } =
     result.data;
 
   const session = await requireSession();
@@ -56,6 +57,15 @@ export async function createTransactionAction(
         userId: session.user.id,
       },
     });
+
+    if (tagIds && tagIds.length > 0) {
+      await prisma.transactionTag.createMany({
+        data: tagIds.map((tagId) => ({
+          transactionId: transaction.id,
+          tagId,
+        })),
+      });
+    }
 
     try {
       const alertContext: TransactionAlertContext = {

@@ -105,6 +105,9 @@ export async function getCreditCardWithTransactions(
       creditCard: {
         select: { name: true, lastFourDigits: true, color: true },
       },
+      tags: {
+        include: { tag: { select: { id: true, name: true, color: true } } },
+      },
     },
   });
 

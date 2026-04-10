@@ -38,6 +38,10 @@ function buildWhereClause(
 		conditions.push({ creditCardId: filters.creditCardId })
 	}
 
+	if (filters.tagId) {
+		conditions.push({ tags: { some: { tagId: filters.tagId } } })
+	}
+
 	return { AND: conditions }
 }
 
@@ -72,6 +76,9 @@ export async function getTransactions(
 				creditCard: {
 					select: { name: true, lastFourDigits: true, color: true },
 				},
+				tags: {
+					include: { tag: { select: { id: true, name: true, color: true } } },
+				},
 			},
 		}),
 		prisma.transaction.count({ where }),
@@ -105,6 +112,7 @@ export function parseSearchParams(params: Record<string, string | string[] | und
 		paymentMethod: getString("paymentMethod") as TransactionFilters["paymentMethod"],
 		categoryId: getString("categoryId"),
 		creditCardId: getString("creditCardId"),
+		tagId: getString("tagId"),
 		sortBy: (getString("sortBy") as TransactionFilters["sortBy"]) ?? "date",
 		sortDir: (getString("sortDir") as TransactionFilters["sortDir"]) ?? "desc",
 	}

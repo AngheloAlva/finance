@@ -24,6 +24,7 @@
 		"transactions": "Transactions",
 		"recurring": "Recurring",
 		"categories": "Categories",
+		"budgets": "Budgets",
 		"creditCards": "Credit Cards",
 		"investments": "Investments",
 		"analytics": "Analytics",
@@ -106,6 +107,7 @@
 		"clearFilters": "Clear filters",
 		"noTransactionsFound": "No transactions found.",
 		"filters": "Filters",
+		"export": "Export",
 		"form": {
 			"amount": "Amount",
 			"description": "Description",
@@ -124,6 +126,7 @@
 			"category": "Category",
 			"payInInstallments": "Pay in installments",
 			"numberOfInstallments": "Number of Installments",
+			"tags": "Tags",
 			"createTransaction": "Create Transaction",
 			"updateTransaction": "Update Transaction",
 			"createdSuccess": "Transaction created successfully",
@@ -173,9 +176,108 @@
 			"type": "Type",
 			"method": "Method",
 			"category": "Category",
+			"tag": "Tag",
 			"all": "All",
 			"apply": "Apply",
 			"clear": "Clear"
+		}
+	},
+	"tags": {
+		"title": "Tags",
+		"manage": "Manage Tags",
+		"manageDescription": "Create, edit, and delete tags to organize your transactions.",
+		"name": "Name",
+		"color": "Color",
+		"namePlaceholder": "e.g. vacation",
+		"noTags": "No tags yet",
+		"selectTags": "Select tags...",
+		"create": "Create Tag",
+		"deleteConfirmTitle": "Delete Tag",
+		"deleteConfirmDescription": "Delete tag \"{name}\"? It will be removed from all transactions.",
+		"createdSuccess": "Tag created",
+		"updatedSuccess": "Tag updated",
+		"deletedSuccess": "Tag deleted"
+	},
+	"categorization": {
+		"title": "Auto-categorization",
+		"manage": "Manage rules",
+		"pageDescription": "Automatically suggest categories for new transactions based on description patterns.",
+		"rules": "Rules",
+		"newRule": "New Rule",
+		"editRule": "Edit Rule",
+		"ruleDescription": "Create a pattern that matches transaction descriptions and auto-categorizes them.",
+		"noRules": "No rules yet. Create one to start auto-categorizing.",
+		"pattern": "Pattern",
+		"patternPlaceholder": "e.g. uber",
+		"patternHint": "Text to match against transaction descriptions (case-insensitive).",
+		"matchType": "Match Type",
+		"category": "Category",
+		"createRule": "Create Rule",
+		"updateRule": "Update Rule",
+		"createdSuccess": "Rule created",
+		"updatedSuccess": "Rule updated",
+		"deletedSuccess": "Rule deleted",
+		"deleteConfirmTitle": "Delete Rule",
+		"deleteConfirmDescription": "Delete the rule for \"{pattern}\"? Existing transactions will not be affected.",
+		"hitCount": "used {count, plural, one {# time} other {# times}}",
+		"matchTypes": {
+			"exact": "Exact match",
+			"contains": "Contains",
+			"startsWith": "Starts with"
+		},
+		"suggestionLabel": "Auto-categorize as",
+		"accept": "Accept",
+		"dismiss": "Dismiss"
+	},
+	"comparison": {
+		"title": "Month-over-Month",
+		"spentMore": "You spent {percent}% more than last month",
+		"spentLess": "You spent {percent}% less than last month",
+		"spentSame": "Your spending is similar to last month",
+		"risingTrend": "+{percent}% in 3 months",
+		"risingTrendsCount": "{count, plural, one {# rising trend detected} other {# rising trends detected}}",
+		"category": "Category",
+		"thisMonth": "This Month",
+		"previousMonth": "Last Month",
+		"change": "Change",
+		"noData": "Not enough data for comparison",
+		"viewAll": "View details"
+	},
+	"export": {
+		"title": "Export Transactions",
+		"description": "Download your transactions as a CSV file.",
+		"export": "Export CSV",
+		"exporting": "Exporting...",
+		"success": "Export downloaded",
+		"error": "Failed to export transactions"
+	},
+	"budgets": {
+		"title": "Budgets",
+		"noBudgets": "No budgets set for this month.",
+		"setBudget": "Set Budget",
+		"setBudgetDescription": "Set a monthly spending limit for a category.",
+		"category": "Category",
+		"amount": "Monthly Limit",
+		"copyFromLastMonth": "Copy from last month",
+		"copySuccess": "Copied {count, plural, one {# budget} other {# budgets}} from last month",
+		"createdSuccess": "Budget saved",
+		"deletedSuccess": "Budget deleted",
+		"deleteConfirmTitle": "Delete Budget",
+		"deleteConfirmDescription": "Remove the budget for {name}?",
+		"status": {
+			"ok": "On Track",
+			"warning": "Warning",
+			"exceeded": "Over Budget"
+		},
+		"widget": {
+			"title": "Budgets",
+			"noBudgets": "No budgets set yet.",
+			"createBudget": "Set one up",
+			"viewAll": "View all",
+			"spent": "Spent",
+			"onTrack": "{count} on track",
+			"warning": "{count} warning",
+			"exceeded": "{count} over"
 		}
 	},
 	"creditCards": {
@@ -446,7 +548,10 @@
 			"createRecurring": "Create Recurring",
 			"updateRecurring": "Update Recurring",
 			"createdSuccess": "Recurring transaction created successfully",
-			"updatedSuccess": "Recurring transaction updated successfully"
+			"updatedSuccess": "Recurring transaction updated successfully",
+			"generationMode": "Generation Mode",
+			"selectGenerationMode": "Select mode",
+			"generationModeHint": "Auto generates transactions automatically. Suggest shows a reminder for you to confirm."
 		},
 		"dialog": {
 			"newTitle": "New Recurring Transaction",
@@ -492,6 +597,20 @@
 			"credit": "Credit",
 			"transfer": "Transfer",
 			"other": "Other"
+		},
+		"generationModes": {
+			"auto": "Automatic",
+			"suggest": "Suggest before adding"
+		},
+		"suggestions": {
+			"title": "Pending Suggestions",
+			"description": "These recurring transactions need your confirmation.",
+			"empty": "No pending suggestions",
+			"accept": "Add",
+			"skip": "Skip",
+			"accepted": "Transaction added successfully",
+			"skipped": "Suggestion skipped",
+			"badge": "{count, plural, one {# suggestion} other {# suggestions}}"
 		}
 	},
 	"groups": {
@@ -716,7 +835,9 @@
 			"futureOverload": "Future Overload",
 			"installmentLoad": "Installment Load",
 			"investmentChange": "Investment Change",
-			"missingIncome": "Missing Income"
+			"missingIncome": "Missing Income",
+			"budgetWarning": "Budget Warning",
+			"budgetExceeded": "Budget Exceeded"
 		},
 		"time": {
 			"justNow": "just now",
@@ -780,6 +901,20 @@
 			"from": "From",
 			"to": "to"
 		}
+	},
+	"projection": {
+		"title": "Cashflow Projection",
+		"subtitle": "Projected daily balance over the next 90 days using recurring transactions, installments and scheduled movements.",
+		"noData": "Not enough data to project your cashflow.",
+		"today": "Today",
+		"balance": "Balance",
+		"startingBalance": "Starting Balance",
+		"days30": "In 30 days",
+		"days60": "In 60 days",
+		"days90": "In 90 days",
+		"negativeWarning": "Your balance is projected to go negative.",
+		"lowestPointMessage": "Lowest point: {amount} on {date}.",
+		"firstNegativeMessage": "First day below zero: {date}."
 	},
 	"simulations": {
 		"title": "Simulations",
@@ -1009,6 +1144,30 @@
 		"RECURRING_DELETE_FAILED": "Failed to delete recurring template",
 		"RECURRING_TOGGLE_FAILED": "Failed to toggle recurring status",
 		"RECURRING_GENERATE_FAILED": "Failed to generate recurring transactions",
+		"SUGGESTION_MISSING_TEMPLATE": "Template ID is required",
+		"SUGGESTION_NOT_SUGGEST_MODE": "This template is not in suggest mode",
+		"SUGGESTION_ACCEPT_FAILED": "Failed to add suggested transaction",
+		"SUGGESTION_SKIP_FAILED": "Failed to skip suggestion",
+		"TAG_NOT_FOUND": "Tag not found",
+		"TAG_NOT_OWNED": "You can only manage your own tags",
+		"TAG_ALREADY_EXISTS": "A tag with this name already exists",
+		"TAG_CREATE_FAILED": "Failed to create tag",
+		"TAG_UPDATE_FAILED": "Failed to update tag",
+		"TAG_DELETE_FAILED": "Failed to delete tag",
+		"BUDGET_NOT_FOUND": "Budget not found",
+		"BUDGET_NOT_OWNED": "You can only manage your own budgets",
+		"BUDGET_UPSERT_FAILED": "Failed to save budget",
+		"BUDGET_DELETE_FAILED": "Failed to delete budget",
+		"BUDGET_COPY_INVALID_PARAMS": "Invalid month or year",
+		"BUDGET_COPY_NO_PREVIOUS": "No budgets found in the previous month to copy",
+		"BUDGET_COPY_FAILED": "Failed to copy budgets",
+		"RULE_NOT_FOUND": "Rule not found",
+		"RULE_NOT_OWNED": "You can only manage your own rules",
+		"RULE_ALREADY_EXISTS": "A rule with this pattern already exists",
+		"RULE_EMPTY_PATTERN": "Pattern cannot be empty",
+		"RULE_CREATE_FAILED": "Failed to create rule",
+		"RULE_UPDATE_FAILED": "Failed to update rule",
+		"RULE_DELETE_FAILED": "Failed to delete rule",
 		"GROUP_NOT_MEMBER": "You are not a member of this group",
 		"GROUP_PERMISSION_DENIED": "You don't have permission to perform this action",
 		"GROUP_CREATE_FAILED": "Failed to create group",

@@ -10,7 +10,12 @@ import type {
   BudgetVsActualItem,
   HealthScoreResult,
   DateRange,
+  MonthComparisonItem,
+  MonthComparisonResult,
+  TrendAlert,
+  ChangeDirection,
 } from "@/features/analytics/types/analytics.types";
+import { CHANGE_DIRECTION } from "@/features/analytics/types/analytics.types";
 import { computeHealthSubScore } from "@/features/analytics/lib/analytics.utils";
 
 
@@ -696,4 +701,203 @@ export async function getFinancialHealthScore(
   else label = "Critical";
 
   return { overall, factors, label, hasEnoughData: true };
+}
+
+// ---------- Month-over-Month Comparison ----------
+
+function computeDirection(current: number, previous: number): ChangeDirection {
+  if (current === previous) return CHANGE_DIRECTION.FLAT;
+  return current > previous ? CHANGE_DIRECTION.UP : CHANGE_DIRECTION.DOWN;
+}
+
+function computeChangePercent(current: number, previous: number): number {
+  if (previous === 0) return current > 0 ? 100 : 0;
+  return Math.round(((current - previous) / previous) * 100);
+}
+
+/**
+ * Compare spending per category between the given month and the previous month.
+ * Returns per-category deltas plus totals and overall change direction.
+ */
+export async function getMonthComparison(
+  userId: string,
+  month: number,
+  year: number,
+): Promise<MonthComparisonResult> {
+  const currentStart = new Date(year, month - 1, 1);
+  const currentEnd = new Date(year, month, 1);
+  const prevStart = new Date(year, month - 2, 1);
+  const prevEnd = new Date(year, month - 1, 1);
+
+  const baseWhere = {
+    userId,
+    type: TransactionType.EXPENSE,
+    isTemplate: false,
+  } as const;
+
+  const [currentGroups, previousGroups] = await Promise.all([
+    prisma.transaction.groupBy({
+      by: ["categoryId"],
+      where: { ...baseWhere, impactDate: { gte: currentStart, lt: currentEnd } },
+      _sum: { amount: true },
+    }),
+    prisma.transaction.groupBy({
+      by: ["categoryId"],
+      where: { ...baseWhere, impactDate: { gte: prevStart, lt: prevEnd } },
+      _sum: { amount: true },
+    }),
+  ]);
+
+  const allCategoryIds = new Set([
+    ...currentGroups.map((g) => g.categoryId),
+    ...previousGroups.map((g) => g.categoryId),
+  ]);
+
+  if (allCategoryIds.size === 0) {
+    return {
+      items: [],
+      trends: [],
+      totalCurrentMonth: 0,
+      totalPreviousMonth: 0,
+      overallChangePercent: 0,
+      overallDirection: CHANGE_DIRECTION.FLAT,
+    };
+  }
+
+  const categories = await prisma.category.findMany({
+    where: { id: { in: [...allCategoryIds] } },
+    select: { id: true, name: true, color: true, icon: true },
+  });
+
+  const categoryMap = new Map(categories.map((c) => [c.id, c]));
+  const currentMap = new Map(
+    currentGroups.map((g) => [g.categoryId, Math.abs(g._sum.amount ?? 0)]),
+  );
+  const previousMap = new Map(
+    previousGroups.map((g) => [g.categoryId, Math.abs(g._sum.amount ?? 0)]),
+  );
+
+  const items: MonthComparisonItem[] = [];
+  let totalCurrentMonth = 0;
+  let totalPreviousMonth = 0;
+
+  for (const categoryId of allCategoryIds) {
+    const category = categoryMap.get(categoryId);
+    if (!category) continue;
+
+    const currentAmount = currentMap.get(categoryId) ?? 0;
+    const previousAmount = previousMap.get(categoryId) ?? 0;
+
+    totalCurrentMonth += currentAmount;
+    totalPreviousMonth += previousAmount;
+
+    items.push({
+      categoryId,
+      categoryName: category.name,
+      categoryColor: category.color,
+      categoryIcon: category.icon,
+      currentAmount,
+      previousAmount,
+      changePercent: computeChangePercent(currentAmount, previousAmount),
+      direction: computeDirection(currentAmount, previousAmount),
+    });
+  }
+
+  // Sort by absolute change descending so biggest movers come first
+  items.sort((a, b) => Math.abs(b.changePercent) - Math.abs(a.changePercent));
+
+  const trends = await detectRisingTrends(userId, month, year);
+
+  return {
+    items,
+    trends,
+    totalCurrentMonth,
+    totalPreviousMonth,
+    overallChangePercent: computeChangePercent(totalCurrentMonth, totalPreviousMonth),
+    overallDirection: computeDirection(totalCurrentMonth, totalPreviousMonth),
+  };
+}
+
+/**
+ * Detect categories with 3 consecutive months of increase (strict ascending).
+ * Only considers expense transactions. Returns up to 5 trends sorted by increase magnitude.
+ */
+export async function detectRisingTrends(
+  userId: string,
+  month: number,
+  year: number,
+): Promise<TrendAlert[]> {
+  // Build ranges for last 3 months (including the given month)
+  const ranges = Array.from({ length: 3 }, (_, i) => {
+    const offset = 2 - i; // oldest first
+    const start = new Date(year, month - 1 - offset, 1);
+    const end = new Date(year, month - offset, 1);
+    return { start, end };
+  });
+
+  const monthlyGroups = await Promise.all(
+    ranges.map(({ start, end }) =>
+      prisma.transaction.groupBy({
+        by: ["categoryId"],
+        where: {
+          userId,
+          type: TransactionType.EXPENSE,
+          isTemplate: false,
+          impactDate: { gte: start, lt: end },
+        },
+        _sum: { amount: true },
+      }),
+    ),
+  );
+
+  // Collect category IDs present in ALL 3 months (can't be a rising trend without 3 data points)
+  const categorySets = monthlyGroups.map(
+    (groups) => new Set(groups.map((g) => g.categoryId)),
+  );
+  const commonIds = [...categorySets[0]!].filter(
+    (id) => categorySets[1]!.has(id) && categorySets[2]!.has(id),
+  );
+
+  if (commonIds.length === 0) return [];
+
+  const categories = await prisma.category.findMany({
+    where: { id: { in: commonIds } },
+    select: { id: true, name: true, color: true },
+  });
+  const categoryMap = new Map(categories.map((c) => [c.id, c]));
+
+  const monthMaps = monthlyGroups.map(
+    (groups) =>
+      new Map(groups.map((g) => [g.categoryId, Math.abs(g._sum.amount ?? 0)])),
+  );
+
+  const trends: TrendAlert[] = [];
+
+  for (const categoryId of commonIds) {
+    const category = categoryMap.get(categoryId);
+    if (!category) continue;
+
+    const amounts = monthMaps.map((m) => m.get(categoryId) ?? 0);
+
+    // Strict ascending: each month > previous
+    const isRising = amounts[0]! < amounts[1]! && amounts[1]! < amounts[2]!;
+    if (!isRising) continue;
+
+    const totalIncreasePercent =
+      amounts[0]! > 0
+        ? Math.round(((amounts[2]! - amounts[0]!) / amounts[0]!) * 100)
+        : 0;
+
+    trends.push({
+      categoryId,
+      categoryName: category.name,
+      categoryColor: category.color,
+      monthlyAmounts: amounts,
+      totalIncreasePercent,
+    });
+  }
+
+  return trends
+    .sort((a, b) => b.totalIncreasePercent - a.totalIncreasePercent)
+    .slice(0, 5);
 }

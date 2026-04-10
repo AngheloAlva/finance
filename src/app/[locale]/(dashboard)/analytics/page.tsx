@@ -11,17 +11,21 @@ import {
   getNetWorthTimeline,
   getBudgetVsActual,
   getFinancialHealthScore,
+  getMonthComparison,
 } from "@/features/analytics/lib/analytics.queries";
+import { getDailyProjection } from "@/features/analytics/lib/projection.queries";
 import { parseDateRange } from "@/features/analytics/lib/analytics.utils";
 
 import { DateRangeSelector } from "@/features/analytics/components/date-range-selector";
 import { IncomeVsExpensesChart } from "@/features/analytics/components/income-vs-expenses-chart";
 import { CashFlowForecastChart } from "@/features/analytics/components/cash-flow-forecast-chart";
+import { CashflowProjection } from "@/features/analytics/components/cashflow-projection";
 import { CategoryComparisonChart } from "@/features/analytics/components/category-comparison-chart";
 import { SpendingHeatmap } from "@/features/analytics/components/spending-heatmap";
 import { NetWorthChart } from "@/features/analytics/components/net-worth-chart";
 import { BudgetVsActualChart } from "@/features/analytics/components/budget-vs-actual-chart";
 import { FinancialHealthGauge } from "@/features/analytics/components/financial-health-gauge";
+import { MonthComparisonDetail } from "@/features/analytics/components/month-comparison-detail";
 
 interface AnalyticsPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -53,14 +57,17 @@ export default async function AnalyticsPage({
   const [
     trendData,
     forecastData,
+    projectionData,
     comparisonData,
     dailySpending,
     netWorthData,
     budgetData,
     healthScore,
+    monthComparison,
   ] = await Promise.all([
     getIncomeVsExpensesTrend(session.user.id, 12),
     getCashFlowForecast(session.user.id, 3),
+    getDailyProjection(session.user.id, 90),
     getCategoryComparison(
       session.user.id,
       { from: period1From, to: period1To },
@@ -70,6 +77,7 @@ export default async function AnalyticsPage({
     getNetWorthTimeline(session.user.id),
     getBudgetVsActual(session.user.id, currentMonth, currentYear),
     getFinancialHealthScore(session.user.id),
+    getMonthComparison(session.user.id, currentMonth, currentYear),
   ]);
 
   const fromStr = from.toISOString().split("T")[0];
@@ -88,6 +96,10 @@ export default async function AnalyticsPage({
       </div>
 
       <IncomeVsExpensesChart data={trendData} currency={currency} />
+
+      <MonthComparisonDetail comparison={monthComparison} currency={currency} />
+
+      <CashflowProjection data={projectionData} currency={currency} />
 
       <CashFlowForecastChart data={forecastData} currency={currency} />
 

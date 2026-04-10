@@ -18,6 +18,8 @@ interface CategorySelectProps {
   categories: CategoryWithChildren[];
   name: string;
   defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string | null) => void;
   error?: string;
 }
 
@@ -25,6 +27,8 @@ export function CategorySelect({
   categories,
   name,
   defaultValue,
+  value,
+  onValueChange,
   error,
 }: CategorySelectProps) {
   const t = useTranslations("categories");
@@ -44,7 +48,13 @@ export function CategorySelect({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <Select name={name} defaultValue={defaultValue} items={items}>
+      <Select
+        name={name}
+        defaultValue={defaultValue}
+        value={value}
+        onValueChange={onValueChange}
+        items={items}
+      >
         <SelectTrigger
           className="w-full"
           aria-invalid={error ? true : undefined}

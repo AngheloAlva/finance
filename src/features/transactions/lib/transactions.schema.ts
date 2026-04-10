@@ -21,6 +21,7 @@ export const createTransactionSchema = z.object({
 	}),
 	categoryId: z.string().min(1, { error: "required" }),
 	creditCardId: z.string().optional(),
+	tagIds: z.array(z.string()).optional(),
 })
 
 export const updateTransactionSchema = createTransactionSchema.extend({

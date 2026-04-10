@@ -26,6 +26,7 @@ export async function updateTransactionAction(
     paymentMethod: formData.get("paymentMethod"),
     categoryId: formData.get("categoryId"),
     creditCardId: formData.get("creditCardId") || undefined,
+    tagIds: formData.getAll("tagIds").filter((v) => typeof v === "string" && v.length > 0),
   };
 
   const result = updateTransactionSchema.safeParse(raw);
@@ -34,7 +35,7 @@ export async function updateTransactionAction(
     return formatZodErrors(result.error);
   }
 
-  const { id, amount, description, notes, date, impactDate, type, paymentMethod, categoryId, creditCardId } =
+  const { id, amount, description, notes, date, impactDate, type, paymentMethod, categoryId, creditCardId, tagIds } =
     result.data;
 
   const session = await requireSession();
@@ -85,6 +86,22 @@ export async function updateTransactionAction(
         creditCardId: creditCardId ?? null,
       },
     });
+
+    if (tagIds) {
+      await prisma.$transaction([
+        prisma.transactionTag.deleteMany({ where: { transactionId: id } }),
+        ...(tagIds.length > 0
+          ? [
+              prisma.transactionTag.createMany({
+                data: tagIds.map((tagId) => ({
+                  transactionId: id,
+                  tagId,
+                })),
+              }),
+            ]
+          : []),
+      ]);
+    }
 
     try {
       const alertContext: TransactionAlertContext = {
