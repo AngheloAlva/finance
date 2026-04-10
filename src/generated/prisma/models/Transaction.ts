@@ -354,6 +354,7 @@ export type TransactionWhereInput = {
   generatedFrom?: Prisma.XOR<Prisma.TransactionNullableScalarRelationFilter, Prisma.TransactionWhereInput> | null
   generatedInstances?: Prisma.TransactionListRelationFilter
   recurrenceRule?: Prisma.XOR<Prisma.RecurrenceRuleNullableScalarRelationFilter, Prisma.RecurrenceRuleWhereInput> | null
+  tags?: Prisma.TransactionTagListRelationFilter
 }
 
 export type TransactionOrderByWithRelationInput = {
@@ -387,6 +388,7 @@ export type TransactionOrderByWithRelationInput = {
   generatedFrom?: Prisma.TransactionOrderByWithRelationInput
   generatedInstances?: Prisma.TransactionOrderByRelationAggregateInput
   recurrenceRule?: Prisma.RecurrenceRuleOrderByWithRelationInput
+  tags?: Prisma.TransactionTagOrderByRelationAggregateInput
 }
 
 export type TransactionWhereUniqueInput = Prisma.AtLeast<{
@@ -423,6 +425,7 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   generatedFrom?: Prisma.XOR<Prisma.TransactionNullableScalarRelationFilter, Prisma.TransactionWhereInput> | null
   generatedInstances?: Prisma.TransactionListRelationFilter
   recurrenceRule?: Prisma.XOR<Prisma.RecurrenceRuleNullableScalarRelationFilter, Prisma.RecurrenceRuleWhereInput> | null
+  tags?: Prisma.TransactionTagListRelationFilter
 }, "id">
 
 export type TransactionOrderByWithAggregationInput = {
@@ -504,6 +507,7 @@ export type TransactionCreateInput = {
   generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
   generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateInput = {
@@ -531,6 +535,7 @@ export type TransactionUncheckedCreateInput = {
   childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
   generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUpdateInput = {
@@ -558,6 +563,7 @@ export type TransactionUpdateInput = {
   generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
   generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateInput = {
@@ -585,6 +591,7 @@ export type TransactionUncheckedUpdateInput = {
   childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
   generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionCreateManyInput = {
@@ -1079,6 +1086,20 @@ export type TransactionUpdateOneRequiredWithoutSplitsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TransactionUpdateToOneWithWhereWithoutSplitsInput, Prisma.TransactionUpdateWithoutSplitsInput>, Prisma.TransactionUncheckedUpdateWithoutSplitsInput>
 }
 
+export type TransactionCreateNestedOneWithoutTagsInput = {
+  create?: Prisma.XOR<Prisma.TransactionCreateWithoutTagsInput, Prisma.TransactionUncheckedCreateWithoutTagsInput>
+  connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutTagsInput
+  connect?: Prisma.TransactionWhereUniqueInput
+}
+
+export type TransactionUpdateOneRequiredWithoutTagsNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionCreateWithoutTagsInput, Prisma.TransactionUncheckedCreateWithoutTagsInput>
+  connectOrCreate?: Prisma.TransactionCreateOrConnectWithoutTagsInput
+  upsert?: Prisma.TransactionUpsertWithoutTagsInput
+  connect?: Prisma.TransactionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TransactionUpdateToOneWithWhereWithoutTagsInput, Prisma.TransactionUpdateWithoutTagsInput>, Prisma.TransactionUncheckedUpdateWithoutTagsInput>
+}
+
 export type TransactionCreateWithoutUserInput = {
   id?: string
   amount: number
@@ -1103,6 +1124,7 @@ export type TransactionCreateWithoutUserInput = {
   generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
   generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutUserInput = {
@@ -1129,6 +1151,7 @@ export type TransactionUncheckedCreateWithoutUserInput = {
   childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
   generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutUserInput = {
@@ -1207,6 +1230,7 @@ export type TransactionCreateWithoutCategoryInput = {
   generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
   generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutCategoryInput = {
@@ -1233,6 +1257,7 @@ export type TransactionUncheckedCreateWithoutCategoryInput = {
   childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
   generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutCategoryInput = {
@@ -1285,6 +1310,7 @@ export type TransactionCreateWithoutChildInstallmentsInput = {
   generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
   generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutChildInstallmentsInput = {
@@ -1311,6 +1337,7 @@ export type TransactionUncheckedCreateWithoutChildInstallmentsInput = {
   splits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutTransactionInput
   generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutChildInstallmentsInput = {
@@ -1342,6 +1369,7 @@ export type TransactionCreateWithoutParentTransactionInput = {
   generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
   generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutParentTransactionInput = {
@@ -1368,6 +1396,7 @@ export type TransactionUncheckedCreateWithoutParentTransactionInput = {
   childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
   generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutParentTransactionInput = {
@@ -1404,6 +1433,7 @@ export type TransactionCreateWithoutGeneratedInstancesInput = {
   childInstallments?: Prisma.TransactionCreateNestedManyWithoutParentTransactionInput
   generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
   recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutGeneratedInstancesInput = {
@@ -1430,6 +1460,7 @@ export type TransactionUncheckedCreateWithoutGeneratedInstancesInput = {
   splits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutTransactionInput
   childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutGeneratedInstancesInput = {
@@ -1461,6 +1492,7 @@ export type TransactionCreateWithoutGeneratedFromInput = {
   childInstallments?: Prisma.TransactionCreateNestedManyWithoutParentTransactionInput
   generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutGeneratedFromInput = {
@@ -1487,6 +1519,7 @@ export type TransactionUncheckedCreateWithoutGeneratedFromInput = {
   childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
   generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutGeneratedFromInput = {
@@ -1534,6 +1567,7 @@ export type TransactionUpdateWithoutChildInstallmentsInput = {
   generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
   generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutChildInstallmentsInput = {
@@ -1560,6 +1594,7 @@ export type TransactionUncheckedUpdateWithoutChildInstallmentsInput = {
   splits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutTransactionNestedInput
   generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUpsertWithWhereUniqueWithoutParentTransactionInput = {
@@ -1613,6 +1648,7 @@ export type TransactionUpdateWithoutGeneratedInstancesInput = {
   childInstallments?: Prisma.TransactionUpdateManyWithoutParentTransactionNestedInput
   generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutGeneratedInstancesInput = {
@@ -1639,6 +1675,7 @@ export type TransactionUncheckedUpdateWithoutGeneratedInstancesInput = {
   splits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutTransactionNestedInput
   childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUpsertWithWhereUniqueWithoutGeneratedFromInput = {
@@ -1681,6 +1718,7 @@ export type TransactionCreateWithoutCreditCardInput = {
   generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
   generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutCreditCardInput = {
@@ -1707,6 +1745,7 @@ export type TransactionUncheckedCreateWithoutCreditCardInput = {
   childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
   generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutCreditCardInput = {
@@ -1759,6 +1798,7 @@ export type TransactionCreateWithoutRecurrenceRuleInput = {
   childInstallments?: Prisma.TransactionCreateNestedManyWithoutParentTransactionInput
   generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
   generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutRecurrenceRuleInput = {
@@ -1785,6 +1825,7 @@ export type TransactionUncheckedCreateWithoutRecurrenceRuleInput = {
   splits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutTransactionInput
   childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
   generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutRecurrenceRuleInput = {
@@ -1827,6 +1868,7 @@ export type TransactionUpdateWithoutRecurrenceRuleInput = {
   childInstallments?: Prisma.TransactionUpdateManyWithoutParentTransactionNestedInput
   generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
   generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutRecurrenceRuleInput = {
@@ -1853,6 +1895,7 @@ export type TransactionUncheckedUpdateWithoutRecurrenceRuleInput = {
   splits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutTransactionNestedInput
   childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
   generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionCreateWithoutGroupInput = {
@@ -1879,6 +1922,7 @@ export type TransactionCreateWithoutGroupInput = {
   generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
   generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutGroupInput = {
@@ -1905,6 +1949,7 @@ export type TransactionUncheckedCreateWithoutGroupInput = {
   childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
   generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutGroupInput = {
@@ -1957,6 +2002,7 @@ export type TransactionCreateWithoutSplitsInput = {
   generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
   generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionUncheckedCreateWithoutSplitsInput = {
@@ -1983,6 +2029,7 @@ export type TransactionUncheckedCreateWithoutSplitsInput = {
   childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
   generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+  tags?: Prisma.TransactionTagUncheckedCreateNestedManyWithoutTransactionInput
 }
 
 export type TransactionCreateOrConnectWithoutSplitsInput = {
@@ -2025,6 +2072,7 @@ export type TransactionUpdateWithoutSplitsInput = {
   generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
   generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutSplitsInput = {
@@ -2048,6 +2096,131 @@ export type TransactionUncheckedUpdateWithoutSplitsInput = {
   generatedFromId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
+  generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
+  recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
+}
+
+export type TransactionCreateWithoutTagsInput = {
+  id?: string
+  amount: number
+  description: string
+  notes?: string | null
+  date: Date | string
+  impactDate: Date | string
+  type: $Enums.TransactionType
+  paymentMethod?: $Enums.PaymentMethod
+  splitRule?: $Enums.SplitRule | null
+  installmentNumber?: number | null
+  totalInstallments?: number | null
+  isTemplate?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutTransactionsInput
+  category: Prisma.CategoryCreateNestedOneWithoutTransactionsInput
+  group?: Prisma.GroupCreateNestedOneWithoutTransactionsInput
+  splits?: Prisma.TransactionSplitCreateNestedManyWithoutTransactionInput
+  creditCard?: Prisma.CreditCardCreateNestedOneWithoutTransactionsInput
+  parentTransaction?: Prisma.TransactionCreateNestedOneWithoutChildInstallmentsInput
+  childInstallments?: Prisma.TransactionCreateNestedManyWithoutParentTransactionInput
+  generatedFrom?: Prisma.TransactionCreateNestedOneWithoutGeneratedInstancesInput
+  generatedInstances?: Prisma.TransactionCreateNestedManyWithoutGeneratedFromInput
+  recurrenceRule?: Prisma.RecurrenceRuleCreateNestedOneWithoutTransactionInput
+}
+
+export type TransactionUncheckedCreateWithoutTagsInput = {
+  id?: string
+  amount: number
+  description: string
+  notes?: string | null
+  date: Date | string
+  impactDate: Date | string
+  type: $Enums.TransactionType
+  paymentMethod?: $Enums.PaymentMethod
+  userId: string
+  categoryId: string
+  groupId?: string | null
+  splitRule?: $Enums.SplitRule | null
+  creditCardId?: string | null
+  installmentNumber?: number | null
+  totalInstallments?: number | null
+  parentTransactionId?: string | null
+  isTemplate?: boolean
+  generatedFromId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  splits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutTransactionInput
+  childInstallments?: Prisma.TransactionUncheckedCreateNestedManyWithoutParentTransactionInput
+  generatedInstances?: Prisma.TransactionUncheckedCreateNestedManyWithoutGeneratedFromInput
+  recurrenceRule?: Prisma.RecurrenceRuleUncheckedCreateNestedOneWithoutTransactionInput
+}
+
+export type TransactionCreateOrConnectWithoutTagsInput = {
+  where: Prisma.TransactionWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransactionCreateWithoutTagsInput, Prisma.TransactionUncheckedCreateWithoutTagsInput>
+}
+
+export type TransactionUpsertWithoutTagsInput = {
+  update: Prisma.XOR<Prisma.TransactionUpdateWithoutTagsInput, Prisma.TransactionUncheckedUpdateWithoutTagsInput>
+  create: Prisma.XOR<Prisma.TransactionCreateWithoutTagsInput, Prisma.TransactionUncheckedCreateWithoutTagsInput>
+  where?: Prisma.TransactionWhereInput
+}
+
+export type TransactionUpdateToOneWithWhereWithoutTagsInput = {
+  where?: Prisma.TransactionWhereInput
+  data: Prisma.XOR<Prisma.TransactionUpdateWithoutTagsInput, Prisma.TransactionUncheckedUpdateWithoutTagsInput>
+}
+
+export type TransactionUpdateWithoutTagsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  impactDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  splitRule?: Prisma.NullableEnumSplitRuleFieldUpdateOperationsInput | $Enums.SplitRule | null
+  installmentNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutTransactionsNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutTransactionsNestedInput
+  group?: Prisma.GroupUpdateOneWithoutTransactionsNestedInput
+  splits?: Prisma.TransactionSplitUpdateManyWithoutTransactionNestedInput
+  creditCard?: Prisma.CreditCardUpdateOneWithoutTransactionsNestedInput
+  parentTransaction?: Prisma.TransactionUpdateOneWithoutChildInstallmentsNestedInput
+  childInstallments?: Prisma.TransactionUpdateManyWithoutParentTransactionNestedInput
+  generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
+  generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
+  recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+}
+
+export type TransactionUncheckedUpdateWithoutTagsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  impactDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+  paymentMethod?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  splitRule?: Prisma.NullableEnumSplitRuleFieldUpdateOperationsInput | $Enums.SplitRule | null
+  creditCardId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  installmentNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  generatedFromId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  splits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutTransactionNestedInput
   childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
   generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
@@ -2099,6 +2272,7 @@ export type TransactionUpdateWithoutUserInput = {
   generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
   generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutUserInput = {
@@ -2125,6 +2299,7 @@ export type TransactionUncheckedUpdateWithoutUserInput = {
   childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
   generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutUserInput = {
@@ -2195,6 +2370,7 @@ export type TransactionUpdateWithoutCategoryInput = {
   generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
   generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutCategoryInput = {
@@ -2221,6 +2397,7 @@ export type TransactionUncheckedUpdateWithoutCategoryInput = {
   childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
   generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutCategoryInput = {
@@ -2313,6 +2490,7 @@ export type TransactionUpdateWithoutParentTransactionInput = {
   generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
   generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutParentTransactionInput = {
@@ -2339,6 +2517,7 @@ export type TransactionUncheckedUpdateWithoutParentTransactionInput = {
   childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
   generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutParentTransactionInput = {
@@ -2387,6 +2566,7 @@ export type TransactionUpdateWithoutGeneratedFromInput = {
   childInstallments?: Prisma.TransactionUpdateManyWithoutParentTransactionNestedInput
   generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutGeneratedFromInput = {
@@ -2413,6 +2593,7 @@ export type TransactionUncheckedUpdateWithoutGeneratedFromInput = {
   childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
   generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutGeneratedFromInput = {
@@ -2483,6 +2664,7 @@ export type TransactionUpdateWithoutCreditCardInput = {
   generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
   generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutCreditCardInput = {
@@ -2509,6 +2691,7 @@ export type TransactionUncheckedUpdateWithoutCreditCardInput = {
   childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
   generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutCreditCardInput = {
@@ -2579,6 +2762,7 @@ export type TransactionUpdateWithoutGroupInput = {
   generatedFrom?: Prisma.TransactionUpdateOneWithoutGeneratedInstancesNestedInput
   generatedInstances?: Prisma.TransactionUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutGroupInput = {
@@ -2605,6 +2789,7 @@ export type TransactionUncheckedUpdateWithoutGroupInput = {
   childInstallments?: Prisma.TransactionUncheckedUpdateManyWithoutParentTransactionNestedInput
   generatedInstances?: Prisma.TransactionUncheckedUpdateManyWithoutGeneratedFromNestedInput
   recurrenceRule?: Prisma.RecurrenceRuleUncheckedUpdateOneWithoutTransactionNestedInput
+  tags?: Prisma.TransactionTagUncheckedUpdateManyWithoutTransactionNestedInput
 }
 
 export type TransactionUncheckedUpdateManyWithoutGroupInput = {
@@ -2638,12 +2823,14 @@ export type TransactionCountOutputType = {
   splits: number
   childInstallments: number
   generatedInstances: number
+  tags: number
 }
 
 export type TransactionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   splits?: boolean | TransactionCountOutputTypeCountSplitsArgs
   childInstallments?: boolean | TransactionCountOutputTypeCountChildInstallmentsArgs
   generatedInstances?: boolean | TransactionCountOutputTypeCountGeneratedInstancesArgs
+  tags?: boolean | TransactionCountOutputTypeCountTagsArgs
 }
 
 /**
@@ -2675,6 +2862,13 @@ export type TransactionCountOutputTypeCountChildInstallmentsArgs<ExtArgs extends
  */
 export type TransactionCountOutputTypeCountGeneratedInstancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.TransactionWhereInput
+}
+
+/**
+ * TransactionCountOutputType without action
+ */
+export type TransactionCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransactionTagWhereInput
 }
 
 
@@ -2709,6 +2903,7 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   generatedFrom?: boolean | Prisma.Transaction$generatedFromArgs<ExtArgs>
   generatedInstances?: boolean | Prisma.Transaction$generatedInstancesArgs<ExtArgs>
   recurrenceRule?: boolean | Prisma.Transaction$recurrenceRuleArgs<ExtArgs>
+  tags?: boolean | Prisma.Transaction$tagsArgs<ExtArgs>
   _count?: boolean | Prisma.TransactionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["transaction"]>
 
@@ -2805,6 +3000,7 @@ export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.Internal
   generatedFrom?: boolean | Prisma.Transaction$generatedFromArgs<ExtArgs>
   generatedInstances?: boolean | Prisma.Transaction$generatedInstancesArgs<ExtArgs>
   recurrenceRule?: boolean | Prisma.Transaction$recurrenceRuleArgs<ExtArgs>
+  tags?: boolean | Prisma.Transaction$tagsArgs<ExtArgs>
   _count?: boolean | Prisma.TransactionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2837,6 +3033,7 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     generatedFrom: Prisma.$TransactionPayload<ExtArgs> | null
     generatedInstances: Prisma.$TransactionPayload<ExtArgs>[]
     recurrenceRule: Prisma.$RecurrenceRulePayload<ExtArgs> | null
+    tags: Prisma.$TransactionTagPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3263,6 +3460,7 @@ export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends runt
   generatedFrom<T extends Prisma.Transaction$generatedFromArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$generatedFromArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   generatedInstances<T extends Prisma.Transaction$generatedInstancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$generatedInstancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recurrenceRule<T extends Prisma.Transaction$recurrenceRuleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$recurrenceRuleArgs<ExtArgs>>): Prisma.Prisma__RecurrenceRuleClient<runtime.Types.Result.GetResult<Prisma.$RecurrenceRulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  tags<T extends Prisma.Transaction$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3877,6 +4075,30 @@ export type Transaction$recurrenceRuleArgs<ExtArgs extends runtime.Types.Extensi
    */
   include?: Prisma.RecurrenceRuleInclude<ExtArgs> | null
   where?: Prisma.RecurrenceRuleWhereInput
+}
+
+/**
+ * Transaction.tags
+ */
+export type Transaction$tagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TransactionTag
+   */
+  select?: Prisma.TransactionTagSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TransactionTag
+   */
+  omit?: Prisma.TransactionTagOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionTagInclude<ExtArgs> | null
+  where?: Prisma.TransactionTagWhereInput
+  orderBy?: Prisma.TransactionTagOrderByWithRelationInput | Prisma.TransactionTagOrderByWithRelationInput[]
+  cursor?: Prisma.TransactionTagWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransactionTagScalarFieldEnum | Prisma.TransactionTagScalarFieldEnum[]
 }
 
 /**

@@ -102,3 +102,23 @@ export type Investment = Prisma.InvestmentModel
  * 
  */
 export type InvestmentSnapshot = Prisma.InvestmentSnapshotModel
+/**
+ * Model Budget
+ * 
+ */
+export type Budget = Prisma.BudgetModel
+/**
+ * Model CategorizationRule
+ * 
+ */
+export type CategorizationRule = Prisma.CategorizationRuleModel
+/**
+ * Model Tag
+ * 
+ */
+export type Tag = Prisma.TagModel
+/**
+ * Model TransactionTag
+ * 
+ */
+export type TransactionTag = Prisma.TransactionTagModel

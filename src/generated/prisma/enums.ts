@@ -52,6 +52,23 @@ export const RecurrenceFrequency = {
 export type RecurrenceFrequency = (typeof RecurrenceFrequency)[keyof typeof RecurrenceFrequency]
 
 
+export const GenerationMode = {
+  AUTO: 'AUTO',
+  SUGGEST: 'SUGGEST'
+} as const
+
+export type GenerationMode = (typeof GenerationMode)[keyof typeof GenerationMode]
+
+
+export const MatchType = {
+  EXACT: 'EXACT',
+  CONTAINS: 'CONTAINS',
+  STARTS_WITH: 'STARTS_WITH'
+} as const
+
+export type MatchType = (typeof MatchType)[keyof typeof MatchType]
+
+
 export const AlertType = {
   CATEGORY_THRESHOLD_EXCEEDED: 'CATEGORY_THRESHOLD_EXCEEDED',
   CATEGORY_SPENDING_SPIKE: 'CATEGORY_SPENDING_SPIKE',
@@ -64,7 +81,9 @@ export const AlertType = {
   FUTURE_OVERLOAD: 'FUTURE_OVERLOAD',
   EXCESSIVE_INSTALLMENTS: 'EXCESSIVE_INSTALLMENTS',
   INVESTMENT_SIGNIFICANT_CHANGE: 'INVESTMENT_SIGNIFICANT_CHANGE',
-  MISSING_INCOME: 'MISSING_INCOME'
+  MISSING_INCOME: 'MISSING_INCOME',
+  BUDGET_WARNING: 'BUDGET_WARNING',
+  BUDGET_EXCEEDED: 'BUDGET_EXCEEDED'
 } as const
 
 export type AlertType = (typeof AlertType)[keyof typeof AlertType]

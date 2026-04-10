@@ -252,6 +252,13 @@ export type EnumRecurrenceFrequencyFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumRecurrenceFrequencyFilter<$PrismaModel> | $Enums.RecurrenceFrequency
 }
 
+export type EnumGenerationModeFilter<$PrismaModel = never> = {
+  equals?: $Enums.GenerationMode | Prisma.EnumGenerationModeFieldRefInput<$PrismaModel>
+  in?: $Enums.GenerationMode[] | Prisma.ListEnumGenerationModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GenerationMode[] | Prisma.ListEnumGenerationModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGenerationModeFilter<$PrismaModel> | $Enums.GenerationMode
+}
+
 export type DateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -271,6 +278,16 @@ export type EnumRecurrenceFrequencyWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumRecurrenceFrequencyFilter<$PrismaModel>
   _max?: Prisma.NestedEnumRecurrenceFrequencyFilter<$PrismaModel>
+}
+
+export type EnumGenerationModeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GenerationMode | Prisma.EnumGenerationModeFieldRefInput<$PrismaModel>
+  in?: $Enums.GenerationMode[] | Prisma.ListEnumGenerationModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GenerationMode[] | Prisma.ListEnumGenerationModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGenerationModeWithAggregatesFilter<$PrismaModel> | $Enums.GenerationMode
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGenerationModeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGenerationModeFilter<$PrismaModel>
 }
 
 export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -404,6 +421,23 @@ export type EnumInvestmentTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumInvestmentTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumInvestmentTypeFilter<$PrismaModel>
+}
+
+export type EnumMatchTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.MatchType | Prisma.EnumMatchTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.MatchType[] | Prisma.ListEnumMatchTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MatchType[] | Prisma.ListEnumMatchTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMatchTypeFilter<$PrismaModel> | $Enums.MatchType
+}
+
+export type EnumMatchTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MatchType | Prisma.EnumMatchTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.MatchType[] | Prisma.ListEnumMatchTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MatchType[] | Prisma.ListEnumMatchTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMatchTypeWithAggregatesFilter<$PrismaModel> | $Enums.MatchType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMatchTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMatchTypeFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -657,6 +691,13 @@ export type NestedEnumRecurrenceFrequencyFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumRecurrenceFrequencyFilter<$PrismaModel> | $Enums.RecurrenceFrequency
 }
 
+export type NestedEnumGenerationModeFilter<$PrismaModel = never> = {
+  equals?: $Enums.GenerationMode | Prisma.EnumGenerationModeFieldRefInput<$PrismaModel>
+  in?: $Enums.GenerationMode[] | Prisma.ListEnumGenerationModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GenerationMode[] | Prisma.ListEnumGenerationModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGenerationModeFilter<$PrismaModel> | $Enums.GenerationMode
+}
+
 export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -676,6 +717,16 @@ export type NestedEnumRecurrenceFrequencyWithAggregatesFilter<$PrismaModel = nev
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumRecurrenceFrequencyFilter<$PrismaModel>
   _max?: Prisma.NestedEnumRecurrenceFrequencyFilter<$PrismaModel>
+}
+
+export type NestedEnumGenerationModeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GenerationMode | Prisma.EnumGenerationModeFieldRefInput<$PrismaModel>
+  in?: $Enums.GenerationMode[] | Prisma.ListEnumGenerationModeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GenerationMode[] | Prisma.ListEnumGenerationModeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGenerationModeWithAggregatesFilter<$PrismaModel> | $Enums.GenerationMode
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGenerationModeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGenerationModeFilter<$PrismaModel>
 }
 
 export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -809,6 +860,23 @@ export type NestedEnumInvestmentTypeWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumInvestmentTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumInvestmentTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumMatchTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.MatchType | Prisma.EnumMatchTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.MatchType[] | Prisma.ListEnumMatchTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MatchType[] | Prisma.ListEnumMatchTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMatchTypeFilter<$PrismaModel> | $Enums.MatchType
+}
+
+export type NestedEnumMatchTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MatchType | Prisma.EnumMatchTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.MatchType[] | Prisma.ListEnumMatchTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MatchType[] | Prisma.ListEnumMatchTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMatchTypeWithAggregatesFilter<$PrismaModel> | $Enums.MatchType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMatchTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMatchTypeFilter<$PrismaModel>
 }
 
 

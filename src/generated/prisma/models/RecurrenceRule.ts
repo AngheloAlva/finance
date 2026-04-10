@@ -38,6 +38,7 @@ export type RecurrenceRuleMinAggregateOutputType = {
   id: string | null
   frequency: $Enums.RecurrenceFrequency | null
   interval: number | null
+  generationMode: $Enums.GenerationMode | null
   nextGenerationDate: Date | null
   endDate: Date | null
   isActive: boolean | null
@@ -50,6 +51,7 @@ export type RecurrenceRuleMaxAggregateOutputType = {
   id: string | null
   frequency: $Enums.RecurrenceFrequency | null
   interval: number | null
+  generationMode: $Enums.GenerationMode | null
   nextGenerationDate: Date | null
   endDate: Date | null
   isActive: boolean | null
@@ -62,6 +64,7 @@ export type RecurrenceRuleCountAggregateOutputType = {
   id: number
   frequency: number
   interval: number
+  generationMode: number
   nextGenerationDate: number
   endDate: number
   isActive: number
@@ -84,6 +87,7 @@ export type RecurrenceRuleMinAggregateInputType = {
   id?: true
   frequency?: true
   interval?: true
+  generationMode?: true
   nextGenerationDate?: true
   endDate?: true
   isActive?: true
@@ -96,6 +100,7 @@ export type RecurrenceRuleMaxAggregateInputType = {
   id?: true
   frequency?: true
   interval?: true
+  generationMode?: true
   nextGenerationDate?: true
   endDate?: true
   isActive?: true
@@ -108,6 +113,7 @@ export type RecurrenceRuleCountAggregateInputType = {
   id?: true
   frequency?: true
   interval?: true
+  generationMode?: true
   nextGenerationDate?: true
   endDate?: true
   isActive?: true
@@ -207,6 +213,7 @@ export type RecurrenceRuleGroupByOutputType = {
   id: string
   frequency: $Enums.RecurrenceFrequency
   interval: number
+  generationMode: $Enums.GenerationMode
   nextGenerationDate: Date
   endDate: Date | null
   isActive: boolean
@@ -242,6 +249,7 @@ export type RecurrenceRuleWhereInput = {
   id?: Prisma.StringFilter<"RecurrenceRule"> | string
   frequency?: Prisma.EnumRecurrenceFrequencyFilter<"RecurrenceRule"> | $Enums.RecurrenceFrequency
   interval?: Prisma.IntFilter<"RecurrenceRule"> | number
+  generationMode?: Prisma.EnumGenerationModeFilter<"RecurrenceRule"> | $Enums.GenerationMode
   nextGenerationDate?: Prisma.DateTimeFilter<"RecurrenceRule"> | Date | string
   endDate?: Prisma.DateTimeNullableFilter<"RecurrenceRule"> | Date | string | null
   isActive?: Prisma.BoolFilter<"RecurrenceRule"> | boolean
@@ -255,6 +263,7 @@ export type RecurrenceRuleOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   frequency?: Prisma.SortOrder
   interval?: Prisma.SortOrder
+  generationMode?: Prisma.SortOrder
   nextGenerationDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -272,6 +281,7 @@ export type RecurrenceRuleWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.RecurrenceRuleWhereInput | Prisma.RecurrenceRuleWhereInput[]
   frequency?: Prisma.EnumRecurrenceFrequencyFilter<"RecurrenceRule"> | $Enums.RecurrenceFrequency
   interval?: Prisma.IntFilter<"RecurrenceRule"> | number
+  generationMode?: Prisma.EnumGenerationModeFilter<"RecurrenceRule"> | $Enums.GenerationMode
   nextGenerationDate?: Prisma.DateTimeFilter<"RecurrenceRule"> | Date | string
   endDate?: Prisma.DateTimeNullableFilter<"RecurrenceRule"> | Date | string | null
   isActive?: Prisma.BoolFilter<"RecurrenceRule"> | boolean
@@ -284,6 +294,7 @@ export type RecurrenceRuleOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   frequency?: Prisma.SortOrder
   interval?: Prisma.SortOrder
+  generationMode?: Prisma.SortOrder
   nextGenerationDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -304,6 +315,7 @@ export type RecurrenceRuleScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"RecurrenceRule"> | string
   frequency?: Prisma.EnumRecurrenceFrequencyWithAggregatesFilter<"RecurrenceRule"> | $Enums.RecurrenceFrequency
   interval?: Prisma.IntWithAggregatesFilter<"RecurrenceRule"> | number
+  generationMode?: Prisma.EnumGenerationModeWithAggregatesFilter<"RecurrenceRule"> | $Enums.GenerationMode
   nextGenerationDate?: Prisma.DateTimeWithAggregatesFilter<"RecurrenceRule"> | Date | string
   endDate?: Prisma.DateTimeNullableWithAggregatesFilter<"RecurrenceRule"> | Date | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"RecurrenceRule"> | boolean
@@ -316,6 +328,7 @@ export type RecurrenceRuleCreateInput = {
   id?: string
   frequency: $Enums.RecurrenceFrequency
   interval?: number
+  generationMode?: $Enums.GenerationMode
   nextGenerationDate: Date | string
   endDate?: Date | string | null
   isActive?: boolean
@@ -328,6 +341,7 @@ export type RecurrenceRuleUncheckedCreateInput = {
   id?: string
   frequency: $Enums.RecurrenceFrequency
   interval?: number
+  generationMode?: $Enums.GenerationMode
   nextGenerationDate: Date | string
   endDate?: Date | string | null
   isActive?: boolean
@@ -340,6 +354,7 @@ export type RecurrenceRuleUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   interval?: Prisma.IntFieldUpdateOperationsInput | number
+  generationMode?: Prisma.EnumGenerationModeFieldUpdateOperationsInput | $Enums.GenerationMode
   nextGenerationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -352,6 +367,7 @@ export type RecurrenceRuleUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   interval?: Prisma.IntFieldUpdateOperationsInput | number
+  generationMode?: Prisma.EnumGenerationModeFieldUpdateOperationsInput | $Enums.GenerationMode
   nextGenerationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -364,6 +380,7 @@ export type RecurrenceRuleCreateManyInput = {
   id?: string
   frequency: $Enums.RecurrenceFrequency
   interval?: number
+  generationMode?: $Enums.GenerationMode
   nextGenerationDate: Date | string
   endDate?: Date | string | null
   isActive?: boolean
@@ -376,6 +393,7 @@ export type RecurrenceRuleUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   interval?: Prisma.IntFieldUpdateOperationsInput | number
+  generationMode?: Prisma.EnumGenerationModeFieldUpdateOperationsInput | $Enums.GenerationMode
   nextGenerationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -387,6 +405,7 @@ export type RecurrenceRuleUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   interval?: Prisma.IntFieldUpdateOperationsInput | number
+  generationMode?: Prisma.EnumGenerationModeFieldUpdateOperationsInput | $Enums.GenerationMode
   nextGenerationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -404,6 +423,7 @@ export type RecurrenceRuleCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   frequency?: Prisma.SortOrder
   interval?: Prisma.SortOrder
+  generationMode?: Prisma.SortOrder
   nextGenerationDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -420,6 +440,7 @@ export type RecurrenceRuleMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   frequency?: Prisma.SortOrder
   interval?: Prisma.SortOrder
+  generationMode?: Prisma.SortOrder
   nextGenerationDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -432,6 +453,7 @@ export type RecurrenceRuleMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   frequency?: Prisma.SortOrder
   interval?: Prisma.SortOrder
+  generationMode?: Prisma.SortOrder
   nextGenerationDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -480,6 +502,10 @@ export type EnumRecurrenceFrequencyFieldUpdateOperationsInput = {
   set?: $Enums.RecurrenceFrequency
 }
 
+export type EnumGenerationModeFieldUpdateOperationsInput = {
+  set?: $Enums.GenerationMode
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
@@ -488,6 +514,7 @@ export type RecurrenceRuleCreateWithoutTransactionInput = {
   id?: string
   frequency: $Enums.RecurrenceFrequency
   interval?: number
+  generationMode?: $Enums.GenerationMode
   nextGenerationDate: Date | string
   endDate?: Date | string | null
   isActive?: boolean
@@ -499,6 +526,7 @@ export type RecurrenceRuleUncheckedCreateWithoutTransactionInput = {
   id?: string
   frequency: $Enums.RecurrenceFrequency
   interval?: number
+  generationMode?: $Enums.GenerationMode
   nextGenerationDate: Date | string
   endDate?: Date | string | null
   isActive?: boolean
@@ -526,6 +554,7 @@ export type RecurrenceRuleUpdateWithoutTransactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   interval?: Prisma.IntFieldUpdateOperationsInput | number
+  generationMode?: Prisma.EnumGenerationModeFieldUpdateOperationsInput | $Enums.GenerationMode
   nextGenerationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -537,6 +566,7 @@ export type RecurrenceRuleUncheckedUpdateWithoutTransactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   interval?: Prisma.IntFieldUpdateOperationsInput | number
+  generationMode?: Prisma.EnumGenerationModeFieldUpdateOperationsInput | $Enums.GenerationMode
   nextGenerationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -550,6 +580,7 @@ export type RecurrenceRuleSelect<ExtArgs extends runtime.Types.Extensions.Intern
   id?: boolean
   frequency?: boolean
   interval?: boolean
+  generationMode?: boolean
   nextGenerationDate?: boolean
   endDate?: boolean
   isActive?: boolean
@@ -563,6 +594,7 @@ export type RecurrenceRuleSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   frequency?: boolean
   interval?: boolean
+  generationMode?: boolean
   nextGenerationDate?: boolean
   endDate?: boolean
   isActive?: boolean
@@ -576,6 +608,7 @@ export type RecurrenceRuleSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   frequency?: boolean
   interval?: boolean
+  generationMode?: boolean
   nextGenerationDate?: boolean
   endDate?: boolean
   isActive?: boolean
@@ -589,6 +622,7 @@ export type RecurrenceRuleSelectScalar = {
   id?: boolean
   frequency?: boolean
   interval?: boolean
+  generationMode?: boolean
   nextGenerationDate?: boolean
   endDate?: boolean
   isActive?: boolean
@@ -597,7 +631,7 @@ export type RecurrenceRuleSelectScalar = {
   updatedAt?: boolean
 }
 
-export type RecurrenceRuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "frequency" | "interval" | "nextGenerationDate" | "endDate" | "isActive" | "transactionId" | "createdAt" | "updatedAt", ExtArgs["result"]["recurrenceRule"]>
+export type RecurrenceRuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "frequency" | "interval" | "generationMode" | "nextGenerationDate" | "endDate" | "isActive" | "transactionId" | "createdAt" | "updatedAt", ExtArgs["result"]["recurrenceRule"]>
 export type RecurrenceRuleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transaction?: boolean | Prisma.TransactionDefaultArgs<ExtArgs>
 }
@@ -617,6 +651,7 @@ export type $RecurrenceRulePayload<ExtArgs extends runtime.Types.Extensions.Inte
     id: string
     frequency: $Enums.RecurrenceFrequency
     interval: number
+    generationMode: $Enums.GenerationMode
     nextGenerationDate: Date
     endDate: Date | null
     isActive: boolean
@@ -1050,6 +1085,7 @@ export interface RecurrenceRuleFieldRefs {
   readonly id: Prisma.FieldRef<"RecurrenceRule", 'String'>
   readonly frequency: Prisma.FieldRef<"RecurrenceRule", 'RecurrenceFrequency'>
   readonly interval: Prisma.FieldRef<"RecurrenceRule", 'Int'>
+  readonly generationMode: Prisma.FieldRef<"RecurrenceRule", 'GenerationMode'>
   readonly nextGenerationDate: Prisma.FieldRef<"RecurrenceRule", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"RecurrenceRule", 'DateTime'>
   readonly isActive: Prisma.FieldRef<"RecurrenceRule", 'Boolean'>

@@ -67,7 +67,11 @@ export const ModelName = {
   Goal: 'Goal',
   GoalContribution: 'GoalContribution',
   Investment: 'Investment',
-  InvestmentSnapshot: 'InvestmentSnapshot'
+  InvestmentSnapshot: 'InvestmentSnapshot',
+  Budget: 'Budget',
+  CategorizationRule: 'CategorizationRule',
+  Tag: 'Tag',
+  TransactionTag: 'TransactionTag'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -169,6 +173,7 @@ export const RecurrenceRuleScalarFieldEnum = {
   id: 'id',
   frequency: 'frequency',
   interval: 'interval',
+  generationMode: 'generationMode',
   nextGenerationDate: 'nextGenerationDate',
   endDate: 'endDate',
   isActive: 'isActive',
@@ -356,6 +361,55 @@ export const InvestmentSnapshotScalarFieldEnum = {
 } as const
 
 export type InvestmentSnapshotScalarFieldEnum = (typeof InvestmentSnapshotScalarFieldEnum)[keyof typeof InvestmentSnapshotScalarFieldEnum]
+
+
+export const BudgetScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  month: 'month',
+  year: 'year',
+  userId: 'userId',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BudgetScalarFieldEnum = (typeof BudgetScalarFieldEnum)[keyof typeof BudgetScalarFieldEnum]
+
+
+export const CategorizationRuleScalarFieldEnum = {
+  id: 'id',
+  pattern: 'pattern',
+  matchType: 'matchType',
+  hitCount: 'hitCount',
+  isActive: 'isActive',
+  userId: 'userId',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CategorizationRuleScalarFieldEnum = (typeof CategorizationRuleScalarFieldEnum)[keyof typeof CategorizationRuleScalarFieldEnum]
+
+
+export const TagScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  color: 'color',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
+
+
+export const TransactionTagScalarFieldEnum = {
+  transactionId: 'transactionId',
+  tagId: 'tagId'
+} as const
+
+export type TransactionTagScalarFieldEnum = (typeof TransactionTagScalarFieldEnum)[keyof typeof TransactionTagScalarFieldEnum]
 
 
 export const SortOrder = {

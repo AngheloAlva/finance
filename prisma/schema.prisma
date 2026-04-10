@@ -38,6 +38,17 @@ enum RecurrenceFrequency {
   ANNUAL
 }
 
+enum GenerationMode {
+  AUTO
+  SUGGEST
+}
+
+enum MatchType {
+  EXACT
+  CONTAINS
+  STARTS_WITH
+}
+
 enum AlertType {
   CATEGORY_THRESHOLD_EXCEEDED
   CATEGORY_SPENDING_SPIKE
@@ -51,6 +62,8 @@ enum AlertType {
   EXCESSIVE_INSTALLMENTS
   INVESTMENT_SIGNIFICANT_CHANGE
   MISSING_INCOME
+  BUDGET_WARNING
+  BUDGET_EXCEEDED
 }
 
 enum AlertSeverity {
@@ -122,6 +135,9 @@ model User {
   goals             Goal[]
   goalContributions GoalContribution[]
   investments       Investment[]
+  tags              Tag[]
+  budgets           Budget[]
+  categorizationRules CategorizationRule[]
 
   @@map("users")
 }
@@ -144,6 +160,8 @@ model Category {
   groupId         String?
   group           Group?          @relation(fields: [groupId], references: [id], onDelete: Cascade)
   transactions    Transaction[]
+  budgets         Budget[]
+  categorizationRules CategorizationRule[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
@@ -190,6 +208,9 @@ model Transaction {
   generatedInstances Transaction[]   @relation("RecurrenceGenerated")
   recurrenceRule     RecurrenceRule? @relation("RecurrenceTemplate")
 
+  // Tags
+  tags TransactionTag[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -229,6 +250,7 @@ model RecurrenceRule {
   id                 String              @id @default(cuid())
   frequency          RecurrenceFrequency
   interval           Int                 @default(1)
+  generationMode     GenerationMode      @default(AUTO)
   nextGenerationDate DateTime
   endDate            DateTime?
   isActive           Boolean             @default(true)
@@ -459,4 +481,69 @@ model InvestmentSnapshot {
 
   @@index([investmentId, date])
   @@map("investment_snapshots")
+}
+
+model Budget {
+  id         String   @id @default(cuid())
+  amount     Int
+  month      Int
+  year       Int
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, categoryId, month, year])
+  @@index([userId, month, year])
+  @@index([categoryId])
+  @@map("budgets")
+}
+
+model CategorizationRule {
+  id         String    @id @default(cuid())
+  pattern    String
+  matchType  MatchType @default(CONTAINS)
+  hitCount   Int       @default(0)
+  isActive   Boolean   @default(true)
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId String
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([userId, pattern])
+  @@index([userId, isActive])
+  @@index([categoryId])
+  @@map("categorization_rules")
+}
+
+model Tag {
+  id     String @id @default(cuid())
+  name   String
+  color  String @default("#6b7280")
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  transactions TransactionTag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@map("tags")
+}
+
+model TransactionTag {
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  tagId         String
+  tag           Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([transactionId, tagId])
+  @@index([tagId])
+  @@map("transaction_tags")
 }

@@ -226,6 +226,9 @@ export type UserWhereInput = {
   goals?: Prisma.GoalListRelationFilter
   goalContributions?: Prisma.GoalContributionListRelationFilter
   investments?: Prisma.InvestmentListRelationFilter
+  tags?: Prisma.TagListRelationFilter
+  budgets?: Prisma.BudgetListRelationFilter
+  categorizationRules?: Prisma.CategorizationRuleListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -250,6 +253,9 @@ export type UserOrderByWithRelationInput = {
   goals?: Prisma.GoalOrderByRelationAggregateInput
   goalContributions?: Prisma.GoalContributionOrderByRelationAggregateInput
   investments?: Prisma.InvestmentOrderByRelationAggregateInput
+  tags?: Prisma.TagOrderByRelationAggregateInput
+  budgets?: Prisma.BudgetOrderByRelationAggregateInput
+  categorizationRules?: Prisma.CategorizationRuleOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -277,6 +283,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   goals?: Prisma.GoalListRelationFilter
   goalContributions?: Prisma.GoalContributionListRelationFilter
   investments?: Prisma.InvestmentListRelationFilter
+  tags?: Prisma.TagListRelationFilter
+  budgets?: Prisma.BudgetListRelationFilter
+  categorizationRules?: Prisma.CategorizationRuleListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -331,6 +340,9 @@ export type UserCreateInput = {
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -355,6 +367,9 @@ export type UserUncheckedCreateInput = {
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -379,6 +394,9 @@ export type UserUpdateInput = {
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -403,6 +421,9 @@ export type UserUncheckedUpdateInput = {
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -673,6 +694,48 @@ export type UserUpdateOneRequiredWithoutInvestmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvestmentsInput, Prisma.UserUpdateWithoutInvestmentsInput>, Prisma.UserUncheckedUpdateWithoutInvestmentsInput>
 }
 
+export type UserCreateNestedOneWithoutBudgetsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBudgetsInput, Prisma.UserUncheckedCreateWithoutBudgetsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBudgetsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBudgetsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBudgetsInput, Prisma.UserUncheckedCreateWithoutBudgetsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBudgetsInput
+  upsert?: Prisma.UserUpsertWithoutBudgetsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBudgetsInput, Prisma.UserUpdateWithoutBudgetsInput>, Prisma.UserUncheckedUpdateWithoutBudgetsInput>
+}
+
+export type UserCreateNestedOneWithoutCategorizationRulesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCategorizationRulesInput, Prisma.UserUncheckedCreateWithoutCategorizationRulesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCategorizationRulesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCategorizationRulesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCategorizationRulesInput, Prisma.UserUncheckedCreateWithoutCategorizationRulesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCategorizationRulesInput
+  upsert?: Prisma.UserUpsertWithoutCategorizationRulesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCategorizationRulesInput, Prisma.UserUpdateWithoutCategorizationRulesInput>, Prisma.UserUncheckedUpdateWithoutCategorizationRulesInput>
+}
+
+export type UserCreateNestedOneWithoutTagsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTagsInput, Prisma.UserUncheckedCreateWithoutTagsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTagsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTagsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTagsInput, Prisma.UserUncheckedCreateWithoutTagsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTagsInput
+  upsert?: Prisma.UserUpsertWithoutTagsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTagsInput, Prisma.UserUpdateWithoutTagsInput>, Prisma.UserUncheckedUpdateWithoutTagsInput>
+}
+
 export type UserCreateWithoutCategoriesInput = {
   id?: string
   email: string
@@ -694,6 +757,9 @@ export type UserCreateWithoutCategoriesInput = {
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCategoriesInput = {
@@ -717,6 +783,9 @@ export type UserUncheckedCreateWithoutCategoriesInput = {
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCategoriesInput = {
@@ -756,6 +825,9 @@ export type UserUpdateWithoutCategoriesInput = {
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCategoriesInput = {
@@ -779,6 +851,9 @@ export type UserUncheckedUpdateWithoutCategoriesInput = {
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTransactionsInput = {
@@ -802,6 +877,9 @@ export type UserCreateWithoutTransactionsInput = {
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -825,6 +903,9 @@ export type UserUncheckedCreateWithoutTransactionsInput = {
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -864,6 +945,9 @@ export type UserUpdateWithoutTransactionsInput = {
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -887,6 +971,9 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreditCardsInput = {
@@ -910,6 +997,9 @@ export type UserCreateWithoutCreditCardsInput = {
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreditCardsInput = {
@@ -933,6 +1023,9 @@ export type UserUncheckedCreateWithoutCreditCardsInput = {
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreditCardsInput = {
@@ -972,6 +1065,9 @@ export type UserUpdateWithoutCreditCardsInput = {
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreditCardsInput = {
@@ -995,6 +1091,9 @@ export type UserUncheckedUpdateWithoutCreditCardsInput = {
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1018,6 +1117,9 @@ export type UserCreateWithoutSessionsInput = {
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1041,6 +1143,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1080,6 +1185,9 @@ export type UserUpdateWithoutSessionsInput = {
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1103,6 +1211,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1126,6 +1237,9 @@ export type UserCreateWithoutAccountsInput = {
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1149,6 +1263,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1188,6 +1305,9 @@ export type UserUpdateWithoutAccountsInput = {
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1211,6 +1331,9 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAlertsInput = {
@@ -1234,6 +1357,9 @@ export type UserCreateWithoutAlertsInput = {
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAlertsInput = {
@@ -1257,6 +1383,9 @@ export type UserUncheckedCreateWithoutAlertsInput = {
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAlertsInput = {
@@ -1296,6 +1425,9 @@ export type UserUpdateWithoutAlertsInput = {
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAlertsInput = {
@@ -1319,6 +1451,9 @@ export type UserUncheckedUpdateWithoutAlertsInput = {
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGroupMembershipsInput = {
@@ -1342,6 +1477,9 @@ export type UserCreateWithoutGroupMembershipsInput = {
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGroupMembershipsInput = {
@@ -1365,6 +1503,9 @@ export type UserUncheckedCreateWithoutGroupMembershipsInput = {
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGroupMembershipsInput = {
@@ -1404,6 +1545,9 @@ export type UserUpdateWithoutGroupMembershipsInput = {
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
@@ -1427,6 +1571,9 @@ export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTransactionSplitsInput = {
@@ -1450,6 +1597,9 @@ export type UserCreateWithoutTransactionSplitsInput = {
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTransactionSplitsInput = {
@@ -1473,6 +1623,9 @@ export type UserUncheckedCreateWithoutTransactionSplitsInput = {
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTransactionSplitsInput = {
@@ -1512,6 +1665,9 @@ export type UserUpdateWithoutTransactionSplitsInput = {
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransactionSplitsInput = {
@@ -1535,6 +1691,9 @@ export type UserUncheckedUpdateWithoutTransactionSplitsInput = {
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGroupInvitationsInput = {
@@ -1558,6 +1717,9 @@ export type UserCreateWithoutGroupInvitationsInput = {
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGroupInvitationsInput = {
@@ -1581,6 +1743,9 @@ export type UserUncheckedCreateWithoutGroupInvitationsInput = {
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGroupInvitationsInput = {
@@ -1620,6 +1785,9 @@ export type UserUpdateWithoutGroupInvitationsInput = {
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupInvitationsInput = {
@@ -1643,6 +1811,9 @@ export type UserUncheckedUpdateWithoutGroupInvitationsInput = {
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGoalsInput = {
@@ -1666,6 +1837,9 @@ export type UserCreateWithoutGoalsInput = {
   transactionSplits?: Prisma.TransactionSplitCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGoalsInput = {
@@ -1689,6 +1863,9 @@ export type UserUncheckedCreateWithoutGoalsInput = {
   transactionSplits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGoalsInput = {
@@ -1728,6 +1905,9 @@ export type UserUpdateWithoutGoalsInput = {
   transactionSplits?: Prisma.TransactionSplitUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGoalsInput = {
@@ -1751,6 +1931,9 @@ export type UserUncheckedUpdateWithoutGoalsInput = {
   transactionSplits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGoalContributionsInput = {
@@ -1774,6 +1957,9 @@ export type UserCreateWithoutGoalContributionsInput = {
   transactionSplits?: Prisma.TransactionSplitCreateNestedManyWithoutUserInput
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGoalContributionsInput = {
@@ -1797,6 +1983,9 @@ export type UserUncheckedCreateWithoutGoalContributionsInput = {
   transactionSplits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutUserInput
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGoalContributionsInput = {
@@ -1836,6 +2025,9 @@ export type UserUpdateWithoutGoalContributionsInput = {
   transactionSplits?: Prisma.TransactionSplitUpdateManyWithoutUserNestedInput
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGoalContributionsInput = {
@@ -1859,6 +2051,9 @@ export type UserUncheckedUpdateWithoutGoalContributionsInput = {
   transactionSplits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutUserNestedInput
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInvestmentsInput = {
@@ -1882,6 +2077,9 @@ export type UserCreateWithoutInvestmentsInput = {
   transactionSplits?: Prisma.TransactionSplitCreateNestedManyWithoutUserInput
   goals?: Prisma.GoalCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvestmentsInput = {
@@ -1905,6 +2103,9 @@ export type UserUncheckedCreateWithoutInvestmentsInput = {
   transactionSplits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutUserInput
   goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
   goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvestmentsInput = {
@@ -1944,6 +2145,9 @@ export type UserUpdateWithoutInvestmentsInput = {
   transactionSplits?: Prisma.TransactionSplitUpdateManyWithoutUserNestedInput
   goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvestmentsInput = {
@@ -1967,6 +2171,369 @@ export type UserUncheckedUpdateWithoutInvestmentsInput = {
   transactionSplits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutUserNestedInput
   goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
   goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutBudgetsInput = {
+  id?: string
+  email: string
+  name: string
+  emailVerified?: boolean
+  image?: string | null
+  currency?: string
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  creditCards?: Prisma.CreditCardCreateNestedManyWithoutUserInput
+  alerts?: Prisma.AlertCreateNestedManyWithoutUserInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
+  groupInvitations?: Prisma.GroupInvitationCreateNestedManyWithoutInvitedByInput
+  transactionSplits?: Prisma.TransactionSplitCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
+  investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutBudgetsInput = {
+  id?: string
+  email: string
+  name: string
+  emailVerified?: boolean
+  image?: string | null
+  currency?: string
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  creditCards?: Prisma.CreditCardUncheckedCreateNestedManyWithoutUserInput
+  alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutUserInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
+  groupInvitations?: Prisma.GroupInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  transactionSplits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
+  investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutBudgetsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBudgetsInput, Prisma.UserUncheckedCreateWithoutBudgetsInput>
+}
+
+export type UserUpsertWithoutBudgetsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBudgetsInput, Prisma.UserUncheckedUpdateWithoutBudgetsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBudgetsInput, Prisma.UserUncheckedCreateWithoutBudgetsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBudgetsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBudgetsInput, Prisma.UserUncheckedUpdateWithoutBudgetsInput>
+}
+
+export type UserUpdateWithoutBudgetsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  creditCards?: Prisma.CreditCardUpdateManyWithoutUserNestedInput
+  alerts?: Prisma.AlertUpdateManyWithoutUserNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
+  groupInvitations?: Prisma.GroupInvitationUpdateManyWithoutInvitedByNestedInput
+  transactionSplits?: Prisma.TransactionSplitUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
+  investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBudgetsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  creditCards?: Prisma.CreditCardUncheckedUpdateManyWithoutUserNestedInput
+  alerts?: Prisma.AlertUncheckedUpdateManyWithoutUserNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  groupInvitations?: Prisma.GroupInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  transactionSplits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
+  investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCategorizationRulesInput = {
+  id?: string
+  email: string
+  name: string
+  emailVerified?: boolean
+  image?: string | null
+  currency?: string
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  creditCards?: Prisma.CreditCardCreateNestedManyWithoutUserInput
+  alerts?: Prisma.AlertCreateNestedManyWithoutUserInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
+  groupInvitations?: Prisma.GroupInvitationCreateNestedManyWithoutInvitedByInput
+  transactionSplits?: Prisma.TransactionSplitCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
+  investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCategorizationRulesInput = {
+  id?: string
+  email: string
+  name: string
+  emailVerified?: boolean
+  image?: string | null
+  currency?: string
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  creditCards?: Prisma.CreditCardUncheckedCreateNestedManyWithoutUserInput
+  alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutUserInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
+  groupInvitations?: Prisma.GroupInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  transactionSplits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
+  investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCategorizationRulesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCategorizationRulesInput, Prisma.UserUncheckedCreateWithoutCategorizationRulesInput>
+}
+
+export type UserUpsertWithoutCategorizationRulesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCategorizationRulesInput, Prisma.UserUncheckedUpdateWithoutCategorizationRulesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCategorizationRulesInput, Prisma.UserUncheckedCreateWithoutCategorizationRulesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCategorizationRulesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCategorizationRulesInput, Prisma.UserUncheckedUpdateWithoutCategorizationRulesInput>
+}
+
+export type UserUpdateWithoutCategorizationRulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  creditCards?: Prisma.CreditCardUpdateManyWithoutUserNestedInput
+  alerts?: Prisma.AlertUpdateManyWithoutUserNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
+  groupInvitations?: Prisma.GroupInvitationUpdateManyWithoutInvitedByNestedInput
+  transactionSplits?: Prisma.TransactionSplitUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
+  investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCategorizationRulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  creditCards?: Prisma.CreditCardUncheckedUpdateManyWithoutUserNestedInput
+  alerts?: Prisma.AlertUncheckedUpdateManyWithoutUserNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  groupInvitations?: Prisma.GroupInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  transactionSplits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
+  investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTagsInput = {
+  id?: string
+  email: string
+  name: string
+  emailVerified?: boolean
+  image?: string | null
+  currency?: string
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  creditCards?: Prisma.CreditCardCreateNestedManyWithoutUserInput
+  alerts?: Prisma.AlertCreateNestedManyWithoutUserInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
+  groupInvitations?: Prisma.GroupInvitationCreateNestedManyWithoutInvitedByInput
+  transactionSplits?: Prisma.TransactionSplitCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
+  investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTagsInput = {
+  id?: string
+  email: string
+  name: string
+  emailVerified?: boolean
+  image?: string | null
+  currency?: string
+  timezone?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  creditCards?: Prisma.CreditCardUncheckedCreateNestedManyWithoutUserInput
+  alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutUserInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
+  groupInvitations?: Prisma.GroupInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  transactionSplits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
+  investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTagsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTagsInput, Prisma.UserUncheckedCreateWithoutTagsInput>
+}
+
+export type UserUpsertWithoutTagsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTagsInput, Prisma.UserUncheckedUpdateWithoutTagsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTagsInput, Prisma.UserUncheckedCreateWithoutTagsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTagsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTagsInput, Prisma.UserUncheckedUpdateWithoutTagsInput>
+}
+
+export type UserUpdateWithoutTagsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  creditCards?: Prisma.CreditCardUpdateManyWithoutUserNestedInput
+  alerts?: Prisma.AlertUpdateManyWithoutUserNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
+  groupInvitations?: Prisma.GroupInvitationUpdateManyWithoutInvitedByNestedInput
+  transactionSplits?: Prisma.TransactionSplitUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
+  investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTagsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  creditCards?: Prisma.CreditCardUncheckedUpdateManyWithoutUserNestedInput
+  alerts?: Prisma.AlertUncheckedUpdateManyWithoutUserNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  groupInvitations?: Prisma.GroupInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  transactionSplits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
+  investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1987,6 +2554,9 @@ export type UserCountOutputType = {
   goals: number
   goalContributions: number
   investments: number
+  tags: number
+  budgets: number
+  categorizationRules: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2002,6 +2572,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   goals?: boolean | UserCountOutputTypeCountGoalsArgs
   goalContributions?: boolean | UserCountOutputTypeCountGoalContributionsArgs
   investments?: boolean | UserCountOutputTypeCountInvestmentsArgs
+  tags?: boolean | UserCountOutputTypeCountTagsArgs
+  budgets?: boolean | UserCountOutputTypeCountBudgetsArgs
+  categorizationRules?: boolean | UserCountOutputTypeCountCategorizationRulesArgs
 }
 
 /**
@@ -2098,6 +2671,27 @@ export type UserCountOutputTypeCountInvestmentsArgs<ExtArgs extends runtime.Type
   where?: Prisma.InvestmentWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TagWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBudgetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BudgetWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCategorizationRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CategorizationRuleWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2121,6 +2715,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   goals?: boolean | Prisma.User$goalsArgs<ExtArgs>
   goalContributions?: boolean | Prisma.User$goalContributionsArgs<ExtArgs>
   investments?: boolean | Prisma.User$investmentsArgs<ExtArgs>
+  tags?: boolean | Prisma.User$tagsArgs<ExtArgs>
+  budgets?: boolean | Prisma.User$budgetsArgs<ExtArgs>
+  categorizationRules?: boolean | Prisma.User$categorizationRulesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2174,6 +2771,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   goals?: boolean | Prisma.User$goalsArgs<ExtArgs>
   goalContributions?: boolean | Prisma.User$goalContributionsArgs<ExtArgs>
   investments?: boolean | Prisma.User$investmentsArgs<ExtArgs>
+  tags?: boolean | Prisma.User$tagsArgs<ExtArgs>
+  budgets?: boolean | Prisma.User$budgetsArgs<ExtArgs>
+  categorizationRules?: boolean | Prisma.User$categorizationRulesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2194,6 +2794,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     goals: Prisma.$GoalPayload<ExtArgs>[]
     goalContributions: Prisma.$GoalContributionPayload<ExtArgs>[]
     investments: Prisma.$InvestmentPayload<ExtArgs>[]
+    tags: Prisma.$TagPayload<ExtArgs>[]
+    budgets: Prisma.$BudgetPayload<ExtArgs>[]
+    categorizationRules: Prisma.$CategorizationRulePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2611,6 +3214,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   goals<T extends Prisma.User$goalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$goalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   goalContributions<T extends Prisma.User$goalContributionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$goalContributionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GoalContributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   investments<T extends Prisma.User$investmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$investmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvestmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tags<T extends Prisma.User$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  budgets<T extends Prisma.User$budgetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$budgetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BudgetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  categorizationRules<T extends Prisma.User$categorizationRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$categorizationRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategorizationRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3327,6 +3933,78 @@ export type User$investmentsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.InvestmentScalarFieldEnum | Prisma.InvestmentScalarFieldEnum[]
+}
+
+/**
+ * User.tags
+ */
+export type User$tagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Tag
+   */
+  select?: Prisma.TagSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Tag
+   */
+  omit?: Prisma.TagOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TagInclude<ExtArgs> | null
+  where?: Prisma.TagWhereInput
+  orderBy?: Prisma.TagOrderByWithRelationInput | Prisma.TagOrderByWithRelationInput[]
+  cursor?: Prisma.TagWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TagScalarFieldEnum | Prisma.TagScalarFieldEnum[]
+}
+
+/**
+ * User.budgets
+ */
+export type User$budgetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Budget
+   */
+  select?: Prisma.BudgetSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Budget
+   */
+  omit?: Prisma.BudgetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BudgetInclude<ExtArgs> | null
+  where?: Prisma.BudgetWhereInput
+  orderBy?: Prisma.BudgetOrderByWithRelationInput | Prisma.BudgetOrderByWithRelationInput[]
+  cursor?: Prisma.BudgetWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BudgetScalarFieldEnum | Prisma.BudgetScalarFieldEnum[]
+}
+
+/**
+ * User.categorizationRules
+ */
+export type User$categorizationRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CategorizationRule
+   */
+  select?: Prisma.CategorizationRuleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CategorizationRule
+   */
+  omit?: Prisma.CategorizationRuleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategorizationRuleInclude<ExtArgs> | null
+  where?: Prisma.CategorizationRuleWhereInput
+  orderBy?: Prisma.CategorizationRuleOrderByWithRelationInput | Prisma.CategorizationRuleOrderByWithRelationInput[]
+  cursor?: Prisma.CategorizationRuleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CategorizationRuleScalarFieldEnum | Prisma.CategorizationRuleScalarFieldEnum[]
 }
 
 /**
