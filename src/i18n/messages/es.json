@@ -96,7 +96,60 @@
 		"expensesByCategory": "Gastos por Categoría",
 		"noExpenses": "Sin gastos este mes",
 		"previousMonth": "Mes anterior",
-		"nextMonth": "Mes siguiente"
+		"nextMonth": "Mes siguiente",
+		"customizer": {
+			"trigger": "Personalizar",
+			"title": "Personalizar panel",
+			"description": "Arrastrá para reordenar, activá o desactivá widgets y elegí el tamaño de cada uno.",
+			"save": "Guardar",
+			"saving": "Guardando...",
+			"cancel": "Cancelar",
+			"reset": "Restablecer",
+			"sizeFull": "Completo",
+			"sizeHalf": "Mitad",
+			"dragHandle": "Arrastrar para reordenar",
+			"toggleVisibility": "Mostrar u ocultar",
+			"saveSuccess": "Diseño del panel guardado",
+			"saveError": "No se pudo guardar el diseño"
+		},
+		"widgets": {
+			"overview": {
+				"name": "Resumen",
+				"description": "Ingresos, gastos y balance del mes seleccionado"
+			},
+			"financialHealth": {
+				"name": "Salud Financiera",
+				"description": "Puntaje general basado en ahorro, deuda y consistencia de gastos"
+			},
+			"categoryBreakdown": {
+				"name": "Gastos por Categoría",
+				"description": "Gráfico de dona agrupando gastos por categoría"
+			},
+			"monthlyFlow": {
+				"name": "Flujo Mensual",
+				"description": "Tendencia de ingresos vs gastos en los últimos meses"
+			},
+			"monthComparison": {
+				"name": "Comparación Mensual",
+				"description": "Mes actual vs mes anterior por categoría"
+			},
+			"goals": {
+				"name": "Metas Activas",
+				"description": "Progreso de tus principales metas de ahorro"
+			},
+			"budgetSummary": {
+				"name": "Presupuestos",
+				"description": "Uso de presupuestos del mes seleccionado"
+			},
+			"portfolio": {
+				"name": "Portafolio",
+				"description": "Valor total invertido y rendimiento"
+			},
+			"recentTransactions": {
+				"name": "Transacciones Recientes",
+				"description": "Tus últimas transacciones en todas las cuentas"
+			}
+		}
 	},
 	"transactions": {
 		"title": "Transacciones",

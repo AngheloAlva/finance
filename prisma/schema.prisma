@@ -113,15 +113,16 @@ enum InvestmentType {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  name          String
-  emailVerified Boolean  @default(false)
-  image         String?
-  currency      String   @default("USD")
-  timezone      String   @default("UTC")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(cuid())
+  email           String   @unique
+  name            String
+  emailVerified   Boolean  @default(false)
+  image           String?
+  currency        String   @default("USD")
+  timezone        String   @default("UTC")
+  dashboardConfig Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   sessions          Session[]
   accounts          Account[]

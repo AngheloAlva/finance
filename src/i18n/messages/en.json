@@ -96,7 +96,60 @@
 		"expensesByCategory": "Expenses by Category",
 		"noExpenses": "No expenses this month",
 		"previousMonth": "Previous month",
-		"nextMonth": "Next month"
+		"nextMonth": "Next month",
+		"customizer": {
+			"trigger": "Customize",
+			"title": "Customize dashboard",
+			"description": "Drag to reorder, toggle visibility and choose the size of each widget.",
+			"save": "Save",
+			"saving": "Saving...",
+			"cancel": "Cancel",
+			"reset": "Reset to default",
+			"sizeFull": "Full",
+			"sizeHalf": "Half",
+			"dragHandle": "Drag to reorder",
+			"toggleVisibility": "Toggle visibility",
+			"saveSuccess": "Dashboard layout saved",
+			"saveError": "Could not save dashboard layout"
+		},
+		"widgets": {
+			"overview": {
+				"name": "Overview Cards",
+				"description": "Income, expenses and balance for the selected month"
+			},
+			"financialHealth": {
+				"name": "Financial Health",
+				"description": "Overall score based on savings, debt and spending consistency"
+			},
+			"categoryBreakdown": {
+				"name": "Expenses by Category",
+				"description": "Donut chart grouping expenses by category"
+			},
+			"monthlyFlow": {
+				"name": "Monthly Flow",
+				"description": "Income vs expenses trend over the last months"
+			},
+			"monthComparison": {
+				"name": "Month Comparison",
+				"description": "Current month vs previous month per category"
+			},
+			"goals": {
+				"name": "Active Goals",
+				"description": "Progress toward your top active savings goals"
+			},
+			"budgetSummary": {
+				"name": "Budgets",
+				"description": "Budget usage for the selected month"
+			},
+			"portfolio": {
+				"name": "Portfolio",
+				"description": "Total invested value and return"
+			},
+			"recentTransactions": {
+				"name": "Recent Transactions",
+				"description": "Your latest transactions across all accounts"
+			}
+		}
 	},
 	"transactions": {
 		"title": "Transactions",
