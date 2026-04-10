@@ -8,6 +8,7 @@ import {
 	Clock,
 	CreditCard,
 	Percent,
+	PieChart,
 	Target,
 	TrendingDown,
 	TrendingUp,
@@ -40,6 +41,8 @@ const ALERT_TYPE_CONFIG: Record<AlertType, { icon: typeof TrendingUp; labelKey: 
 	EXCESSIVE_INSTALLMENTS: { icon: Percent, labelKey: "installmentLoad" },
 	INVESTMENT_SIGNIFICANT_CHANGE: { icon: BarChart3, labelKey: "investmentChange" },
 	MISSING_INCOME: { icon: Banknote, labelKey: "missingIncome" },
+	BUDGET_WARNING: { icon: PieChart, labelKey: "budgetWarning" },
+	BUDGET_EXCEEDED: { icon: PieChart, labelKey: "budgetExceeded" },
 } as const
 
 const SEVERITY_STYLES = {

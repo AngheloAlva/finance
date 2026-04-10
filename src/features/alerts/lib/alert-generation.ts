@@ -2,6 +2,7 @@ import { AlertType, AlertSeverity, GoalStatus, TransactionType } from "@/generat
 
 import { prisma } from "@/shared/lib/prisma"
 import { centsToDisplay } from "@/shared/lib/formatters"
+import { checkBudgetThresholds } from "@/features/budgets/lib/budget-alerts"
 import { getCurrentCycleRange } from "@/features/credit-cards/lib/billing-cycle.utils"
 import type {
 	TransactionAlertContext,
@@ -285,6 +286,7 @@ export async function generateAlertsForTransaction(
 		await Promise.all([
 			checkCategoryThreshold(context),
 			checkSpendingSpike(context),
+			checkBudgetThresholds(context),
 		])
 	} catch (error) {
 		console.error("Failed to generate alerts for transaction:", error)
