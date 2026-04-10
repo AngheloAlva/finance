@@ -20,7 +20,7 @@ import { CategorySelect } from "@/features/categories/components/category-select
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types";
 import { createRecurringAction } from "@/features/recurring/actions/create-recurring.action";
 import { updateRecurringAction } from "@/features/recurring/actions/update-recurring.action";
-import { FREQUENCY_KEYS } from "@/features/recurring/types/recurring.types";
+import { FREQUENCY_KEYS, GENERATION_MODE_KEYS } from "@/features/recurring/types/recurring.types";
 import { AmountInput } from "@/features/transactions/components/amount-input";
 import { FieldError } from "@/shared/components/field-error";
 import { FORM_MODE, INITIAL_VOID_STATE, type FormMode } from "@/shared/types/common.types";
@@ -37,6 +37,7 @@ interface RecurringFormProps {
     categoryId: string;
     frequency: string;
     interval: number;
+    generationMode: string;
     startDate: string;
     endDate: string | null;
   };
@@ -59,6 +60,7 @@ export function RecurringForm({
   const tt = useTranslations("recurring.types");
   const tp = useTranslations("recurring.paymentMethods");
   const tFreq = useTranslations("recurring.frequencies");
+  const tMode = useTranslations("recurring.generationModes");
   const tc = useTranslations("common");
   const tErrors = useTranslations("errors");
   const action =
@@ -191,6 +193,28 @@ export function RecurringForm({
           />
           {!state.success && <FieldError errors={state.fieldErrors?.interval} />}
         </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <Label>{t("generationMode")}</Label>
+        <Select
+          name="generationMode"
+          defaultValue={defaultValues?.generationMode ?? "AUTO"}
+          items={Object.entries(GENERATION_MODE_KEYS).map(([value, key]) => ({ value, label: tMode(key as Parameters<typeof tMode>[0]) }))}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder={t("selectGenerationMode")} />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(GENERATION_MODE_KEYS).map(([value, key]) => (
+              <SelectItem key={value} value={value}>
+                {tMode(key as Parameters<typeof tMode>[0])}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-muted-foreground text-xs">{t("generationModeHint")}</p>
+        {!state.success && <FieldError errors={state.fieldErrors?.generationMode} />}
       </div>
 
       <div className="grid grid-cols-2 gap-4">

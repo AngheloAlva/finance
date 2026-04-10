@@ -1,4 +1,4 @@
-import { PaymentMethod, RecurrenceFrequency, TransactionType } from "@/generated/prisma/enums"
+import { GenerationMode, PaymentMethod, RecurrenceFrequency, TransactionType } from "@/generated/prisma/enums"
 import { z } from "zod"
 
 const endDateRefinement = (data: { startDate: Date; endDate?: Date }) => {
@@ -41,6 +41,9 @@ const baseRecurringFields = {
 		.default(1),
 	startDate: z.coerce.date({ error: "validDate" }),
 	endDate: z.coerce.date({ error: "validDate" }).optional(),
+	generationMode: z.nativeEnum(GenerationMode, {
+		error: "invalidGenerationMode",
+	}).default(GenerationMode.AUTO),
 }
 
 export const createRecurringSchema = z

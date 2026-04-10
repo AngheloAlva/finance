@@ -21,6 +21,7 @@ export async function generatePendingRecurring(userId: string): Promise<number> 
       isTemplate: true,
       recurrenceRule: {
         isActive: true,
+        generationMode: "AUTO",
         nextGenerationDate: { lte: now },
       },
     },

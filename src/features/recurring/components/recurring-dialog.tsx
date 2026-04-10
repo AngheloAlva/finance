@@ -29,6 +29,7 @@ export function RecurringDialog({ mode, template, categories, trigger }: Recurri
 				categoryId: template.categoryId,
 				frequency: template.recurrenceRule.frequency,
 				interval: template.recurrenceRule.interval,
+				generationMode: template.recurrenceRule.generationMode,
 				startDate: template.date.toISOString(),
 				endDate: template.recurrenceRule.endDate?.toISOString() ?? null,
 			}

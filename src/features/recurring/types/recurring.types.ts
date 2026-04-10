@@ -1,13 +1,18 @@
 import type { Category, RecurrenceRule, Transaction } from "@/generated/prisma/client"
-import type { RecurrenceFrequency } from "@/generated/prisma/enums"
+import type { GenerationMode, RecurrenceFrequency } from "@/generated/prisma/enums"
 
 export type RecurringTemplateWithRule = Transaction & {
 	recurrenceRule: Pick<
 		RecurrenceRule,
-		"id" | "frequency" | "interval" | "nextGenerationDate" | "endDate" | "isActive"
+		"id" | "frequency" | "interval" | "generationMode" | "nextGenerationDate" | "endDate" | "isActive"
 	>
 	category: Pick<Category, "id" | "name" | "icon" | "color">
 }
+
+export const GENERATION_MODE_KEYS: Record<GenerationMode, string> = {
+	AUTO: "auto",
+	SUGGEST: "suggest",
+} as const
 
 export interface RecurrenceFormValues {
 	description: string

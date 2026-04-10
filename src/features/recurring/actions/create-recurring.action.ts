@@ -24,6 +24,7 @@ export async function createRecurringAction(
     interval: formData.get("interval"),
     startDate: formData.get("startDate"),
     endDate: formData.get("endDate") || undefined,
+    generationMode: formData.get("generationMode") || undefined,
   };
 
   const result = createRecurringSchema.safeParse(raw);
@@ -43,6 +44,7 @@ export async function createRecurringAction(
     interval,
     startDate,
     endDate,
+    generationMode,
   } = result.data;
 
   const session = await requireSession();
@@ -71,6 +73,7 @@ export async function createRecurringAction(
         data: {
           frequency,
           interval,
+          generationMode,
           nextGenerationDate: startDate,
           endDate: endDate ?? null,
           isActive: true,

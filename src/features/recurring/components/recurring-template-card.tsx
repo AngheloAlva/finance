@@ -13,6 +13,7 @@ import { toggleRecurringAction } from "@/features/recurring/actions/toggle-recur
 import { RecurringDialog } from "@/features/recurring/components/recurring-dialog"
 import {
 	FREQUENCY_KEYS,
+	GENERATION_MODE_KEYS,
 	type RecurringTemplateWithRule,
 } from "@/features/recurring/types/recurring.types"
 import { ConfirmDialog } from "@/shared/components/confirm-dialog"
@@ -34,6 +35,7 @@ export function RecurringTemplateCard({
 }: RecurringTemplateCardProps) {
 	const t = useTranslations("recurring.card")
 	const tFreq = useTranslations("recurring.frequencies")
+	const tMode = useTranslations("recurring.generationModes")
 	const td = useTranslations("recurring.deleteDialog")
 	const locale = useLocale()
 	const [deleteState, deleteAction, isDeleting] = useActionState(
@@ -91,6 +93,9 @@ export function RecurringTemplateCard({
 					<span className="text-sm font-medium">{template.description}</span>
 					<Badge variant={isActive ? "default" : "secondary"}>
 						{isActive ? t("active") : t("paused")}
+					</Badge>
+					<Badge variant={rule.generationMode === "SUGGEST" ? "outline" : "secondary"}>
+						{tMode(GENERATION_MODE_KEYS[rule.generationMode] as Parameters<typeof tMode>[0])}
 					</Badge>
 				</div>
 
