@@ -119,21 +119,52 @@ interface CategoryOverrides {
   alertThreshold?: number | null
   isAvoidable?: boolean
   isRecurring?: boolean
+  scope?: "SYSTEM" | "USER" | "GROUP"
 }
 
 export async function createCategory(
-  userId: string,
+  userId: string | null,
   overrides: CategoryOverrides = {},
 ) {
+  const scope = overrides.scope ?? "USER"
   return prisma.category.create({
     data: {
       name: overrides.name ?? `cat-${randomUUID().slice(0, 8)}`,
       icon: "circle",
       color: "#888888",
+      scope,
       alertThreshold: overrides.alertThreshold ?? null,
       isAvoidable: overrides.isAvoidable ?? false,
       isRecurring: overrides.isRecurring ?? false,
+      ...(scope !== "SYSTEM" && userId
+        ? { user: { connect: { id: userId } } }
+        : {}),
+    },
+  })
+}
+
+export async function createTag(
+  userId: string,
+  overrides: { name?: string; color?: string } = {},
+) {
+  return prisma.tag.create({
+    data: {
+      name: overrides.name ?? `tag-${randomUUID().slice(0, 8)}`,
+      color: overrides.color ?? "#6b7280",
       user: { connect: { id: userId } },
+    },
+  })
+}
+
+export async function createInvestmentSnapshot(
+  investmentId: string,
+  input: { date: Date; value: number },
+) {
+  return prisma.investmentSnapshot.create({
+    data: {
+      date: input.date,
+      value: input.value,
+      investment: { connect: { id: investmentId } },
     },
   })
 }
