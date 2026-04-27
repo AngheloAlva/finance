@@ -80,6 +80,9 @@ interface TransactionOverrides {
   isTemplate?: boolean
   creditCardId?: string | null
   categoryId?: string | null
+  parentTransactionId?: string | null
+  totalInstallments?: number | null
+  installmentNumber?: number | null
 }
 
 export async function createTransaction(
@@ -99,9 +102,123 @@ export async function createTransaction(
       date,
       impactDate: overrides.impactDate ?? date,
       isTemplate: overrides.isTemplate ?? false,
+      totalInstallments: overrides.totalInstallments ?? null,
+      installmentNumber: overrides.installmentNumber ?? null,
+      ...(overrides.parentTransactionId
+        ? { parentTransaction: { connect: { id: overrides.parentTransactionId } } }
+        : {}),
       ...(overrides.creditCardId
         ? { creditCard: { connect: { id: overrides.creditCardId } } }
         : {}),
+    },
+  })
+}
+
+interface CategoryOverrides {
+  name?: string
+  alertThreshold?: number | null
+  isAvoidable?: boolean
+  isRecurring?: boolean
+}
+
+export async function createCategory(
+  userId: string,
+  overrides: CategoryOverrides = {},
+) {
+  return prisma.category.create({
+    data: {
+      name: overrides.name ?? `cat-${randomUUID().slice(0, 8)}`,
+      icon: "circle",
+      color: "#888888",
+      alertThreshold: overrides.alertThreshold ?? null,
+      isAvoidable: overrides.isAvoidable ?? false,
+      isRecurring: overrides.isRecurring ?? false,
+      user: { connect: { id: userId } },
+    },
+  })
+}
+
+interface BudgetOverrides {
+  amount: number
+  month: number
+  year: number
+  categoryId: string
+}
+
+export async function createBudget(userId: string, input: BudgetOverrides) {
+  return prisma.budget.create({
+    data: {
+      amount: input.amount,
+      month: input.month,
+      year: input.year,
+      user: { connect: { id: userId } },
+      category: { connect: { id: input.categoryId } },
+    },
+  })
+}
+
+interface GoalOverrides {
+  name?: string
+  targetAmount: number
+  targetDate?: Date | null
+  status?: "ACTIVE" | "COMPLETED" | "CANCELLED"
+}
+
+export async function createGoal(userId: string, input: GoalOverrides) {
+  return prisma.goal.create({
+    data: {
+      name: input.name ?? `goal-${randomUUID().slice(0, 8)}`,
+      targetAmount: input.targetAmount,
+      targetDate: input.targetDate ?? null,
+      status: input.status ?? "ACTIVE",
+      user: { connect: { id: userId } },
+    },
+  })
+}
+
+export async function createGoalContribution(
+  userId: string,
+  goalId: string,
+  input: { amount: number; date?: Date },
+) {
+  return prisma.goalContribution.create({
+    data: {
+      amount: input.amount,
+      date: input.date ?? today(),
+      user: { connect: { id: userId } },
+      goal: { connect: { id: goalId } },
+    },
+  })
+}
+
+interface InvestmentOverrides {
+  name?: string
+  type?:
+    | "STOCKS"
+    | "BONDS"
+    | "CRYPTO"
+    | "REAL_ESTATE"
+    | "FUND"
+    | "SAVINGS"
+    | "OTHER"
+  initialAmount: number
+  currentValue: number
+  startDate?: Date
+}
+
+export async function createInvestment(
+  userId: string,
+  input: InvestmentOverrides,
+) {
+  return prisma.investment.create({
+    data: {
+      name: input.name ?? `inv-${randomUUID().slice(0, 8)}`,
+      type: input.type ?? "STOCKS",
+      institution: "Test Broker",
+      initialAmount: input.initialAmount,
+      currentValue: input.currentValue,
+      startDate: input.startDate ?? today(),
+      user: { connect: { id: userId } },
     },
   })
 }
