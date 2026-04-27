@@ -169,6 +169,49 @@ export async function createInvestmentSnapshot(
   })
 }
 
+export async function createGroup(
+  overrides: { name?: string; currency?: string; description?: string } = {},
+) {
+  return prisma.group.create({
+    data: {
+      name: overrides.name ?? `group-${randomUUID().slice(0, 8)}`,
+      currency: overrides.currency ?? "USD",
+      description: overrides.description ?? null,
+    },
+  })
+}
+
+export async function createGroupMember(
+  userId: string,
+  groupId: string,
+  role: "OWNER" | "ADMIN" | "MEMBER" = "MEMBER",
+) {
+  return prisma.groupMember.create({
+    data: {
+      role,
+      user: { connect: { id: userId } },
+      group: { connect: { id: groupId } },
+    },
+  })
+}
+
+export async function createGroupInvitation(
+  groupId: string,
+  invitedById: string,
+  input: { email?: string; status?: "PENDING" | "ACCEPTED" | "EXPIRED"; expiresAt?: Date; token?: string } = {},
+) {
+  return prisma.groupInvitation.create({
+    data: {
+      email: input.email ?? `invitee-${randomUUID().slice(0, 6)}@test.local`,
+      token: input.token ?? randomUUID(),
+      status: input.status ?? "PENDING",
+      expiresAt: input.expiresAt ?? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      group: { connect: { id: groupId } },
+      invitedBy: { connect: { id: invitedById } },
+    },
+  })
+}
+
 interface BudgetOverrides {
   amount: number
   month: number
