@@ -249,7 +249,8 @@
       "save": "Save Transaction",
       "scan": "Scan receipt or screenshot",
       "scanSuccess": "Receipt scanned — review and save",
-      "scanError": "Could not read the image. Fill in manually."
+      "scanError": "Could not read the image. Fill in manually.",
+      "scanTooLarge": "Image exceeds 5MB. Try a smaller one."
     }
   },
   "tags": {

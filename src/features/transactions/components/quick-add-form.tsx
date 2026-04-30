@@ -35,6 +35,8 @@ interface QuickAddFormProps {
 
 type QuickAddType = typeof TransactionType.EXPENSE | typeof TransactionType.INCOME
 
+const MAX_RECEIPT_BYTES = 5 * 1024 * 1024
+
 export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 	const t = useTranslations("transactions")
 	const tc = useTranslations("common")
@@ -68,12 +70,23 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 		const file = e.target.files?.[0]
 		if (!file) return
 
+		if (file.size > MAX_RECEIPT_BYTES) {
+			toast.error(t("quickAdd.scanTooLarge"))
+			if (fileInputRef.current) fileInputRef.current.value = ""
+			return
+		}
+
 		setIsScanning(true)
 		try {
 			const formData = new FormData()
 			formData.append("image", file)
 
 			const res = await fetch("/api/scan-receipt", { method: "POST", body: formData })
+
+			if (res.status === 413) {
+				toast.error(t("quickAdd.scanTooLarge"))
+				return
+			}
 			if (!res.ok) throw new Error("scan failed")
 
 			const data = await res.json()

@@ -249,7 +249,8 @@
       "save": "Guardar",
       "scan": "Escanear boleta o captura",
       "scanSuccess": "Boleta leída — revisá y guardá",
-      "scanError": "No se pudo leer la imagen. Completá a mano."
+      "scanError": "No se pudo leer la imagen. Completá a mano.",
+      "scanTooLarge": "La imagen supera los 5MB. Probá con una más liviana."
     }
   },
   "tags": {
