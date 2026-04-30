@@ -59,12 +59,20 @@ export async function createTransactionAction(
     });
 
     if (tagIds && tagIds.length > 0) {
-      await prisma.transactionTag.createMany({
-        data: tagIds.map((tagId) => ({
-          transactionId: transaction.id,
-          tagId,
-        })),
+      const ownedTags = await prisma.tag.findMany({
+        where: { id: { in: tagIds }, userId: session.user.id },
+        select: { id: true },
       });
+      const ownedTagIds = ownedTags.map((t) => t.id);
+
+      if (ownedTagIds.length > 0) {
+        await prisma.transactionTag.createMany({
+          data: ownedTagIds.map((tagId) => ({
+            transactionId: transaction.id,
+            tagId,
+          })),
+        });
+      }
     }
 
     try {

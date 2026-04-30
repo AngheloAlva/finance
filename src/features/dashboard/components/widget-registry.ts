@@ -34,6 +34,11 @@ export const WIDGET_REGISTRY: Record<WidgetKey, WidgetMetadata> = {
     supportsHalf: false,
     defaultSize: "full",
   },
+  monthlyDigest: {
+    key: "monthlyDigest",
+    supportsHalf: false,
+    defaultSize: "full",
+  },
   categoryBreakdown: {
     key: "categoryBreakdown",
     supportsHalf: true,

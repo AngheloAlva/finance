@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import { Sparkles, Bell } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ProfileForm } from "@/features/settings/components/profile-form";
+import { PushNotificationManager } from "@/features/notifications/components/push-notification-manager";
 import { Link } from "@/i18n/navigation";
 import { requireSession } from "@/shared/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
@@ -58,6 +59,21 @@ export default async function SettingsPage() {
               {tCat("manage")}
             </Button>
           </CardHeader>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bell className="size-4" />
+              Notifications
+            </CardTitle>
+            <CardDescription>
+              Get push notifications when alerts are triggered
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <PushNotificationManager />
+          </CardContent>
         </Card>
       </div>
     </div>

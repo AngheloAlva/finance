@@ -28,6 +28,7 @@ import {
 } from "@/features/analytics/lib/analytics.queries"
 import { FinancialHealthGauge } from "@/features/analytics/components/financial-health-gauge"
 import { MonthComparisonWidget } from "@/features/analytics/components/month-comparison-widget"
+import { MonthlyDigestWidget } from "@/features/analytics/components/monthly-digest-widget"
 import { CategoryChart } from "@/features/dashboard/components/category-chart"
 import { DashboardCustomizer } from "@/features/dashboard/components/dashboard-customizer"
 import { GoalProgressWidget } from "@/features/dashboard/components/goal-progress-widget"
@@ -165,6 +166,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 				return portfolioSummary ? (
 					<PortfolioSummaryCard portfolio={portfolioSummary} currency={currency} />
 				) : null
+			case "monthlyDigest":
+				return <MonthlyDigestWidget month={month} year={year} />
 			case "recentTransactions":
 				return recentTransactions ? (
 					<RecentTransactions transactions={recentTransactions} currency={currency} />

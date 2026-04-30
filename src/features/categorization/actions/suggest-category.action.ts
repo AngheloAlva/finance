@@ -11,6 +11,7 @@ import { requireSession } from "@/shared/lib/auth"
  */
 export async function suggestCategoryAction(description: string): Promise<CategorySuggestion | null> {
 	if (!description || description.trim().length === 0) return null
+	if (description.length > 500) return null
 
 	const session = await requireSession()
 

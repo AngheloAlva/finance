@@ -1,6 +1,7 @@
 import { AlertSeverity, AlertType, TransactionType } from "@/generated/prisma/enums"
 import { prisma } from "@/shared/lib/prisma"
 import { centsToDisplay } from "@/shared/lib/formatters"
+import { upsertAlertWithPush } from "@/features/alerts/lib/alert-upsert"
 
 import type { TransactionAlertContext } from "@/features/alerts/types/alerts.types"
 
@@ -44,60 +45,27 @@ export async function checkBudgetThresholds(context: TransactionAlertContext): P
 	const percentage = budget.amount > 0 ? (actual / budget.amount) * 100 : 0
 
 	const deduplicationKey = `${year}-${String(month).padStart(2, "0")}`
+	const formattedBudget = centsToDisplay(budget.amount)
 
 	if (percentage >= 100) {
-		const formattedBudget = centsToDisplay(budget.amount)
-
-		await prisma.alert.upsert({
-			where: {
-				userId_type_referenceId_deduplicationKey: {
-					userId,
-					type: AlertType.BUDGET_EXCEEDED,
-					referenceId: budget.id,
-					deduplicationKey,
-				},
-			},
-			create: {
-				type: AlertType.BUDGET_EXCEEDED,
-				message: `Budget exceeded for ${budget.category.name}: spent over $${formattedBudget} limit`,
-				severity: AlertSeverity.CRITICAL,
-				referenceType: "budget",
-				referenceId: budget.id,
-				deduplicationKey,
-				userId,
-			},
-			update: {
-				message: `Budget exceeded for ${budget.category.name}: spent over $${formattedBudget} limit`,
-				severity: AlertSeverity.CRITICAL,
-				updatedAt: new Date(),
-			},
+		await upsertAlertWithPush({
+			userId,
+			type: AlertType.BUDGET_EXCEEDED,
+			referenceType: "budget",
+			referenceId: budget.id,
+			deduplicationKey,
+			message: `Budget exceeded for ${budget.category.name}: spent over $${formattedBudget} limit`,
+			severity: AlertSeverity.CRITICAL,
 		})
 	} else if (percentage >= 80) {
-		const formattedBudget = centsToDisplay(budget.amount)
-
-		await prisma.alert.upsert({
-			where: {
-				userId_type_referenceId_deduplicationKey: {
-					userId,
-					type: AlertType.BUDGET_WARNING,
-					referenceId: budget.id,
-					deduplicationKey,
-				},
-			},
-			create: {
-				type: AlertType.BUDGET_WARNING,
-				message: `Budget warning for ${budget.category.name}: ${Math.round(percentage)}% of $${formattedBudget} used`,
-				severity: AlertSeverity.WARNING,
-				referenceType: "budget",
-				referenceId: budget.id,
-				deduplicationKey,
-				userId,
-			},
-			update: {
-				message: `Budget warning for ${budget.category.name}: ${Math.round(percentage)}% of $${formattedBudget} used`,
-				severity: AlertSeverity.WARNING,
-				updatedAt: new Date(),
-			},
+		await upsertAlertWithPush({
+			userId,
+			type: AlertType.BUDGET_WARNING,
+			referenceType: "budget",
+			referenceId: budget.id,
+			deduplicationKey,
+			message: `Budget warning for ${budget.category.name}: ${Math.round(percentage)}% of $${formattedBudget} used`,
+			severity: AlertSeverity.WARNING,
 		})
 	}
 }

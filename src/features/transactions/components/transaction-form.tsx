@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useEffect, useRef, useState } from "react"
+import { useActionState, useEffect, useState } from "react"
 import type { CreditCard } from "@/generated/prisma/client"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
@@ -18,9 +18,8 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { suggestCategoryAction } from "@/features/categorization/actions/suggest-category.action"
 import { CategorySuggestion } from "@/features/categorization/components/category-suggestion"
-import type { CategorySuggestion as CategorySuggestionType } from "@/features/categorization/types/categorization.types"
+import { useCategorySuggestion } from "@/features/categorization/hooks/use-category-suggestion"
 import { CategorySelect } from "@/features/categories/components/category-select"
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
 import { CreditCardSelect } from "@/features/credit-cards/components/credit-card-select"
@@ -30,9 +29,11 @@ import { createInstallmentPurchaseAction } from "@/features/transactions/actions
 import { createTransactionAction } from "@/features/transactions/actions/create-transaction.action"
 import { updateTransactionAction } from "@/features/transactions/actions/update-transaction.action"
 import { AmountInput } from "@/features/transactions/components/amount-input"
+import { getPaymentMethodOptions } from "@/features/transactions/lib/payment-method-options"
 import { FieldError } from "@/shared/components/field-error"
 import { centsToDisplay } from "@/shared/lib/formatters"
 import { FORM_MODE, INITIAL_VOID_STATE, type FormMode } from "@/shared/types/common.types"
+import { PaymentMethod } from "@/generated/prisma/enums"
 
 interface TransactionFormProps {
 	mode: FormMode
@@ -71,15 +72,20 @@ export function TransactionForm({
 	const t = useTranslations("transactions")
 	const tc = useTranslations("common")
 	const tErrors = useTranslations("errors")
-	const [paymentMethod, setPaymentMethod] = useState(defaultValues?.paymentMethod ?? "CASH")
+	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
+		(defaultValues?.paymentMethod as PaymentMethod | undefined) ?? PaymentMethod.CASH,
+	)
 	const [installmentsEnabled, setInstallmentsEnabled] = useState(false)
 	const [description, setDescription] = useState(defaultValues?.description ?? "")
 	const [categoryId, setCategoryId] = useState(defaultValues?.categoryId ?? "")
-	const [suggestion, setSuggestion] = useState<CategorySuggestionType | null>(null)
-	const [dismissedPatterns, setDismissedPatterns] = useState<Set<string>>(() => new Set())
-	const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+	const { suggestion, accept: acceptSuggestion, dismiss: dismissSuggestion } = useCategorySuggestion({
+		description,
+		categoryId,
+		enabled: mode !== FORM_MODE.EDIT,
+	})
 
-	const isCredit = paymentMethod === "CREDIT"
+	const paymentMethodOptions = getPaymentMethodOptions(t)
+	const isCredit = paymentMethod === PaymentMethod.CREDIT
 	const showInstallmentFields = mode === FORM_MODE.CREATE && isCredit && installmentsEnabled
 
 	const action =
@@ -100,50 +106,6 @@ export function TransactionForm({
 			onSuccess?.()
 		}
 	}, [state, mode, onSuccess, t])
-
-	// Debounced category suggestion from description
-	useEffect(() => {
-		if (mode === FORM_MODE.EDIT) return
-		if (!description || description.trim().length < 2) {
-			setSuggestion(null)
-			return
-		}
-		if (dismissedPatterns.has(description.trim().toLowerCase())) {
-			setSuggestion(null)
-			return
-		}
-
-		if (debounceRef.current) clearTimeout(debounceRef.current)
-		debounceRef.current = setTimeout(async () => {
-			try {
-				const result = await suggestCategoryAction(description)
-				// Only show if the category is different from what's already selected
-				if (result && result.categoryId !== categoryId) {
-					setSuggestion(result)
-				} else {
-					setSuggestion(null)
-				}
-			} catch {
-				setSuggestion(null)
-			}
-		}, 500)
-
-		return () => {
-			if (debounceRef.current) clearTimeout(debounceRef.current)
-		}
-	}, [description, categoryId, dismissedPatterns, mode])
-
-	function handleAcceptSuggestion(selectedCategoryId: string) {
-		setCategoryId(selectedCategoryId)
-		setSuggestion(null)
-	}
-
-	function handleDismissSuggestion() {
-		if (description) {
-			setDismissedPatterns((prev) => new Set(prev).add(description.trim().toLowerCase()))
-		}
-		setSuggestion(null)
-	}
 
 	return (
 		<form action={formAction} className="flex flex-col gap-4">
@@ -178,8 +140,8 @@ export function TransactionForm({
 				{suggestion && (
 					<CategorySuggestion
 						suggestion={suggestion}
-						onAccept={handleAcceptSuggestion}
-						onDismiss={handleDismissSuggestion}
+						onAccept={(id) => acceptSuggestion(id, setCategoryId)}
+						onDismiss={dismissSuggestion}
 					/>
 				)}
 			</div>
@@ -246,33 +208,24 @@ export function TransactionForm({
 					<Label>{t("form.paymentMethod")}</Label>
 					<Select
 						name="paymentMethod"
-						defaultValue={defaultValues?.paymentMethod ?? "CASH"}
+						defaultValue={defaultValues?.paymentMethod ?? PaymentMethod.CASH}
 						value={paymentMethod}
 						onValueChange={(value) => {
-							if (value) {
-								setPaymentMethod(value)
-								if (value !== "CREDIT") {
-									setInstallmentsEnabled(false)
-								}
-							}
+							if (!value) return
+							setPaymentMethod(value as PaymentMethod)
+							if (value !== PaymentMethod.CREDIT) setInstallmentsEnabled(false)
 						}}
-						items={[
-							{ value: "CASH", label: t("paymentMethods.cash") },
-							{ value: "DEBIT", label: t("paymentMethods.debit") },
-							{ value: "CREDIT", label: t("paymentMethods.credit") },
-							{ value: "TRANSFER", label: t("paymentMethods.transfer") },
-							{ value: "OTHER", label: t("paymentMethods.other") },
-						]}
+						items={paymentMethodOptions}
 					>
 						<SelectTrigger className="w-full">
 							<SelectValue placeholder={t("form.selectMethod")} />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="CASH">{t("paymentMethods.cash")}</SelectItem>
-							<SelectItem value="DEBIT">{t("paymentMethods.debit")}</SelectItem>
-							<SelectItem value="CREDIT">{t("paymentMethods.credit")}</SelectItem>
-							<SelectItem value="TRANSFER">{t("paymentMethods.transfer")}</SelectItem>
-							<SelectItem value="OTHER">{t("paymentMethods.other")}</SelectItem>
+							{paymentMethodOptions.map((opt) => (
+								<SelectItem key={opt.value} value={opt.value}>
+									{opt.label}
+								</SelectItem>
+							))}
 						</SelectContent>
 					</Select>
 					{!state.success && <FieldError errors={state.fieldErrors?.paymentMethod} />}

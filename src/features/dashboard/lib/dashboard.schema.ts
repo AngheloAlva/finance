@@ -15,6 +15,7 @@ import { z } from "zod";
 export const WIDGET_KEYS = [
   "overview",
   "financialHealth",
+  "monthlyDigest",
   "categoryBreakdown",
   "monthlyFlow",
   "monthComparison",
@@ -47,13 +48,14 @@ export const DEFAULT_DASHBOARD_CONFIG: DashboardConfig = {
   widgets: [
     { key: "overview", visible: true, position: 0, size: "full" },
     { key: "financialHealth", visible: true, position: 1, size: "full" },
-    { key: "categoryBreakdown", visible: true, position: 2, size: "half" },
-    { key: "monthlyFlow", visible: true, position: 3, size: "half" },
-    { key: "monthComparison", visible: true, position: 4, size: "full" },
-    { key: "goals", visible: true, position: 5, size: "full" },
-    { key: "budgetSummary", visible: true, position: 6, size: "full" },
-    { key: "portfolio", visible: true, position: 7, size: "full" },
-    { key: "recentTransactions", visible: true, position: 8, size: "full" },
+    { key: "monthlyDigest", visible: true, position: 2, size: "full" },
+    { key: "categoryBreakdown", visible: true, position: 3, size: "half" },
+    { key: "monthlyFlow", visible: true, position: 4, size: "half" },
+    { key: "monthComparison", visible: true, position: 5, size: "full" },
+    { key: "goals", visible: true, position: 6, size: "full" },
+    { key: "budgetSummary", visible: true, position: 7, size: "full" },
+    { key: "portfolio", visible: true, position: 8, size: "full" },
+    { key: "recentTransactions", visible: true, position: 9, size: "full" },
   ],
 };
 

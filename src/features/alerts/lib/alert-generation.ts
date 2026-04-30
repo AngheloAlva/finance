@@ -4,6 +4,7 @@ import { prisma } from "@/shared/lib/prisma"
 import { centsToDisplay } from "@/shared/lib/formatters"
 import { checkBudgetThresholds } from "@/features/budgets/lib/budget-alerts"
 import { getCurrentCycleRange } from "@/features/credit-cards/lib/billing-cycle.utils"
+import { upsertAlertWithPush } from "@/features/alerts/lib/alert-upsert"
 import type {
 	TransactionAlertContext,
 	GoalAlertContext,
@@ -63,29 +64,14 @@ export async function checkCategoryThreshold(context: TransactionAlertContext): 
 	const deduplicationKey = getDeduplicationMonth(impactDate)
 	const formattedThreshold = centsToDisplay(category.alertThreshold)
 
-	await prisma.alert.upsert({
-		where: {
-			userId_type_referenceId_deduplicationKey: {
-				userId,
-				type: AlertType.CATEGORY_THRESHOLD_EXCEEDED,
-				referenceId: categoryId,
-				deduplicationKey,
-			},
-		},
-		create: {
-			type: AlertType.CATEGORY_THRESHOLD_EXCEEDED,
-			message: `Spending in ${category.name} exceeded your threshold of $${formattedThreshold} this month`,
-			severity: AlertSeverity.WARNING,
-			referenceType: "category",
-			referenceId: categoryId,
-			deduplicationKey,
-			userId,
-		},
-		update: {
-			message: `Spending in ${category.name} exceeded your threshold of $${formattedThreshold} this month`,
-			severity: AlertSeverity.WARNING,
-			updatedAt: new Date(),
-		},
+	await upsertAlertWithPush({
+		userId,
+		type: AlertType.CATEGORY_THRESHOLD_EXCEEDED,
+		referenceId: categoryId,
+		deduplicationKey,
+		message: `Spending in ${category.name} exceeded your threshold of $${formattedThreshold} this month`,
+		severity: AlertSeverity.WARNING,
+		referenceType: "category",
 	})
 }
 
@@ -149,29 +135,14 @@ export async function checkSpendingSpike(context: TransactionAlertContext): Prom
 	const formattedCurrent = centsToDisplay(currentSum)
 	const formattedAverage = centsToDisplay(Math.round(average))
 
-	await prisma.alert.upsert({
-		where: {
-			userId_type_referenceId_deduplicationKey: {
-				userId,
-				type: AlertType.CATEGORY_SPENDING_SPIKE,
-				referenceId: categoryId,
-				deduplicationKey,
-			},
-		},
-		create: {
-			type: AlertType.CATEGORY_SPENDING_SPIKE,
-			message: `Unusual spending spike in ${category.name}: $${formattedCurrent} vs average $${formattedAverage}`,
-			severity: AlertSeverity.CRITICAL,
-			referenceType: "category",
-			referenceId: categoryId,
-			deduplicationKey,
-			userId,
-		},
-		update: {
-			message: `Unusual spending spike in ${category.name}: $${formattedCurrent} vs average $${formattedAverage}`,
-			severity: AlertSeverity.CRITICAL,
-			updatedAt: new Date(),
-		},
+	await upsertAlertWithPush({
+		userId,
+		type: AlertType.CATEGORY_SPENDING_SPIKE,
+		referenceId: categoryId,
+		deduplicationKey,
+		message: `Unusual spending spike in ${category.name}: $${formattedCurrent} vs average $${formattedAverage}`,
+		severity: AlertSeverity.CRITICAL,
+		referenceType: "category",
 	})
 }
 
@@ -208,29 +179,14 @@ export async function checkCreditCardAlerts(
 
 		// High usage alert: > 95%
 		if (usageRatio > 0.95) {
-			await prisma.alert.upsert({
-				where: {
-					userId_type_referenceId_deduplicationKey: {
-						userId,
-						type: AlertType.CREDIT_CARD_HIGH_USAGE,
-						referenceId: card.id,
-						deduplicationKey,
-					},
-				},
-				create: {
-					type: AlertType.CREDIT_CARD_HIGH_USAGE,
-					message: `Credit card ${card.name} is at ${Math.round(usageRatio * 100)}% usage`,
-					severity: AlertSeverity.CRITICAL,
-					referenceType: "creditCard",
-					referenceId: card.id,
-					deduplicationKey,
-					userId,
-				},
-				update: {
-					message: `Credit card ${card.name} is at ${Math.round(usageRatio * 100)}% usage`,
-					severity: AlertSeverity.CRITICAL,
-					updatedAt: new Date(),
-				},
+			await upsertAlertWithPush({
+				userId,
+				type: AlertType.CREDIT_CARD_HIGH_USAGE,
+				referenceId: card.id,
+				deduplicationKey,
+				message: `Credit card ${card.name} is at ${Math.round(usageRatio * 100)}% usage`,
+				severity: AlertSeverity.CRITICAL,
+				referenceType: "creditCard",
 			})
 		}
 
@@ -250,29 +206,14 @@ export async function checkCreditCardAlerts(
 			const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
 
 			if (diffDays >= 0 && diffDays <= 3) {
-				await prisma.alert.upsert({
-					where: {
-						userId_type_referenceId_deduplicationKey: {
-							userId,
-							type: AlertType.CREDIT_CARD_PAYMENT_DUE,
-							referenceId: card.id,
-							deduplicationKey,
-						},
-					},
-					create: {
-						type: AlertType.CREDIT_CARD_PAYMENT_DUE,
-						message: `Payment for ${card.name} is due in ${diffDays} day${diffDays !== 1 ? "s" : ""}`,
-						severity: AlertSeverity.WARNING,
-						referenceType: "creditCard",
-						referenceId: card.id,
-						deduplicationKey,
-						userId,
-					},
-					update: {
-						message: `Payment for ${card.name} is due in ${diffDays} day${diffDays !== 1 ? "s" : ""}`,
-						severity: AlertSeverity.WARNING,
-						updatedAt: new Date(),
-					},
+				await upsertAlertWithPush({
+					userId,
+					type: AlertType.CREDIT_CARD_PAYMENT_DUE,
+					referenceId: card.id,
+					deduplicationKey,
+					message: `Payment for ${card.name} is due in ${diffDays} day${diffDays !== 1 ? "s" : ""}`,
+					severity: AlertSeverity.WARNING,
+					referenceType: "creditCard",
 				})
 			}
 		}
@@ -348,28 +289,14 @@ export async function checkGoalMilestone(context: GoalAlertContext): Promise<voi
 	for (const milestone of milestones) {
 		const deduplicationKey = `milestone-${milestone}`
 
-		await prisma.alert.upsert({
-			where: {
-				userId_type_referenceId_deduplicationKey: {
-					userId,
-					type: AlertType.GOAL_MILESTONE,
-					referenceId: goalId,
-					deduplicationKey,
-				},
-			},
-			create: {
-				type: AlertType.GOAL_MILESTONE,
-				message: `Your goal "${goalName}" reached ${milestone}%! Current progress: $${centsToDisplay(totalContributed)} of $${centsToDisplay(targetAmount)}`,
-				severity: AlertSeverity.INFO,
-				referenceType: "goal",
-				referenceId: goalId,
-				deduplicationKey,
-				userId,
-			},
-			update: {
-				message: `Your goal "${goalName}" reached ${milestone}%! Current progress: $${centsToDisplay(totalContributed)} of $${centsToDisplay(targetAmount)}`,
-				updatedAt: new Date(),
-			},
+		await upsertAlertWithPush({
+			userId,
+			type: AlertType.GOAL_MILESTONE,
+			referenceId: goalId,
+			deduplicationKey,
+			message: `Your goal "${goalName}" reached ${milestone}%! Current progress: $${centsToDisplay(totalContributed)} of $${centsToDisplay(targetAmount)}`,
+			severity: AlertSeverity.INFO,
+			referenceType: "goal",
 		})
 	}
 }
@@ -388,29 +315,14 @@ export async function checkGoalDeadlineApproaching(context: GoalAlertContext): P
 
 	const deduplicationKey = getDeduplicationMonth(today)
 
-	await prisma.alert.upsert({
-		where: {
-			userId_type_referenceId_deduplicationKey: {
-				userId,
-				type: AlertType.GOAL_DEADLINE_APPROACHING,
-				referenceId: goalId,
-				deduplicationKey,
-			},
-		},
-		create: {
-			type: AlertType.GOAL_DEADLINE_APPROACHING,
-			message: `Goal "${goalName}" deadline is in ${daysUntilDeadline} day${daysUntilDeadline !== 1 ? "s" : ""}`,
-			severity: AlertSeverity.WARNING,
-			referenceType: "goal",
-			referenceId: goalId,
-			deduplicationKey,
-			userId,
-		},
-		update: {
-			message: `Goal "${goalName}" deadline is in ${daysUntilDeadline} day${daysUntilDeadline !== 1 ? "s" : ""}`,
-			severity: AlertSeverity.WARNING,
-			updatedAt: new Date(),
-		},
+	await upsertAlertWithPush({
+		userId,
+		type: AlertType.GOAL_DEADLINE_APPROACHING,
+		referenceId: goalId,
+		deduplicationKey,
+		message: `Goal "${goalName}" deadline is in ${daysUntilDeadline} day${daysUntilDeadline !== 1 ? "s" : ""}`,
+		severity: AlertSeverity.WARNING,
+		referenceType: "goal",
 	})
 }
 
@@ -421,28 +333,14 @@ export async function checkGoalCompleted(context: GoalAlertContext): Promise<voi
 
 	const deduplicationKey = "completed"
 
-	await prisma.alert.upsert({
-		where: {
-			userId_type_referenceId_deduplicationKey: {
-				userId,
-				type: AlertType.GOAL_COMPLETED,
-				referenceId: goalId,
-				deduplicationKey,
-			},
-		},
-		create: {
-			type: AlertType.GOAL_COMPLETED,
-			message: `Congratulations! Goal "${goalName}" is complete! You saved $${centsToDisplay(totalContributed)}`,
-			severity: AlertSeverity.INFO,
-			referenceType: "goal",
-			referenceId: goalId,
-			deduplicationKey,
-			userId,
-		},
-		update: {
-			message: `Congratulations! Goal "${goalName}" is complete! You saved $${centsToDisplay(totalContributed)}`,
-			updatedAt: new Date(),
-		},
+	await upsertAlertWithPush({
+		userId,
+		type: AlertType.GOAL_COMPLETED,
+		referenceId: goalId,
+		deduplicationKey,
+		message: `Congratulations! Goal "${goalName}" is complete! You saved $${centsToDisplay(totalContributed)}`,
+		severity: AlertSeverity.INFO,
+		referenceType: "goal",
 	})
 }
 
@@ -506,29 +404,14 @@ export async function checkNegativeBalanceRisk(userId: string): Promise<void> {
 	// If net is positive or zero, no risk
 	if (avgMonthlyNet >= 0) return
 
-	await prisma.alert.upsert({
-		where: {
-			userId_type_referenceId_deduplicationKey: {
-				userId,
-				type: AlertType.NEGATIVE_BALANCE_RISK,
-				referenceId: userId,
-				deduplicationKey,
-			},
-		},
-		create: {
-			type: AlertType.NEGATIVE_BALANCE_RISK,
-			message: `Your projected balance may go negative within 30 days based on recent spending trends. Average monthly deficit: $${centsToDisplay(Math.abs(avgMonthlyNet))}`,
-			severity: AlertSeverity.CRITICAL,
-			referenceType: "user",
-			referenceId: userId,
-			deduplicationKey,
-			userId,
-		},
-		update: {
-			message: `Your projected balance may go negative within 30 days based on recent spending trends. Average monthly deficit: $${centsToDisplay(Math.abs(avgMonthlyNet))}`,
-			severity: AlertSeverity.CRITICAL,
-			updatedAt: new Date(),
-		},
+	await upsertAlertWithPush({
+		userId,
+		type: AlertType.NEGATIVE_BALANCE_RISK,
+		referenceId: userId,
+		deduplicationKey,
+		message: `Your projected balance may go negative within 30 days based on recent spending trends. Average monthly deficit: $${centsToDisplay(Math.abs(avgMonthlyNet))}`,
+		severity: AlertSeverity.CRITICAL,
+		referenceType: "user",
 	})
 }
 
@@ -574,29 +457,14 @@ export async function checkFutureOverload(userId: string): Promise<void> {
 
 	if (totalObligations <= avgIncome) return
 
-	await prisma.alert.upsert({
-		where: {
-			userId_type_referenceId_deduplicationKey: {
-				userId,
-				type: AlertType.FUTURE_OVERLOAD,
-				referenceId: userId,
-				deduplicationKey,
-			},
-		},
-		create: {
-			type: AlertType.FUTURE_OVERLOAD,
-			message: `Upcoming obligations ($${centsToDisplay(totalObligations)}) in the next 30 days exceed your average monthly income ($${centsToDisplay(avgIncome)})`,
-			severity: AlertSeverity.WARNING,
-			referenceType: "user",
-			referenceId: userId,
-			deduplicationKey,
-			userId,
-		},
-		update: {
-			message: `Upcoming obligations ($${centsToDisplay(totalObligations)}) in the next 30 days exceed your average monthly income ($${centsToDisplay(avgIncome)})`,
-			severity: AlertSeverity.WARNING,
-			updatedAt: new Date(),
-		},
+	await upsertAlertWithPush({
+		userId,
+		type: AlertType.FUTURE_OVERLOAD,
+		referenceId: userId,
+		deduplicationKey,
+		message: `Upcoming obligations ($${centsToDisplay(totalObligations)}) in the next 30 days exceed your average monthly income ($${centsToDisplay(avgIncome)})`,
+		severity: AlertSeverity.WARNING,
+		referenceType: "user",
 	})
 }
 
@@ -629,29 +497,14 @@ export async function checkExcessiveInstallments(userId: string): Promise<void> 
 
 	if (percentage <= 40) return
 
-	await prisma.alert.upsert({
-		where: {
-			userId_type_referenceId_deduplicationKey: {
-				userId,
-				type: AlertType.EXCESSIVE_INSTALLMENTS,
-				referenceId: userId,
-				deduplicationKey,
-			},
-		},
-		create: {
-			type: AlertType.EXCESSIVE_INSTALLMENTS,
-			message: `Monthly installment payments ($${centsToDisplay(installmentTotal)}) represent ${Math.round(percentage)}% of your average income ($${centsToDisplay(avgIncome)})`,
-			severity: AlertSeverity.WARNING,
-			referenceType: "user",
-			referenceId: userId,
-			deduplicationKey,
-			userId,
-		},
-		update: {
-			message: `Monthly installment payments ($${centsToDisplay(installmentTotal)}) represent ${Math.round(percentage)}% of your average income ($${centsToDisplay(avgIncome)})`,
-			severity: AlertSeverity.WARNING,
-			updatedAt: new Date(),
-		},
+	await upsertAlertWithPush({
+		userId,
+		type: AlertType.EXCESSIVE_INSTALLMENTS,
+		referenceId: userId,
+		deduplicationKey,
+		message: `Monthly installment payments ($${centsToDisplay(installmentTotal)}) represent ${Math.round(percentage)}% of your average income ($${centsToDisplay(avgIncome)})`,
+		severity: AlertSeverity.WARNING,
+		referenceType: "user",
 	})
 }
 
@@ -703,31 +556,14 @@ export async function checkMissingIncome(userId: string): Promise<void> {
 	// Need at least 3 of last 3 months with income (regular pattern)
 	if (monthsWithIncome < 3) return
 
-	await prisma.alert.upsert({
-		where: {
-			userId_type_referenceId_deduplicationKey: {
-				userId,
-				type: AlertType.MISSING_INCOME,
-				referenceId: userId,
-				deduplicationKey,
-			},
-		},
-		create: {
-			type: AlertType.MISSING_INCOME,
-			message:
-				"No income recorded this month yet. You usually have income by now — check if expected payments have been received",
-			severity: AlertSeverity.WARNING,
-			referenceType: "user",
-			referenceId: userId,
-			deduplicationKey,
-			userId,
-		},
-		update: {
-			message:
-				"No income recorded this month yet. You usually have income by now — check if expected payments have been received",
-			severity: AlertSeverity.WARNING,
-			updatedAt: new Date(),
-		},
+	await upsertAlertWithPush({
+		userId,
+		type: AlertType.MISSING_INCOME,
+		referenceId: userId,
+		deduplicationKey,
+		message: "No income recorded this month yet. You usually have income by now — check if expected payments have been received",
+		severity: AlertSeverity.WARNING,
+		referenceType: "user",
 	})
 }
 
@@ -752,29 +588,14 @@ export async function checkInvestmentSignificantChange(
 	const now = new Date()
 	const deduplicationKey = getDeduplicationMonth(now)
 
-	await prisma.alert.upsert({
-		where: {
-			userId_type_referenceId_deduplicationKey: {
-				userId,
-				type: AlertType.INVESTMENT_SIGNIFICANT_CHANGE,
-				referenceId: investmentId,
-				deduplicationKey,
-			},
-		},
-		create: {
-			type: AlertType.INVESTMENT_SIGNIFICANT_CHANGE,
-			message: `Investment "${investmentName}" has ${direction} ${Math.abs(Math.round(changePercent))}% from its initial value`,
-			severity,
-			referenceType: "investment",
-			referenceId: investmentId,
-			deduplicationKey,
-			userId,
-		},
-		update: {
-			message: `Investment "${investmentName}" has ${direction} ${Math.abs(Math.round(changePercent))}% from its initial value`,
-			severity,
-			updatedAt: new Date(),
-		},
+	await upsertAlertWithPush({
+		userId,
+		type: AlertType.INVESTMENT_SIGNIFICANT_CHANGE,
+		referenceId: investmentId,
+		deduplicationKey,
+		message: `Investment "${investmentName}" has ${direction} ${Math.abs(Math.round(changePercent))}% from its initial value`,
+		severity,
+		referenceType: "investment",
 	})
 }
 

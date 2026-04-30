@@ -233,6 +233,7 @@ export type UserWhereInput = {
   tags?: Prisma.TagListRelationFilter
   budgets?: Prisma.BudgetListRelationFilter
   categorizationRules?: Prisma.CategorizationRuleListRelationFilter
+  pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -261,6 +262,7 @@ export type UserOrderByWithRelationInput = {
   tags?: Prisma.TagOrderByRelationAggregateInput
   budgets?: Prisma.BudgetOrderByRelationAggregateInput
   categorizationRules?: Prisma.CategorizationRuleOrderByRelationAggregateInput
+  pushSubscriptions?: Prisma.PushSubscriptionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -292,6 +294,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   tags?: Prisma.TagListRelationFilter
   budgets?: Prisma.BudgetListRelationFilter
   categorizationRules?: Prisma.CategorizationRuleListRelationFilter
+  pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -352,6 +355,7 @@ export type UserCreateInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -380,6 +384,7 @@ export type UserUncheckedCreateInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -408,6 +413,7 @@ export type UserUpdateInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -436,6 +442,7 @@ export type UserUncheckedUpdateInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -514,14 +521,14 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.UserWhereInput | null
-  isNot?: Prisma.UserWhereInput | null
-}
-
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -538,6 +545,20 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutPushSubscriptionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionsInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPushSubscriptionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPushSubscriptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionsInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPushSubscriptionsInput
+  upsert?: Prisma.UserUpsertWithoutPushSubscriptionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPushSubscriptionsInput, Prisma.UserUpdateWithoutPushSubscriptionsInput>, Prisma.UserUncheckedUpdateWithoutPushSubscriptionsInput>
 }
 
 export type UserCreateNestedOneWithoutCategoriesInput = {
@@ -752,6 +773,134 @@ export type UserUpdateOneRequiredWithoutTagsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTagsInput, Prisma.UserUpdateWithoutTagsInput>, Prisma.UserUncheckedUpdateWithoutTagsInput>
 }
 
+export type UserCreateWithoutPushSubscriptionsInput = {
+  id?: string
+  email: string
+  name: string
+  emailVerified?: boolean
+  image?: string | null
+  currency?: string
+  timezone?: string
+  dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  creditCards?: Prisma.CreditCardCreateNestedManyWithoutUserInput
+  alerts?: Prisma.AlertCreateNestedManyWithoutUserInput
+  groupMemberships?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
+  groupInvitations?: Prisma.GroupInvitationCreateNestedManyWithoutInvitedByInput
+  transactionSplits?: Prisma.TransactionSplitCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalCreateNestedManyWithoutUserInput
+  goalContributions?: Prisma.GoalContributionCreateNestedManyWithoutUserInput
+  investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
+  id?: string
+  email: string
+  name: string
+  emailVerified?: boolean
+  image?: string | null
+  currency?: string
+  timezone?: string
+  dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  creditCards?: Prisma.CreditCardUncheckedCreateNestedManyWithoutUserInput
+  alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutUserInput
+  groupMemberships?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
+  groupInvitations?: Prisma.GroupInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  transactionSplits?: Prisma.TransactionSplitUncheckedCreateNestedManyWithoutUserInput
+  goals?: Prisma.GoalUncheckedCreateNestedManyWithoutUserInput
+  goalContributions?: Prisma.GoalContributionUncheckedCreateNestedManyWithoutUserInput
+  investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionsInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionsInput>
+}
+
+export type UserUpsertWithoutPushSubscriptionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPushSubscriptionsInput, Prisma.UserUncheckedUpdateWithoutPushSubscriptionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPushSubscriptionsInput, Prisma.UserUncheckedCreateWithoutPushSubscriptionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPushSubscriptionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPushSubscriptionsInput, Prisma.UserUncheckedUpdateWithoutPushSubscriptionsInput>
+}
+
+export type UserUpdateWithoutPushSubscriptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  creditCards?: Prisma.CreditCardUpdateManyWithoutUserNestedInput
+  alerts?: Prisma.AlertUpdateManyWithoutUserNestedInput
+  groupMemberships?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
+  groupInvitations?: Prisma.GroupInvitationUpdateManyWithoutInvitedByNestedInput
+  transactionSplits?: Prisma.TransactionSplitUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUpdateManyWithoutUserNestedInput
+  goalContributions?: Prisma.GoalContributionUpdateManyWithoutUserNestedInput
+  investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  creditCards?: Prisma.CreditCardUncheckedUpdateManyWithoutUserNestedInput
+  alerts?: Prisma.AlertUncheckedUpdateManyWithoutUserNestedInput
+  groupMemberships?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  groupInvitations?: Prisma.GroupInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  transactionSplits?: Prisma.TransactionSplitUncheckedUpdateManyWithoutUserNestedInput
+  goals?: Prisma.GoalUncheckedUpdateManyWithoutUserNestedInput
+  goalContributions?: Prisma.GoalContributionUncheckedUpdateManyWithoutUserNestedInput
+  investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutCategoriesInput = {
   id?: string
   email: string
@@ -777,6 +926,7 @@ export type UserCreateWithoutCategoriesInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCategoriesInput = {
@@ -804,6 +954,7 @@ export type UserUncheckedCreateWithoutCategoriesInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCategoriesInput = {
@@ -847,6 +998,7 @@ export type UserUpdateWithoutCategoriesInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCategoriesInput = {
@@ -874,6 +1026,7 @@ export type UserUncheckedUpdateWithoutCategoriesInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTransactionsInput = {
@@ -901,6 +1054,7 @@ export type UserCreateWithoutTransactionsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -928,6 +1082,7 @@ export type UserUncheckedCreateWithoutTransactionsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -971,6 +1126,7 @@ export type UserUpdateWithoutTransactionsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -998,6 +1154,7 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreditCardsInput = {
@@ -1025,6 +1182,7 @@ export type UserCreateWithoutCreditCardsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreditCardsInput = {
@@ -1052,6 +1210,7 @@ export type UserUncheckedCreateWithoutCreditCardsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreditCardsInput = {
@@ -1095,6 +1254,7 @@ export type UserUpdateWithoutCreditCardsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreditCardsInput = {
@@ -1122,6 +1282,7 @@ export type UserUncheckedUpdateWithoutCreditCardsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1149,6 +1310,7 @@ export type UserCreateWithoutSessionsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1176,6 +1338,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1219,6 +1382,7 @@ export type UserUpdateWithoutSessionsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1246,6 +1410,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1273,6 +1438,7 @@ export type UserCreateWithoutAccountsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1300,6 +1466,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1343,6 +1510,7 @@ export type UserUpdateWithoutAccountsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1370,6 +1538,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAlertsInput = {
@@ -1397,6 +1566,7 @@ export type UserCreateWithoutAlertsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAlertsInput = {
@@ -1424,6 +1594,7 @@ export type UserUncheckedCreateWithoutAlertsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAlertsInput = {
@@ -1467,6 +1638,7 @@ export type UserUpdateWithoutAlertsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAlertsInput = {
@@ -1494,6 +1666,7 @@ export type UserUncheckedUpdateWithoutAlertsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGroupMembershipsInput = {
@@ -1521,6 +1694,7 @@ export type UserCreateWithoutGroupMembershipsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGroupMembershipsInput = {
@@ -1548,6 +1722,7 @@ export type UserUncheckedCreateWithoutGroupMembershipsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGroupMembershipsInput = {
@@ -1591,6 +1766,7 @@ export type UserUpdateWithoutGroupMembershipsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
@@ -1618,6 +1794,7 @@ export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTransactionSplitsInput = {
@@ -1645,6 +1822,7 @@ export type UserCreateWithoutTransactionSplitsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTransactionSplitsInput = {
@@ -1672,6 +1850,7 @@ export type UserUncheckedCreateWithoutTransactionSplitsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTransactionSplitsInput = {
@@ -1715,6 +1894,7 @@ export type UserUpdateWithoutTransactionSplitsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransactionSplitsInput = {
@@ -1742,6 +1922,7 @@ export type UserUncheckedUpdateWithoutTransactionSplitsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGroupInvitationsInput = {
@@ -1769,6 +1950,7 @@ export type UserCreateWithoutGroupInvitationsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGroupInvitationsInput = {
@@ -1796,6 +1978,7 @@ export type UserUncheckedCreateWithoutGroupInvitationsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGroupInvitationsInput = {
@@ -1839,6 +2022,7 @@ export type UserUpdateWithoutGroupInvitationsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupInvitationsInput = {
@@ -1866,6 +2050,7 @@ export type UserUncheckedUpdateWithoutGroupInvitationsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGoalsInput = {
@@ -1893,6 +2078,7 @@ export type UserCreateWithoutGoalsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGoalsInput = {
@@ -1920,6 +2106,7 @@ export type UserUncheckedCreateWithoutGoalsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGoalsInput = {
@@ -1963,6 +2150,7 @@ export type UserUpdateWithoutGoalsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGoalsInput = {
@@ -1990,6 +2178,7 @@ export type UserUncheckedUpdateWithoutGoalsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGoalContributionsInput = {
@@ -2017,6 +2206,7 @@ export type UserCreateWithoutGoalContributionsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGoalContributionsInput = {
@@ -2044,6 +2234,7 @@ export type UserUncheckedCreateWithoutGoalContributionsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGoalContributionsInput = {
@@ -2087,6 +2278,7 @@ export type UserUpdateWithoutGoalContributionsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGoalContributionsInput = {
@@ -2114,6 +2306,7 @@ export type UserUncheckedUpdateWithoutGoalContributionsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInvestmentsInput = {
@@ -2141,6 +2334,7 @@ export type UserCreateWithoutInvestmentsInput = {
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvestmentsInput = {
@@ -2168,6 +2362,7 @@ export type UserUncheckedCreateWithoutInvestmentsInput = {
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvestmentsInput = {
@@ -2211,6 +2406,7 @@ export type UserUpdateWithoutInvestmentsInput = {
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvestmentsInput = {
@@ -2238,6 +2434,7 @@ export type UserUncheckedUpdateWithoutInvestmentsInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBudgetsInput = {
@@ -2265,6 +2462,7 @@ export type UserCreateWithoutBudgetsInput = {
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBudgetsInput = {
@@ -2292,6 +2490,7 @@ export type UserUncheckedCreateWithoutBudgetsInput = {
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBudgetsInput = {
@@ -2335,6 +2534,7 @@ export type UserUpdateWithoutBudgetsInput = {
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBudgetsInput = {
@@ -2362,6 +2562,7 @@ export type UserUncheckedUpdateWithoutBudgetsInput = {
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCategorizationRulesInput = {
@@ -2389,6 +2590,7 @@ export type UserCreateWithoutCategorizationRulesInput = {
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCategorizationRulesInput = {
@@ -2416,6 +2618,7 @@ export type UserUncheckedCreateWithoutCategorizationRulesInput = {
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCategorizationRulesInput = {
@@ -2459,6 +2662,7 @@ export type UserUpdateWithoutCategorizationRulesInput = {
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCategorizationRulesInput = {
@@ -2486,6 +2690,7 @@ export type UserUncheckedUpdateWithoutCategorizationRulesInput = {
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTagsInput = {
@@ -2513,6 +2718,7 @@ export type UserCreateWithoutTagsInput = {
   investments?: Prisma.InvestmentCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTagsInput = {
@@ -2540,6 +2746,7 @@ export type UserUncheckedCreateWithoutTagsInput = {
   investments?: Prisma.InvestmentUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedCreateNestedManyWithoutUserInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTagsInput = {
@@ -2583,6 +2790,7 @@ export type UserUpdateWithoutTagsInput = {
   investments?: Prisma.InvestmentUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTagsInput = {
@@ -2610,6 +2818,7 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   investments?: Prisma.InvestmentUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   categorizationRules?: Prisma.CategorizationRuleUncheckedUpdateManyWithoutUserNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -2633,6 +2842,7 @@ export type UserCountOutputType = {
   tags: number
   budgets: number
   categorizationRules: number
+  pushSubscriptions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2651,6 +2861,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   tags?: boolean | UserCountOutputTypeCountTagsArgs
   budgets?: boolean | UserCountOutputTypeCountBudgetsArgs
   categorizationRules?: boolean | UserCountOutputTypeCountCategorizationRulesArgs
+  pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
 }
 
 /**
@@ -2768,6 +2979,13 @@ export type UserCountOutputTypeCountCategorizationRulesArgs<ExtArgs extends runt
   where?: Prisma.CategorizationRuleWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPushSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PushSubscriptionWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2795,6 +3013,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   tags?: boolean | Prisma.User$tagsArgs<ExtArgs>
   budgets?: boolean | Prisma.User$budgetsArgs<ExtArgs>
   categorizationRules?: boolean | Prisma.User$categorizationRulesArgs<ExtArgs>
+  pushSubscriptions?: boolean | Prisma.User$pushSubscriptionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2854,6 +3073,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   tags?: boolean | Prisma.User$tagsArgs<ExtArgs>
   budgets?: boolean | Prisma.User$budgetsArgs<ExtArgs>
   categorizationRules?: boolean | Prisma.User$categorizationRulesArgs<ExtArgs>
+  pushSubscriptions?: boolean | Prisma.User$pushSubscriptionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2877,6 +3097,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     tags: Prisma.$TagPayload<ExtArgs>[]
     budgets: Prisma.$BudgetPayload<ExtArgs>[]
     categorizationRules: Prisma.$CategorizationRulePayload<ExtArgs>[]
+    pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3298,6 +3519,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   tags<T extends Prisma.User$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   budgets<T extends Prisma.User$budgetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$budgetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BudgetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   categorizationRules<T extends Prisma.User$categorizationRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$categorizationRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategorizationRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  pushSubscriptions<T extends Prisma.User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4087,6 +4309,30 @@ export type User$categorizationRulesArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.CategorizationRuleScalarFieldEnum | Prisma.CategorizationRuleScalarFieldEnum[]
+}
+
+/**
+ * User.pushSubscriptions
+ */
+export type User$pushSubscriptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PushSubscription
+   */
+  select?: Prisma.PushSubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PushSubscription
+   */
+  omit?: Prisma.PushSubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PushSubscriptionInclude<ExtArgs> | null
+  where?: Prisma.PushSubscriptionWhereInput
+  orderBy?: Prisma.PushSubscriptionOrderByWithRelationInput | Prisma.PushSubscriptionOrderByWithRelationInput[]
+  cursor?: Prisma.PushSubscriptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PushSubscriptionScalarFieldEnum | Prisma.PushSubscriptionScalarFieldEnum[]
 }
 
 /**
