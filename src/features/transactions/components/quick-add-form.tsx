@@ -93,17 +93,7 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 	}
 
 	return (
-		<form action={formAction} className="flex flex-col gap-4 px-4 pb-6">
-			<input type="hidden" name="date" value={date} />
-			<input type="hidden" name="impactDate" value={date} />
-			<input type="hidden" name="type" value={txType} />
-
-			{!state.success && state.error && (
-				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-none border px-3 py-2 text-xs">
-					{tErrors(state.error as Parameters<typeof tErrors>[0])}
-				</div>
-			)}
-
+		<div className="flex flex-col gap-4 px-4 pb-6">
 			<input
 				ref={fileInputRef}
 				type="file"
@@ -125,6 +115,17 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 				)}
 				{isScanning ? tc("loading") : t("quickAdd.scan")}
 			</button>
+
+			<form action={formAction} className="flex flex-col gap-4">
+			<input type="hidden" name="date" value={date} />
+			<input type="hidden" name="impactDate" value={date} />
+			<input type="hidden" name="type" value={txType} />
+
+			{!state.success && state.error && (
+				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-none border px-3 py-2 text-xs">
+					{tErrors(state.error as Parameters<typeof tErrors>[0])}
+				</div>
+			)}
 
 			<div className="grid grid-cols-2 gap-1 rounded-none border p-1">
 				<button
@@ -216,6 +217,7 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 			<Button type="submit" disabled={isPending} className="w-full">
 				{isPending ? tc("saving") : t("quickAdd.save")}
 			</Button>
-		</form>
+			</form>
+		</div>
 	)
 }
