@@ -8,7 +8,7 @@ const handleI18nRouting = createMiddleware(routing);
 const PUBLIC_ROUTES = ["/login", "/register"];
 
 const IGNORED_PATHS = [
-	"/api/auth",
+	"/api",
 	"/_next/static",
 	"/_next/image",
 	"/favicon.ico",
@@ -61,5 +61,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ["/((?!_next/static|_next/image|favicon.ico|api/auth).*)"],
+	matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
