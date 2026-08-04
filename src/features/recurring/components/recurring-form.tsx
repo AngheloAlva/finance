@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
@@ -66,6 +66,7 @@ export function RecurringForm({
   const action =
     mode === FORM_MODE.CREATE ? createRecurringAction : updateRecurringAction;
   const [state, formAction, isPending] = useActionState(action, INITIAL_VOID_STATE);
+  const [txType, setTxType] = useState(defaultValues?.type ?? "EXPENSE");
 
   useEffect(() => {
     if (state.success) {
@@ -123,7 +124,7 @@ export function RecurringForm({
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
           <Label>{t("type")}</Label>
-          <Select name="type" defaultValue={defaultValues?.type ?? "EXPENSE"} items={[{ value: "INCOME", label: tt("income") }, { value: "EXPENSE", label: tt("expense") }, { value: "TRANSFER", label: tt("transfer") }]}>
+          <Select name="type" value={txType} onValueChange={(value) => value && setTxType(value)} items={[{ value: "INCOME", label: tt("income") }, { value: "EXPENSE", label: tt("expense") }, { value: "TRANSFER", label: tt("transfer") }]}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder={t("selectType")} />
             </SelectTrigger>
@@ -254,6 +255,7 @@ export function RecurringForm({
           categories={categories}
           name="categoryId"
           defaultValue={defaultValues?.categoryId}
+          transactionType={txType}
           error={
             !state.success ? state.fieldErrors?.categoryId?.[0] : undefined
           }

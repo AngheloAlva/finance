@@ -453,6 +453,8 @@
     },
     "select": {
       "placeholder": "Select category",
+      "searchPlaceholder": "Search categories...",
+      "noResults": "No matching categories",
       "empty": "No categories yet — create one first"
     },
     "deleteDialog": {

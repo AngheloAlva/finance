@@ -76,6 +76,7 @@ export function TransactionForm({
 		(defaultValues?.paymentMethod as PaymentMethod | undefined) ?? PaymentMethod.CASH,
 	)
 	const [installmentsEnabled, setInstallmentsEnabled] = useState(false)
+	const [txType, setTxType] = useState(defaultValues?.type ?? "EXPENSE")
 	const [description, setDescription] = useState(defaultValues?.description ?? "")
 	const [categoryId, setCategoryId] = useState(defaultValues?.categoryId ?? "")
 	const { suggestion, accept: acceptSuggestion, dismiss: dismissSuggestion } = useCategorySuggestion({
@@ -189,7 +190,8 @@ export function TransactionForm({
 					<Label>{t("form.type")}</Label>
 					<Select
 						name="type"
-						defaultValue={defaultValues?.type ?? "EXPENSE"}
+						value={txType}
+						onValueChange={(value) => value && setTxType(value)}
 						items={[
 							{ value: "INCOME", label: t("types.income") },
 							{ value: "EXPENSE", label: t("types.expense") },
@@ -284,6 +286,7 @@ export function TransactionForm({
 					name="categoryId"
 					value={categoryId}
 					onValueChange={(value) => setCategoryId(value ?? "")}
+					transactionType={txType}
 					error={!state.success ? state.fieldErrors?.categoryId?.[0] : undefined}
 				/>
 			</div>

@@ -453,6 +453,8 @@
     },
     "select": {
       "placeholder": "Seleccionar categoría",
+      "searchPlaceholder": "Buscar categorías...",
+      "noResults": "No hay categorías que coincidan",
       "empty": "Todavía no hay categorías — creá una primero"
     },
     "deleteDialog": {
