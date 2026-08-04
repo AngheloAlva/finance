@@ -63,7 +63,7 @@ export function calculateReturn(
 	const daysSinceStart = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24))
 
 	const annualizedReturn =
-		daysSinceStart > 0 && initialAmount > 0
+		daysSinceStart > 0 && initialAmount > 0 && netValue > 0
 			? (Math.pow(netValue / initialAmount, 365 / daysSinceStart) - 1) * 100
 			: null
 

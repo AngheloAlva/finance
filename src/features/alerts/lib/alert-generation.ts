@@ -175,10 +175,10 @@ export async function checkCreditCardAlerts(
 		})
 
 		const usedLimit = Math.abs(result._sum.amount ?? 0)
-		const usageRatio = usedLimit / card.totalLimit
+		const usageRatio = card.totalLimit > 0 ? usedLimit / card.totalLimit : null
 
 		// High usage alert: > 95%
-		if (usageRatio > 0.95) {
+		if (usageRatio !== null && usageRatio > 0.95) {
 			await upsertAlertWithPush({
 				userId,
 				type: AlertType.CREDIT_CARD_HIGH_USAGE,

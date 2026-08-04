@@ -38,6 +38,37 @@ describe("computeHealthSubScore", () => {
   })
 })
 
+describe("negative savings rate", () => {
+  // Exact production table from analytics.queries.ts:583-590
+  const table = [
+    { threshold: 0.2, score: 100 },
+    { threshold: 0.15, score: 80 },
+    { threshold: 0.1, score: 60 },
+    { threshold: 0.05, score: 40 },
+    { threshold: 0, score: 20 },
+    { threshold: -Infinity, score: 0 },
+  ]
+
+  it("returns a finite 0 for a moderately negative savings rate", () => {
+    const result = computeHealthSubScore(-0.5, table)
+    expect(Number.isFinite(result)).toBe(true)
+    expect(result).toBe(0)
+  })
+
+  it("returns a finite 0 for a severely negative savings rate", () => {
+    const result = computeHealthSubScore(-10, table)
+    expect(Number.isFinite(result)).toBe(true)
+    expect(result).toBe(0)
+  })
+
+  it("still interpolates normally between finite thresholds", () => {
+    // value=0.02 is strictly between 0 (score 20) and 0.05 (score 40)
+    const result = computeHealthSubScore(0.02, table)
+    expect(result).toBeGreaterThan(20)
+    expect(result).toBeLessThan(40)
+  })
+})
+
 describe("getDateRangePresets", () => {
   it("returns the 5 expected preset values in order", () => {
     expect(getDateRangePresets().map((p) => p.value)).toEqual([

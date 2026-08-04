@@ -9,7 +9,10 @@ function computeProgress(
 	count: number
 ): { currentAmount: number; percentage: number; contributionCount: number } {
 	const currentAmount = sum
-	const percentage = Math.min(Math.round((currentAmount / goal.targetAmount) * 100), 100)
+	const percentage =
+		goal.targetAmount <= 0
+			? 0
+			: Math.min(Math.round((currentAmount / goal.targetAmount) * 100), 100)
 	return { currentAmount, percentage, contributionCount: count }
 }
 

@@ -66,6 +66,18 @@ describe("calculateReturn", () => {
     const result = calculateReturn(100_000, 110_000, new Date())
     expect(result.annualizedReturn).toBeNull()
   })
+
+  it("returns null annualized when fees exceed current value (negative net value)", () => {
+    const start = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000)
+    const result = calculateReturn(100_000, 10_000, start, 20_000)
+    expect(result.annualizedReturn).toBeNull()
+  })
+
+  it("returns null annualized when net value is exactly 0", () => {
+    const start = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000)
+    const result = calculateReturn(100_000, 5_000, start, 5_000)
+    expect(result.annualizedReturn).toBeNull()
+  })
 })
 
 describe("calculateAllocation", () => {

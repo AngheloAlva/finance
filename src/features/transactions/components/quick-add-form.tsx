@@ -94,7 +94,9 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 			if (data.description) setDescription(data.description)
 			if (data.paymentMethod) setPaymentMethod(data.paymentMethod as PaymentMethod)
 			if (data.date) setDate(data.date)
-			if (data.amount != null) setDefaultAmount(Math.round(data.amount * 100))
+			if (typeof data.amount === "number" && Number.isFinite(data.amount) && data.amount > 0) {
+				setDefaultAmount(Math.round(data.amount * 100))
+			}
 
 			toast.success(t("quickAdd.scanSuccess"))
 		} catch {

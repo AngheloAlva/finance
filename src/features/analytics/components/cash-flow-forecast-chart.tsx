@@ -41,7 +41,7 @@ const CHART_COLORS = {
 
 interface TooltipPayloadItem {
 	name: string
-	value: number
+	value: number | undefined
 	color: string
 }
 
@@ -71,11 +71,13 @@ function CustomTooltip({
 			<p className="mb-1 font-medium">
 				{label ? formatMonthLabel(label, locale ?? "en") : label} {point?.isProjected ? projectedLabel : ""}
 			</p>
-			{payload.map((entry) => (
-				<p key={entry.name} style={{ color: entry.color }}>
-					{entry.name}: {formatCurrency(entry.value, currency, locale)}
-				</p>
-			))}
+			{payload
+				.filter((entry) => typeof entry.value === "number" && Number.isFinite(entry.value))
+				.map((entry) => (
+					<p key={entry.name} style={{ color: entry.color }}>
+						{entry.name}: {formatCurrency(entry.value as number, currency, locale)}
+					</p>
+				))}
 		</div>
 	)
 }

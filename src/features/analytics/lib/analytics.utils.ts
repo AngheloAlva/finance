@@ -20,7 +20,9 @@ export function computeHealthSubScore(
       // Linear interpolation between this and the previous threshold
       const upper = sorted[i - 1];
       const lower = sorted[i];
-      const ratio = (value - lower.threshold) / (upper.threshold - lower.threshold);
+      const span = upper.threshold - lower.threshold;
+      if (!Number.isFinite(span) || span === 0) return lower.score;
+      const ratio = (value - lower.threshold) / span;
       return lower.score + ratio * (upper.score - lower.score);
     }
   }
