@@ -5,7 +5,7 @@ const baseInput = {
   description: "Laptop",
   notes: null,
   type: "EXPENSE" as const,
-  paymentMethod: "CREDIT_CARD" as const,
+  paymentMethod: "CREDIT" as const,
   categoryId: "cat-1",
   userId: "user-1",
 }

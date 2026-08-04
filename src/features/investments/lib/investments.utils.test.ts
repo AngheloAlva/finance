@@ -73,10 +73,8 @@ describe("calculateAllocation", () => {
     return {
       id: "i",
       name: "Inv",
-      type: o.type,
       currency: "USD",
       initialAmount: 0,
-      currentValue: o.currentValue,
       currentExchangeRate: null,
       initialExchangeRate: null,
       totalFees: 0,

@@ -8,6 +8,7 @@ describe("formatZodErrors", () => {
     })
 
     expect(result.success).toBe(false)
+    if (result.success) throw new Error("expected failure result")
     expect(result.error).toBe("VALIDATION_ERROR")
     expect(result.fieldErrors).toEqual({ email: ["Invalid email"] })
   })
@@ -20,6 +21,7 @@ describe("formatZodErrors", () => {
       ],
     })
 
+    if (result.success) throw new Error("expected failure result")
     expect(result.fieldErrors?.["password"]).toEqual(["Too short", "Must contain a number"])
   })
 
@@ -31,6 +33,7 @@ describe("formatZodErrors", () => {
       ],
     })
 
+    if (result.success) throw new Error("expected failure result")
     expect(result.fieldErrors?.["name"]).toEqual(["Required"])
     expect(result.fieldErrors?.["amount"]).toEqual(["Must be positive"])
   })
@@ -40,13 +43,15 @@ describe("formatZodErrors", () => {
       issues: [{ path: [], message: "Root error" }],
     })
 
+    if (result.success) throw new Error("expected failure result")
     expect(result.fieldErrors).toEqual({})
   })
 
   it("returns empty fieldErrors for an empty issues array", () => {
     const result = formatZodErrors({ issues: [] })
-    expect(result.fieldErrors).toEqual({})
     expect(result.success).toBe(false)
+    if (result.success) throw new Error("expected failure result")
+    expect(result.fieldErrors).toEqual({})
   })
 })
 

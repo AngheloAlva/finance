@@ -37,7 +37,7 @@ describe("checkCategoryThreshold", () => {
   it("does nothing when category has no alertThreshold", async () => {
     const user = await createUser()
     const cat = await createCategory(user.id, { alertThreshold: null })
-    await createTransaction(user.id, {
+    const tx = await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(500),
       categoryId: cat.id,
@@ -48,6 +48,11 @@ describe("checkCategoryThreshold", () => {
       userId: user.id,
       categoryId: cat.id,
       impactDate: thisMonth(),
+      transactionId: tx.id,
+      amount: tx.amount,
+      type: tx.type,
+      paymentMethod: tx.paymentMethod,
+      creditCardId: tx.creditCardId,
     })
 
     expect(await prisma.alert.count({ where: { userId: user.id } })).toBe(0)
@@ -56,7 +61,7 @@ describe("checkCategoryThreshold", () => {
   it("does nothing when current sum is below threshold", async () => {
     const user = await createUser()
     const cat = await createCategory(user.id, { alertThreshold: dollars(100) })
-    await createTransaction(user.id, {
+    const tx = await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(50),
       categoryId: cat.id,
@@ -67,6 +72,11 @@ describe("checkCategoryThreshold", () => {
       userId: user.id,
       categoryId: cat.id,
       impactDate: thisMonth(),
+      transactionId: tx.id,
+      amount: tx.amount,
+      type: tx.type,
+      paymentMethod: tx.paymentMethod,
+      creditCardId: tx.creditCardId,
     })
 
     expect(await prisma.alert.count({ where: { userId: user.id } })).toBe(0)
@@ -75,7 +85,7 @@ describe("checkCategoryThreshold", () => {
   it("emits CATEGORY_THRESHOLD_EXCEEDED when current sum exceeds the threshold", async () => {
     const user = await createUser()
     const cat = await createCategory(user.id, { alertThreshold: dollars(100) })
-    await createTransaction(user.id, {
+    const tx = await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(150),
       categoryId: cat.id,
@@ -86,6 +96,11 @@ describe("checkCategoryThreshold", () => {
       userId: user.id,
       categoryId: cat.id,
       impactDate: thisMonth(),
+      transactionId: tx.id,
+      amount: tx.amount,
+      type: tx.type,
+      paymentMethod: tx.paymentMethod,
+      creditCardId: tx.creditCardId,
     })
 
     const alert = await prisma.alert.findFirstOrThrow({
@@ -100,7 +115,7 @@ describe("checkSpendingSpike", () => {
     const user = await createUser()
     const cat = await createCategory(user.id, { alertThreshold: dollars(50) })
     // Only current month + 1 historical month
-    await createTransaction(user.id, {
+    const tx = await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(500),
       categoryId: cat.id,
@@ -117,6 +132,11 @@ describe("checkSpendingSpike", () => {
       userId: user.id,
       categoryId: cat.id,
       impactDate: thisMonth(),
+      transactionId: tx.id,
+      amount: tx.amount,
+      type: tx.type,
+      paymentMethod: tx.paymentMethod,
+      creditCardId: tx.creditCardId,
     })
 
     expect(await prisma.alert.count({ where: { userId: user.id } })).toBe(0)
@@ -125,7 +145,7 @@ describe("checkSpendingSpike", () => {
   it("emits CATEGORY_SPENDING_SPIKE when current > 1.5x avg of last 3 months", async () => {
     const user = await createUser()
     const cat = await createCategory(user.id, { alertThreshold: dollars(50) })
-    await createTransaction(user.id, {
+    const tx = await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(1000),
       categoryId: cat.id,
@@ -144,6 +164,11 @@ describe("checkSpendingSpike", () => {
       userId: user.id,
       categoryId: cat.id,
       impactDate: thisMonth(),
+      transactionId: tx.id,
+      amount: tx.amount,
+      type: tx.type,
+      paymentMethod: tx.paymentMethod,
+      creditCardId: tx.creditCardId,
     })
 
     const alert = await prisma.alert.findFirstOrThrow({
@@ -483,7 +508,7 @@ describe("generateAlertsForTransaction (orchestration)", () => {
       year: thisMonth().getFullYear(),
       categoryId: cat.id,
     })
-    await createTransaction(user.id, {
+    const tx = await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(150),
       categoryId: cat.id,
@@ -494,6 +519,11 @@ describe("generateAlertsForTransaction (orchestration)", () => {
       userId: user.id,
       categoryId: cat.id,
       impactDate: thisMonth(),
+      transactionId: tx.id,
+      amount: tx.amount,
+      type: tx.type,
+      paymentMethod: tx.paymentMethod,
+      creditCardId: tx.creditCardId,
     })
 
     const alerts = await prisma.alert.findMany({ where: { userId: user.id } })
