@@ -42,6 +42,39 @@ function toDateKey(date: Date): string {
 }
 
 /**
+ * All-time cash balance: sum of INCOME minus abs(EXPENSE) across every
+ * non-template transaction with impactDate <= asOf. This is the same number
+ * the cashflow projection uses as its starting balance.
+ */
+export async function getAccumulatedBalance(
+  userId: string,
+  asOf: Date = startOfDay(new Date()),
+): Promise<number> {
+  const [incomeAgg, expenseAgg] = await Promise.all([
+    prisma.transaction.aggregate({
+      where: {
+        userId,
+        isTemplate: false,
+        type: TransactionType.INCOME,
+        impactDate: { lte: asOf },
+      },
+      _sum: { amount: true },
+    }),
+    prisma.transaction.aggregate({
+      where: {
+        userId,
+        isTemplate: false,
+        type: TransactionType.EXPENSE,
+        impactDate: { lte: asOf },
+      },
+      _sum: { amount: true },
+    }),
+  ]);
+
+  return (incomeAgg._sum.amount ?? 0) - Math.abs(expenseAgg._sum.amount ?? 0);
+}
+
+/**
  * Compute a day-by-day cashflow projection for the next N days.
  *
  * Starting balance = sum of all INCOME minus abs(EXPENSE) with impactDate <= today.
@@ -58,29 +91,7 @@ export async function getDailyProjection(
   const horizon = addDays(today, days);
 
   // ---------- 1. Starting balance (cumulative up to and including today) ----------
-  const [incomeAgg, expenseAgg] = await Promise.all([
-    prisma.transaction.aggregate({
-      where: {
-        userId,
-        isTemplate: false,
-        type: TransactionType.INCOME,
-        impactDate: { lte: today },
-      },
-      _sum: { amount: true },
-    }),
-    prisma.transaction.aggregate({
-      where: {
-        userId,
-        isTemplate: false,
-        type: TransactionType.EXPENSE,
-        impactDate: { lte: today },
-      },
-      _sum: { amount: true },
-    }),
-  ]);
-
-  const startingBalance =
-    (incomeAgg._sum.amount ?? 0) - Math.abs(expenseAgg._sum.amount ?? 0);
+  const startingBalance = await getAccumulatedBalance(userId, today);
 
   // ---------- 2. Existing future transactions (today < impactDate <= horizon) ----------
   const existingFuture = await prisma.transaction.findMany({
