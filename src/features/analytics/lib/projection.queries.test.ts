@@ -1,7 +1,10 @@
 import { addDays, format, startOfDay } from "date-fns"
 import { describe, expect, it } from "vitest"
 import { computeStatementDates } from "@/features/credit-cards/lib/billing-cycle.utils"
-import { getDailyProjection } from "@/features/analytics/lib/projection.queries"
+import {
+  getAccumulatedBalance,
+  getDailyProjection,
+} from "@/features/analytics/lib/projection.queries"
 import {
   createCreditCard,
   createRecurringTemplate,
@@ -12,6 +15,57 @@ import {
 } from "../../../../tests/helpers/factories"
 
 const ymd = (d: Date) => format(d, "yyyy-MM-dd")
+
+describe("getAccumulatedBalance", () => {
+  it("returns 0 for a user with no transactions", async () => {
+    const user = await createUser()
+
+    const balance = await getAccumulatedBalance(user.id)
+
+    expect(balance).toBe(0)
+  })
+
+  it("sums income minus expenses with impactDate up to asOf", async () => {
+    const user = await createUser()
+    await createTransaction(user.id, {
+      type: "INCOME",
+      amount: dollars(5000),
+      impactDate: daysFromNow(-10),
+    })
+    await createTransaction(user.id, {
+      type: "EXPENSE",
+      amount: dollars(1500),
+      impactDate: daysFromNow(-5),
+    })
+
+    const balance = await getAccumulatedBalance(user.id)
+
+    expect(balance).toBe(dollars(3500))
+  })
+
+  it("excludes transactions with impactDate after asOf", async () => {
+    const user = await createUser()
+    await createTransaction(user.id, {
+      type: "INCOME",
+      amount: dollars(2000),
+      impactDate: daysFromNow(-3),
+    })
+    await createTransaction(user.id, {
+      type: "INCOME",
+      amount: dollars(9999),
+      impactDate: daysFromNow(5),
+    })
+    await createTransaction(user.id, {
+      type: "EXPENSE",
+      amount: dollars(9999),
+      impactDate: daysFromNow(5),
+    })
+
+    const balance = await getAccumulatedBalance(user.id)
+
+    expect(balance).toBe(dollars(2000))
+  })
+})
 
 describe("getDailyProjection", () => {
   it("returns a flat zero projection for a user with no data", async () => {
