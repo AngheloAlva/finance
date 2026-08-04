@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { FieldError } from "@/shared/components/field-error";
 import { ICON_MAP } from "@/shared/lib/icons";
 
@@ -20,7 +21,16 @@ import {
   ComboboxTrigger,
   ComboboxValue,
 } from "@/components/ui/combobox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { CategoryForm } from "@/features/categories/components/category-form";
 import type { Category } from "@/generated/prisma/client";
+import { FORM_MODE } from "@/shared/types/common.types";
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types";
 
 interface CategorySelectProps {
@@ -32,6 +42,8 @@ interface CategorySelectProps {
   error?: string;
   /** When provided, only categories of this transaction type are offered. */
   transactionType?: string;
+  /** Show a "+ New category" affordance that creates and auto-selects. */
+  allowInlineCreate?: boolean;
 }
 
 interface CategoryGroup {
@@ -62,12 +74,17 @@ export function CategorySelect({
   onValueChange,
   error,
   transactionType,
+  allowInlineCreate = false,
 }: CategorySelectProps) {
   const t = useTranslations("categories");
+  const router = useRouter();
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   const [internalValue, setInternalValue] = useState<string | null>(
     defaultValue ?? null,
   );
+  const [open, setOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
 
   const selected = value !== undefined ? value || null : internalValue;
 
@@ -104,6 +121,17 @@ export function CategorySelect({
     onValueChange?.(next);
   }
 
+  function handleCreated(createdId?: string) {
+    setCreateOpen(false);
+    if (createdId) {
+      setInternalValue(createdId);
+      onValueChange?.(createdId);
+    }
+    // The freshly created category is not in the `categories` prop yet —
+    // refresh so the server component re-fetches and the picker can render it.
+    router.refresh();
+  }
+
   if (categories.length === 0) {
     return (
       <div className="flex flex-col gap-1.5">
@@ -129,9 +157,12 @@ export function CategorySelect({
         items={groups}
         value={selected}
         onValueChange={handleValueChange}
+        open={open}
+        onOpenChange={setOpen}
         itemToStringLabel={(id: string) => categoryById.get(id)?.name ?? ""}
       >
         <ComboboxTrigger
+          ref={triggerRef}
           aria-invalid={error ? true : undefined}
           className="border-input flex h-8 w-full items-center justify-between gap-1.5 rounded-none border bg-transparent py-2 pr-2 pl-2.5 text-xs whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40"
         >
@@ -179,8 +210,39 @@ export function CategorySelect({
               </ComboboxGroup>
             )}
           </ComboboxList>
+          {allowInlineCreate && (
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                setCreateOpen(true);
+              }}
+              className="text-muted-foreground hover:bg-accent hover:text-accent-foreground flex w-full items-center gap-2 border-t px-2 py-2 text-xs transition-colors"
+            >
+              <Plus className="size-3.5" />
+              {t("select.createNew")}
+            </button>
+          )}
         </ComboboxContent>
       </Combobox>
+
+      {allowInlineCreate && (
+        <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+          <DialogContent finalFocus={triggerRef}>
+            <DialogHeader>
+              <DialogTitle>{t("dialog.newTitle")}</DialogTitle>
+              <DialogDescription>
+                {t("dialog.newDescription")}
+              </DialogDescription>
+            </DialogHeader>
+            <CategoryForm
+              mode={FORM_MODE.CREATE}
+              categories={categories}
+              onSuccess={handleCreated}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
 
       <FieldError errors={error} />
     </div>

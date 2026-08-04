@@ -224,6 +224,8 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 						name="categoryId"
 						value={categoryId}
 						onValueChange={(v) => setCategoryId(v ?? "")}
+						transactionType={txType}
+						allowInlineCreate
 						error={!state.success ? state.fieldErrors?.categoryId?.[0] : undefined}
 					/>
 				</div>

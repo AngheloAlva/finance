@@ -455,6 +455,7 @@
       "placeholder": "Seleccionar categoría",
       "searchPlaceholder": "Buscar categorías...",
       "noResults": "No hay categorías que coincidan",
+      "createNew": "Nueva categoría",
       "empty": "Todavía no hay categorías — creá una primero"
     },
     "deleteDialog": {

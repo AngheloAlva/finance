@@ -287,6 +287,7 @@ export function TransactionForm({
 					value={categoryId}
 					onValueChange={(value) => setCategoryId(value ?? "")}
 					transactionType={txType}
+					allowInlineCreate
 					error={!state.success ? state.fieldErrors?.categoryId?.[0] : undefined}
 				/>
 			</div>
