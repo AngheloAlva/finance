@@ -139,6 +139,7 @@ export function CategoryForm({
 					items={[
 						{ value: "INCOME", label: t("form.income") },
 						{ value: "EXPENSE", label: t("form.expense") },
+						{ value: "TRANSFER", label: t("form.transfer") },
 					]}
 				>
 					<SelectTrigger className="w-full">
@@ -150,6 +151,9 @@ export function CategoryForm({
 						</SelectItem>
 						<SelectItem value="EXPENSE">
 							{t("form.expense")}
+						</SelectItem>
+						<SelectItem value="TRANSFER">
+							{t("form.transfer")}
 						</SelectItem>
 					</SelectContent>
 				</Select>

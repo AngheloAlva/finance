@@ -3,6 +3,7 @@
 import { Fragment, useMemo } from "react";
 import { useTranslations } from "next-intl";
 
+import { Link } from "@/i18n/navigation";
 import { FieldError } from "@/shared/components/field-error";
 
 import {
@@ -45,6 +46,23 @@ export function CategorySelect({
       ]),
     [rootCategories],
   );
+
+  if (categories.length === 0) {
+    return (
+      <div className="flex flex-col gap-1.5">
+        <div className="text-muted-foreground rounded-none border border-dashed px-3 py-2 text-xs">
+          {t("select.empty")}{" "}
+          <Link
+            href="/categories"
+            className="text-foreground underline underline-offset-2"
+          >
+            {t("newCategory")}
+          </Link>
+        </div>
+        <FieldError errors={error} />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-1.5">

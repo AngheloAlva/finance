@@ -427,6 +427,7 @@
       "selectType": "Select type",
       "income": "Income",
       "expense": "Expense",
+      "transfer": "Transfer",
       "recurring": "Recurring",
       "avoidable": "Avoidable",
       "alertThreshold": "Alert threshold (optional)",
@@ -451,7 +452,8 @@
       "avoidable": "Avoidable"
     },
     "select": {
-      "placeholder": "Select category"
+      "placeholder": "Select category",
+      "empty": "No categories yet — create one first"
     },
     "deleteDialog": {
       "title": "Delete Category",

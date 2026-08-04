@@ -427,6 +427,7 @@
       "selectType": "Seleccionar tipo",
       "income": "Ingreso",
       "expense": "Gasto",
+      "transfer": "Transferencia",
       "recurring": "Recurrente",
       "avoidable": "Evitable",
       "alertThreshold": "Umbral de alerta (opcional)",
@@ -451,7 +452,8 @@
       "avoidable": "Evitable"
     },
     "select": {
-      "placeholder": "Seleccionar categoría"
+      "placeholder": "Seleccionar categoría",
+      "empty": "Todavía no hay categorías — creá una primero"
     },
     "deleteDialog": {
       "title": "Eliminar Categoría",
