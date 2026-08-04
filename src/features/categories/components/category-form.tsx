@@ -25,7 +25,15 @@ import type { CategoryWithChildren } from "@/features/categories/types/categorie
 import { useCurrency } from "@/shared/components/currency-provider"
 import { FieldError } from "@/shared/components/field-error"
 import { centsToDisplay } from "@/shared/lib/formatters"
-import { FORM_MODE, INITIAL_VOID_STATE, type FormMode } from "@/shared/types/common.types"
+import { FORM_MODE, type ActionResult, type FormMode } from "@/shared/types/common.types"
+
+type CategoryFormState = ActionResult<{ id: string } | undefined>
+type CategoryFormAction = (
+	state: CategoryFormState,
+	formData: FormData,
+) => Promise<CategoryFormState>
+
+const INITIAL_CATEGORY_FORM_STATE: CategoryFormState = { success: false, error: "" }
 
 interface CategoryFormProps {
 	mode: FormMode
@@ -42,7 +50,7 @@ interface CategoryFormProps {
 	}
 	categories: CategoryWithChildren[]
 	groupId?: string
-	onSuccess?: () => void
+	onSuccess?: (createdId?: string) => void
 }
 
 export function CategoryForm({
@@ -55,14 +63,16 @@ export function CategoryForm({
 	const t = useTranslations("categories")
 	const tc = useTranslations("common")
 	const tErrors = useTranslations("errors")
-	const action = groupId
+	// The create action returns the created id; the update/group actions return
+	// void. Both fit CategoryFormState — the actions ignore the previous state.
+	const action = (groupId
 		? mode === FORM_MODE.CREATE
 			? createGroupCategoryAction
 			: updateGroupCategoryAction
 		: mode === FORM_MODE.CREATE
 			? createCategoryAction
-			: updateCategoryAction
-	const [state, formAction, isPending] = useActionState(action, INITIAL_VOID_STATE)
+			: updateCategoryAction) as unknown as CategoryFormAction
+	const [state, formAction, isPending] = useActionState(action, INITIAL_CATEGORY_FORM_STATE)
 	const currencyCode = useCurrency()
 	const [transactionType, setTransactionType] = useState(
 		defaultValues?.transactionType ?? "EXPENSE"
@@ -85,7 +95,7 @@ export function CategoryForm({
 					? t("form.createdSuccess")
 					: t("form.updatedSuccess")
 			toast.success(message)
-			onSuccess?.()
+			onSuccess?.(state.data?.id)
 		}
 	}, [state, mode, onSuccess, t])
 

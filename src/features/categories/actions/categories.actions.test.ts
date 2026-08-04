@@ -48,7 +48,7 @@ describe("createCategoryAction", () => {
     setSessionUser(user.id)
 
     const result = await createCategoryAction(
-      { success: true, data: undefined },
+      { success: false, error: "" },
       formData(baseCategoryFields),
     )
 
@@ -57,6 +57,7 @@ describe("createCategoryAction", () => {
     expect(cats).toHaveLength(1)
     expect(cats[0].scope).toBe("USER")
     expect(cats[0].name).toBe("Food")
+    if (result.success) expect(result.data.id).toBe(cats[0].id)
   })
 
   it("returns CATEGORY_NESTING_TOO_DEEP when parent already has a parent", async () => {
@@ -74,7 +75,7 @@ describe("createCategoryAction", () => {
     })
 
     const result = await createCategoryAction(
-      { success: true, data: undefined },
+      { success: false, error: "" },
       formData({ ...baseCategoryFields, name: "Child", parentId: parent.id }),
     )
 

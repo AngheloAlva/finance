@@ -10,9 +10,9 @@ import { prisma } from "@/shared/lib/prisma";
 import type { ActionResult } from "@/shared/types/common.types";
 
 export async function createCategoryAction(
-  _prevState: ActionResult<void>,
+  _prevState: ActionResult<{ id: string }>,
   formData: FormData,
-): Promise<ActionResult<void>> {
+): Promise<ActionResult<{ id: string }>> {
   const raw = {
     name: formData.get("name"),
     icon: formData.get("icon"),
@@ -54,7 +54,7 @@ export async function createCategoryAction(
       }
     }
 
-    await prisma.category.create({
+    const created = await prisma.category.create({
       data: {
         name,
         icon,
@@ -71,7 +71,7 @@ export async function createCategoryAction(
 
     revalidatePath("/categories");
 
-    return { success: true, data: undefined };
+    return { success: true, data: { id: created.id } };
   } catch {
     return { success: false, error: "CATEGORY_CREATE_FAILED" };
   }
