@@ -123,6 +123,41 @@ const SYSTEM_CATEGORIES: SeedCategory[] = [
 		color: "#f43f5e",
 		transactionType: TransactionType.EXPENSE,
 	},
+	{
+		slug: "pets",
+		name: "Pets",
+		icon: "paw-print",
+		color: "#84cc16",
+		transactionType: TransactionType.EXPENSE,
+	},
+	{
+		slug: "travel",
+		name: "Travel",
+		icon: "plane",
+		color: "#0ea5e9",
+		transactionType: TransactionType.EXPENSE,
+	},
+	{
+		slug: "taxes-fees",
+		name: "Taxes & Fees",
+		icon: "landmark",
+		color: "#78716c",
+		transactionType: TransactionType.EXPENSE,
+	},
+	{
+		slug: "kids",
+		name: "Kids",
+		icon: "heart",
+		color: "#a855f7",
+		transactionType: TransactionType.EXPENSE,
+	},
+	{
+		slug: "clothing",
+		name: "Clothing",
+		icon: "shopping-bag",
+		color: "#06b6d4",
+		transactionType: TransactionType.EXPENSE,
+	},
 
 	// INCOME
 	{
