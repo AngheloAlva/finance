@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type ReactNode } from "react"
+import { useState, type ReactElement } from "react"
 import { Download } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
@@ -29,7 +29,7 @@ import type { TagOption } from "@/features/tags/types/tags.types"
 interface ExportDialogProps {
 	categories: CategoryWithChildren[]
 	tags: TagOption[]
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 export function ExportDialog({ categories, tags, trigger }: ExportDialogProps) {
@@ -83,7 +83,7 @@ export function ExportDialog({ categories, tags, trigger }: ExportDialogProps) {
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger>{trigger}</DialogTrigger>
+			<DialogTrigger render={trigger} />
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader>
 					<DialogTitle>{t("title")}</DialogTitle>

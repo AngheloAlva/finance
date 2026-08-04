@@ -1,6 +1,6 @@
 "use client"
 
-import type { ReactNode } from "react"
+import type { ReactElement } from "react"
 import { useTranslations } from "next-intl"
 
 import { CreditCardForm } from "@/features/credit-cards/components/credit-card-form"
@@ -11,7 +11,7 @@ import { FORM_MODE, type FormMode } from "@/shared/types/common.types"
 interface CreditCardDialogProps {
 	mode: FormMode
 	creditCard?: CreditCardWithUsage
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 export function CreditCardDialog({ mode, creditCard, trigger }: CreditCardDialogProps) {

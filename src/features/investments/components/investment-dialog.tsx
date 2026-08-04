@@ -1,6 +1,6 @@
 "use client"
 
-import type { ReactNode } from "react"
+import type { ReactElement } from "react"
 import { useTranslations } from "next-intl"
 
 import type { InvestmentType } from "@/generated/prisma/enums"
@@ -25,7 +25,7 @@ interface InvestmentDialogProps {
 		currentExchangeRate: number | null
 		totalFees: number | null
 	}
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 export function InvestmentDialog({ mode, investment, trigger }: InvestmentDialogProps) {

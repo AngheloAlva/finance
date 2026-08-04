@@ -1,6 +1,6 @@
 "use client"
 
-import type { ReactNode } from "react"
+import type { ReactElement } from "react"
 import { useTranslations } from "next-intl"
 
 import { RuleForm } from "@/features/categorization/components/rule-form"
@@ -13,7 +13,7 @@ interface RuleDialogProps {
 	mode: FormMode
 	categories: CategoryWithChildren[]
 	rule?: CategorizationRuleWithCategory
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 export function RuleDialog({ mode, categories, rule, trigger }: RuleDialogProps) {

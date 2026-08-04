@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState, type ReactNode } from "react"
+import { useCallback, useState, type ReactElement, type ReactNode } from "react"
 
 import {
 	Dialog,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog"
 
 interface FormDialogProps {
-	trigger: ReactNode
+	trigger: ReactElement
 	title: string
 	description: string
 	children: (onSuccess: () => void) => ReactNode
@@ -28,7 +28,7 @@ export function FormDialog({ trigger, title, description, children, className }:
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger>{trigger}</DialogTrigger>
+			<DialogTrigger render={trigger} />
 			<DialogContent className={className}>
 				<DialogHeader>
 					<DialogTitle>{title}</DialogTitle>

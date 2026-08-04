@@ -1,6 +1,6 @@
 "use client"
 
-import type { ReactNode } from "react"
+import type { ReactElement } from "react"
 import { useTranslations } from "next-intl"
 
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
@@ -13,7 +13,7 @@ interface RecurringDialogProps {
 	mode: FormMode
 	template?: RecurringTemplateWithRule
 	categories: CategoryWithChildren[]
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 export function RecurringDialog({ mode, template, categories, trigger }: RecurringDialogProps) {

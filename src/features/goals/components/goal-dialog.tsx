@@ -1,6 +1,6 @@
 "use client"
 
-import type { ReactNode } from "react"
+import type { ReactElement } from "react"
 import { useTranslations } from "next-intl"
 
 import { GoalForm } from "@/features/goals/components/goal-form"
@@ -12,7 +12,7 @@ interface GoalDialogProps {
 	mode: FormMode
 	goal?: GoalWithProgress
 	groupId?: string
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 export function GoalDialog({ mode, goal, groupId, trigger }: GoalDialogProps) {

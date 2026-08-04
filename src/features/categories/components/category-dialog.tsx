@@ -1,6 +1,6 @@
 "use client"
 
-import type { ReactNode } from "react"
+import type { ReactElement } from "react"
 import { useTranslations } from "next-intl"
 
 import { CategoryForm } from "@/features/categories/components/category-form"
@@ -13,7 +13,7 @@ interface CategoryDialogProps {
 	category?: CategoryWithChildren
 	categories: CategoryWithChildren[]
 	groupId?: string
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 export function CategoryDialog({

@@ -62,12 +62,14 @@ export function DashboardCustomizer({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger>
-        <Button variant="outline" size="sm">
-          <LayoutGrid className="h-4 w-4" />
-          <span className="ml-2 hidden sm:inline">{t("trigger")}</span>
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button variant="outline" size="sm">
+            <LayoutGrid className="h-4 w-4" />
+            <span className="ml-2 hidden sm:inline">{t("trigger")}</span>
+          </Button>
+        }
+      />
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>{t("title")}</DialogTitle>

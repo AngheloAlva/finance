@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState, type ReactNode } from "react"
+import { useCallback, useState, type ReactElement } from "react"
 import { useTranslations } from "next-intl"
 
 import {
@@ -21,7 +21,7 @@ interface GroupTransactionDialogProps {
 	members: SplitMember[]
 	categories: CategoryWithChildren[]
 	currency: CurrencyCode
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 export function GroupTransactionDialog({
@@ -40,7 +40,7 @@ export function GroupTransactionDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger>{trigger}</DialogTrigger>
+			<DialogTrigger render={trigger} />
 			<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
 				<DialogHeader>
 					<DialogTitle>{t("title")}</DialogTitle>

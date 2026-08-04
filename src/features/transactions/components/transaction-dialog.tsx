@@ -1,6 +1,6 @@
 "use client"
 
-import type { ReactNode } from "react"
+import type { ReactElement } from "react"
 import { useTranslations } from "next-intl"
 
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
@@ -17,7 +17,7 @@ interface TransactionDialogProps {
 	categories: CategoryWithChildren[]
 	creditCards?: CreditCard[]
 	tags?: TagOption[]
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 export function TransactionDialog({

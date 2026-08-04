@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useEffect, useState, type ReactNode } from "react"
+import { useActionState, useEffect, useState, type ReactElement } from "react"
 import { Pencil, Plus, Trash2, X } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
@@ -25,7 +25,7 @@ import { INITIAL_VOID_STATE } from "@/shared/types/common.types"
 
 interface TagManagerDialogProps {
 	tags: TagWithCount[]
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 const DEFAULT_COLORS = [
@@ -74,7 +74,7 @@ export function TagManagerDialog({ tags, trigger }: TagManagerDialogProps) {
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger>{trigger}</DialogTrigger>
+			<DialogTrigger render={trigger} />
 			<DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-sm">
 				<DialogHeader>
 					<DialogTitle>{t("manage")}</DialogTitle>

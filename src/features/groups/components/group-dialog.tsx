@@ -1,6 +1,6 @@
 "use client"
 
-import type { ReactNode } from "react"
+import type { ReactElement } from "react"
 import { useTranslations } from "next-intl"
 
 import { GroupForm } from "@/features/groups/components/group-form"
@@ -11,7 +11,7 @@ import { FORM_MODE, type FormMode } from "@/shared/types/common.types"
 interface GroupDialogProps {
 	mode: FormMode
 	group?: GroupWithMemberCount
-	trigger: ReactNode
+	trigger: ReactElement
 }
 
 export function GroupDialog({ mode, group, trigger }: GroupDialogProps) {
