@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { GroupTransactionDialog } from "@/features/group-finances/components/group-transaction-dialog";
+import { GroupTransactionPagination } from "@/features/group-finances/components/group-transaction-pagination";
 import { GroupTransactionTable } from "@/features/group-finances/components/group-transaction-table";
 import { getGroupTransactions } from "@/features/group-finances/lib/group-finances.queries";
 import type { GroupTransactionFilters } from "@/features/group-finances/types/group-finances.types";
@@ -11,7 +12,6 @@ import { getGroupCategories, getGroupMembers } from "@/features/groups/lib/group
 import { getGroupMembership } from "@/features/groups/lib/groups.permissions";
 import type { SplitMember } from "@/features/group-finances/lib/split.utils";
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types";
-import { PaginationControls } from "@/shared/components/pagination-controls";
 import { requireSession } from "@/shared/lib/auth";
 import type { CurrencyCode } from "@/shared/lib/constants";
 import { notFound } from "next/navigation";
@@ -104,19 +104,12 @@ export default async function GroupTransactionsPage({
       </Card>
 
       {result.total > 0 && (
-        <PaginationControls
+        <GroupTransactionPagination
           total={result.total}
           page={result.page}
           pageSize={result.pageSize}
-          buildHref={(page) => {
-            const params = new URLSearchParams();
-            params.set("page", page.toString());
-            if (filters.dateFrom) params.set("dateFrom", filters.dateFrom);
-            if (filters.dateTo) params.set("dateTo", filters.dateTo);
-            if (filters.categoryId)
-              params.set("categoryId", filters.categoryId);
-            return `/groups/${id}/transactions?${params.toString()}`;
-          }}
+          groupId={id}
+          filters={filters}
         />
       )}
     </div>

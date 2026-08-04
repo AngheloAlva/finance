@@ -4,8 +4,8 @@ import { getTranslations } from "next-intl/server"
 import { getUserAlerts, getUnreadAlertCount } from "@/features/alerts/lib/alerts.queries"
 import { AlertFilters } from "@/features/alerts/components/alert-filters"
 import { AlertList } from "@/features/alerts/components/alert-list"
+import { AlertPagination } from "@/features/alerts/components/alert-pagination"
 import { MarkAllReadButton } from "@/features/alerts/components/mark-all-read-button"
-import { PaginationControls } from "@/shared/components/pagination-controls"
 import { requireSession } from "@/shared/lib/auth"
 
 interface AlertsPageProps {
@@ -27,13 +27,6 @@ export default async function AlertsPage({ searchParams }: AlertsPageProps) {
 		getUnreadAlertCount(session.user.id),
 	])
 
-	function buildHref(targetPage: number): string {
-		const p = new URLSearchParams()
-		if (status) p.set("status", status)
-		p.set("page", String(targetPage))
-		return `/alerts?${p.toString()}`
-	}
-
 	return (
 		<div className="mx-auto flex max-w-3xl flex-col gap-6">
 			<div className="flex items-center justify-between">
@@ -46,11 +39,11 @@ export default async function AlertsPage({ searchParams }: AlertsPageProps) {
 			<AlertList alerts={alertsResult.data} />
 
 			{alertsResult.totalPages > 1 && (
-				<PaginationControls
+				<AlertPagination
 					total={alertsResult.total}
 					page={alertsResult.page}
 					pageSize={alertsResult.pageSize}
-					buildHref={buildHref}
+					status={status}
 				/>
 			)}
 		</div>

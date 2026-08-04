@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BudgetCard } from "@/features/budgets/components/budget-card"
 import { BudgetDialog } from "@/features/budgets/components/budget-dialog"
+import { BudgetMonthSelector } from "@/features/budgets/components/budget-month-selector"
 import { CopyBudgetsButton } from "@/features/budgets/components/copy-budgets-button"
 import { getBudgetsWithSpending } from "@/features/budgets/lib/budgets.queries"
 import { getUserCategories } from "@/features/categories/lib/categories.queries"
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
 import { Link } from "@/i18n/navigation"
-import { MonthSelector } from "@/shared/components/month-selector"
 import { requireSession } from "@/shared/lib/auth"
 import type { CurrencyCode } from "@/shared/lib/constants"
 
@@ -45,10 +45,9 @@ export default async function BudgetsPage({ searchParams }: BudgetsPageProps) {
 		<div className="mx-auto flex max-w-3xl flex-col gap-6">
 			<div className="flex items-center justify-between">
 				<h1 className="text-lg font-semibold">{t("title")}</h1>
-				<MonthSelector
+				<BudgetMonthSelector
 					month={month}
 					year={year}
-					buildHref={(m, y) => `/budgets?month=${m}&year=${y}`}
 				/>
 			</div>
 
