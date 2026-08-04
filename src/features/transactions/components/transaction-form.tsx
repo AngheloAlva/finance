@@ -162,7 +162,11 @@ export function TransactionForm({
 					<Label>{t("form.date")}</Label>
 					<DatePicker
 						name="date"
-						defaultValue={defaultValues ? formatDateForInput(defaultValues.date) : undefined}
+						defaultValue={
+							defaultValues
+								? formatDateForInput(defaultValues.date)
+								: formatDateForInput(new Date().toISOString())
+						}
 						required
 						placeholder={t("form.selectDate")}
 					/>
