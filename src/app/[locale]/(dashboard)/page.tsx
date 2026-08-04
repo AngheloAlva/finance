@@ -26,9 +26,11 @@ import {
 	getFinancialHealthScore,
 	getMonthComparison,
 } from "@/features/analytics/lib/analytics.queries"
+import { getAccumulatedBalance } from "@/features/analytics/lib/projection.queries"
 import { FinancialHealthGauge } from "@/features/analytics/components/financial-health-gauge"
 import { MonthComparisonWidget } from "@/features/analytics/components/month-comparison-widget"
 import { MonthlyDigestWidget } from "@/features/analytics/components/monthly-digest-widget"
+import { AccumulatedBalanceCard } from "@/features/dashboard/components/accumulated-balance-card"
 import { CategoryChart } from "@/features/dashboard/components/category-chart"
 import { DashboardCustomizer } from "@/features/dashboard/components/dashboard-customizer"
 import { GoalProgressWidget } from "@/features/dashboard/components/goal-progress-widget"
@@ -90,6 +92,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 	// Credit cards are also needed for the alert generation below.
 	const [
 		overview,
+		accumulatedBalance,
 		categoryBreakdown,
 		monthlyFlow,
 		recentTransactions,
@@ -102,6 +105,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 		monthComparison,
 	] = await Promise.all([
 		needs("overview") ? getMonthlyOverview(session.user.id, month, year) : null,
+		needs("accumulatedBalance") ? getAccumulatedBalance(session.user.id) : null,
 		needs("categoryBreakdown") ? getCategoryBreakdown(session.user.id, month, year) : null,
 		needs("monthlyFlow") ? getMonthlyFlow(session.user.id, month, year) : null,
 		needs("recentTransactions") ? getRecentTransactions(session.user.id) : null,
@@ -142,6 +146,10 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 		switch (w.key) {
 			case "overview":
 				return overview ? <OverviewCards overview={overview} currency={currency} /> : null
+			case "accumulatedBalance":
+				return accumulatedBalance !== null ? (
+					<AccumulatedBalanceCard balanceCents={accumulatedBalance} currency={currency} />
+				) : null
 			case "financialHealth":
 				return healthScore ? <FinancialHealthGauge score={healthScore} compact /> : null
 			case "categoryBreakdown":
