@@ -78,7 +78,7 @@
     "title": "Panel",
     "income": "Ingresos",
     "expenses": "Gastos",
-    "balance": "Balance",
+    "balance": "Neto del mes",
     "transactionCount": "Transacciones",
     "monthlyFlow": "Flujo Mensual",
     "noData": "No hay datos disponibles",

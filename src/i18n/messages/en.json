@@ -78,7 +78,7 @@
     "title": "Dashboard",
     "income": "Income",
     "expenses": "Expenses",
-    "balance": "Balance",
+    "balance": "Monthly Net",
     "transactionCount": "Transactions",
     "monthlyFlow": "Monthly Flow",
     "noData": "No data available",
