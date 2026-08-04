@@ -5,6 +5,8 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ICON_MAP } from "@/shared/lib/icons";
 
+const DEFAULT_ICON_KEY = "wallet";
+
 interface CategoryIconPickerProps {
   value?: string;
   onChange?: (value: string) => void;
@@ -16,7 +18,7 @@ export function CategoryIconPicker({
   onChange,
   name,
 }: CategoryIconPickerProps) {
-  const [selected, setSelected] = useState(value ?? "");
+  const [selected, setSelected] = useState(value ?? DEFAULT_ICON_KEY);
 
   function handleSelect(iconKey: string) {
     setSelected(iconKey);
@@ -46,5 +48,3 @@ export function CategoryIconPicker({
     </div>
   );
 }
-
-export { ICON_MAP as ICONS };

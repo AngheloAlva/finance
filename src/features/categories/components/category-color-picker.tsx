@@ -34,7 +34,7 @@ export function CategoryColorPicker({
   onChange,
   name,
 }: CategoryColorPickerProps) {
-  const [selected, setSelected] = useState(value ?? "");
+  const [selected, setSelected] = useState<string>(value ?? COLOR_PRESETS[0]);
 
   function handleSelect(color: string) {
     setSelected(color);
