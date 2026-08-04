@@ -257,8 +257,8 @@ Machine-checkable. ALL must hold:
 
 - [ ] `pnpm exec tsc --noEmit` exits 0
 - [ ] `pnpm test -- src/features/analytics/lib/analytics.utils.test.ts src/features/investments/lib/investments.utils.test.ts` exits 0 with 5 new tests
-- [ ] `pnpm lint` exits 0
-- [ ] `rg -n "Math.round\(data.amount \* 100\)" src/features/transactions/components/quick-add-form.tsx` returns no match
+- [ ] eslint on the in-scope files reports 0 errors (repo-wide `pnpm lint` has a pre-existing baseline of 8 errors / 26 warnings and can NOT exit 0 — see plans/README.md)
+- [ ] `rg -n "data.amount != null" src/features/transactions/components/quick-add-form.tsx` returns no match (the old unguarded call is gone). NOTE: the original criterion here searched for `Math.round(data.amount * 100)` and was unsatisfiable — Step 7's own prescribed fix keeps that exact substring, wrapped in a guard.
 - [ ] No files outside the in-scope list are modified (`git status`)
 - [ ] `plans/README.md` status row updated
 
