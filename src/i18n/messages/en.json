@@ -117,6 +117,10 @@
         "name": "Overview Cards",
         "description": "Income, expenses and balance for the selected month"
       },
+      "accumulatedBalance": {
+        "name": "Total Balance",
+        "description": "Your all-time accumulated balance up to today"
+      },
       "financialHealth": {
         "name": "Financial Health",
         "description": "Overall score based on savings, debt and spending consistency"

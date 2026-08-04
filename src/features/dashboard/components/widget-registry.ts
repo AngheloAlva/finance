@@ -29,6 +29,11 @@ export const WIDGET_REGISTRY: Record<WidgetKey, WidgetMetadata> = {
     supportsHalf: false,
     defaultSize: "full",
   },
+  accumulatedBalance: {
+    key: "accumulatedBalance",
+    supportsHalf: true,
+    defaultSize: "full",
+  },
   financialHealth: {
     key: "financialHealth",
     supportsHalf: false,

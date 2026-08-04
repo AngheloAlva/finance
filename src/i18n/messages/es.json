@@ -117,6 +117,10 @@
         "name": "Resumen",
         "description": "Ingresos, gastos y balance del mes seleccionado"
       },
+      "accumulatedBalance": {
+        "name": "Balance Total",
+        "description": "Tu balance acumulado histórico hasta hoy"
+      },
       "financialHealth": {
         "name": "Salud Financiera",
         "description": "Puntaje general basado en ahorro, deuda y consistencia de gastos"
