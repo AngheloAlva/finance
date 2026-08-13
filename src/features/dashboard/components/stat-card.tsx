@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import type { LucideIcon } from "lucide-react"
 
 import { Card, CardContent } from "@/components/ui/card"
@@ -5,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 interface StatCardProps {
 	title: string
-	value: string
+	value: ReactNode
 	icon: LucideIcon
 	className?: string
 }

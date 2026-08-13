@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { Landmark } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { Landmark } from "lucide-react"
+import { useLocale, useTranslations } from "next-intl"
 
-import type { CurrencyCode } from "@/shared/lib/constants";
-import { formatCurrency } from "@/shared/lib/formatters";
-import { cn } from "@/lib/utils";
+import { AnimatedNumber } from "@/shared/components/animated-number"
+import type { CurrencyCode } from "@/shared/lib/constants"
+import { cn } from "@/lib/utils"
 
-import { StatCard } from "./stat-card";
+import { StatCard } from "./stat-card"
 
 interface AccumulatedBalanceCardProps {
-  balanceCents: number;
-  currency: CurrencyCode;
+	balanceCents: number
+	currency: CurrencyCode
 }
 
 /**
@@ -19,23 +19,20 @@ interface AccumulatedBalanceCardProps {
  * value is independent of the selected month — it always shows the balance
  * up to today.
  */
-export function AccumulatedBalanceCard({
-  balanceCents,
-  currency,
-}: AccumulatedBalanceCardProps) {
-  const t = useTranslations("dashboard");
-  const locale = useLocale();
+export function AccumulatedBalanceCard({ balanceCents, currency }: AccumulatedBalanceCardProps) {
+	const t = useTranslations("dashboard")
+	const locale = useLocale()
 
-  return (
-    <StatCard
-      title={t("widgets.accumulatedBalance.name")}
-      value={formatCurrency(balanceCents, currency, locale)}
-      icon={Landmark}
-      className={cn(
-        balanceCents >= 0
-          ? "[&_[data-slot=card-content]_.size-5]:text-emerald-500"
-          : "[&_[data-slot=card-content]_.size-5]:text-red-500",
-      )}
-    />
-  );
+	return (
+		<StatCard
+			title={t("widgets.accumulatedBalance.name")}
+			value={<AnimatedNumber valueCents={balanceCents} currency={currency} locale={locale} />}
+			icon={Landmark}
+			className={cn(
+				balanceCents >= 0
+					? "[&_[data-slot=card-content]_.size-5]:text-emerald-500"
+					: "[&_[data-slot=card-content]_.size-5]:text-red-500"
+			)}
+		/>
+	)
 }
