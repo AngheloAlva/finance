@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server"
 
 import { cn } from "@/lib/utils"
+import { AnimatedProgressBar } from "@/shared/components/animated-progress-bar"
 import { formatCurrency } from "@/shared/lib/formatters"
 import type { CurrencyCode } from "@/shared/lib/constants"
 
@@ -73,16 +74,15 @@ export async function CreditCardVisual({
 				{/* Usage bar */}
 				<div className="flex flex-col gap-1">
 					<div className="h-1.5 w-full overflow-hidden rounded-none bg-white/20">
-						<div
+						<AnimatedProgressBar
+							percentage={usagePercentage}
 							className={cn(
-								"h-full rounded-none transition-all",
 								usagePercentage > 95
 									? "bg-red-400"
 									: usagePercentage > 80
 										? "bg-yellow-400"
 										: "bg-white/80"
 							)}
-							style={{ width: `${Math.min(100, usagePercentage)}%` }}
 						/>
 					</div>
 					<div className="flex items-center justify-between text-[10px] opacity-80">

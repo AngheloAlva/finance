@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils"
 import type { BudgetStatus } from "@/features/budgets/types/budgets.types"
+import { AnimatedProgressBar } from "@/shared/components/animated-progress-bar"
 
 const STATUS_COLORS = {
 	ok: "bg-emerald-500",
@@ -13,14 +13,9 @@ interface BudgetProgressBarProps {
 }
 
 export function BudgetProgressBar({ percentage, status }: BudgetProgressBarProps) {
-	const clampedWidth = Math.min(percentage, 100)
-
 	return (
-		<div className="h-2 w-full rounded-none bg-muted">
-			<div
-				className={cn("h-full rounded-none transition-all", STATUS_COLORS[status])}
-				style={{ width: `${clampedWidth}%` }}
-			/>
+		<div className="bg-muted h-2 w-full rounded-none">
+			<AnimatedProgressBar percentage={percentage} className={STATUS_COLORS[status]} />
 		</div>
 	)
 }

@@ -1,5 +1,6 @@
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { formatCurrency } from "@/shared/lib/formatters"
+import { AnimatedProgressBar } from "@/shared/components/animated-progress-bar"
 import { cn } from "@/lib/utils"
 
 interface GoalProgressProps {
@@ -22,9 +23,9 @@ export function GoalProgress({
 	return (
 		<div className="flex flex-col gap-1.5">
 			<div className="bg-muted h-2 w-full overflow-hidden rounded-none">
-				<div
+				<AnimatedProgressBar
+					percentage={percentage}
 					className={cn(
-						"h-full rounded-none transition-all",
 						percentage >= 100
 							? "bg-emerald-500"
 							: percentage >= 75
@@ -33,7 +34,6 @@ export function GoalProgress({
 									? "bg-amber-500"
 									: "bg-primary"
 					)}
-					style={{ width: `${Math.min(percentage, 100)}%` }}
 				/>
 			</div>
 			<div
