@@ -3,6 +3,7 @@
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -20,6 +21,8 @@ interface MonthSelectorProps {
 export function MonthSelector({ month, year, buildHref }: MonthSelectorProps) {
   const router = useRouter();
   const t = useTranslations("dashboard");
+  const tCommon = useTranslations("common");
+  const [isPending, startTransition] = useTransition();
 
   function navigateMonth(direction: -1 | 1) {
     let newMonth = month + direction;
@@ -33,27 +36,34 @@ export function MonthSelector({ month, year, buildHref }: MonthSelectorProps) {
       newYear++;
     }
 
-    router.push(buildHref(newMonth, newYear));
+    startTransition(() => {
+      router.push(buildHref(newMonth, newYear));
+    });
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2" aria-busy={isPending}>
       <Button
         variant="ghost"
         size="icon"
         onClick={() => navigateMonth(-1)}
         aria-label={t("previousMonth")}
+        disabled={isPending}
       >
         <ChevronLeft className="size-4" />
       </Button>
-      <span className="min-w-[160px] text-center text-sm font-medium">
-        {MONTH_NAMES[month - 1]} {year}
+      <span
+        className="min-w-[160px] text-center text-sm font-medium"
+        aria-live="polite"
+      >
+        {isPending ? tCommon("loading") : `${MONTH_NAMES[month - 1]} ${year}`}
       </span>
       <Button
         variant="ghost"
         size="icon"
         onClick={() => navigateMonth(1)}
         aria-label={t("nextMonth")}
+        disabled={isPending}
       >
         <ChevronRight className="size-4" />
       </Button>

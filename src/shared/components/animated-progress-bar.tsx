@@ -11,18 +11,33 @@ interface AnimatedProgressBarProps {
 
 export function AnimatedProgressBar({ percentage, className }: AnimatedProgressBarProps) {
 	const [width, setWidth] = useState(0)
+	const targetWidth = Math.min(percentage, 100)
 
 	useEffect(() => {
-		setWidth(Math.min(percentage, 100))
-	}, [percentage])
+		let secondFrame = 0
+		const firstFrame = requestAnimationFrame(() => {
+			secondFrame = requestAnimationFrame(() => setWidth(targetWidth))
+		})
+
+		return () => {
+			cancelAnimationFrame(firstFrame)
+			cancelAnimationFrame(secondFrame)
+		}
+	}, [targetWidth])
 
 	return (
-		<div
-			className={cn(
-				"h-full rounded-none transition-[width] duration-[var(--duration-slow)] ease-[var(--ease-out-soft)]",
-				className
-			)}
-			style={{ width: `${width}%` }}
-		/>
+		<>
+			<div
+				className={cn(
+					"h-full rounded-none transition-[width] duration-[var(--duration-slow)] ease-[var(--ease-out-soft)] motion-reduce:hidden",
+					className
+				)}
+				style={{ width: `${width}%` }}
+			/>
+			<div
+				className={cn("hidden h-full rounded-none motion-reduce:block", className)}
+				style={{ width: `${targetWidth}%` }}
+			/>
+		</>
 	)
 }
