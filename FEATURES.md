@@ -99,7 +99,9 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 - "Tus cuotas futuras superan el 70% de tu ingreso mensual proyectado."
 - "Gastaste 3x más en restaurantes que el promedio histórico."
 
-**Estado:** ✅ los tipos están modelados y dispuestos a engancharse a flujos.
+**Entrega:** cuando se genera una alerta nueva, `upsertAlertWithPush` la persiste y dispara una notificación push (Web Push + service worker, con limpieza automática de las suscripciones que devuelven 404/410). No hay envío por email.
+
+**Estado:** ✅ generación activa y cableada a flujos reales: se disparan al crear/actualizar transacciones, al crear cuotas, al aportar a un goal, al actualizar el valor de una inversión y al cargar el dashboard.
 
 ---
 
@@ -161,7 +163,7 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 - Regla: "si la descripción contiene 'Mercadopago Spotify' → categoría Suscripciones."
 - Cargar la próxima compra y que el form te sugiera la categoría basándose en el historial.
 
-**Estado:** ✅ funcional, commit reciente (`eaa3d33`).
+**Estado:** ✅ funcional (commit `eaa3d33`).
 
 ---
 
@@ -174,7 +176,7 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 - Comparar este mes vs. el anterior por categoría.
 - Identificar la categoría que más creció.
 
-**Estado:** ✅ proyección agregada en commit reciente (`1d2e391`).
+**Estado:** ✅ proyección agregada (commit `1d2e391`).
 
 ---
 
@@ -212,7 +214,7 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 - Cada usuario arma su home con los widgets que más usa: balance, próximos vencimientos, top categorías, cashflow proyectado, etc.
 - Reordenar y guardar sin tocar código.
 
-**Estado:** ✅ commit reciente (`b4d33d9`).
+**Estado:** ✅ funcional (commit `b4d33d9`).
 
 ---
 
@@ -232,7 +234,7 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 
 **Casos de uso:** abrir en español o inglés según el navegador.
 
-**Estado:** ✅ infraestructura lista; cobertura de mensajes depende de cuánto traduciste.
+**Estado:** ✅ infraestructura lista y traducción completa: `en.json` y `es.json` tienen 1029 claves cada uno, sin diferencias.
 
 ---
 
@@ -253,11 +255,11 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 
 **Pendiente / oportunidades:**
 - Pricing automático de inversiones (hoy es entrada manual).
-- Notificaciones push/email reales (las alertas viven en la DB, falta el canal de delivery).
+- Notificaciones por email (el push ya funciona; solo falta el canal de email).
 - Conexión con bancos / scraping de movimientos (todo es entrada manual hoy).
-- Mobile app o PWA polish.
-- Tests (no se ven en `package.json`).
+- PWA polish: hay manifest y service worker con soporte de push, pero falta trabajo de offline e instalabilidad.
+- Tests: 51 archivos con Vitest (`pnpm test`) contra Postgres real. No hay script de `typecheck`; se corre `pnpm exec tsc --noEmit` a mano. Sin CI.
 
 ---
 
-**Stack:** Next.js 16.1.6 · React 19.2 · Prisma 7.5 + Postgres · Better Auth 1.5 · next-intl 4 · shadcn/ui · Tailwind 4 · Zod 4 · Recharts · @dnd-kit.
+**Stack:** Next.js 16.2 · React 19.2 · TypeScript 5 · Prisma 7.5 + Postgres (driver adapter `@prisma/adapter-pg`) · Better Auth 1.5 · next-intl 4 · shadcn/ui sobre Base UI · Tailwind 4 · Zod 4 · Vercel AI SDK 6 + Moonshot (visión) · Web Push · Recharts · @dnd-kit · Vitest 4.
