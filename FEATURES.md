@@ -238,10 +238,35 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 
 ---
 
+## 19. Escaneo de recibos
+
+**Qué hace:** le sacás una foto a un ticket o subís un screenshot de un pago, y el sistema extrae monto, descripción, fecha y método de pago para **pre-cargar el formulario**. No guarda nada por su cuenta: completa los campos y vos confirmás.
+
+Funciona sobre `/api/scan-receipt` (route handler POST, multipart), que manda la imagen a un modelo de visión (Moonshot) con un prompt que fuerza una respuesta JSON de exactamente cuatro claves, y valida el resultado con Zod. Los campos que no se pueden determinar vuelven en `null` en vez de inventarse.
+
+Normaliza formatos de número regionales, que es donde suelen fallar estos extractores:
+
+- `$30.000` o `30.000` → 30000 (el punto es separador de miles).
+- `$1.250,50` → 1250.50 (formato LATAM/UE).
+- `$1,250.50` → 1250.50 (formato US/UK).
+
+Límites: solo imágenes, hasta 5 MB, y sesión requerida.
+
+**Casos de uso:**
+- Pagás en el super y tirás la foto del ticket en el Quick Add: quedan cargados el monto, el comercio y la fecha.
+- Screenshot de una transferencia → el método de pago ya viene como TRANSFER.
+- Cargar el gasto en el momento, sin tipear nada en el teléfono.
+
+**Estado:** ✅ funcional end-to-end desde el botón "Escanear" del Quick Add (`capture="environment"`, así que en mobile abre la cámara trasera directamente). El servidor cubre los errores de archivo faltante (400), tipo no soportado (415), excede 5 MB (413) y respuesta del modelo no parseable (422); el cliente distingue el caso de tamaño excedido y el resto cae en un toast genérico.
+
+**Caveat conocido:** dentro del drawer de Quick Add, los popups de Base UI no eran interactuables (bug de capas preexistente, registrado en `plans/006`). El botón de escaneo es un `<button>` normal y no se ve afectado, pero los selectores de método de pago y categoría del mismo formulario sí quedaban alcanzados. Conviene verificar en browser antes de confiar en el flujo completo desde el drawer.
+
+---
+
 # Veredicto: ¿qué se puede usar HOY?
 
 **Listo para uso real (single user):**
-- Cargar y categorizar transacciones, manejar tarjetas con cuotas, recurrentes, budgets, goals, alertas, dashboard personalizado, export.
+- Cargar y categorizar transacciones (incluso pre-cargándolas desde una foto del ticket), manejar tarjetas con cuotas, recurrentes, budgets, goals, alertas, dashboard personalizado, export.
 
 **Listo para uso compartido:**
 - Grupos con splits, categorías de grupo, goals grupales.

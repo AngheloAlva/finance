@@ -50,7 +50,7 @@ Detailed per-feature status and use cases live in **[FEATURES.md](./FEATURES.md)
 - **CSV export** — export transactions honoring the filters currently applied. ([details](./FEATURES.md#15-export))
 
 ### Smart input
-- **Receipt and payment-screenshot scanning** — upload an image, and a vision model extracts amount, description, date, and payment method, including Latin American and European number formats (`$30.000` vs `$1.250,50`).
+- **Receipt and payment-screenshot scanning** — snap a photo and a vision model extracts amount, description, date, and payment method to prefill the form, including Latin American and European number formats (`$30.000` vs `$1.250,50`). ([details](./FEATURES.md#19-escaneo-de-recibos))
 - **Rule-based categorization** — description-matching rules assign categories automatically, and the transaction form suggests one from your history. ([details](./FEATURES.md#12-categorización-automática-rules))
 
 ### Shared
