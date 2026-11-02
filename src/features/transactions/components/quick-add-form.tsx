@@ -114,7 +114,7 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 	}
 
 	return (
-		<div className="flex flex-col gap-4 px-4 pb-6">
+		<div className="flex min-h-0 flex-col gap-4 overflow-y-auto px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
 			<input
 				ref={fileInputRef}
 				type="file"
@@ -127,7 +127,7 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 				type="button"
 				onClick={() => fileInputRef.current?.click()}
 				disabled={isScanning}
-				className="text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center gap-2 rounded-none border border-dashed px-3 py-2 text-xs transition-colors disabled:opacity-50"
+				className="text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center gap-2 rounded-none border border-dashed px-3 py-2.5 text-xs transition-colors disabled:opacity-50"
 			>
 				{isScanning ? (
 					<Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -153,7 +153,7 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 					type="button"
 					onClick={() => setTxType(TransactionType.EXPENSE)}
 					className={cn(
-						"rounded-none py-1.5 text-xs font-medium transition-colors",
+						"rounded-none py-2.5 text-xs font-medium transition-colors",
 						txType === TransactionType.EXPENSE
 							? "bg-foreground text-background"
 							: "text-muted-foreground hover:text-foreground",
@@ -165,7 +165,7 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 					type="button"
 					onClick={() => setTxType(TransactionType.INCOME)}
 					className={cn(
-						"rounded-none py-1.5 text-xs font-medium transition-colors",
+						"rounded-none py-2.5 text-xs font-medium transition-colors",
 						txType === TransactionType.INCOME
 							? "bg-foreground text-background"
 							: "text-muted-foreground hover:text-foreground",
@@ -202,39 +202,38 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 				)}
 			</div>
 
-			<div className="grid grid-cols-2 gap-4">
-				<div className="flex flex-col gap-1.5">
-					<Label>{t("form.paymentMethod")}</Label>
-					<Select
-						name="paymentMethod"
-						value={paymentMethod}
-						onValueChange={(v) => v && setPaymentMethod(v as PaymentMethod)}
-					>
-						<SelectTrigger className="w-full">
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							{paymentMethodOptions.map((opt) => (
-								<SelectItem key={opt.value} value={opt.value}>
-									{opt.label}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
-				</div>
+			<div className="flex flex-col gap-1.5">
+				<Label>{t("form.category")}</Label>
+				<CategorySelect
+					categories={categories}
+					name="categoryId"
+					value={categoryId}
+					onValueChange={(v) => setCategoryId(v ?? "")}
+					transactionType={txType}
+					allowInlineCreate
+					error={!state.success ? state.fieldErrors?.categoryId?.[0] : undefined}
+				/>
+			</div>
 
-				<div className="flex flex-col gap-1.5">
-					<Label>{t("form.category")}</Label>
-					<CategorySelect
-						categories={categories}
-						name="categoryId"
-						value={categoryId}
-						onValueChange={(v) => setCategoryId(v ?? "")}
-						transactionType={txType}
-						allowInlineCreate
-						error={!state.success ? state.fieldErrors?.categoryId?.[0] : undefined}
-					/>
-				</div>
+			<div className="flex flex-col gap-1.5">
+				<Label>{t("form.paymentMethod")}</Label>
+				<Select
+					name="paymentMethod"
+					value={paymentMethod}
+					items={paymentMethodOptions}
+					onValueChange={(v) => v && setPaymentMethod(v as PaymentMethod)}
+				>
+					<SelectTrigger className="w-full">
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent>
+						{paymentMethodOptions.map((opt) => (
+							<SelectItem key={opt.value} value={opt.value}>
+								{opt.label}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
 			</div>
 
 			<Button type="submit" disabled={isPending} className="w-full">

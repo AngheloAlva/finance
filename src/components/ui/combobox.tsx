@@ -1,5 +1,6 @@
 "use client"
 
+import { usePortalContainer } from "@/components/ui/portal-container"
 import * as React from "react"
 import { Combobox as ComboboxPrimitive } from "@base-ui/react"
 
@@ -98,7 +99,7 @@ function ComboboxContent({
     "side" | "align" | "sideOffset" | "alignOffset" | "anchor"
   >) {
   return (
-    <ComboboxPrimitive.Portal>
+    <ComboboxPrimitive.Portal container={usePortalContainer()}>
       <ComboboxPrimitive.Positioner
         side={side}
         sideOffset={sideOffset}

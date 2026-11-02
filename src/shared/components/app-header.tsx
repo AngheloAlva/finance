@@ -17,6 +17,7 @@ const ROUTE_KEYS: Record<string, string> = {
 	"/transactions": "transactions",
 	"/recurring": "recurring",
 	"/categories": "categories",
+	"/budgets": "budgets",
 	"/credit-cards": "creditCards",
 	"/investments": "investments",
 	"/analytics": "analytics",
@@ -43,9 +44,9 @@ export function AppHeader() {
 	const pageLabel = t(getPageKey(pathname))
 
 	return (
-		<header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-			<SidebarTrigger />
-			<Separator orientation="vertical" className="mr-2 h-5" />
+		<header className="flex h-12 shrink-0 md:h-16 items-center gap-2 border-b px-4">
+			<SidebarTrigger className="hidden md:inline-flex" />
+			<Separator orientation="vertical" className="mr-2 hidden h-5 md:block" />
 
 			<Breadcrumb>
 				<BreadcrumbList>

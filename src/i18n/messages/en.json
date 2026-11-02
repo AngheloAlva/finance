@@ -33,7 +33,12 @@
     "groups": "Groups",
     "alerts": "Alerts",
     "settings": "Settings",
-    "page": "Page"
+    "page": "Page",
+    "more": "More",
+    "groupDaily": "Day to day",
+    "groupPlan": "Plan",
+    "groupWealth": "Wealth",
+    "groupAccount": "Account"
   },
   "auth": {
     "welcomeBack": "Welcome back",
@@ -1283,5 +1288,12 @@
     "SPLIT_NOT_FOUND": "Split not found",
     "SPLIT_NOT_GROUP": "This split is not part of a group transaction",
     "SPLIT_SETTLE_FAILED": "Failed to settle split"
+  },
+  "install": {
+    "title": "Install Finance",
+    "description": "Add it to your home screen to open it faster.",
+    "iosDescription": "Tap Share, then “Add to Home Screen”.",
+    "action": "Install",
+    "dismiss": "Close"
   }
 }

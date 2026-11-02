@@ -33,7 +33,12 @@
     "groups": "Grupos",
     "alerts": "Alertas",
     "settings": "Configuración",
-    "page": "Página"
+    "page": "Página",
+    "more": "Más",
+    "groupDaily": "Día a día",
+    "groupPlan": "Planificar",
+    "groupWealth": "Patrimonio",
+    "groupAccount": "Cuenta"
   },
   "auth": {
     "welcomeBack": "Bienvenido de nuevo",
@@ -1283,5 +1288,12 @@
     "SPLIT_NOT_FOUND": "División no encontrada",
     "SPLIT_NOT_GROUP": "Esta división no es parte de una transacción grupal",
     "SPLIT_SETTLE_FAILED": "Error al liquidar la división"
+  },
+  "install": {
+    "title": "Instalá Finanzas",
+    "description": "Agregala a tu pantalla de inicio para abrirla más rápido.",
+    "iosDescription": "Tocá Compartir y después «Agregar a inicio».",
+    "action": "Instalar",
+    "dismiss": "Cerrar"
   }
 }

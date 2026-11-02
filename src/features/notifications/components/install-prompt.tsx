@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { Download, X } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 
 export function InstallPrompt() {
+	const t = useTranslations("install")
 	const [isIOS, setIsIOS] = useState(false)
 	const [isStandalone, setIsStandalone] = useState(false)
 	const [dismissed, setDismissed] = useState(false)
@@ -40,33 +42,24 @@ export function InstallPrompt() {
 	if (!isIOS && !deferredPrompt) return null
 
 	return (
-		<div className="bg-card border-border flex items-start gap-3 rounded-lg border p-3 text-sm shadow-sm">
-			<Download className="text-primary mt-0.5 size-4 shrink-0" />
-			<div className="flex-1">
-				<p className="font-medium">Install Finance</p>
-				{isIOS ? (
-					<p className="text-muted-foreground mt-0.5">
-						Tap the share button{" "}
-						<span role="img" aria-label="share">
-							⎋
-						</span>{" "}
-						then "Add to Home Screen"{" "}
-						<span role="img" aria-label="plus">
-							➕
-						</span>
-					</p>
-				) : (
-					<p className="text-muted-foreground mt-0.5">
-						Add to your home screen for a better experience
-					</p>
-				)}
+		<div className="bg-card flex items-center gap-3 border p-3 text-sm md:hidden">
+			<Download className="text-muted-foreground size-4 shrink-0" />
+			<div className="min-w-0 flex-1">
+				<p className="font-medium">{t("title")}</p>
+				<p className="text-muted-foreground mt-0.5 text-xs">
+					{isIOS ? t("iosDescription") : t("description")}
+				</p>
 			</div>
 			{!isIOS && deferredPrompt && (
 				<Button size="sm" onClick={install}>
-					Install
+					{t("action")}
 				</Button>
 			)}
-			<button onClick={dismiss} className="text-muted-foreground hover:text-foreground">
+			<button
+				onClick={dismiss}
+				aria-label={t("dismiss")}
+				className="text-muted-foreground hover:text-foreground -m-2 p-2"
+			>
 				<X className="size-4" />
 			</button>
 		</div>
