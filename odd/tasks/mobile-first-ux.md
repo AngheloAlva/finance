@@ -14,12 +14,13 @@ Branch: feat/mobile-first-ux. Delivery strategy: ask-on-risk. Test runner: vites
 
 - T1 | S2 | inline | done | c1a19c5
 - T2 | S3 | inline | done | c1a19c5
-- T3 | S4 | inline | pending
-- T4 | S5 | inline | pending
-- T5 | S6 | inline | pending
+- T3 | S4 | inline | done | 68e5a24
+- T4 | S5 | inline | done | 68e5a24
+- T5 | S6 | inline | done | 68e5a24
 
 ## Log
 
 - L1 (2026-11-02): "No tengo nada mas especifico realmente, le daria una pulida a la UI/UX principalmente porque puede que haya mucha cosa y podria ser mas eficiente a nivel de uso y mejor a nivel visual"
 - L2 (2026-11-02): "Creo lo mismo, priorizar el telefono proque es donde se usara mas, desktop es para analisis mas que nada"
 - L3: Route inline for all tasks: no Writer trigger, tasks share the layout and tokens. Category work committed first on this branch.
+- L4: Verified in browser at 390px: Quick Add saved with picked category and method, search, Limpiar, Más menu, categories by type; desktop dashboard at 1440px. Hero budget mode covered by unit tests only, demo data has no budgets. Full vitest suite blocked by unreachable Neon test database.
