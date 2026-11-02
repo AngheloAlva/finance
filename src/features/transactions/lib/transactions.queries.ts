@@ -22,6 +22,10 @@ function buildWhereClause(
 		conditions.push({ date: { lte: new Date(filters.dateTo) } })
 	}
 
+	if (filters.search) {
+		conditions.push({ description: { contains: filters.search, mode: "insensitive" } })
+	}
+
 	if (filters.type) {
 		conditions.push({ type: filters.type })
 	}
@@ -106,6 +110,7 @@ export function parseSearchParams(params: Record<string, string | string[] | und
 	}
 
 	const filters: TransactionFilters = {
+		search: getString("search"),
 		dateFrom: getString("dateFrom"),
 		dateTo: getString("dateTo"),
 		type: getString("type") as TransactionFilters["type"],

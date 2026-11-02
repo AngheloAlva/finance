@@ -1,16 +1,11 @@
 "use client";
 
 import { useRouter } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
-
-const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-] as const;
 
 interface MonthSelectorProps {
   month: number;
@@ -22,6 +17,12 @@ export function MonthSelector({ month, year, buildHref }: MonthSelectorProps) {
   const router = useRouter();
   const t = useTranslations("dashboard");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
+  const formattedMonth = new Intl.DateTimeFormat(locale, {
+    month: "long",
+    year: "numeric",
+  }).format(new Date(year, month - 1, 1));
+  const monthLabel = formattedMonth.charAt(0).toUpperCase() + formattedMonth.slice(1);
   const [isPending, startTransition] = useTransition();
 
   function navigateMonth(direction: -1 | 1) {
@@ -56,7 +57,7 @@ export function MonthSelector({ month, year, buildHref }: MonthSelectorProps) {
         className="min-w-[160px] text-center text-sm font-medium"
         aria-live="polite"
       >
-        {isPending ? tCommon("loading") : `${MONTH_NAMES[month - 1]} ${year}`}
+        {isPending ? tCommon("loading") : monthLabel}
       </span>
       <Button
         variant="ghost"

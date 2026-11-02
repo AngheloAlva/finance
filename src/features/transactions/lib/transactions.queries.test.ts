@@ -46,6 +46,20 @@ describe("getTransactions", () => {
     expect(result.totalPages).toBe(1)
   })
 
+  it("finds transactions by description ignoring case", async () => {
+    const user = await createUser()
+    await createTransaction(user.id, { type: "EXPENSE", amount: dollars(10), description: "Netflix" })
+    await createTransaction(user.id, { type: "EXPENSE", amount: dollars(20), description: "Groceries" })
+
+    const result = await getTransactions(
+      user.id,
+      { search: "netfl", sortBy: "date", sortDir: "desc" },
+      { page: 1, pageSize: 20 },
+    )
+
+    expect(result.data.map((tx) => tx.description)).toEqual(["Netflix"])
+  })
+
   it("excludes templates from results", async () => {
     const user = await createUser()
     await createTransaction(user.id, {

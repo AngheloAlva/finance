@@ -167,6 +167,13 @@
       "title": "Resumen del mes",
       "regenerate": "Regenerar",
       "error": "No se pudo generar el resumen. Intentá de nuevo."
+    },
+    "hero": {
+      "leftToSpend": "Te queda este mes",
+      "overBudget": "Te pasaste este mes",
+      "netThisMonth": "Neto del mes",
+      "spentOf": "Gastaste {spent} de {budget}",
+      "totalBalance": "Balance total"
     }
   },
   "transactions": {
@@ -250,7 +257,9 @@
       "tag": "Etiqueta",
       "all": "Todos",
       "apply": "Aplicar",
-      "clear": "Limpiar"
+      "clear": "Limpiar",
+      "search": "Buscar por descripción",
+      "toggle": "Filtros"
     },
     "quickAdd": {
       "title": "Carga rápida",
@@ -471,6 +480,11 @@
       "title": "Eliminar Categoría",
       "description": "¿Estás seguro de que querés eliminar \"{name}\"? Esta acción no se puede deshacer.",
       "success": "Categoría eliminada correctamente"
+    },
+    "sections": {
+      "expense": "Gastos",
+      "income": "Ingresos",
+      "transfer": "Transferencias"
     }
   },
   "investments": {
@@ -1295,5 +1309,12 @@
     "iosDescription": "Tocá Compartir y después «Agregar a inicio».",
     "action": "Instalar",
     "dismiss": "Cerrar"
+  },
+  "healthLabels": {
+    "Excellent": "Excelente",
+    "Good": "Buena",
+    "Fair": "Regular",
+    "NeedsWork": "Por mejorar",
+    "Critical": "Crítica"
   }
 }

@@ -36,8 +36,8 @@ export const WIDGET_REGISTRY: Record<WidgetKey, WidgetMetadata> = {
   },
   financialHealth: {
     key: "financialHealth",
-    supportsHalf: false,
-    defaultSize: "full",
+    supportsHalf: true,
+    defaultSize: "half",
   },
   monthlyDigest: {
     key: "monthlyDigest",

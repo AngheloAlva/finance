@@ -167,6 +167,13 @@
       "title": "Monthly Digest",
       "regenerate": "Regenerate",
       "error": "Could not generate summary. Try again."
+    },
+    "hero": {
+      "leftToSpend": "Left this month",
+      "overBudget": "Over budget this month",
+      "netThisMonth": "Net this month",
+      "spentOf": "Spent {spent} of {budget}",
+      "totalBalance": "Total balance"
     }
   },
   "transactions": {
@@ -250,7 +257,9 @@
       "tag": "Tag",
       "all": "All",
       "apply": "Apply",
-      "clear": "Clear"
+      "clear": "Clear",
+      "search": "Search by description",
+      "toggle": "Filters"
     },
     "quickAdd": {
       "title": "Quick Add",
@@ -471,6 +480,11 @@
       "title": "Delete Category",
       "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
       "success": "Category deleted successfully"
+    },
+    "sections": {
+      "expense": "Expenses",
+      "income": "Income",
+      "transfer": "Transfers"
     }
   },
   "investments": {
@@ -1295,5 +1309,12 @@
     "iosDescription": "Tap Share, then “Add to Home Screen”.",
     "action": "Install",
     "dismiss": "Close"
+  },
+  "healthLabels": {
+    "Excellent": "Excellent",
+    "Good": "Good",
+    "Fair": "Fair",
+    "NeedsWork": "Needs work",
+    "Critical": "Critical"
   }
 }

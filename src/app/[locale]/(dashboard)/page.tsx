@@ -106,7 +106,9 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 		monthComparison,
 	] = await Promise.all([
 		needs("overview") ? getMonthlyOverview(session.user.id, month, year) : null,
-		needs("accumulatedBalance") ? getAccumulatedBalance(session.user.id) : null,
+		needs("overview") || needs("accumulatedBalance")
+			? getAccumulatedBalance(session.user.id)
+			: null,
 		needs("categoryBreakdown") ? getCategoryBreakdown(session.user.id, month, year, locale) : null,
 		needs("monthlyFlow") ? getMonthlyFlow(session.user.id, month, year) : null,
 		needs("recentTransactions") ? getRecentTransactions(session.user.id) : null,
@@ -115,7 +117,9 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 		needs("portfolio") ? getPortfolioSummary(session.user.id, currency) : null,
 		needs("financialHealth") ? getFinancialHealthScore(session.user.id) : null,
 		getPendingSuggestions(session.user.id),
-		needs("budgetSummary") ? getBudgetSummary(session.user.id, month, year) : null,
+		needs("overview") || needs("budgetSummary")
+			? getBudgetSummary(session.user.id, month, year)
+			: null,
 		needs("monthComparison") ? getMonthComparison(session.user.id, month, year, locale) : null,
 	])
 
@@ -146,9 +150,16 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
 		switch (w.key) {
 			case "overview":
-				return overview ? <OverviewCards overview={overview} currency={currency} /> : null
+				return overview ? (
+					<OverviewCards
+						overview={overview}
+						budgets={budgetSummary}
+						totalBalance={accumulatedBalance}
+						currency={currency}
+					/>
+				) : null
 			case "accumulatedBalance":
-				return accumulatedBalance !== null ? (
+				return accumulatedBalance !== null && needs("accumulatedBalance") ? (
 					<AccumulatedBalanceCard balanceCents={accumulatedBalance} currency={currency} />
 				) : null
 			case "financialHealth":
@@ -168,7 +179,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 			case "goals":
 				return topGoals ? <GoalProgressWidget goals={topGoals} currency={currency} /> : null
 			case "budgetSummary":
-				return budgetSummary ? (
+				return budgetSummary && needs("budgetSummary") ? (
 					<BudgetSummaryWidget summary={budgetSummary} currency={currency} />
 				) : null
 			case "portfolio":
@@ -187,7 +198,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 	const orderedWidgets = [...config.widgets].sort((a, b) => a.position - b.position)
 
 	return (
-		<div className="mx-auto flex max-w-5xl flex-col gap-6">
+		<div className="mx-auto flex max-w-5xl flex-col gap-4">
 			<div className="flex items-center justify-between">
 				<h1 className="text-lg font-semibold">{t("title")}</h1>
 				<div className="flex items-center gap-2">
@@ -197,7 +208,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 				</div>
 			</div>
 
-			<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 				{orderedWidgets.map((w) => {
 					const content = renderWidget(w)
 					if (!content) return null

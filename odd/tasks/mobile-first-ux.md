@@ -12,8 +12,8 @@ Branch: feat/mobile-first-ux. Delivery strategy: ask-on-risk. Test runner: vites
 
 ## Tasks
 
-- T1 | S2 | inline | pending
-- T2 | S3 | inline | pending
+- T1 | S2 | inline | done | c1a19c5
+- T2 | S3 | inline | done | c1a19c5
 - T3 | S4 | inline | pending
 - T4 | S5 | inline | pending
 - T5 | S6 | inline | pending

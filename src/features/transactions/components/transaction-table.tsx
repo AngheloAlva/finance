@@ -30,12 +30,6 @@ import { CurrencyDisplay } from "@/shared/components/currency-display"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { formatDate } from "@/shared/lib/formatters"
 
-const TYPE_VARIANTS = {
-	INCOME: "default",
-	EXPENSE: "destructive",
-	TRANSFER: "secondary",
-} as const
-
 interface TransactionTableProps {
 	transactions: TransactionWithCategory[]
 	categories: CategoryWithChildren[]
@@ -52,12 +46,6 @@ const PAYMENT_METHOD_KEYS = {
 	CREDIT: "paymentMethods.credit",
 	TRANSFER: "paymentMethods.transfer",
 	OTHER: "paymentMethods.other",
-} as const
-
-const TYPE_KEYS = {
-	INCOME: "types.income",
-	EXPENSE: "types.expense",
-	TRANSFER: "types.transfer",
 } as const
 
 export function TransactionTable({ transactions, categories, creditCards, tags, currency }: TransactionTableProps) {
@@ -101,14 +89,13 @@ export function TransactionTable({ transactions, categories, creditCards, tags, 
 						<TableHead>{t("table.description")}</TableHead>
 						<TableHead>{t("table.category")}</TableHead>
 						<TableHead>{t("table.amount")}</TableHead>
-						<TableHead>{t("table.type")}</TableHead>
 						<TableHead>{t("table.method")}</TableHead>
 						<TableHead className="w-20">{t("table.actions")}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
 					<TableRow>
-						<TableCell colSpan={7} className="text-muted-foreground py-8 text-center">
+						<TableCell colSpan={6} className="text-muted-foreground py-8 text-center">
 							{t("noTransactionsFound")}
 						</TableCell>
 					</TableRow>
@@ -118,124 +105,178 @@ export function TransactionTable({ transactions, categories, creditCards, tags, 
 	}
 
 	return (
-		<Table>
-			<TableHeader>
-				<TableRow>
-					<TableHead>
-						<button
-							type="button"
-							className="inline-flex items-center gap-1"
-							onClick={() => handleSort("date")}
-						>
-							{t("table.date")} {renderSortIcon("date")}
-						</button>
-					</TableHead>
-					<TableHead>
-						<button
-							type="button"
-							className="inline-flex items-center gap-1"
-							onClick={() => handleSort("description")}
-						>
-							{t("table.description")} {renderSortIcon("description")}
-						</button>
-					</TableHead>
-					<TableHead>{t("table.category")}</TableHead>
-					<TableHead>
-						<button
-							type="button"
-							className="inline-flex items-center gap-1"
-							onClick={() => handleSort("amount")}
-						>
-							{t("table.amount")} {renderSortIcon("amount")}
-						</button>
-					</TableHead>
-					<TableHead>{t("table.type")}</TableHead>
-					<TableHead>{t("table.method")}</TableHead>
-					<TableHead className="w-20">{t("table.actions")}</TableHead>
-				</TableRow>
-			</TableHeader>
-			<TableBody>
+		<>
+			<ul className="divide-y md:hidden">
 				{transactions.map((tx) => (
-					<TableRow key={tx.id}>
-						<TableCell>{formatDate(tx.date, "short", locale)}</TableCell>
-						<TableCell className="max-w-48">
-							<div className="flex flex-col gap-0.5">
-								<span className="flex items-center gap-1.5 truncate">
-									<span className="truncate">{tx.description}</span>
-									<InstallmentBadge
-										installmentNumber={tx.installmentNumber}
-										totalInstallments={tx.totalInstallments}
-									/>
-								</span>
-								{tx.tags.length > 0 && (
-									<div className="flex flex-wrap gap-0.5">
-										{tx.tags.map(({ tag }) => (
-											<TagBadge key={tag.id} name={tag.name} color={tag.color} className="text-[10px] px-1 py-0" />
-										))}
-									</div>
-								)}
-							</div>
-						</TableCell>
-						<TableCell>
-							<span className="inline-flex items-center gap-1.5">
-								<CategoryIcon icon={tx.category.icon} color={tx.category.color} />
-								<span>{localizeCategoryName(tx.category, locale)}</span>
-							</span>
-						</TableCell>
-						<TableCell>
-							<CurrencyDisplay
-								cents={tx.type === TransactionType.EXPENSE ? -tx.amount : tx.amount}
-								currency={currency}
-								colorize
-								locale={locale}
-							/>
-						</TableCell>
-						<TableCell>
-							<Badge variant={TYPE_VARIANTS[tx.type]}>{t(TYPE_KEYS[tx.type])}</Badge>
-						</TableCell>
-						<TableCell>
-							<div className="flex items-center gap-1.5">
-								<Badge variant="outline">{t(PAYMENT_METHOD_KEYS[tx.paymentMethod])}</Badge>
-								{tx.creditCard && (
-									<span className="text-muted-foreground inline-flex items-center gap-1 text-xs">
-										<span
-											className="size-2 rounded-none"
-											style={{ backgroundColor: tx.creditCard.color }}
-										/>
-										*{tx.creditCard.lastFourDigits}
+					<li key={tx.id} className="flex items-center gap-1 pr-2">
+						<TransactionDialog
+							mode="edit"
+							transaction={tx}
+							categories={categories}
+							creditCards={creditCards}
+							tags={tags}
+							trigger={
+								<button
+									type="button"
+									className="flex min-w-0 flex-1 items-center gap-3 py-3 pl-4 text-left"
+								>
+									<CategoryIcon icon={tx.category.icon} color={tx.category.color} />
+									<span className="min-w-0 flex-1">
+										<span className="flex items-center gap-1.5 text-sm">
+											<span className="truncate">{tx.description}</span>
+											<InstallmentBadge
+												installmentNumber={tx.installmentNumber}
+												totalInstallments={tx.totalInstallments}
+											/>
+										</span>
+										<span className="text-muted-foreground block truncate text-xs">
+											{localizeCategoryName(tx.category, locale)} ·{" "}
+											{formatDate(tx.date, "short", locale)}
+										</span>
 									</span>
-								)}
-							</div>
-						</TableCell>
-						<TableCell>
-							<div className="flex items-center gap-1">
-								<TransactionDialog
-									mode="edit"
-									transaction={tx}
-									categories={categories}
-									creditCards={creditCards}
-									tags={tags}
-									trigger={
-										<Button variant="ghost" size="icon-xs">
-											<Pencil className="size-3" />
-										</Button>
-									}
-								/>
-								<DeleteTransactionButton
-									transactionId={tx.id}
-									transactionDescription={tx.description}
-								/>
-								{tx.totalInstallments != null && tx.totalInstallments > 0 && (
-									<DeleteInstallmentGroupButton
-										parentTransactionId={tx.parentTransactionId ?? tx.id}
-										description={tx.description}
-									/>
-								)}
-							</div>
-						</TableCell>
-					</TableRow>
+									<span className="shrink-0 text-sm font-medium tabular-nums">
+										<CurrencyDisplay
+											cents={tx.type === TransactionType.EXPENSE ? -tx.amount : tx.amount}
+											currency={currency}
+											colorize
+											locale={locale}
+										/>
+									</span>
+								</button>
+							}
+						/>
+						<DeleteTransactionButton
+							transactionId={tx.id}
+							transactionDescription={tx.description}
+						/>
+						{tx.totalInstallments != null && tx.totalInstallments > 0 && (
+							<DeleteInstallmentGroupButton
+								parentTransactionId={tx.parentTransactionId ?? tx.id}
+								description={tx.description}
+							/>
+						)}
+					</li>
 				))}
-			</TableBody>
-		</Table>
+			</ul>
+
+			<div className="hidden md:block">
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead>
+							<button
+								type="button"
+								className="inline-flex items-center gap-1"
+								onClick={() => handleSort("date")}
+							>
+								{t("table.date")} {renderSortIcon("date")}
+							</button>
+						</TableHead>
+						<TableHead>
+							<button
+								type="button"
+								className="inline-flex items-center gap-1"
+								onClick={() => handleSort("description")}
+							>
+								{t("table.description")} {renderSortIcon("description")}
+							</button>
+						</TableHead>
+						<TableHead>{t("table.category")}</TableHead>
+						<TableHead>
+							<button
+								type="button"
+								className="inline-flex items-center gap-1"
+								onClick={() => handleSort("amount")}
+							>
+								{t("table.amount")} {renderSortIcon("amount")}
+							</button>
+						</TableHead>
+						<TableHead>{t("table.type")}</TableHead>
+						<TableHead>{t("table.method")}</TableHead>
+						<TableHead className="w-20">{t("table.actions")}</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{transactions.map((tx) => (
+						<TableRow key={tx.id}>
+							<TableCell>{formatDate(tx.date, "short", locale)}</TableCell>
+							<TableCell className="max-w-48">
+								<div className="flex flex-col gap-0.5">
+									<span className="flex items-center gap-1.5 truncate">
+										<span className="truncate">{tx.description}</span>
+										<InstallmentBadge
+											installmentNumber={tx.installmentNumber}
+											totalInstallments={tx.totalInstallments}
+										/>
+									</span>
+									{tx.tags.length > 0 && (
+										<div className="flex flex-wrap gap-0.5">
+											{tx.tags.map(({ tag }) => (
+												<TagBadge key={tag.id} name={tag.name} color={tag.color} className="text-[10px] px-1 py-0" />
+											))}
+										</div>
+									)}
+								</div>
+							</TableCell>
+							<TableCell>
+								<span className="inline-flex items-center gap-1.5">
+									<CategoryIcon icon={tx.category.icon} color={tx.category.color} />
+									<span>{localizeCategoryName(tx.category, locale)}</span>
+								</span>
+							</TableCell>
+							<TableCell>
+								<CurrencyDisplay
+									cents={tx.type === TransactionType.EXPENSE ? -tx.amount : tx.amount}
+									currency={currency}
+									colorize
+									locale={locale}
+								/>
+							</TableCell>
+							<TableCell>
+								<div className="flex items-center gap-1.5">
+									<Badge variant="outline">{t(PAYMENT_METHOD_KEYS[tx.paymentMethod])}</Badge>
+									{tx.creditCard && (
+										<span className="text-muted-foreground inline-flex items-center gap-1 text-xs">
+											<span
+												className="size-2 rounded-none"
+												style={{ backgroundColor: tx.creditCard.color }}
+											/>
+											*{tx.creditCard.lastFourDigits}
+										</span>
+									)}
+								</div>
+							</TableCell>
+							<TableCell>
+								<div className="flex items-center gap-1">
+									<TransactionDialog
+										mode="edit"
+										transaction={tx}
+										categories={categories}
+										creditCards={creditCards}
+										tags={tags}
+										trigger={
+											<Button variant="ghost" size="icon-xs">
+												<Pencil className="size-3" />
+											</Button>
+										}
+									/>
+									<DeleteTransactionButton
+										transactionId={tx.id}
+										transactionDescription={tx.description}
+									/>
+									{tx.totalInstallments != null && tx.totalInstallments > 0 && (
+										<DeleteInstallmentGroupButton
+											parentTransactionId={tx.parentTransactionId ?? tx.id}
+											description={tx.description}
+										/>
+									)}
+								</div>
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+			</div>
+		</>
 	)
 }

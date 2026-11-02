@@ -71,17 +71,7 @@ export function CategoryTreeItem({
 
 			<span className="flex-1 font-medium">{category.name}</span>
 
-			<div className="flex items-center gap-1">
-				<Badge variant="outline" className="text-[10px]">
-					{category.transactionType}
-				</Badge>
-
-				{category.scope === CategoryScope.SYSTEM && (
-					<Badge variant="secondary" className="text-[10px]">
-						{t("badges.system")}
-					</Badge>
-				)}
-
+			<div className="hidden items-center gap-1 sm:flex">
 				{category.isRecurring && (
 					<Badge variant="secondary" className="text-[10px]">
 						{t("badges.recurring")}
@@ -96,7 +86,7 @@ export function CategoryTreeItem({
 			</div>
 
 			{showActions && (
-				<div className="flex items-center gap-0.5 opacity-0 transition-opacity group-hover:opacity-100">
+				<div className="flex items-center gap-0.5 transition-opacity md:opacity-0 md:group-hover:opacity-100">
 					<CategoryDialog
 						mode="edit"
 						category={category}

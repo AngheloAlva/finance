@@ -8,6 +8,7 @@ export type TransactionWithCategory = Transaction & {
 }
 
 export interface TransactionFilters {
+	search?: string
 	dateFrom?: string
 	dateTo?: string
 	type?: TransactionType

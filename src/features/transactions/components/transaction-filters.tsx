@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
@@ -15,9 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CategorySelect } from "@/features/categories/components/category-select";
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types";
 import type { TagOption } from "@/features/tags/types/tags.types";
 import type { TransactionFilters as Filters } from "@/features/transactions/types/transactions.types";
+import { cn } from "@/lib/utils";
 
 interface TransactionFiltersProps {
   categories: CategoryWithChildren[];
@@ -33,42 +36,101 @@ export function TransactionFilters({
   const t = useTranslations("transactions");
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const searchTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const rootCategories = categories.filter((c) => c.parentId === null);
+  const [search, setSearch] = useState(currentFilters.search ?? "");
+  const [categoryId, setCategoryId] = useState(currentFilters.categoryId ?? "");
+
+  const activeCount = [
+    currentFilters.dateFrom,
+    currentFilters.dateTo,
+    currentFilters.type,
+    currentFilters.paymentMethod,
+    currentFilters.categoryId,
+    currentFilters.tagId,
+  ].filter(Boolean).length;
+  const [isOpen, setIsOpen] = useState(activeCount > 0);
+  const [resetKey, setResetKey] = useState(0);
+
+  /** Waits for React to commit the picker's value into its hidden input. */
+  function applySoon(delay = 0) {
+    clearTimeout(searchTimer.current);
+    searchTimer.current = setTimeout(() => formRef.current?.requestSubmit(), delay);
+  }
 
   function handleApply(formData: FormData) {
     const params = new URLSearchParams();
 
+    const query = (formData.get("search") as string).trim();
     const dateFrom = formData.get("dateFrom") as string;
     const dateTo = formData.get("dateTo") as string;
     const type = formData.get("type") as string;
     const paymentMethod = formData.get("paymentMethod") as string;
-    const categoryId = formData.get("categoryId") as string;
+    const selectedCategory = formData.get("categoryId") as string;
     const tagId = formData.get("tagId") as string;
 
+    if (query) params.set("search", query);
     if (dateFrom) params.set("dateFrom", dateFrom);
     if (dateTo) params.set("dateTo", dateTo);
     if (type && type !== "ALL") params.set("type", type);
     if (paymentMethod && paymentMethod !== "ALL") params.set("paymentMethod", paymentMethod);
-    if (categoryId && categoryId !== "ALL") params.set("categoryId", categoryId);
+    if (selectedCategory) params.set("categoryId", selectedCategory);
     if (tagId && tagId !== "ALL") params.set("tagId", tagId);
 
     params.set("page", "1");
 
-    router.push(`/transactions?${params.toString()}`);
+    router.replace(`/transactions?${params.toString()}`);
   }
 
   function handleClear() {
-    router.push("/transactions");
+    clearTimeout(searchTimer.current);
+    setSearch("");
+    setCategoryId("");
+    setResetKey((key) => key + 1);
+    setIsOpen(false);
+    router.replace("/transactions");
   }
 
   return (
-    <form ref={formRef} action={handleApply} className="flex flex-wrap items-end gap-3">
+    <form ref={formRef} action={handleApply} className="flex flex-col gap-3">
+      <div className="flex items-center gap-2">
+        <div className="relative min-w-0 flex-1">
+          <Search className="text-muted-foreground absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2" />
+          <Input
+            name="search"
+            type="search"
+            value={search}
+            onChange={(event) => {
+              setSearch(event.target.value);
+              applySoon(350);
+            }}
+            placeholder={t("filter.search")}
+            aria-label={t("filter.search")}
+            className="pl-8"
+          />
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen((open) => !open)}
+        >
+          <SlidersHorizontal className="size-3.5" data-icon="inline-start" />
+          {t("filter.toggle")}
+          {activeCount > 0 && <span className="tabular-nums">({activeCount})</span>}
+        </Button>
+      </div>
+
+      <div
+        key={resetKey}
+        className={cn("flex-wrap items-end gap-3", isOpen ? "flex" : "hidden")}
+      >
       <div className="flex flex-col gap-1">
         <Label className="text-xs">{t("filter.from")}</Label>
         <DatePicker
           name="dateFrom"
           defaultValue={currentFilters.dateFrom ?? undefined}
+          onChange={() => applySoon()}
           className="w-36"
           placeholder={t("filter.from")}
         />
@@ -79,6 +141,7 @@ export function TransactionFilters({
         <DatePicker
           name="dateTo"
           defaultValue={currentFilters.dateTo ?? undefined}
+          onChange={() => applySoon()}
           className="w-36"
           placeholder={t("filter.to")}
         />
@@ -88,6 +151,7 @@ export function TransactionFilters({
         <Label className="text-xs">{t("filter.type")}</Label>
         <Select
           name="type"
+          onValueChange={() => applySoon()}
           defaultValue={currentFilters.type ?? "ALL"}
           items={[
             { value: "ALL", label: t("filter.all") },
@@ -112,6 +176,7 @@ export function TransactionFilters({
         <Label className="text-xs">{t("filter.method")}</Label>
         <Select
           name="paymentMethod"
+          onValueChange={() => applySoon()}
           defaultValue={currentFilters.paymentMethod ?? "ALL"}
           items={[
             { value: "ALL", label: t("filter.all") },
@@ -138,37 +203,15 @@ export function TransactionFilters({
 
       <div className="flex flex-col gap-1">
         <Label className="text-xs">{t("filter.category")}</Label>
-        <Select
+        <CategorySelect
+          categories={categories}
           name="categoryId"
-          defaultValue={currentFilters.categoryId ?? "ALL"}
-          items={[
-            { value: "ALL", label: t("filter.all") },
-            ...rootCategories.flatMap((cat) => [
-              { value: cat.id, label: cat.name },
-              ...cat.children.map((child) => ({
-                value: child.id,
-                label: child.name,
-              })),
-            ]),
-          ]}
-        >
-          <SelectTrigger className="w-36">
-            <SelectValue placeholder={t("filter.all")} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ALL">{t("filter.all")}</SelectItem>
-            {rootCategories.map((cat) => (
-              <span key={cat.id}>
-                <SelectItem value={cat.id}>{cat.name}</SelectItem>
-                {cat.children.map((child) => (
-                  <SelectItem key={child.id} value={child.id}>
-                    <span className="pl-4">{child.name}</span>
-                  </SelectItem>
-                ))}
-              </span>
-            ))}
-          </SelectContent>
-        </Select>
+          value={categoryId}
+          onValueChange={(value) => {
+            setCategoryId(value ?? "");
+            applySoon();
+          }}
+        />
       </div>
 
       {tags.length > 0 && (
@@ -176,6 +219,7 @@ export function TransactionFilters({
           <Label className="text-xs">{t("filter.tag")}</Label>
           <Select
             name="tagId"
+            onValueChange={() => applySoon()}
             defaultValue={currentFilters.tagId ?? "ALL"}
             items={[
               { value: "ALL", label: t("filter.all") },
@@ -203,13 +247,11 @@ export function TransactionFilters({
         </div>
       )}
 
-      <div className="flex gap-2">
-        <Button type="submit" size="sm">
-          {t("filter.apply")}
-        </Button>
-        <Button type="button" variant="outline" size="sm" onClick={handleClear}>
+      {activeCount > 0 && (
+        <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
           {t("filter.clear")}
         </Button>
+      )}
       </div>
     </form>
   );

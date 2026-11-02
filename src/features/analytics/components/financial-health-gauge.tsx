@@ -37,6 +37,7 @@ function getFactorBarColor(score: number): string {
 
 export function FinancialHealthGauge({ score, compact = false }: FinancialHealthGaugeProps) {
 	const t = useTranslations("analytics.financialHealth")
+	const tHealth = useTranslations("healthLabels")
 	const gaugeData = [
 		{
 			name: "Score",
@@ -90,7 +91,9 @@ export function FinancialHealthGauge({ score, compact = false }: FinancialHealth
 								>
 									{score.overall}
 								</span>
-								<span className="text-muted-foreground text-sm">{score.label}</span>
+								<span className="text-muted-foreground text-sm">
+									{tHealth(score.label.replace(" ", "") as Parameters<typeof tHealth>[0])}
+								</span>
 							</div>
 						</div>
 

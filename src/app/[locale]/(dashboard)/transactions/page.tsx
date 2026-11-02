@@ -17,7 +17,7 @@ import { TransactionPagination } from "@/features/transactions/components/transa
 import { TransactionFilters } from "@/features/transactions/components/transaction-filters"
 import { TransactionDialog } from "@/features/transactions/components/transaction-dialog"
 import { TransactionTable } from "@/features/transactions/components/transaction-table"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
@@ -44,6 +44,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 	const typedCategories = categories as CategoryWithChildren[]
 
 	const hasFilters =
+		filters.search ??
 		filters.dateFrom ??
 		filters.dateTo ??
 		filters.type ??
@@ -55,14 +56,14 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 
 	return (
 		<div className="mx-auto max-w-5xl">
-			<div className="mb-6 flex items-center justify-between">
+			<div className="mb-4 flex items-center justify-between">
 				<h1 className="text-lg font-semibold">{t("title")}</h1>
 				<div className="flex items-center gap-2">
 					<ExportDialog
 						categories={typedCategories}
 						tags={tags}
 						trigger={
-							<Button variant="outline" size="sm">
+							<Button variant="outline" size="sm" className="hidden md:inline-flex">
 								<Download className="size-3.5" data-icon="inline-start" />
 								{t("export")}
 							</Button>
@@ -83,16 +84,9 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 				</div>
 			</div>
 
-			<Card>
-				<CardHeader>
-					<CardTitle>{t("filters")}</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<TransactionFilters categories={typedCategories} tags={tags} currentFilters={filters} />
-				</CardContent>
-			</Card>
+			<TransactionFilters categories={typedCategories} tags={tags} currentFilters={filters} />
 
-			<Card className="mt-4">
+			<Card className="mt-3 py-0">
 				<CardContent className="p-0">
 					{isEmpty && !hasFilters ? (
 						<div className="flex flex-col items-center gap-3 py-12 text-center">

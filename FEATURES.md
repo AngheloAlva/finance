@@ -41,7 +41,7 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 - Marcar "Delivery" como `isAvoidable` para después medir cuánto gastás en cosas evitables.
 - Threshold por categoría: que te avise cuando te pasaste del límite mensual de "Salidas".
 
-**Estado:** ✅ funcional, con más de 150 categorías base en español e inglés. El catálogo vive en `src/features/categories/lib/system-categories.ts`, lo escribe el seed y la app traduce los nombres según el idioma activo; las categorías propias se muestran tal como se escribieron.
+**Estado:** ✅ funcional, separadas por gastos, ingresos y transferencias, con más de 150 categorías base en español e inglés. El catálogo vive en `src/features/categories/lib/system-categories.ts`, lo escribe el seed y la app traduce los nombres según el idioma activo; las categorías propias se muestran tal como se escribieron.
 
 ---
 
