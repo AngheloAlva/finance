@@ -42,33 +42,33 @@
   },
   "auth": {
     "welcomeBack": "Bienvenido de nuevo",
-    "enterCredentials": "Ingresá tus credenciales para continuar",
+    "enterCredentials": "Ingresa tus credenciales para continuar",
     "email": "Email",
-    "emailPlaceholder": "vos@ejemplo.com",
+    "emailPlaceholder": "tu@ejemplo.com",
     "password": "Contraseña",
-    "passwordPlaceholder": "Ingresá tu contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
     "signIn": "Iniciar sesión",
     "signingIn": "Iniciando sesión...",
-    "noAccount": "¿No tenés cuenta?",
-    "createOne": "Creá una",
+    "noAccount": "¿No tienes cuenta?",
+    "createOne": "Crea una",
     "createAccount": "Crear cuenta",
-    "enterDetails": "Ingresá tus datos para comenzar",
+    "enterDetails": "Ingresa tus datos para comenzar",
     "name": "Nombre",
     "namePlaceholder": "Tu nombre",
     "confirmPassword": "Confirmar contraseña",
-    "confirmPasswordPlaceholder": "Repetí tu contraseña",
+    "confirmPasswordPlaceholder": "Repite tu contraseña",
     "minCharacters": "Mín. 8 caracteres",
     "creatingAccount": "Creando cuenta...",
-    "hasAccount": "¿Ya tenés cuenta?",
+    "hasAccount": "¿Ya tienes cuenta?",
     "signInLink": "Iniciar sesión"
   },
   "settings": {
     "title": "Configuración",
     "profile": "Perfil",
-    "profileDescription": "Administrá tu cuenta y preferencias",
+    "profileDescription": "Administra tu cuenta y preferencias",
     "name": "Nombre",
     "email": "Email",
-    "emailCannotChange": "El email no se puede cambiar desde acá",
+    "emailCannotChange": "El email no se puede cambiar desde aquí",
     "avatarUrl": "URL del avatar",
     "avatarPlaceholder": "https://...",
     "currency": "Moneda",
@@ -89,11 +89,11 @@
     "noData": "No hay datos disponibles",
     "recentTransactions": "Transacciones Recientes",
     "noTransactions": "No hay transacciones todavía",
-    "addFirstTransaction": "Agregá tu primera transacción",
+    "addFirstTransaction": "Agrega tu primera transacción",
     "viewAllTransactions": "Ver todas las transacciones",
     "activeGoals": "Metas Activas",
     "noActiveGoals": "No hay metas activas.",
-    "createGoal": "Creá una",
+    "createGoal": "Crea una",
     "startTracking": "para empezar a seguirlas.",
     "viewAll": "Ver todas",
     "portfolioValue": "Valor del Portafolio",
@@ -105,7 +105,7 @@
     "customizer": {
       "trigger": "Personalizar",
       "title": "Personalizar panel",
-      "description": "Arrastrá para reordenar, activá o desactivá widgets y elegí el tamaño de cada uno.",
+      "description": "Arrastra para reordenar, activa o desactiva widgets y elige el tamaño de cada uno.",
       "save": "Guardar",
       "saving": "Guardando...",
       "cancel": "Cancelar",
@@ -166,7 +166,7 @@
     "monthlyDigest": {
       "title": "Resumen del mes",
       "regenerate": "Regenerar",
-      "error": "No se pudo generar el resumen. Intentá de nuevo."
+      "error": "No se pudo generar el resumen. Intenta de nuevo."
     },
     "hero": {
       "leftToSpend": "Te queda este mes",
@@ -179,8 +179,8 @@
   "transactions": {
     "title": "Transacciones",
     "newTransaction": "Nueva Transacción",
-    "noTransactionsYet": "No hay transacciones todavía. ¡Empezá a registrar tus finanzas!",
-    "addFirstTransaction": "Agregá tu primera transacción",
+    "noTransactionsYet": "No hay transacciones todavía. ¡Empieza a registrar tus finanzas!",
+    "addFirstTransaction": "Agrega tu primera transacción",
     "noTransactionsMatch": "No hay transacciones que coincidan con los filtros.",
     "clearFilters": "Limpiar filtros",
     "noTransactionsFound": "No se encontraron transacciones.",
@@ -239,12 +239,12 @@
     },
     "deleteDialog": {
       "title": "Eliminar Transacción",
-      "description": "¿Estás seguro de que querés eliminar \"{name}\"? Esta acción no se puede deshacer.",
+      "description": "¿Estás seguro de que quieres eliminar \"{name}\"? Esta acción no se puede deshacer.",
       "success": "Transacción eliminada correctamente"
     },
     "deleteInstallmentDialog": {
       "title": "Eliminar Grupo de Cuotas",
-      "description": "¿Estás seguro de que querés eliminar TODAS las cuotas de \"{name}\"? Esta acción no se puede deshacer.",
+      "description": "¿Estás seguro de que quieres eliminar TODAS las cuotas de \"{name}\"? Esta acción no se puede deshacer.",
       "success": "Grupo de cuotas eliminado correctamente",
       "deleteAll": "Eliminar todas las cuotas"
     },
@@ -263,18 +263,18 @@
     },
     "quickAdd": {
       "title": "Carga rápida",
-      "description": "Registrá un gasto de hoy.",
+      "description": "Registra un gasto de hoy.",
       "save": "Guardar",
       "scan": "Escanear boleta o captura",
-      "scanSuccess": "Boleta leída — revisá y guardá",
-      "scanError": "No se pudo leer la imagen. Completá a mano.",
-      "scanTooLarge": "La imagen supera los 5MB. Probá con una más liviana."
+      "scanSuccess": "Boleta leída — revisa y guarda",
+      "scanError": "No se pudo leer la imagen. Completa a mano.",
+      "scanTooLarge": "La imagen supera los 5MB. Prueba con una más liviana."
     }
   },
   "tags": {
     "title": "Etiquetas",
     "manage": "Gestionar Etiquetas",
-    "manageDescription": "Creá, editá y eliminá etiquetas para organizar tus transacciones.",
+    "manageDescription": "Crea, edita y elimina etiquetas para organizar tus transacciones.",
     "name": "Nombre",
     "color": "Color",
     "namePlaceholder": "Ej. vacaciones",
@@ -290,12 +290,12 @@
   "categorization": {
     "title": "Auto-categorización",
     "manage": "Gestionar reglas",
-    "pageDescription": "Sugerí categorías automáticamente para nuevas transacciones según patrones de descripción.",
+    "pageDescription": "Sugiere categorías automáticamente para nuevas transacciones según patrones de descripción.",
     "rules": "Reglas",
     "newRule": "Nueva Regla",
     "editRule": "Editar Regla",
-    "ruleDescription": "Creá un patrón que coincida con descripciones de transacciones y las auto-categorice.",
-    "noRules": "No hay reglas aún. Creá una para empezar a auto-categorizar.",
+    "ruleDescription": "Crea un patrón que coincida con descripciones de transacciones y las auto-categorice.",
+    "noRules": "No hay reglas aún. Crea una para empezar a auto-categorizar.",
     "pattern": "Patrón",
     "patternPlaceholder": "Ej. uber",
     "patternHint": "Texto a buscar en descripciones de transacciones (sin distinción de mayúsculas).",
@@ -334,7 +334,7 @@
   },
   "export": {
     "title": "Exportar Transacciones",
-    "description": "Descargá tus transacciones como archivo CSV.",
+    "description": "Descarga tus transacciones como archivo CSV.",
     "export": "Exportar CSV",
     "exporting": "Exportando...",
     "success": "Descarga lista",
@@ -344,7 +344,7 @@
     "title": "Presupuestos",
     "noBudgets": "No hay presupuestos para este mes.",
     "setBudget": "Crear Presupuesto",
-    "setBudgetDescription": "Establecé un límite de gasto mensual por categoría.",
+    "setBudgetDescription": "Establece un límite de gasto mensual por categoría.",
     "category": "Categoría",
     "amount": "Límite Mensual",
     "copyFromLastMonth": "Copiar del mes anterior",
@@ -372,7 +372,7 @@
   "creditCards": {
     "title": "Tarjetas de Crédito",
     "newCard": "Nueva Tarjeta",
-    "noCardsYet": "No hay tarjetas de crédito todavía. Agregá tu primera tarjeta para empezar a registrar tus gastos.",
+    "noCardsYet": "No hay tarjetas de crédito todavía. Agrega tu primera tarjeta para empezar a registrar tus gastos.",
     "form": {
       "cardName": "Nombre de la tarjeta",
       "cardNamePlaceholder": "ej. Mi Visa",
@@ -394,7 +394,7 @@
     "dialog": {
       "newTitle": "Nueva Tarjeta de Crédito",
       "editTitle": "Editar Tarjeta de Crédito",
-      "newDescription": "Agregá una nueva tarjeta de crédito para registrar tus gastos.",
+      "newDescription": "Agrega una nueva tarjeta de crédito para registrar tus gastos.",
       "editDescription": "Actualizar los detalles de la tarjeta."
     },
     "detail": {
@@ -427,7 +427,7 @@
     },
     "deleteDialog": {
       "title": "Eliminar Tarjeta de Crédito",
-      "description": "¿Estás seguro de que querés eliminar \"{name}\"? Esta acción no se puede deshacer.",
+      "description": "¿Estás seguro de que quieres eliminar \"{name}\"? Esta acción no se puede deshacer.",
       "success": "Tarjeta de crédito eliminada correctamente"
     }
   },
@@ -435,7 +435,7 @@
     "title": "Categorías",
     "newCategory": "Nueva Categoría",
     "allCategories": "Todas las Categorías",
-    "noCategoriesFound": "No se encontraron categorías. Creá tu primera categoría para empezar.",
+    "noCategoriesFound": "No se encontraron categorías. Crea tu primera categoría para empezar.",
     "form": {
       "name": "Nombre",
       "namePlaceholder": "ej. Supermercado",
@@ -450,7 +450,7 @@
       "avoidable": "Evitable",
       "alertThreshold": "Umbral de alerta (opcional)",
       "alertThresholdPlaceholder": "ej. 500",
-      "alertThresholdHelp": "Recibí una alerta cuando el gasto mensual en esta categoría supere este monto",
+      "alertThresholdHelp": "Recibe una alerta cuando el gasto mensual en esta categoría supere este monto",
       "parentCategory": "Categoría padre",
       "noneRoot": "Ninguna (categoría raíz)",
       "createCategory": "Crear Categoría",
@@ -461,7 +461,7 @@
     "dialog": {
       "newTitle": "Nueva Categoría",
       "editTitle": "Editar Categoría",
-      "newDescription": "Creá una nueva categoría para organizar tus transacciones.",
+      "newDescription": "Crea una nueva categoría para organizar tus transacciones.",
       "editDescription": "Actualizar los detalles de la categoría."
     },
     "badges": {
@@ -474,11 +474,11 @@
       "searchPlaceholder": "Buscar categorías...",
       "noResults": "No hay categorías que coincidan",
       "createNew": "Nueva categoría",
-      "empty": "Todavía no hay categorías — creá una primero"
+      "empty": "Todavía no hay categorías — crea una primero"
     },
     "deleteDialog": {
       "title": "Eliminar Categoría",
-      "description": "¿Estás seguro de que querés eliminar \"{name}\"? Esta acción no se puede deshacer.",
+      "description": "¿Estás seguro de que quieres eliminar \"{name}\"? Esta acción no se puede deshacer.",
       "success": "Categoría eliminada correctamente"
     },
     "sections": {
@@ -490,7 +490,7 @@
   "investments": {
     "title": "Inversiones",
     "newInvestment": "Nueva Inversión",
-    "noInvestmentsYet": "No hay inversiones todavía. Agregá tu primera inversión para empezar a seguir tu portafolio.",
+    "noInvestmentsYet": "No hay inversiones todavía. Agrega tu primera inversión para empezar a seguir tu portafolio.",
     "form": {
       "type": "Tipo",
       "name": "Nombre",
@@ -517,8 +517,8 @@
     "dialog": {
       "newTitle": "Nueva Inversión",
       "editTitle": "Editar Inversión",
-      "newDescription": "Agregá una nueva inversión para seguir tu portafolio.",
-      "editDescription": "Actualizá los detalles de la inversión."
+      "newDescription": "Agrega una nueva inversión para seguir tu portafolio.",
+      "editDescription": "Actualiza los detalles de la inversión."
     },
     "valueForm": {
       "updateValue": "Actualizar Valor",
@@ -544,12 +544,12 @@
       "currentRate": "Tipo de Cambio Actual",
       "brokerFees": "Comisiones del Broker",
       "perYear": "/ año",
-      "staleRateWarning": "El tipo de cambio puede estar desactualizado. Última actualización: {date}. Considerá actualizar el valor actual.",
+      "staleRateWarning": "El tipo de cambio puede estar desactualizado. Última actualización: {date}. Considera actualizar el valor actual.",
       "updateCurrentValue": "Actualizar Valor Actual"
     },
     "chart": {
       "valueEvolution": "Evolución del Valor",
-      "noHistoricalData": "No hay datos históricos todavía. Actualizá el valor para empezar a registrar.",
+      "noHistoricalData": "No hay datos históricos todavía. Actualiza el valor para empezar a registrar.",
       "value": "Valor",
       "portfolioAllocation": "Distribución del Portafolio"
     },
@@ -564,7 +564,7 @@
     },
     "deleteDialog": {
       "title": "Eliminar Inversión",
-      "description": "¿Estás seguro de que querés eliminar \"{name}\"? Todos los registros serán eliminados permanentemente."
+      "description": "¿Estás seguro de que quieres eliminar \"{name}\"? Todos los registros serán eliminados permanentemente."
     }
   },
   "goals": {
@@ -586,8 +586,8 @@
     "dialog": {
       "newTitle": "Nueva Meta",
       "editTitle": "Editar Meta",
-      "newDescription": "Establecé un objetivo financiero para trabajar.",
-      "editDescription": "Actualizá los detalles de la meta."
+      "newDescription": "Establece un objetivo financiero para trabajar.",
+      "editDescription": "Actualiza los detalles de la meta."
     },
     "tabs": {
       "all": "Todas",
@@ -596,7 +596,7 @@
       "cancelled": "Canceladas"
     },
     "emptyState": {
-      "noGoalsYet": "No hay metas todavía. Creá tu primera meta para empezar.",
+      "noGoalsYet": "No hay metas todavía. Crea tu primera meta para empezar.",
       "noFilteredGoals": "No hay metas {status}."
     },
     "card": {
@@ -617,14 +617,14 @@
     },
     "deleteDialog": {
       "title": "Eliminar Meta",
-      "description": "¿Estás seguro de que querés eliminar \"{name}\"? También se eliminarán todos los aportes. Esta acción no se puede deshacer.",
+      "description": "¿Estás seguro de que quieres eliminar \"{name}\"? También se eliminarán todos los aportes. Esta acción no se puede deshacer.",
       "success": "Meta eliminada correctamente"
     }
   },
   "recurring": {
     "title": "Transacciones Recurrentes",
     "newRecurring": "Nuevo Recurrente",
-    "noRecurringYet": "No hay transacciones recurrentes todavía. Creá una plantilla para automatizar tus gastos e ingresos regulares.",
+    "noRecurringYet": "No hay transacciones recurrentes todavía. Crea una plantilla para automatizar tus gastos e ingresos regulares.",
     "generate": "Generar",
     "form": {
       "amount": "Monto",
@@ -655,8 +655,8 @@
     "dialog": {
       "newTitle": "Nueva Transacción Recurrente",
       "editTitle": "Editar Transacción Recurrente",
-      "newDescription": "Configurá una plantilla de transacción recurrente.",
-      "editDescription": "Actualizá los detalles de la transacción recurrente."
+      "newDescription": "Configura una plantilla de transacción recurrente.",
+      "editDescription": "Actualiza los detalles de la transacción recurrente."
     },
     "card": {
       "active": "Activo",
@@ -672,7 +672,7 @@
     },
     "deleteDialog": {
       "title": "Eliminar Plantilla Recurrente",
-      "description": "¿Estás seguro de que querés eliminar \"{name}\"? Las transacciones generadas no se eliminarán."
+      "description": "¿Estás seguro de que quieres eliminar \"{name}\"? Las transacciones generadas no se eliminarán."
     },
     "frequencies": {
       "daily": "Diario",
@@ -716,7 +716,7 @@
     "title": "Grupos",
     "newGroup": "Nuevo Grupo",
     "noGroupsYet": "No hay grupos todavía",
-    "noGroupsDescription": "Creá tu primer grupo para empezar a compartir gastos con otros.",
+    "noGroupsDescription": "Crea tu primer grupo para empezar a compartir gastos con otros.",
     "createGroup": "Crear Grupo",
     "member": "{count, plural, one {# miembro} other {# miembros}}",
     "form": {
@@ -734,7 +734,7 @@
     "dialog": {
       "newTitle": "Nuevo Grupo",
       "editTitle": "Editar Grupo",
-      "newDescription": "Creá un nuevo grupo para compartir gastos con otros.",
+      "newDescription": "Crea un nuevo grupo para compartir gastos con otros.",
       "editDescription": "Actualizar los detalles del grupo."
     },
     "tabs": {
@@ -758,7 +758,7 @@
       "roleUpdatedSuccess": "Rol actualizado correctamente",
       "removeMember": {
         "title": "Eliminar Miembro",
-        "description": "¿Estás seguro de que querés eliminar a \"{name}\" de este grupo?",
+        "description": "¿Estás seguro de que quieres eliminar a \"{name}\" de este grupo?",
         "success": "Miembro eliminado correctamente"
       },
       "statusPending": "Pendiente",
@@ -772,11 +772,11 @@
       "sending": "Enviando...",
       "sentSuccess": "Invitación enviada correctamente",
       "created": "¡Invitación creada!",
-      "shareLink": "Compartí este enlace:",
+      "shareLink": "Comparte este enlace:",
       "accept": "Aceptar Invitación",
       "accepting": "Aceptando...",
       "joinGroup": "Unirse al Grupo",
-      "invitedToJoin": "Fuiste invitado a unirte a este grupo. Hacé clic en el botón para aceptar.",
+      "invitedToJoin": "Fuiste invitado a unirte a este grupo. Haz clic en el botón para aceptar.",
       "invalidTitle": "Invitación Inválida",
       "invalidDescription": "Este enlace de invitación es inválido o no existe.",
       "usedTitle": "Invitación Utilizada",
@@ -788,7 +788,7 @@
       "title": "Categorías del Grupo",
       "newCategory": "Nueva Categoría",
       "noCategories": "No hay categorías del grupo todavía.",
-      "createFirstCategory": "Creá la primera categoría para empezar."
+      "createFirstCategory": "Crea la primera categoría para empezar."
     },
     "goals": {
       "title": "Metas del Grupo",
@@ -801,13 +801,13 @@
       "deleteGroupDescription": "Eliminar permanentemente este grupo y todos sus datos.",
       "deleteDialog": {
         "title": "Eliminar Grupo",
-        "description": "¿Estás seguro de que querés eliminar \"{name}\"? Esta acción no se puede deshacer. Todos los datos del grupo se eliminarán permanentemente.",
+        "description": "¿Estás seguro de que quieres eliminar \"{name}\"? Esta acción no se puede deshacer. Todos los datos del grupo se eliminarán permanentemente.",
         "success": "Grupo eliminado correctamente"
       }
     },
     "deleteCategory": {
       "title": "Eliminar Categoría",
-      "description": "¿Estás seguro de que querés eliminar \"{name}\"? Esta acción no se puede deshacer.",
+      "description": "¿Estás seguro de que quieres eliminar \"{name}\"? Esta acción no se puede deshacer.",
       "success": "Categoría eliminada correctamente"
     },
     "dashboard": {
@@ -822,7 +822,7 @@
   "groupFinances": {
     "dialog": {
       "title": "Nueva Transacción Grupal",
-      "description": "Registrá un gasto compartido y dividilo entre los miembros del grupo."
+      "description": "Registra un gasto compartido y divídelo entre los miembros del grupo."
     },
     "form": {
       "amount": "Monto",
@@ -905,7 +905,7 @@
     },
     "deleteTransaction": {
       "title": "Eliminar Transacción",
-      "description": "¿Estás seguro de que querés eliminar \"{name}\"? Esta acción no se puede deshacer.",
+      "description": "¿Estás seguro de que quieres eliminar \"{name}\"? Esta acción no se puede deshacer.",
       "success": "Transacción eliminada correctamente"
     }
   },
@@ -976,20 +976,20 @@
     },
     "budgetVsActual": {
       "title": "Presupuesto vs Real",
-      "noData": "No hay umbrales de presupuesto definidos. Configurá alertas de categoría para hacer seguimiento de presupuestos.",
+      "noData": "No hay umbrales de presupuesto definidos. Configura alertas de categoría para hacer seguimiento de presupuestos.",
       "budget": "Presupuesto",
       "actual": "Real"
     },
     "netWorth": {
       "title": "Línea de Tiempo del Patrimonio",
-      "noData": "No hay datos de inversiones disponibles. Agregá inversiones para hacer seguimiento de tu patrimonio.",
+      "noData": "No hay datos de inversiones disponibles. Agrega inversiones para hacer seguimiento de tu patrimonio.",
       "assets": "Activos",
       "liabilities": "Pasivos",
       "netWorth": "Patrimonio Neto"
     },
     "financialHealth": {
       "title": "Salud Financiera",
-      "noData": "No hay suficientes datos todavía. Seguí registrando al menos 2 meses."
+      "noData": "No hay suficientes datos todavía. Sigue registrando al menos 2 meses."
     },
     "dateRange": {
       "last30Days": "Últimos 30 días",
@@ -1033,8 +1033,8 @@
       "simulate": "Simular Compra",
       "simulating": "Simulando...",
       "emptyTitle": "Simulador de Asequibilidad",
-      "emptyDescription": "Ingresá un monto de compra para ver cómo impacta tu presupuesto mensual y flujo de caja en los próximos 3 meses.",
-      "canAfford": "Podés pagar esta compra",
+      "emptyDescription": "Ingresa un monto de compra para ver cómo impacta tu presupuesto mensual y flujo de caja en los próximos 3 meses.",
+      "canAfford": "Puedes pagar esta compra",
       "cannotAfford": "Esta compra puede tensionar tu presupuesto",
       "monthlyImpact": "Impacto mensual",
       "currentMonthlyBalance": "Balance mensual actual",
@@ -1046,21 +1046,21 @@
       "cashFlowProjection": "Proyección de Flujo de Caja a 3 Meses",
       "withoutPurchase": "Sin compra",
       "withPurchase": "Con compra",
-      "budgetWarning": "Advertencia: Tu balance proyectado es negativo. Considerá reducir gastos o aumentar ingresos antes de esta compra."
+      "budgetWarning": "Advertencia: Tu balance proyectado es negativo. Considera reducir gastos o aumentar ingresos antes de esta compra."
     },
     "debtPayoff": {
       "analyzeDebt": "Analizar Deuda",
       "analyzing": "Analizando...",
       "emptyTitle": "Calculadora de Pago de Deuda",
-      "emptyDescription": "Hacé clic en 'Analizar Deuda' para ver tus obligaciones de cuotas pendientes, pagos mensuales y cronograma de pago proyectado.",
+      "emptyDescription": "Haz clic en 'Analizar Deuda' para ver tus obligaciones de cuotas pendientes, pagos mensuales y cronograma de pago proyectado.",
       "noDebt": "Sin Deuda Pendiente",
-      "noDebtDescription": "No tenés obligaciones de cuotas activas. ¡Excelente trabajo manteniéndote libre de deuda!",
+      "noDebtDescription": "No tienes obligaciones de cuotas activas. ¡Excelente trabajo manteniéndote libre de deuda!",
       "summary": "Resumen de Deuda",
       "totalRemainingDebt": "Deuda total restante",
       "monthlyObligation": "Obligación mensual",
       "debtCoverageRatio": "Ratio de cobertura de deuda",
       "debtFreeBy": "Libre de deuda para",
-      "highDebtWarning": "Tus obligaciones de deuda superan el 30% de tus ingresos. Considerá reducir nueva deuda o aumentar ingresos.",
+      "highDebtWarning": "Tus obligaciones de deuda superan el 30% de tus ingresos. Considera reducir nueva deuda o aumentar ingresos.",
       "installmentBreakdown": "Desglose de Cuotas",
       "paymentsOf": "{count} pagos de {amount}",
       "payoff": "Pago: {date}"
@@ -1072,7 +1072,7 @@
       "simulate": "Simular Cambio de Ingresos",
       "simulating": "Simulando...",
       "emptyTitle": "Simulador de Impacto de Ingresos",
-      "emptyDescription": "Ingresá un porcentaje de cambio para ver cómo afecta tu tasa de ahorro, plazos de metas y cobertura de deuda.",
+      "emptyDescription": "Ingresa un porcentaje de cambio para ver cómo afecta tu tasa de ahorro, plazos de metas y cobertura de deuda.",
       "incomeComparison": "Comparación de Ingresos",
       "currentIncome": "Ingresos actuales",
       "projectedIncome": "Ingresos proyectados",
@@ -1093,15 +1093,15 @@
     },
     "savingsGoal": {
       "selectGoal": "Seleccionar Meta",
-      "chooseGoal": "Elegí una meta...",
+      "chooseGoal": "Elige una meta...",
       "adjustedContribution": "Aporte Mensual Ajustado (opcional)",
-      "adjustedPlaceholder": "Dejá vacío para usar la tasa de ahorro actual",
+      "adjustedPlaceholder": "Deja vacío para usar la tasa de ahorro actual",
       "projectTimeline": "Proyectar Plazo",
       "projecting": "Proyectando...",
       "noActiveGoals": "Sin Metas Activas",
-      "noActiveGoalsDescription": "Creá una meta de ahorro primero, después volvé para proyectar tu plazo.",
+      "noActiveGoalsDescription": "Crea una meta de ahorro primero, después vuelve para proyectar tu plazo.",
       "emptyTitle": "Proyector de Metas de Ahorro",
-      "emptyDescription": "Seleccioná una meta y opcionalmente ajustá tu aporte mensual para ver cuándo alcanzarás tu objetivo.",
+      "emptyDescription": "Selecciona una meta y opcionalmente ajusta tu aporte mensual para ver cuándo alcanzarás tu objetivo.",
       "goalAlreadyMet": "¡La meta \"{name}\" ya fue alcanzada!",
       "reachedTarget": "Alcanzaste tu objetivo de {amount}.",
       "progress": "Progreso",
@@ -1117,15 +1117,15 @@
       "oneMonth": "1 mes",
       "nMonths": "{count} meses",
       "onTrack": "Estás en camino de cumplir tu fecha objetivo.",
-      "behindSchedule": "Estás atrasado. Considerá aumentar tu aporte mensual.",
+      "behindSchedule": "Estás atrasado. Considera aumentar tu aporte mensual.",
       "zeroSavingsWarning": "Tu tasa de ahorro actual es cero o negativa. La meta es inalcanzable sin ajustar tus ingresos o gastos."
     },
     "budgetOptimizer": {
       "analyzeBudget": "Analizar Presupuesto",
       "analyzing": "Analizando...",
       "emptyTitle": "Optimizador de Presupuesto",
-      "emptyDescription": "Hacé clic en 'Analizar Presupuesto' para ver tu desglose de gastos, identificar gastos evitables y descubrir ahorros potenciales.",
-      "noSpendingData": "No hay datos de gastos disponibles. Empezá a registrar gastos para obtener sugerencias de optimización.",
+      "emptyDescription": "Haz clic en 'Analizar Presupuesto' para ver tu desglose de gastos, identificar gastos evitables y descubrir ahorros potenciales.",
+      "noSpendingData": "No hay datos de gastos disponibles. Empieza a registrar gastos para obtener sugerencias de optimización.",
       "overview": "Resumen del Presupuesto",
       "monthlyIncome": "Ingresos mensuales",
       "totalExpenses": "Gastos totales",
@@ -1138,7 +1138,7 @@
       "avoidable": "Evitable",
       "ofTotal": "{percent}% del total",
       "exceedsThreshold": "Excede el umbral ({amount})",
-      "noAvoidableWarning": "No se encontraron categorías evitables. Revisá la configuración de tus categorías para marcarlas como evitables y obtener sugerencias de optimización."
+      "noAvoidableWarning": "No se encontraron categorías evitables. Revisa la configuración de tus categorías para marcarlas como evitables y obtener sugerencias de optimización."
     }
   },
   "validation": {
@@ -1158,15 +1158,15 @@
     "exactDigits4": "Debe ser exactamente 4 dígitos",
     "dayRange": "Debe estar entre 1 y 31",
     "validDate": "Se requiere una fecha válida",
-    "invalidType": "Seleccioná un tipo válido",
-    "invalidPaymentMethod": "Seleccioná un método de pago válido",
-    "invalidFrequency": "Seleccioná una frecuencia válida",
+    "invalidType": "Selecciona un tipo válido",
+    "invalidPaymentMethod": "Selecciona un método de pago válido",
+    "invalidFrequency": "Selecciona una frecuencia válida",
     "invalidInvestmentType": "Tipo de inversión inválido",
-    "invalidSplitRule": "Seleccioná una regla de división válida",
+    "invalidSplitRule": "Selecciona una regla de división válida",
     "invalidRole": "El rol debe ser Admin o Miembro",
-    "invalidCurrency": "Seleccioná una moneda válida",
-    "invalidTimezone": "Seleccioná una zona horaria válida",
-    "invalidEmail": "Ingresá una dirección de email válida",
+    "invalidCurrency": "Selecciona una moneda válida",
+    "invalidTimezone": "Selecciona una zona horaria válida",
+    "invalidEmail": "Ingresa una dirección de email válida",
     "invalidUrl": "Debe ser una URL válida",
     "invalidHexColor": "Debe ser un color hexadecimal válido",
     "currencyLength3": "La moneda debe ser un código de 3 letras",
@@ -1187,19 +1187,19 @@
     "description": "Aplicación de gestión de finanzas personales"
   },
   "errors": {
-    "VALIDATION_ERROR": "Por favor corregí los errores a continuación",
+    "VALIDATION_ERROR": "Por favor corrige los errores a continuación",
     "FIELD_REQUIRED": "Este campo es obligatorio",
     "AUTH_INVALID_CREDENTIALS": "Credenciales inválidas",
-    "AUTH_REGISTER_FAILED": "No se pudo crear la cuenta. Intentá de nuevo.",
+    "AUTH_REGISTER_FAILED": "No se pudo crear la cuenta. Intenta de nuevo.",
     "CREDIT_CARD_NOT_FOUND": "Tarjeta de crédito no encontrada",
-    "CREDIT_CARD_NOT_OWNED": "Solo podés administrar tus propias tarjetas de crédito",
+    "CREDIT_CARD_NOT_OWNED": "Solo puedes administrar tus propias tarjetas de crédito",
     "CREDIT_CARD_CREATE_FAILED": "Error al crear la tarjeta de crédito",
     "CREDIT_CARD_UPDATE_FAILED": "Error al actualizar la tarjeta de crédito",
-    "CREDIT_CARD_DELETE_HAS_TRANSACTIONS": "No se puede eliminar esta tarjeta. Tiene transacciones vinculadas. Eliminá o reasigná las transacciones primero.",
+    "CREDIT_CARD_DELETE_HAS_TRANSACTIONS": "No se puede eliminar esta tarjeta. Tiene transacciones vinculadas. Elimina o reasigna las transacciones primero.",
     "CREDIT_CARD_DELETE_FAILED": "Error al eliminar la tarjeta de crédito",
     "TRANSACTION_NOT_FOUND": "Transacción no encontrada",
-    "TRANSACTION_NOT_OWNED": "Solo podés administrar tus propias transacciones",
-    "TRANSACTION_INSTALLMENT_IMMUTABLE": "No se puede modificar el monto o la fecha de transacciones en cuotas. Eliminá el grupo y crealo de nuevo.",
+    "TRANSACTION_NOT_OWNED": "Solo puedes administrar tus propias transacciones",
+    "TRANSACTION_INSTALLMENT_IMMUTABLE": "No se puede modificar el monto o la fecha de transacciones en cuotas. Elimina el grupo y créalo de nuevo.",
     "TRANSACTION_CREATE_FAILED": "Error al crear la transacción",
     "TRANSACTION_UPDATE_FAILED": "Error al actualizar la transacción",
     "TRANSACTION_DELETE_FAILED": "Error al eliminar la transacción",
@@ -1208,35 +1208,35 @@
     "INSTALLMENT_GROUP_NOT_FOUND": "Grupo de cuotas no encontrado",
     "INSTALLMENT_GROUP_DELETE_FAILED": "Error al eliminar el grupo de cuotas",
     "INVESTMENT_NOT_FOUND": "Inversión no encontrada",
-    "INVESTMENT_NOT_OWNED": "Solo podés administrar tus propias inversiones",
+    "INVESTMENT_NOT_OWNED": "Solo puedes administrar tus propias inversiones",
     "INVESTMENT_CREATE_FAILED": "Error al crear la inversión",
     "INVESTMENT_UPDATE_FAILED": "Error al actualizar la inversión",
     "INVESTMENT_VALUE_UPDATE_FAILED": "Error al actualizar el valor de la inversión",
     "INVESTMENT_DELETE_FAILED": "Error al eliminar la inversión",
     "CATEGORY_NOT_FOUND": "Categoría no encontrada",
-    "CATEGORY_NOT_OWNED": "Solo podés administrar tus propias categorías",
-    "CATEGORY_ACCESS_DENIED": "No podés usar esta categoría",
+    "CATEGORY_NOT_OWNED": "Solo puedes administrar tus propias categorías",
+    "CATEGORY_ACCESS_DENIED": "No puedes usar esta categoría",
     "CATEGORY_SYSTEM_IMMUTABLE": "No se pueden editar las categorías del sistema",
     "CATEGORY_SELF_PARENT": "Una categoría no puede ser su propia categoría padre",
     "CATEGORY_PARENT_NOT_FOUND": "Categoría padre no encontrada",
     "CATEGORY_PARENT_WRONG_GROUP": "La categoría padre debe pertenecer al mismo grupo",
     "CATEGORY_NESTING_TOO_DEEP": "No se pueden anidar más de 2 niveles",
     "CATEGORY_WRONG_GROUP": "La categoría no pertenece a este grupo",
-    "CATEGORY_DELETE_HAS_TRANSACTIONS": "No se puede eliminar una categoría con transacciones existentes. Reasigná las transacciones primero.",
-    "CATEGORY_DELETE_HAS_CHILDREN": "No se puede eliminar una categoría con subcategorías. Eliminá las subcategorías primero.",
+    "CATEGORY_DELETE_HAS_TRANSACTIONS": "No se puede eliminar una categoría con transacciones existentes. Reasigna las transacciones primero.",
+    "CATEGORY_DELETE_HAS_CHILDREN": "No se puede eliminar una categoría con subcategorías. Elimina las subcategorías primero.",
     "CATEGORY_DELETE_SYSTEM": "No se pueden eliminar las categorías del sistema",
     "CATEGORY_CREATE_FAILED": "Error al crear la categoría",
     "CATEGORY_UPDATE_FAILED": "Error al actualizar la categoría",
     "CATEGORY_DELETE_FAILED": "Error al eliminar la categoría",
     "GOAL_NOT_FOUND": "Meta no encontrada",
-    "GOAL_NOT_OWNED": "Solo podés administrar tus propias metas",
+    "GOAL_NOT_OWNED": "Solo puedes administrar tus propias metas",
     "GOAL_NOT_ACTIVE": "Solo se pueden actualizar las metas activas",
     "GOAL_CREATE_FAILED": "Error al crear la meta",
     "GOAL_UPDATE_FAILED": "Error al actualizar la meta",
     "GOAL_DELETE_FAILED": "Error al eliminar la meta",
     "CONTRIBUTION_CREATE_FAILED": "Error al agregar el aporte",
     "RECURRING_NOT_FOUND": "Plantilla recurrente no encontrada",
-    "RECURRING_NOT_OWNED": "Solo podés administrar tus propias plantillas",
+    "RECURRING_NOT_OWNED": "Solo puedes administrar tus propias plantillas",
     "RECURRING_NO_RULE": "Esta transacción no tiene regla de recurrencia",
     "RECURRING_CREATE_FAILED": "Error al crear la transacción recurrente",
     "RECURRING_UPDATE_FAILED": "Error al actualizar la transacción recurrente",
@@ -1248,30 +1248,30 @@
     "SUGGESTION_ACCEPT_FAILED": "Error al agregar la transacción sugerida",
     "SUGGESTION_SKIP_FAILED": "Error al omitir la sugerencia",
     "TAG_NOT_FOUND": "Etiqueta no encontrada",
-    "TAG_NOT_OWNED": "Solo podés gestionar tus propias etiquetas",
+    "TAG_NOT_OWNED": "Solo puedes gestionar tus propias etiquetas",
     "TAG_ALREADY_EXISTS": "Ya existe una etiqueta con ese nombre",
     "TAG_CREATE_FAILED": "Error al crear la etiqueta",
     "TAG_UPDATE_FAILED": "Error al actualizar la etiqueta",
     "TAG_DELETE_FAILED": "Error al eliminar la etiqueta",
     "BUDGET_NOT_FOUND": "Presupuesto no encontrado",
-    "BUDGET_NOT_OWNED": "Solo podés gestionar tus propios presupuestos",
+    "BUDGET_NOT_OWNED": "Solo puedes gestionar tus propios presupuestos",
     "BUDGET_UPSERT_FAILED": "Error al guardar el presupuesto",
     "BUDGET_DELETE_FAILED": "Error al eliminar el presupuesto",
     "BUDGET_COPY_INVALID_PARAMS": "Mes o año inválidos",
     "BUDGET_COPY_NO_PREVIOUS": "No se encontraron presupuestos en el mes anterior",
     "BUDGET_COPY_FAILED": "Error al copiar presupuestos",
     "RULE_NOT_FOUND": "Regla no encontrada",
-    "RULE_NOT_OWNED": "Solo podés gestionar tus propias reglas",
+    "RULE_NOT_OWNED": "Solo puedes gestionar tus propias reglas",
     "RULE_ALREADY_EXISTS": "Ya existe una regla con ese patrón",
     "RULE_EMPTY_PATTERN": "El patrón no puede estar vacío",
     "RULE_CREATE_FAILED": "Error al crear la regla",
     "RULE_UPDATE_FAILED": "Error al actualizar la regla",
     "RULE_DELETE_FAILED": "Error al eliminar la regla",
-    "GROUP_NOT_MEMBER": "No sos miembro de este grupo",
-    "GROUP_PERMISSION_DENIED": "No tenés permiso para realizar esta acción",
+    "GROUP_NOT_MEMBER": "No eres miembro de este grupo",
+    "GROUP_PERMISSION_DENIED": "No tienes permiso para realizar esta acción",
     "GROUP_CREATE_FAILED": "Error al crear el grupo",
     "GROUP_UPDATE_FAILED": "Error al actualizar el grupo",
-    "GROUP_DELETE_HAS_MEMBERS": "No se puede eliminar un grupo con otros miembros. Eliminá a todos los miembros primero.",
+    "GROUP_DELETE_HAS_MEMBERS": "No se puede eliminar un grupo con otros miembros. Elimina a todos los miembros primero.",
     "GROUP_DELETE_FAILED": "Error al eliminar el grupo",
     "GROUP_MEMBER_ALREADY_EXISTS": "Este usuario ya es miembro de este grupo",
     "GROUP_TRANSACTION_CREATE_FAILED": "Error al crear la transacción grupal",
@@ -1284,12 +1284,12 @@
     "INVITATION_CREATE_FAILED": "Error al enviar la invitación",
     "INVITATION_ACCEPT_FAILED": "Error al aceptar la invitación",
     "MEMBER_NOT_FOUND": "Miembro no encontrado",
-    "MEMBER_REMOVE_PERMISSION_DENIED": "No tenés permiso para eliminar a este miembro",
+    "MEMBER_REMOVE_PERMISSION_DENIED": "No tienes permiso para eliminar a este miembro",
     "MEMBER_REMOVE_FAILED": "Error al eliminar al miembro",
     "MEMBER_ROLE_OWNER_IMMUTABLE": "No se puede cambiar el rol del propietario del grupo",
     "MEMBER_ROLE_CHANGE_FAILED": "Error al cambiar el rol del miembro",
     "ALERT_NOT_FOUND": "Alerta no encontrada",
-    "ALERT_NOT_OWNED": "Solo podés administrar tus propias alertas",
+    "ALERT_NOT_OWNED": "Solo puedes administrar tus propias alertas",
     "ALERT_MARK_READ_FAILED": "Error al marcar la alerta como leída",
     "ALERT_MARK_ALL_READ_FAILED": "Error al marcar las alertas como leídas",
     "ALERT_DISMISS_FAILED": "Error al descartar la alerta",
@@ -1304,9 +1304,9 @@
     "SPLIT_SETTLE_FAILED": "Error al liquidar la división"
   },
   "install": {
-    "title": "Instalá Finanzas",
-    "description": "Agregala a tu pantalla de inicio para abrirla más rápido.",
-    "iosDescription": "Tocá Compartir y después «Agregar a inicio».",
+    "title": "Instala Finanzas",
+    "description": "Agrégala a tu pantalla de inicio para abrirla más rápido.",
+    "iosDescription": "Toca Compartir y después «Agregar a inicio».",
     "action": "Instalar",
     "dismiss": "Cerrar"
   },

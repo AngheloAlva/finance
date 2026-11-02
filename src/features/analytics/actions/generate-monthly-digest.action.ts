@@ -46,7 +46,7 @@ const buildDigest = unstable_cache(
 			? `Rising trend: ${comparison.trends[0].categoryName} up ${comparison.trends[0].totalIncreasePercent}% over 3 months.`
 			: ""
 
-		const language = locale === "es" ? "Spanish (Rioplatense, casual tone)" : "English (friendly, casual)"
+		const language = locale === "es" ? "neutral Latin American Spanish (use tú, never vos), casual tone" : "English (friendly, casual)"
 
 		const prompt = `You are a personal finance assistant. Write a SHORT narrative summary (2–3 sentences max) of the user's finances for ${new Date(year, month - 1).toLocaleString("en-US", { month: "long", year: "numeric" })}.
 
