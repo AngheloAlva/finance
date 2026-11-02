@@ -1,13 +1,12 @@
 "use server"
 
-import { moonshotai } from "@ai-sdk/moonshotai"
-import { generateText } from "ai"
 import { unstable_cache } from "next/cache"
 import { getLocale } from "next-intl/server"
 
 import { getMonthComparison } from "@/features/analytics/lib/analytics.queries"
 import { getMonthlyOverview } from "@/features/dashboard/lib/dashboard.queries"
 import { requireSession } from "@/shared/lib/auth"
+import { CLAUDE_MODEL, claude } from "@/shared/lib/claude"
 import { formatCurrency } from "@/shared/lib/formatters"
 import type { CurrencyCode } from "@/shared/lib/constants"
 
@@ -63,11 +62,20 @@ ${risingTrend ? `\n${risingTrend}` : ""}
 Write in ${language}. Be specific with numbers. Highlight what's notable — good savings, a spending spike, a rising category. Keep it under 60 words. Do NOT use markdown.`
 
 		try {
-			const { text } = await generateText({
-				model: moonshotai("moonshot-v1-8k"),
-				prompt,
+			const response = await claude.messages.create({
+				model: CLAUDE_MODEL,
+				max_tokens: 16000,
+				output_config: { effort: "low" },
+				messages: [{ role: "user", content: prompt }],
 			})
-			return { text: text.trim() }
+
+			const text = response.content
+				.flatMap((block) => (block.type === "text" ? [block.text] : []))
+				.join("")
+				.trim()
+
+			if (response.stop_reason === "refusal" || !text) return { error: "DIGEST_FAILED" }
+			return { text }
 		} catch {
 			return { error: "DIGEST_FAILED" }
 		}

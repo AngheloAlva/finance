@@ -240,9 +240,9 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 
 ## 19. Escaneo de recibos
 
-**Qué hace:** le sacás una foto a un ticket o subís un screenshot de un pago, y el sistema extrae monto, descripción, fecha y método de pago para **pre-cargar el formulario**. No guarda nada por su cuenta: completa los campos y vos confirmás.
+**Qué hace:** le sacás una foto a un ticket o subís un screenshot de un pago, y el sistema extrae monto, descripción, fecha, método de pago y categoría para **pre-cargar el formulario**. No guarda nada por su cuenta: completa los campos y vos confirmás.
 
-Funciona sobre `/api/scan-receipt` (route handler POST, multipart), que manda la imagen a un modelo de visión (Moonshot) con un prompt que fuerza una respuesta JSON de exactamente cuatro claves, y valida el resultado con Zod. Los campos que no se pueden determinar vuelven en `null` en vez de inventarse.
+Funciona sobre `/api/scan-receipt` (route handler POST, multipart), que manda la imagen a Claude con salida estructurada validada con Zod: monto, descripción, fecha, método de pago y categoría. La categoría se preselecciona entre las de gasto del usuario, y una regla aprendida tiene prioridad sobre la elección del modelo. El cliente reduce la foto antes de subirla. Los campos que no se pueden determinar vuelven en `null` en vez de inventarse.
 
 Normaliza formatos de número regionales, que es donde suelen fallar estos extractores:
 
@@ -287,4 +287,4 @@ Límites: solo imágenes, hasta 5 MB, y sesión requerida.
 
 ---
 
-**Stack:** Next.js 16.2 · React 19.2 · TypeScript 5 · Prisma 7.5 + Postgres (driver adapter `@prisma/adapter-pg`) · Better Auth 1.5 · next-intl 4 · shadcn/ui sobre Base UI · Tailwind 4 · Zod 4 · Vercel AI SDK 6 + Moonshot (visión) · Web Push · Recharts · @dnd-kit · Vitest 4.
+**Stack:** Next.js 16.2 · React 19.2 · TypeScript 5 · Prisma 7.5 + Postgres (driver adapter `@prisma/adapter-pg`) · Better Auth 1.5 · next-intl 4 · shadcn/ui sobre Base UI · Tailwind 4 · Zod 4 · Anthropic SDK (Claude) · Web Push · Recharts · @dnd-kit · Vitest 4.

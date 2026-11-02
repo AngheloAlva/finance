@@ -67,7 +67,7 @@ Detailed per-feature status and use cases live in **[FEATURES.md](./FEATURES.md)
 | UI | shadcn/ui on Base UI primitives · Tailwind CSS 4 · Lucide · Recharts · `@dnd-kit` |
 | Internationalization | next-intl 4 — `en` (default) and `es` |
 | Validation | Zod 4, shared between server actions and forms |
-| AI | Vercel AI SDK 6 with Moonshot vision, for receipt extraction |
+| AI | Anthropic SDK (Claude), for receipt extraction and the monthly digest |
 | Notifications | Web Push (`web-push`) behind a PWA service worker and manifest |
 | Tests | Vitest 4 — 51 test files against a real Postgres instance |
 

@@ -20,6 +20,7 @@ import { CategorySuggestion } from "@/features/categorization/components/categor
 import { useCategorySuggestion } from "@/features/categorization/hooks/use-category-suggestion"
 import { CategorySelect } from "@/features/categories/components/category-select"
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
+import { prepareReceiptImage } from "@/features/transactions/lib/prepare-receipt-image"
 import { createTransactionAction } from "@/features/transactions/actions/create-transaction.action"
 import { AmountInput } from "@/features/transactions/components/amount-input"
 import { getPaymentMethodOptions } from "@/features/transactions/lib/payment-method-options"
@@ -70,16 +71,17 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 		const file = e.target.files?.[0]
 		if (!file) return
 
-		if (file.size > MAX_RECEIPT_BYTES) {
-			toast.error(t("quickAdd.scanTooLarge"))
-			if (fileInputRef.current) fileInputRef.current.value = ""
-			return
-		}
-
 		setIsScanning(true)
 		try {
+			const image = await prepareReceiptImage(file)
+
+			if (image.size > MAX_RECEIPT_BYTES) {
+				toast.error(t("quickAdd.scanTooLarge"))
+				return
+			}
+
 			const formData = new FormData()
-			formData.append("image", file)
+			formData.append("image", image)
 
 			const res = await fetch("/api/scan-receipt", { method: "POST", body: formData })
 
@@ -94,6 +96,10 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 			if (data.description) setDescription(data.description)
 			if (data.paymentMethod) setPaymentMethod(data.paymentMethod as PaymentMethod)
 			if (data.date) setDate(data.date)
+			if (data.categoryId) {
+				setTxType(TransactionType.EXPENSE)
+				setCategoryId(data.categoryId)
+			}
 			if (typeof data.amount === "number" && Number.isFinite(data.amount) && data.amount > 0) {
 				setDefaultAmount(Math.round(data.amount * 100))
 			}
