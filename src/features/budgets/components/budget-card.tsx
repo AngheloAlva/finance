@@ -1,5 +1,6 @@
 "use client"
 
+import { localizeCategoryName } from "@/features/categories/lib/system-categories"
 import { useActionState, useEffect } from "react"
 import { Trash2 } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
@@ -47,7 +48,7 @@ export function BudgetCard({ item, currency }: BudgetCardProps) {
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-2">
 					<CategoryIcon icon={item.budget.category.icon} color={item.budget.category.color} />
-					<span className="text-sm font-medium">{item.budget.category.name}</span>
+					<span className="text-sm font-medium">{localizeCategoryName(item.budget.category, locale)}</span>
 					<Badge variant={STATUS_VARIANTS[item.status]}>
 						{t(`status.${item.status}`)}
 					</Badge>
@@ -59,7 +60,7 @@ export function BudgetCard({ item, currency }: BudgetCardProps) {
 						</Button>
 					}
 					title={t("deleteConfirmTitle")}
-					description={t("deleteConfirmDescription", { name: item.budget.category.name })}
+					description={t("deleteConfirmDescription", { name: localizeCategoryName(item.budget.category, locale) })}
 					onConfirm={handleDelete}
 					destructive
 					loading={isDeleting}

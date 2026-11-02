@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { getFinancialSnapshot } from "@/features/simulations/lib/simulations.queries";
 import { SimulationTabs } from "@/features/simulations/components/simulation-tabs";
@@ -9,7 +9,7 @@ export default async function SimulationsPage() {
   const t = await getTranslations("simulations");
   const session = await requireSession();
   const currency = (session.user.currency ?? "USD") as CurrencyCode;
-  const snapshot = await getFinancialSnapshot(session.user.id);
+  const snapshot = await getFinancialSnapshot(session.user.id, await getLocale());
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6">

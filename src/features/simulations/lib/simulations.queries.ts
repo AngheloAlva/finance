@@ -1,3 +1,4 @@
+import { localizeCategoryName } from "@/features/categories/lib/system-categories"
 import { GoalStatus, TransactionType } from "@/generated/prisma/enums"
 import type { RecurrenceFrequency } from "@/generated/prisma/enums"
 
@@ -42,7 +43,7 @@ function getMonthlyMultiplier(frequency: RecurrenceFrequency, interval: number):
 
 // ─── Main query ──────────────────────────────────────────────────────
 
-export async function getFinancialSnapshot(userId: string): Promise<FinancialSnapshot> {
+export async function getFinancialSnapshot(userId: string, locale: string): Promise<FinancialSnapshot> {
 	const now = new Date()
 	const threeMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 3, 1)
 
@@ -168,7 +169,7 @@ export async function getFinancialSnapshot(userId: string): Promise<FinancialSna
 			} else {
 				categoryMap.set(tx.categoryId, {
 					categoryId: tx.category.id,
-					categoryName: tx.category.name,
+					categoryName: localizeCategoryName(tx.category, locale),
 					categoryColor: tx.category.color,
 					categoryIcon: tx.category.icon,
 					isAvoidable: tx.category.isAvoidable,

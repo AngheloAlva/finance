@@ -1,5 +1,6 @@
 "use server";
 
+import { getLocale } from "next-intl/server";
 import { computeBudgetOptimizer } from "@/features/simulations/lib/budget-optimizer.compute";
 import { getFinancialSnapshot } from "@/features/simulations/lib/simulations.queries";
 import type { BudgetOptimizerResult } from "@/features/simulations/types/simulations.types";
@@ -12,7 +13,10 @@ export async function simulateBudgetOptimizerAction(
   const session = await requireSession();
 
   try {
-    const snapshot = await getFinancialSnapshot(session.user.id);
+    const snapshot = await getFinancialSnapshot(
+      session.user.id,
+      await getLocale(),
+    );
     const simulation = computeBudgetOptimizer(snapshot);
     return { success: true, data: simulation };
   } catch {

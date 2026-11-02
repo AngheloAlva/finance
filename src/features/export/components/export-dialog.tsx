@@ -2,7 +2,7 @@
 
 import { useState, type ReactElement } from "react"
 import { Download } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -34,6 +34,7 @@ interface ExportDialogProps {
 
 export function ExportDialog({ categories, tags, trigger }: ExportDialogProps) {
 	const t = useTranslations("export")
+	const locale = useLocale()
 	const tt = useTranslations("transactions")
 	const [open, setOpen] = useState(false)
 	const [isExporting, setIsExporting] = useState(false)
@@ -43,7 +44,7 @@ export function ExportDialog({ categories, tags, trigger }: ExportDialogProps) {
 	async function handleExport(formData: FormData) {
 		setIsExporting(true)
 		try {
-			const params = new URLSearchParams()
+			const params = new URLSearchParams({ locale })
 			const dateFrom = formData.get("dateFrom") as string
 			const dateTo = formData.get("dateTo") as string
 			const type = formData.get("type") as string

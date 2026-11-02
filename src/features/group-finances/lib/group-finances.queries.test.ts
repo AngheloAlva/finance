@@ -309,7 +309,7 @@ describe("getGroupCategoryBreakdown", () => {
     const user = await createUser()
     const group = await createGroup()
     await createGroupMember(user.id, group.id, "OWNER")
-    const result = await getGroupCategoryBreakdown(group.id, 4, 2026)
+    const result = await getGroupCategoryBreakdown(group.id, 4, 2026, "en")
     expect(result).toEqual([])
   })
 
@@ -335,7 +335,7 @@ describe("getGroupCategoryBreakdown", () => {
       date: APRIL_2026,
     })
 
-    const result = await getGroupCategoryBreakdown(group.id, 4, 2026)
+    const result = await getGroupCategoryBreakdown(group.id, 4, 2026, "en")
     expect(result).toHaveLength(2)
     expect(result[0].name).toBe("Food")
     expect(result[0].percentage).toBe(75)

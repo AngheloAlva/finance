@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +13,7 @@ export default async function CategoriesPage() {
   const [session, t] = await Promise.all([requireSession(), getTranslations("categories")]);
   const categories = (await getUserCategories(
     session.user.id,
+    await getLocale(),
   )) as CategoryWithChildren[];
 
   return (

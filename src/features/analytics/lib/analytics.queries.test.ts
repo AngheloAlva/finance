@@ -77,6 +77,7 @@ describe("getCategoryComparison", () => {
       user.id,
       { from: new Date(2026, 0, 1), to: new Date(2026, 1, 1) },
       { from: new Date(2026, 1, 1), to: new Date(2026, 2, 1) },
+      "en",
     )
 
     expect(items[0].categoryName).toBe("Food")
@@ -162,7 +163,7 @@ describe("getBudgetVsActual", () => {
       impactDate: new Date(2026, 3, 15),
     })
 
-    const items = await getBudgetVsActual(user.id, 4, 2026)
+    const items = await getBudgetVsActual(user.id, 4, 2026, "en")
     expect(items).toHaveLength(1)
     expect(items[0].budget).toBe(dollars(100))
     expect(items[0].actual).toBe(dollars(50))
@@ -203,7 +204,7 @@ describe("getMonthComparison", () => {
       impactDate: new Date(2026, 3, 15),
     })
 
-    const result = await getMonthComparison(user.id, 4, 2026)
+    const result = await getMonthComparison(user.id, 4, 2026, "en")
 
     expect(result.totalCurrentMonth).toBe(dollars(480))
     expect(result.totalPreviousMonth).toBe(dollars(300))
@@ -240,7 +241,7 @@ describe("detectRisingTrends", () => {
       })
     }
 
-    const trends = await detectRisingTrends(user.id, 4, 2026)
+    const trends = await detectRisingTrends(user.id, 4, 2026, "en")
 
     expect(trends.map((t) => t.categoryName)).toEqual(["Rising"])
     expect(trends[0].totalIncreasePercent).toBe(140)

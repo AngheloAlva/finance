@@ -1,5 +1,8 @@
 "use server"
 
+import { getLocale } from "next-intl/server"
+
+import { localizeCategoryName } from "@/features/categories/lib/system-categories"
 import { findMatchingRule } from "@/features/categorization/lib/categorization.engine"
 import { getActiveRulesForMatching } from "@/features/categorization/lib/categorization.queries"
 import type { CategorySuggestion } from "@/features/categorization/types/categorization.types"
@@ -24,7 +27,7 @@ export async function suggestCategoryAction(description: string): Promise<Catego
 	return {
 		ruleId: match.id,
 		categoryId: match.category.id,
-		categoryName: match.category.name,
+		categoryName: localizeCategoryName(match.category, await getLocale()),
 		categoryColor: match.category.color,
 		categoryIcon: match.category.icon,
 	}

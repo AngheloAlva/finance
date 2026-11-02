@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -22,7 +22,7 @@ export default async function CategorizationSettingsPage() {
 
 	const [rules, categories] = await Promise.all([
 		getUserRules(session.user.id),
-		getUserCategories(session.user.id),
+		getUserCategories(session.user.id, await getLocale()),
 	])
 
 	const typedCategories = categories as CategoryWithChildren[]

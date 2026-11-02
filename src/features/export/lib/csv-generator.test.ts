@@ -34,12 +34,12 @@ function makeTx(overrides: Partial<TransactionWithCategory> = {}): TransactionWi
 
 describe("generateTransactionsCsv", () => {
   it("returns just headers when no transactions", () => {
-    const csv = generateTransactionsCsv([], "USD")
+    const csv = generateTransactionsCsv([], "USD", "en")
     expect(csv).toBe(HEADERS)
   })
 
   it("emits a header line followed by one row per transaction", () => {
-    const csv = generateTransactionsCsv([makeTx()], "USD")
+    const csv = generateTransactionsCsv([makeTx()], "USD", "en")
     const lines = csv.split("\n")
     expect(lines).toHaveLength(2)
     expect(lines[0]).toBe(HEADERS)
@@ -51,10 +51,10 @@ describe("generateTransactionsCsv", () => {
   })
 
   it("formats amount as decimal cents based on currency (zero-decimal preserves integer)", () => {
-    const usd = generateTransactionsCsv([makeTx({ amount: 5000 })], "USD")
+    const usd = generateTransactionsCsv([makeTx({ amount: 5000 })], "USD", "en")
     expect(usd.split("\n")[1]).toContain(",50.00,")
 
-    const jpy = generateTransactionsCsv([makeTx({ amount: 5000 })], "JPY")
+    const jpy = generateTransactionsCsv([makeTx({ amount: 5000 })], "JPY", "en")
     expect(jpy.split("\n")[1]).toContain(",5000,")
   })
 
@@ -63,7 +63,7 @@ describe("generateTransactionsCsv", () => {
       description: 'Tea, hot "extra"',
       notes: "line1\nline2",
     })
-    const csv = generateTransactionsCsv([tx], "USD")
+    const csv = generateTransactionsCsv([tx], "USD", "en")
     expect(csv).toContain('"Tea, hot ""extra"""')
     expect(csv).toContain('"line1\nline2"')
   })
@@ -75,7 +75,7 @@ describe("generateTransactionsCsv", () => {
         { tag: { id: "t2", name: "reembolsable", color: "#fff" } },
       ],
     })
-    const row = generateTransactionsCsv([tx], "USD").split("\n")[1]
+    const row = generateTransactionsCsv([tx], "USD", "en").split("\n")[1]
     expect(row).toContain("trip; reembolsable")
   })
 
@@ -83,20 +83,31 @@ describe("generateTransactionsCsv", () => {
     const tx = makeTx({
       creditCard: { name: "Visa Gold", lastFourDigits: "4242", color: "#000" },
     })
-    const row = generateTransactionsCsv([tx], "USD").split("\n")[1]
+    const row = generateTransactionsCsv([tx], "USD", "en").split("\n")[1]
     expect(row).toContain("Visa Gold *4242")
   })
 
   it("leaves credit card and notes columns empty when missing", () => {
     const tx = makeTx({ description: "plain" })
-    const row = generateTransactionsCsv([tx], "USD").split("\n")[1]
+    const row = generateTransactionsCsv([tx], "USD", "en").split("\n")[1]
     // Trailing fields: ...,paymentMethod,,, (empty creditCard, tags, notes)
     expect(row.endsWith(",CASH,,,")).toBe(true)
   })
 
   it("renders dates in ISO YYYY-MM-DD format", () => {
     const tx = makeTx({ date: new Date("2026-01-05T23:30:00Z") })
-    const row = generateTransactionsCsv([tx], "USD").split("\n")[1]
+    const row = generateTransactionsCsv([tx], "USD", "en").split("\n")[1]
     expect(row.startsWith("2026-01-05,")).toBe(true)
   })
+
+	it("writes system category names in the requested locale", () => {
+		const base = makeTx()
+		const tx = {
+			...base,
+			category: { ...base.category, id: "sys_cat_groceries", name: "Groceries" },
+		}
+
+		expect(generateTransactionsCsv([tx], "USD", "es")).toContain("Supermercado")
+		expect(generateTransactionsCsv([tx], "USD", "en")).toContain("Groceries")
+	})
 })

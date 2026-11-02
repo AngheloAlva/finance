@@ -1,5 +1,6 @@
 "use server";
 
+import { getLocale } from "next-intl/server";
 import { savingsGoalInputSchema } from "@/features/simulations/lib/simulations.schemas";
 import { getFinancialSnapshot } from "@/features/simulations/lib/simulations.queries";
 import { computeSavingsGoal } from "@/features/simulations/lib/savings-projection.compute";
@@ -27,7 +28,10 @@ export async function simulateSavingsGoalAction(
   const session = await requireSession();
 
   try {
-    const snapshot = await getFinancialSnapshot(session.user.id);
+    const snapshot = await getFinancialSnapshot(
+      session.user.id,
+      await getLocale(),
+    );
 
     // Validate goal belongs to user
     const goal = snapshot.goals.find((g) => g.id === result.data.goalId);

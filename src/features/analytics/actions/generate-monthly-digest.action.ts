@@ -24,7 +24,7 @@ const buildDigest = unstable_cache(
 
 		const [overview, comparison] = await Promise.all([
 			getMonthlyOverview(userId, month, year),
-			getMonthComparison(userId, month, year),
+			getMonthComparison(userId, month, year, locale),
 		])
 
 		const savingsRate =

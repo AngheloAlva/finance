@@ -1,3 +1,4 @@
+import { localizeCategoryName } from "@/features/categories/lib/system-categories"
 import { Pencil } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
@@ -139,7 +140,7 @@ export async function CreditCardDetail({
                       {tx.description}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {formatDate(tx.date, "short", locale)} - {tx.category.name}
+                      {formatDate(tx.date, "short", locale)} - {localizeCategoryName(tx.category, locale)}
                     </span>
                   </div>
                   <span className="text-sm font-semibold">

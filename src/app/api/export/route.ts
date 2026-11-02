@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 import { generateTransactionsCsv } from "@/features/export/lib/csv-generator"
 import { exportFiltersSchema } from "@/features/export/lib/export.schema"
 import { getTransactions } from "@/features/transactions/lib/transactions.queries"
+import { routing } from "@/i18n/routing"
 import { requireSession } from "@/shared/lib/auth"
 import type { CurrencyCode } from "@/shared/lib/constants"
 
@@ -11,6 +12,8 @@ export async function GET(request: Request) {
 	const currency = (session.user.currency ?? "USD") as CurrencyCode
 
 	const { searchParams } = new URL(request.url)
+	// API routes bypass the locale proxy, so the client sends its locale.
+	const locale = searchParams.get("locale") ?? routing.defaultLocale
 	const rawFilters = {
 		dateFrom: searchParams.get("dateFrom") || undefined,
 		dateTo: searchParams.get("dateTo") || undefined,
@@ -31,7 +34,7 @@ export async function GET(request: Request) {
 		{ page: 1, pageSize: 10000 },
 	)
 
-	const csv = generateTransactionsCsv(data, currency)
+	const csv = generateTransactionsCsv(data, currency, locale)
 
 	const timestamp = new Date().toISOString().split("T")[0]
 	const filename = `transactions-${timestamp}.csv`

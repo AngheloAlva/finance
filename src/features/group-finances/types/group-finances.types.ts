@@ -19,7 +19,7 @@ export interface SplitDetail {
 // ---------------------------------------------------------------------------
 
 export type TransactionWithSplits = Transaction & {
-	category: { name: string; icon: string; color: string }
+	category: { id: string; name: string; icon: string; color: string }
 	splits: SplitDetail[]
 	payer: { name: string | null; email: string }
 }

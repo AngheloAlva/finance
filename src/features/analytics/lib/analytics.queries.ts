@@ -1,3 +1,4 @@
+import { localizeCategoryName } from "@/features/categories/lib/system-categories";
 import { GoalStatus, TransactionType } from "@/generated/prisma/enums";
 import { prisma } from "@/shared/lib/prisma";
 
@@ -245,6 +246,7 @@ export async function getCategoryComparison(
   userId: string,
   period1: DateRange,
   period2: DateRange,
+  locale: string,
 ): Promise<CategoryComparisonItem[]> {
   const baseWhere = {
     userId,
@@ -301,7 +303,7 @@ export async function getCategoryComparison(
 
       return {
         categoryId,
-        categoryName: category?.name ?? "Unknown",
+        categoryName: category ? localizeCategoryName(category, locale) : "Unknown",
         categoryColor: category?.color ?? "#6b7280",
         period1Total: p1,
         period2Total: p2,
@@ -414,6 +416,7 @@ export async function getBudgetVsActual(
   userId: string,
   month: number,
   year: number,
+  locale: string,
 ): Promise<BudgetVsActualItem[]> {
   const { start, end } = getMonthRange(month, year);
 
@@ -454,7 +457,7 @@ export async function getBudgetVsActual(
 
     return {
       categoryId: category.id,
-      categoryName: category.name,
+      categoryName: localizeCategoryName(category, locale),
       categoryColor: category.color,
       categoryIcon: category.icon,
       budget,
@@ -723,6 +726,7 @@ export async function getMonthComparison(
   userId: string,
   month: number,
   year: number,
+  locale: string,
 ): Promise<MonthComparisonResult> {
   const currentStart = new Date(year, month - 1, 1);
   const currentEnd = new Date(year, month, 1);
@@ -793,7 +797,7 @@ export async function getMonthComparison(
 
     items.push({
       categoryId,
-      categoryName: category.name,
+      categoryName: localizeCategoryName(category, locale),
       categoryColor: category.color,
       categoryIcon: category.icon,
       currentAmount,
@@ -806,7 +810,7 @@ export async function getMonthComparison(
   // Sort by absolute change descending so biggest movers come first
   items.sort((a, b) => Math.abs(b.changePercent) - Math.abs(a.changePercent));
 
-  const trends = await detectRisingTrends(userId, month, year);
+  const trends = await detectRisingTrends(userId, month, year, locale);
 
   return {
     items,
@@ -826,6 +830,7 @@ export async function detectRisingTrends(
   userId: string,
   month: number,
   year: number,
+  locale: string,
 ): Promise<TrendAlert[]> {
   // Build ranges for last 3 months (including the given month)
   const ranges = Array.from({ length: 3 }, (_, i) => {
@@ -890,7 +895,7 @@ export async function detectRisingTrends(
 
     trends.push({
       categoryId,
-      categoryName: category.name,
+      categoryName: localizeCategoryName(category, locale),
       categoryColor: category.color,
       monthlyAmounts: amounts,
       totalIncreasePercent,

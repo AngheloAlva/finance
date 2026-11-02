@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { requireSession } from "@/shared/lib/auth"
@@ -67,6 +67,7 @@ function parseMonthYear(params: Record<string, string | string[] | undefined>) {
 
 export default async function DashboardPage({ searchParams }: DashboardPageProps) {
 	const session = await requireSession()
+	const locale = await getLocale()
 	const rawParams = await searchParams
 	const { month, year } = parseMonthYear(rawParams)
 	const currency = (session.user.currency ?? "USD") as CurrencyCode
@@ -106,7 +107,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 	] = await Promise.all([
 		needs("overview") ? getMonthlyOverview(session.user.id, month, year) : null,
 		needs("accumulatedBalance") ? getAccumulatedBalance(session.user.id) : null,
-		needs("categoryBreakdown") ? getCategoryBreakdown(session.user.id, month, year) : null,
+		needs("categoryBreakdown") ? getCategoryBreakdown(session.user.id, month, year, locale) : null,
 		needs("monthlyFlow") ? getMonthlyFlow(session.user.id, month, year) : null,
 		needs("recentTransactions") ? getRecentTransactions(session.user.id) : null,
 		getCreditCards(session.user.id),
@@ -115,7 +116,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 		needs("financialHealth") ? getFinancialHealthScore(session.user.id) : null,
 		getPendingSuggestions(session.user.id),
 		needs("budgetSummary") ? getBudgetSummary(session.user.id, month, year) : null,
-		needs("monthComparison") ? getMonthComparison(session.user.id, month, year) : null,
+		needs("monthComparison") ? getMonthComparison(session.user.id, month, year, locale) : null,
 	])
 
 	// Check alerts in the background (fire-and-forget)

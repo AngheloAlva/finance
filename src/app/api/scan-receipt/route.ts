@@ -53,7 +53,7 @@ Mapping rules for paymentMethod:
 Use null (not an empty string, not "N/A") for any field you cannot determine.`
 
 async function getExpenseCategoryOptions(userId: string) {
-	const categories = await getUserCategories(userId).catch(() => [])
+	const categories = await getUserCategories(userId, "en").catch(() => [])
 	const namesById = new Map(categories.map((category) => [category.id, category.name]))
 
 	return categories

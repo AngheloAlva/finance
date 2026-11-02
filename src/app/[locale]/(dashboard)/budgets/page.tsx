@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -36,7 +36,7 @@ export default async function BudgetsPage({ searchParams }: BudgetsPageProps) {
 
 	const [budgets, categories] = await Promise.all([
 		getBudgetsWithSpending(session.user.id, month, year),
-		getUserCategories(session.user.id),
+		getUserCategories(session.user.id, await getLocale()),
 	])
 
 	const typedCategories = categories as CategoryWithChildren[]

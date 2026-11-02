@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
 import { getUserCategories } from "@/features/categories/lib/categories.queries";
@@ -21,7 +21,7 @@ export default async function RecurringPage() {
   const [templates, pending, categories] = await Promise.all([
     getRecurringTemplates(session.user.id),
     getPendingGenerations(session.user.id),
-    getUserCategories(session.user.id),
+    getUserCategories(session.user.id, await getLocale()),
   ]);
 
   const currency = (session.user.currency ?? "USD") as CurrencyCode;

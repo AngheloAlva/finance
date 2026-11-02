@@ -1,5 +1,6 @@
 "use server";
 
+import { getLocale } from "next-intl/server";
 import { computeIncomeChange } from "@/features/simulations/lib/income-impact.compute";
 import { incomeChangeInputSchema } from "@/features/simulations/lib/simulations.schemas";
 import { getFinancialSnapshot } from "@/features/simulations/lib/simulations.queries";
@@ -25,7 +26,10 @@ export async function simulateIncomeChangeAction(
   const session = await requireSession();
 
   try {
-    const snapshot = await getFinancialSnapshot(session.user.id);
+    const snapshot = await getFinancialSnapshot(
+      session.user.id,
+      await getLocale(),
+    );
     const simulation = computeIncomeChange(snapshot, result.data);
     return { success: true, data: simulation };
   } catch {

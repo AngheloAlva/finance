@@ -12,7 +12,7 @@ describe("getUserCategories", () => {
     await createCategory(user.id, { name: "Food", scope: "USER" })
     await createCategory(null, { name: "System Travel", scope: "SYSTEM" })
 
-    const cats = await getUserCategories(user.id)
+    const cats = await getUserCategories(user.id, "en")
 
     const names = cats.map((c) => c.name)
     expect(names).toContain("Food")
@@ -25,7 +25,7 @@ describe("getUserCategories", () => {
     await createCategory(userA.id, { name: "A-Only", scope: "USER" })
     await createCategory(userB.id, { name: "B-Only", scope: "USER" })
 
-    const cats = await getUserCategories(userA.id)
+    const cats = await getUserCategories(userA.id, "en")
 
     expect(cats.map((c) => c.name)).toContain("A-Only")
     expect(cats.map((c) => c.name)).not.toContain("B-Only")

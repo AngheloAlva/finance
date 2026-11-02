@@ -1,5 +1,6 @@
 "use client"
 
+import { localizeCategoryName } from "@/features/categories/lib/system-categories"
 import { useSearchParams } from "next/navigation"
 import { useRouter } from "@/i18n/navigation"
 import { useLocale, useTranslations } from "next-intl"
@@ -178,7 +179,7 @@ export function TransactionTable({ transactions, categories, creditCards, tags, 
 						<TableCell>
 							<span className="inline-flex items-center gap-1.5">
 								<CategoryIcon icon={tx.category.icon} color={tx.category.color} />
-								<span>{tx.category.name}</span>
+								<span>{localizeCategoryName(tx.category, locale)}</span>
 							</span>
 						</TableCell>
 						<TableCell>

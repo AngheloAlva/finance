@@ -1,5 +1,6 @@
 "use client";
 
+import { localizeCategoryName } from "@/features/categories/lib/system-categories"
 import { useState } from "react";
 import { ChevronDown, ChevronRight, Trash2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -153,7 +154,7 @@ function TransactionRow({
         <TableCell>
           <span className="inline-flex items-center gap-1.5">
             <CategoryIcon icon={tx.category.icon} color={tx.category.color} />
-            <span>{tx.category.name}</span>
+            <span>{localizeCategoryName(tx.category, locale)}</span>
           </span>
         </TableCell>
         <TableCell>{tx.payer.name ?? tx.payer.email}</TableCell>

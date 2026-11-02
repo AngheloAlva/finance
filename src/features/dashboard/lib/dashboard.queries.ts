@@ -1,3 +1,4 @@
+import { localizeCategoryName } from "@/features/categories/lib/system-categories";
 import { TransactionType } from "@/generated/prisma/enums";
 import { prisma } from "@/shared/lib/prisma";
 import type { TransactionWithCategory } from "@/features/transactions/types/transactions.types";
@@ -54,6 +55,7 @@ export async function getCategoryBreakdown(
   userId: string,
   month: number,
   year: number,
+  locale: string,
 ): Promise<CategoryBreakdownItem[]> {
   const { start, end } = getMonthRange(month, year);
 
@@ -92,7 +94,7 @@ export async function getCategoryBreakdown(
 
       return {
         categoryId: g.categoryId,
-        categoryName: category?.name ?? "Unknown",
+        categoryName: category ? localizeCategoryName(category, locale) : "Unknown",
         categoryColor: category?.color ?? "#6b7280",
         categoryIcon: category?.icon ?? "circle",
         total,

@@ -1,8 +1,9 @@
 "use client"
 
+import { localizeCategoryName } from "@/features/categories/lib/system-categories"
 import { useActionState, useEffect } from "react"
 import { Pencil, Trash2 } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { Badge } from "@/components/ui/badge"
@@ -24,6 +25,7 @@ interface RuleListProps {
 
 export function RuleList({ rules, categories }: RuleListProps) {
 	const t = useTranslations("categorization")
+	const locale = useLocale()
 	const [deleteState, deleteAction, isDeleting] = useActionState(deleteRuleAction, INITIAL_VOID_STATE)
 
 	useEffect(() => {
@@ -68,7 +70,7 @@ export function RuleList({ rules, categories }: RuleListProps) {
 								className="inline-block size-2 rounded-none"
 								style={{ backgroundColor: rule.category.color }}
 							/>
-							<span>{rule.category.name}</span>
+							<span>{localizeCategoryName(rule.category, locale)}</span>
 						</div>
 					</div>
 

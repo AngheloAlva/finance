@@ -1,3 +1,4 @@
+import { localizeCategoryName } from "@/features/categories/lib/system-categories"
 import type { TransactionWithCategory } from "@/features/transactions/types/transactions.types"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { centsToDisplay } from "@/shared/lib/formatters"
@@ -38,6 +39,7 @@ function formatDateIso(date: Date): string {
 export function generateTransactionsCsv(
 	transactions: TransactionWithCategory[],
 	currency: CurrencyCode,
+	locale: string,
 ): string {
 	const rows: string[] = [CSV_HEADERS.join(",")]
 
@@ -52,7 +54,7 @@ export function generateTransactionsCsv(
 			escapeCsvField(tx.description),
 			centsToDisplay(tx.amount, currency),
 			tx.type,
-			escapeCsvField(tx.category.name),
+			escapeCsvField(localizeCategoryName(tx.category, locale)),
 			tx.paymentMethod,
 			escapeCsvField(creditCardLabel),
 			escapeCsvField(tagNames),

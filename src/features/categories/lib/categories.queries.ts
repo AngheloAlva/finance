@@ -1,9 +1,10 @@
+import { localizeCategories } from "@/features/categories/lib/system-categories";
 import type { Category } from "@/generated/prisma/client";
 import { CategoryScope } from "@/generated/prisma/enums";
 import { prisma } from "@/shared/lib/prisma";
 import type { ActionResult } from "@/shared/types/common.types";
 
-export async function getUserCategories(userId: string) {
+export async function getUserCategories(userId: string, locale: string) {
   const memberships = await prisma.groupMember.findMany({
     where: { userId },
     select: { groupId: true },
@@ -11,7 +12,7 @@ export async function getUserCategories(userId: string) {
 
   const userGroupIds = memberships.map((m) => m.groupId);
 
-  return prisma.category.findMany({
+  const categories = await prisma.category.findMany({
     where: {
       OR: [
         { scope: CategoryScope.SYSTEM },
@@ -26,8 +27,9 @@ export async function getUserCategories(userId: string) {
         orderBy: { name: "asc" },
       },
     },
-    orderBy: { name: "asc" },
   });
+
+  return localizeCategories(categories, locale);
 }
 
 export async function getCategoryById(id: string) {

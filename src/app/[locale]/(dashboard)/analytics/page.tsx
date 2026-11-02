@@ -72,12 +72,13 @@ export default async function AnalyticsPage({
       session.user.id,
       { from: period1From, to: period1To },
       { from: period2From, to: period2To },
+      locale,
     ),
     getDailySpending(session.user.id, from, to),
     getNetWorthTimeline(session.user.id),
-    getBudgetVsActual(session.user.id, currentMonth, currentYear),
+    getBudgetVsActual(session.user.id, currentMonth, currentYear, locale),
     getFinancialHealthScore(session.user.id),
-    getMonthComparison(session.user.id, currentMonth, currentYear),
+    getMonthComparison(session.user.id, currentMonth, currentYear, locale),
   ]);
 
   const fromStr = from.toISOString().split("T")[0];

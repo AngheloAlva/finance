@@ -18,7 +18,7 @@ import {
 describe("getFinancialSnapshot", () => {
   it("returns zero/empty snapshot for a user with no data", async () => {
     const user = await createUser()
-    const snap = await getFinancialSnapshot(user.id)
+    const snap = await getFinancialSnapshot(user.id, "en")
 
     expect(snap.monthlyIncome).toBe(0)
     expect(snap.monthlyExpenses).toBe(0)
@@ -59,7 +59,7 @@ describe("getFinancialSnapshot", () => {
       date: daysFromNow(-40),
     })
 
-    const snap = await getFinancialSnapshot(user.id)
+    const snap = await getFinancialSnapshot(user.id, "en")
 
     expect(snap.monthlyIncome).toBe(dollars(1000))
     expect(snap.monthlyExpenses).toBe(dollars(200))
@@ -90,7 +90,7 @@ describe("getFinancialSnapshot", () => {
       })
     }
 
-    const snap = await getFinancialSnapshot(user.id)
+    const snap = await getFinancialSnapshot(user.id, "en")
 
     expect(snap.outstandingInstallments).toHaveLength(1)
     expect(snap.outstandingInstallments[0]).toEqual(
@@ -120,7 +120,7 @@ describe("getFinancialSnapshot", () => {
       nextGenerationDate: daysFromNow(7),
     })
 
-    const snap = await getFinancialSnapshot(user.id)
+    const snap = await getFinancialSnapshot(user.id, "en")
 
     const weekly = snap.recurringObligations.find((r) => r.monthlyAmount > dollars(40))
     const annual = snap.recurringObligations.find((r) => r.monthlyAmount === dollars(5))
@@ -139,7 +139,7 @@ describe("getFinancialSnapshot", () => {
     await createGoalContribution(user.id, goal.id, { amount: dollars(200) })
     await createGoalContribution(user.id, goal.id, { amount: dollars(100) })
 
-    const snap = await getFinancialSnapshot(user.id)
+    const snap = await getFinancialSnapshot(user.id, "en")
 
     expect(snap.goals).toHaveLength(1)
     expect(snap.goals[0].currentAmount).toBe(dollars(300))
@@ -159,7 +159,7 @@ describe("getFinancialSnapshot", () => {
       data: { isActive: false },
     })
 
-    const snap = await getFinancialSnapshot(user.id)
+    const snap = await getFinancialSnapshot(user.id, "en")
 
     expect(snap.totalInvestmentValue).toBe(dollars(700))
     expect(snap.creditCards).toEqual([])

@@ -1,5 +1,5 @@
 import { Download, Plus } from "lucide-react"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import { Link } from "@/i18n/navigation"
 
@@ -35,7 +35,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 
 	const [result, categories, creditCards, tags] = await Promise.all([
 		getTransactions(session.user.id, filters, pagination),
-		getUserCategories(session.user.id),
+		getUserCategories(session.user.id, await getLocale()),
 		getCreditCards(session.user.id),
 		getUserTagOptions(session.user.id),
 	])

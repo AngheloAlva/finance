@@ -1,5 +1,6 @@
 "use client"
 
+import { localizeCategoryName } from "@/features/categories/lib/system-categories"
 import { useActionState, useEffect } from "react"
 import { Check, X } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
@@ -67,7 +68,7 @@ export function SuggestionCard({ template, currency }: SuggestionCardProps) {
 							className="inline-block size-2 rounded-none"
 							style={{ backgroundColor: template.category.color }}
 						/>
-						<span>{template.category.name}</span>
+						<span>{localizeCategoryName(template.category, locale)}</span>
 						<span>·</span>
 						<span>{frequencyText}</span>
 					</div>

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { GroupBalanceSummary } from "@/features/group-finances/components/group-balance-summary";
 import { GroupCategoryChart } from "@/features/group-finances/components/group-category-chart";
@@ -48,6 +48,7 @@ export default async function GroupDashboardPage({
   searchParams,
 }: GroupDashboardPageProps) {
   const session = await requireSession();
+  const locale = await getLocale();
   const { id } = await params;
   const rawParams = await searchParams;
   const { month, year } = parseMonthYear(rawParams);
@@ -61,7 +62,7 @@ export default async function GroupDashboardPage({
   const [overview, categoryBreakdown, monthlyFlow, balances, group] =
     await Promise.all([
       getGroupOverview(id, month, year),
-      getGroupCategoryBreakdown(id, month, year),
+      getGroupCategoryBreakdown(id, month, year, locale),
       getGroupMonthlyFlow(id, month, year),
       getMemberBalances(id),
       prisma.group.findUnique({

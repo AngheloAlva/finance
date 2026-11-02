@@ -93,7 +93,7 @@ describe("getMonthlyOverview", () => {
 describe("getCategoryBreakdown", () => {
   it("returns an empty array when no expenses exist", async () => {
     const user = await createUser()
-    const result = await getCategoryBreakdown(user.id, 4, 2026)
+    const result = await getCategoryBreakdown(user.id, 4, 2026, "en")
     expect(result).toEqual([])
   })
 
@@ -115,7 +115,7 @@ describe("getCategoryBreakdown", () => {
       impactDate: APRIL_2026,
     })
 
-    const result = await getCategoryBreakdown(user.id, 4, 2026)
+    const result = await getCategoryBreakdown(user.id, 4, 2026, "en")
     expect(result).toHaveLength(2)
     expect(result[0].categoryName).toBe("Food")
     expect(result[0].total).toBe(dollars(80))
@@ -146,7 +146,7 @@ describe("getCategoryBreakdown", () => {
       categoryId: cat.id,
       impactDate: MARCH_2026,
     })
-    const result = await getCategoryBreakdown(user.id, 4, 2026)
+    const result = await getCategoryBreakdown(user.id, 4, 2026, "en")
     expect(result).toEqual([])
   })
 })

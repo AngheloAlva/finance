@@ -1,3 +1,4 @@
+import { localizeCategoryName } from "@/features/categories/lib/system-categories"
 import type { Prisma } from "@/generated/prisma/client"
 
 import { prisma } from "@/shared/lib/prisma"
@@ -57,7 +58,7 @@ export async function getGroupTransactions(
 			take,
 			include: {
 				category: {
-					select: { name: true, icon: true, color: true },
+					select: { id: true, name: true, icon: true, color: true },
 				},
 				splits: {
 					include: {
@@ -242,7 +243,8 @@ export async function getGroupOverview(
 export async function getGroupCategoryBreakdown(
 	groupId: string,
 	month: number,
-	year: number
+	year: number,
+	locale: string
 ): Promise<GroupCategoryBreakdownItem[]> {
 	const { start, end } = getMonthRange(month, year)
 
@@ -277,7 +279,7 @@ export async function getGroupCategoryBreakdown(
 
 			return {
 				categoryId: g.categoryId,
-				name: category?.name ?? "Unknown",
+				name: category ? localizeCategoryName(category, locale) : "Unknown",
 				icon: category?.icon ?? "circle",
 				color: category?.color ?? "#6b7280",
 				total,
