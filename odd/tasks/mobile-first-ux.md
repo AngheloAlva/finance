@@ -23,4 +23,5 @@ Branch: feat/mobile-first-ux. Delivery strategy: ask-on-risk. Test runner: vites
 - L1 (2026-11-02): "No tengo nada mas especifico realmente, le daria una pulida a la UI/UX principalmente porque puede que haya mucha cosa y podria ser mas eficiente a nivel de uso y mejor a nivel visual"
 - L2 (2026-11-02): "Creo lo mismo, priorizar el telefono proque es donde se usara mas, desktop es para analisis mas que nada"
 - L3: Route inline for all tasks: no Writer trigger, tasks share the layout and tokens. Category work committed first on this branch.
+- L5: Native review on request: reliability lens found the stale desktop Type header, fixed in e9fcfa8 and approved.
 - L4: Verified in browser at 390px: Quick Add saved with picked category and method, search, Limpiar, Más menu, categories by type; desktop dashboard at 1440px. Hero budget mode covered by unit tests only, demo data has no budgets. Full vitest suite blocked by unreachable Neon test database.
