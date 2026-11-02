@@ -113,7 +113,7 @@ In `category-form.tsx`, add `{ value: "TRANSFER", label: t("form.transfer") }` t
 
 ### Step 4: Empty state in `CategorySelect`
 
-In `category-select.tsx`, when `categories.length === 0`, render instead of the Select a bordered hint box: text `t("select.empty")` plus a link to `/categories` (use `Link` from `@/i18n/navigation` — same import style as `src/app/[locale]/(dashboard)/budgets/page.tsx:12`). Keep the hidden field absent — the form's required validation still fires, but the user now knows why. Add `categories.select.empty` to both message files (en: "No categories yet — create one first", es: "Todavía no hay categorías — creá una primero" — NOTE: neutral Spanish "crea una primero" is fine too; match the tone of existing es.json strings, check how es.json phrases imperatives).
+In `category-select.tsx`, when `categories.length === 0`, render instead of the Select a bordered hint box: text `t("select.empty")` plus a link to `/categories` (use `Link` from `@/i18n/navigation` — same import style as `src/app/[locale]/(dashboard)/budgets/page.tsx:12`). Keep the hidden field absent — the form's required validation still fires, but the user now knows why. Add `categories.select.empty` to both message files (en: "No categories yet — create one first", es: "Todavía no hay categorías — crea una primero" — NOTE: neutral Spanish "crea una primero" is fine too; match the tone of existing es.json strings, check how es.json phrases imperatives).
 
 **Verify**: `pnpm exec tsc --noEmit` → exit 0.
 

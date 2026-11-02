@@ -13,7 +13,7 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 **Casos de uso:**
 - Crear una cuenta y empezar a registrar movimientos en tu moneda local (USD por default, configurable).
 - Mantener sesión entre dispositivos.
-- Cambiar moneda/timezone desde Settings cuando viajás o te mudás.
+- Cambiar moneda/timezone desde Settings cuando viajas o te mudas.
 
 **Estado:** ✅ usable end-to-end.
 
@@ -37,8 +37,8 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 **Qué hace:** árbol de categorías con scope SYSTEM / GROUP / USER, ícono, color, threshold de alerta, flags `isRecurring` e `isAvoidable`. Categorías padre/hijo.
 
 **Casos de uso:**
-- "Comida" como padre, "Delivery" e "Super" como hijos → mirás el total agregado o el desglose.
-- Marcar "Delivery" como `isAvoidable` para después medir cuánto gastás en cosas evitables.
+- "Comida" como padre, "Delivery" e "Super" como hijos → miras el total agregado o el desglose.
+- Marcar "Delivery" como `isAvoidable` para después medir cuánto gastas en cosas evitables.
 - Threshold por categoría: que te avise cuando te pasaste del límite mensual de "Salidas".
 
 **Estado:** ✅ funcional, separadas por gastos, ingresos y transferencias, con más de 150 categorías base en español e inglés. El catálogo vive en `src/features/categories/lib/system-categories.ts`, lo escribe el seed y la app traduce los nombres según el idioma activo; las categorías propias se muestran tal como se escribieron.
@@ -110,7 +110,7 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 **Qué hace:** objetivos con monto target, deadline opcional, contribuciones puntuales. Status ACTIVE / COMPLETED / CANCELLED.
 
 **Casos de uso:**
-- "Juntar USD 3000 para vacaciones a fin de año" → cargás contribuciones, ves progreso, te avisa al 50/75/100%.
+- "Juntar USD 3000 para vacaciones a fin de año" → cargas contribuciones, ves progreso, te avisa al 50/75/100%.
 - Goal compartido con un grupo (ej. fondo común con tu pareja).
 
 **Estado:** ✅ funcional con alertas de milestone/deadline.
@@ -137,7 +137,7 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 **Casos de uso:**
 - Pareja que quiere ver gastos del hogar separados de los personales.
 - Roommates que dividen alquiler y servicios — el sistema calcula quién le debe a quién.
-- Viaje entre amigos: cargás los gastos en el grupo y al final ves saldos.
+- Viaje entre amigos: cargas los gastos en el grupo y al final ves saldos.
 
 **Estado:** ✅ uno de los puntos diferenciales del proyecto, totalmente funcional.
 
@@ -240,7 +240,7 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 
 ## 19. Escaneo de recibos
 
-**Qué hace:** le sacás una foto a un ticket o subís un screenshot de un pago, y el sistema extrae monto, descripción, fecha, método de pago y categoría para **pre-cargar el formulario**. No guarda nada por su cuenta: completa los campos y vos confirmás.
+**Qué hace:** le sacas una foto a un ticket o subes un screenshot de un pago, y el sistema extrae monto, descripción, fecha, método de pago y categoría para **pre-cargar el formulario**. No guarda nada por su cuenta: completa los campos y tú confirmas.
 
 Funciona sobre `/api/scan-receipt` (route handler POST, multipart), que manda la imagen a Claude con salida estructurada validada con Zod: monto, descripción, fecha, método de pago y categoría. La categoría se preselecciona entre las de gasto del usuario, y una regla aprendida tiene prioridad sobre la elección del modelo. El cliente reduce la foto antes de subirla. Los campos que no se pueden determinar vuelven en `null` en vez de inventarse.
 
@@ -253,7 +253,7 @@ Normaliza formatos de número regionales, que es donde suelen fallar estos extra
 Límites: solo imágenes, hasta 5 MB, y sesión requerida.
 
 **Casos de uso:**
-- Pagás en el super y tirás la foto del ticket en el Quick Add: quedan cargados el monto, el comercio y la fecha.
+- Pagas en el super y tiras la foto del ticket en el Quick Add: quedan cargados el monto, el comercio y la fecha.
 - Screenshot de una transferencia → el método de pago ya viene como TRANSFER.
 - Cargar el gasto en el momento, sin tipear nada en el teléfono.
 
