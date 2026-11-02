@@ -191,7 +191,6 @@ export function TransactionTable({ transactions, categories, creditCards, tags, 
 								{t("table.amount")} {renderSortIcon("amount")}
 							</button>
 						</TableHead>
-						<TableHead>{t("table.type")}</TableHead>
 						<TableHead>{t("table.method")}</TableHead>
 						<TableHead className="w-20">{t("table.actions")}</TableHead>
 					</TableRow>
