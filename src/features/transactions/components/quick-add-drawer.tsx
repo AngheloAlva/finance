@@ -32,7 +32,7 @@ export function QuickAddDrawer({ categories }: QuickAddDrawerProps) {
 			<DrawerTrigger asChild>
 				<button
 					aria-label={t("quickAdd.title")}
-					className="animate-in fade-in-0 zoom-in-95 bg-foreground text-background focus-visible:ring-ring fixed bottom-[calc(0.25rem+env(safe-area-inset-bottom))] left-1/2 z-40 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-none shadow-lg transition-[opacity,scale] duration-[var(--duration-fast)] hover:opacity-90 focus-visible:ring-2 focus-visible:outline-none active:scale-95 md:right-6 md:bottom-6 md:left-auto md:translate-x-0"
+					className="animate-in fade-in-0 zoom-in-95 bg-primary text-primary-foreground focus-visible:ring-ring fixed bottom-[calc(0.25rem+env(safe-area-inset-bottom))] left-1/2 z-40 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full shadow-lg transition-[opacity,scale] duration-[var(--duration-fast)] hover:opacity-90 focus-visible:ring-2 focus-visible:outline-none active:scale-95 md:right-6 md:bottom-6 md:left-auto md:translate-x-0"
 				>
 					<Plus className="h-5 w-5" />
 				</button>

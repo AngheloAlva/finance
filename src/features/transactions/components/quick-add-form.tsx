@@ -127,7 +127,7 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 				type="button"
 				onClick={() => fileInputRef.current?.click()}
 				disabled={isScanning}
-				className="text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center gap-2 rounded-none border border-dashed px-3 py-2.5 text-xs transition-colors disabled:opacity-50"
+				className="text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center gap-2 rounded-xl border border-dashed px-3 py-2.5 text-xs transition-colors disabled:opacity-50"
 			>
 				{isScanning ? (
 					<Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -143,19 +143,19 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 			<input type="hidden" name="type" value={txType} />
 
 			{!state.success && state.error && (
-				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-none border px-3 py-2 text-xs">
+				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-lg border px-3 py-2 text-xs">
 					{tErrors(state.error as Parameters<typeof tErrors>[0])}
 				</div>
 			)}
 
-			<div className="grid grid-cols-2 gap-1 rounded-none border p-1">
+			<div className="grid grid-cols-2 gap-1 rounded-lg border p-1">
 				<button
 					type="button"
 					onClick={() => setTxType(TransactionType.EXPENSE)}
 					className={cn(
-						"rounded-none py-2.5 text-xs font-medium transition-colors",
+						"rounded-md py-2.5 text-xs font-medium transition-colors",
 						txType === TransactionType.EXPENSE
-							? "bg-foreground text-background"
+							? "bg-accent text-accent-foreground"
 							: "text-muted-foreground hover:text-foreground",
 					)}
 				>
@@ -165,9 +165,9 @@ export function QuickAddForm({ categories, onSuccess }: QuickAddFormProps) {
 					type="button"
 					onClick={() => setTxType(TransactionType.INCOME)}
 					className={cn(
-						"rounded-none py-2.5 text-xs font-medium transition-colors",
+						"rounded-md py-2.5 text-xs font-medium transition-colors",
 						txType === TransactionType.INCOME
-							? "bg-foreground text-background"
+							? "bg-accent text-accent-foreground"
 							: "text-muted-foreground hover:text-foreground",
 					)}
 				>

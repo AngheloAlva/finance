@@ -35,7 +35,7 @@ export function OverviewCards({ overview, budgets, totalBalance, currency }: Ove
 	]
 
 	return (
-		<section className="bg-card border p-4 md:p-6">
+		<section className="bg-card rounded-xl border p-4 md:p-6">
 			<p className="text-muted-foreground text-xs font-medium">{t(HERO_LABELS[hero.mode])}</p>
 			<p
 				className={cn(
@@ -52,7 +52,7 @@ export function OverviewCards({ overview, budgets, totalBalance, currency }: Ove
 						<div
 							className={cn(
 								"h-full transition-[width] duration-[var(--duration-normal)]",
-								hero.mode === "overBudget" ? "bg-destructive" : "bg-foreground",
+								hero.mode === "overBudget" ? "bg-destructive" : "bg-primary",
 							)}
 							style={{ width: `${hero.percent}%` }}
 						/>

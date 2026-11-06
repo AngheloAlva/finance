@@ -30,7 +30,7 @@ function NavLink({
 		<Link
 			href={href}
 			aria-current={active ? "page" : undefined}
-			className={cn(ITEM_CLASS, active && "text-foreground")}
+			className={cn(ITEM_CLASS, active && "text-primary")}
 		>
 			<Icon className="size-5" />
 			{label}
