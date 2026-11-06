@@ -44,7 +44,7 @@ export async function CreditCardVisual({
 	return (
 		<div
 			className={cn(
-				"relative flex aspect-[1.586/1] w-full flex-col justify-between overflow-hidden rounded-none p-5 text-white shadow-lg",
+				"relative flex aspect-[1.586/1] w-full flex-col justify-between overflow-hidden rounded-xl p-5 text-white shadow-lg",
 				className
 			)}
 			style={{ backgroundColor: color }}
@@ -53,7 +53,7 @@ export async function CreditCardVisual({
 			<div className="flex items-start justify-between">
 				<span className="text-xs font-medium tracking-wider uppercase opacity-80">{brand}</span>
 				{daysUntilDue != null && daysUntilDue >= 0 && daysUntilDue <= 3 && (
-					<span className="rounded-none bg-yellow-400/90 px-2 py-0.5 text-[10px] font-semibold text-yellow-900">
+					<span className="rounded-sm bg-yellow-400/90 px-2 py-0.5 text-[10px] font-semibold text-yellow-900">
 						{daysUntilDue === 0 ? t("visual.paymentDueToday") : t("visual.paymentDueIn", { days: daysUntilDue })}
 					</span>
 				)}
@@ -73,7 +73,7 @@ export async function CreditCardVisual({
 
 				{/* Usage bar */}
 				<div className="flex flex-col gap-1">
-					<div className="h-1.5 w-full overflow-hidden rounded-none bg-white/20">
+					<div className="h-1.5 w-full overflow-hidden rounded-full bg-white/20">
 						<AnimatedProgressBar
 							percentage={usagePercentage}
 							className={cn(

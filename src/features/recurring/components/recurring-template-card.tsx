@@ -88,7 +88,7 @@ export function RecurringTemplateCard({
 			: frequencyLabel
 
 	return (
-		<div className="flex items-center justify-between rounded-none border p-4">
+		<div className="flex items-center justify-between rounded-xl border p-4">
 			<div className="flex flex-col gap-1">
 				<div className="flex items-center gap-2">
 					<span className="text-sm font-medium">{template.description}</span>
@@ -102,7 +102,7 @@ export function RecurringTemplateCard({
 
 				<div className="text-muted-foreground flex items-center gap-2 text-xs">
 					<span
-						className="inline-block size-2 rounded-none"
+						className="inline-block size-2 rounded-full"
 						style={{ backgroundColor: template.category.color }}
 					/>
 					<span>{localizeCategoryName(template.category, locale)}</span>

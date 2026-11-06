@@ -126,7 +126,7 @@ export function ProjectionSummaryCards({
       </div>
 
       {summary.willGoNegative && summary.lowestPoint ? (
-        <div className="flex items-start gap-3 rounded-none border border-red-500/40 bg-red-500/5 p-3">
+        <div className="flex items-start gap-3 rounded-lg border border-red-500/40 bg-red-500/5 p-3">
           <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-500" />
           <div className="flex flex-col gap-0.5 text-sm">
             <p className="font-medium text-red-500">{t("negativeWarning")}</p>

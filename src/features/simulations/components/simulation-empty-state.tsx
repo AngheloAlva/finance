@@ -9,8 +9,8 @@ interface SimulationEmptyStateProps {
 
 export function SimulationEmptyState({ title, description }: SimulationEmptyStateProps) {
 	return (
-		<div className="flex flex-col items-center justify-center gap-3 rounded-none border border-dashed p-8 text-center">
-			<div className="bg-muted flex size-10 items-center justify-center rounded-none">
+		<div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed p-8 text-center">
+			<div className="bg-muted flex size-10 items-center justify-center rounded-lg">
 				<Info className="text-muted-foreground size-5" />
 			</div>
 			<div className="space-y-1">

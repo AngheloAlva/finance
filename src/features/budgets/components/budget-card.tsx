@@ -44,7 +44,7 @@ export function BudgetCard({ item, currency }: BudgetCardProps) {
 	}
 
 	return (
-		<div className="flex flex-col gap-2 rounded-none border p-4">
+		<div className="flex flex-col gap-2 rounded-xl border p-4">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-2">
 					<CategoryIcon icon={item.budget.category.icon} color={item.budget.category.color} />

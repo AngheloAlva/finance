@@ -135,7 +135,7 @@ export function CategorySelect({
   if (categories.length === 0) {
     return (
       <div className="flex flex-col gap-1.5">
-        <div className="text-muted-foreground rounded-none border border-dashed px-3 py-2 text-xs">
+        <div className="text-muted-foreground rounded-xl border border-dashed px-3 py-2 text-xs">
           {t("select.empty")}{" "}
           <Link
             href="/categories"
@@ -164,7 +164,7 @@ export function CategorySelect({
         <ComboboxTrigger
           ref={triggerRef}
           aria-invalid={error ? true : undefined}
-          className="border-input flex h-8 w-full items-center justify-between gap-1.5 rounded-none border bg-transparent py-2 pr-2 pl-2.5 text-xs whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40"
+          className="border-input flex h-8 w-full items-center justify-between gap-1.5 rounded-lg border bg-transparent py-2 pr-2 pl-2.5 text-xs whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40"
         >
           <ComboboxValue>
             {(selectedId: string | null) => {

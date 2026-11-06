@@ -55,7 +55,7 @@ export function SplitInput({ splitRule, members, totalAmount, onChange }: SplitI
 					return (
 						<div
 							key={member.userId}
-							className="flex items-center justify-between rounded-none border px-3 py-2 text-sm"
+							className="flex items-center justify-between rounded-lg border px-3 py-2 text-sm"
 						>
 							<span>{member.name || t("unknown")}</span>
 							<span className="text-muted-foreground">

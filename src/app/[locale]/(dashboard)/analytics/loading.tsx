@@ -8,7 +8,7 @@ function ChartSkeleton() {
 				<Skeleton className="h-5 w-48" />
 			</CardHeader>
 			<CardContent>
-				<Skeleton className="h-[300px] w-full rounded-none" />
+				<Skeleton className="h-[300px] w-full rounded-xl" />
 			</CardContent>
 		</Card>
 	)
@@ -52,7 +52,7 @@ export default function AnalyticsLoading() {
 					<Skeleton className="h-5 w-36" />
 				</CardHeader>
 				<CardContent>
-					<Skeleton className="mx-auto h-[200px] w-[200px] rounded-none" />
+					<Skeleton className="mx-auto h-[200px] w-[200px] rounded-full" />
 				</CardContent>
 			</Card>
 		</div>

@@ -42,7 +42,7 @@ export function InstallPrompt() {
 	if (!isIOS && !deferredPrompt) return null
 
 	return (
-		<div className="bg-card flex items-center gap-3 border p-3 text-sm md:hidden">
+		<div className="bg-card flex items-center gap-3 rounded-xl border p-3 text-sm md:hidden">
 			<Download className="text-muted-foreground size-4 shrink-0" />
 			<div className="min-w-0 flex-1">
 				<p className="font-medium">{t("title")}</p>

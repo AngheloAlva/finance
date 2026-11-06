@@ -49,7 +49,7 @@ function CustomTooltip({
 	if (!active || !payload?.length) return null
 
 	return (
-		<div className="bg-popover rounded-none border px-3 py-2 text-sm shadow-md">
+		<div className="bg-popover rounded-lg border px-3 py-2 text-sm shadow-md">
 			<p className="mb-1 font-medium">{label}</p>
 			<p style={{ color: CHART_COLORS.line }}>
 				{valueLabel}: {formatCurrency(payload[0].value, currency, locale)}

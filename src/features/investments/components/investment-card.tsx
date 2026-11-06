@@ -60,7 +60,7 @@ export function InvestmentCard({ investment, userCurrency, locale }: InvestmentC
 		<Card className="relative transition-shadow hover:shadow-md">
 			<CardContent className="flex items-center gap-4">
 				<div
-					className="flex size-10 shrink-0 items-center justify-center rounded-none"
+					className="flex size-10 shrink-0 items-center justify-center rounded-lg"
 					style={{ backgroundColor: `${INVESTMENT_TYPE_COLORS[investment.type]}20` }}
 				>
 					<Icon className="size-5" style={{ color: INVESTMENT_TYPE_COLORS[investment.type] }} />

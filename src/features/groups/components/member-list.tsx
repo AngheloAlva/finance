@@ -41,7 +41,7 @@ export function MemberList({ members, currentUserRole, groupId }: MemberListProp
 			{members.map((member) => (
 				<div
 					key={member.id}
-					className="flex items-center justify-between rounded-none border px-3 py-2"
+					className="flex items-center justify-between rounded-lg border px-3 py-2"
 				>
 					<div className="flex flex-col gap-0.5">
 						<span className="text-xs font-medium">{member.user.name ?? member.user.email}</span>

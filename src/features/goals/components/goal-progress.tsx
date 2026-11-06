@@ -22,7 +22,7 @@ export function GoalProgress({
 }: GoalProgressProps) {
 	return (
 		<div className="flex flex-col gap-1.5">
-			<div className="bg-muted h-2 w-full overflow-hidden rounded-none">
+			<div className="bg-muted h-2 w-full overflow-hidden rounded-full">
 				<AnimatedProgressBar
 					percentage={percentage}
 					className={cn(

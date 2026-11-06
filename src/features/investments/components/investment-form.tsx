@@ -97,7 +97,7 @@ export function InvestmentForm({ mode, defaultValues, onSuccess }: InvestmentFor
 			)}
 
 			{!state.success && state.error && (
-				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-none border px-3 py-2 text-xs">
+				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-lg border px-3 py-2 text-xs">
 					{tErrors(state.error as Parameters<typeof tErrors>[0])}
 				</div>
 			)}
@@ -108,7 +108,7 @@ export function InvestmentForm({ mode, defaultValues, onSuccess }: InvestmentFor
 					id="inv-type"
 					name="type"
 					defaultValue={defaultValues?.type ?? InvestmentType.STOCKS}
-					className="border-input focus-visible:ring-ring flex h-9 w-full rounded-none border bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:ring-1 focus-visible:outline-none"
+					className="border-input focus-visible:ring-ring flex h-9 w-full rounded-lg border bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:ring-1 focus-visible:outline-none"
 				>
 					{Object.values(InvestmentType).map((type) => (
 						<option key={type} value={type}>
@@ -160,7 +160,7 @@ export function InvestmentForm({ mode, defaultValues, onSuccess }: InvestmentFor
 					name="currency"
 					value={selectedCurrency}
 					onChange={(e) => setSelectedCurrency(e.target.value)}
-					className="border-input focus-visible:ring-ring flex h-9 w-full rounded-none border bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:ring-1 focus-visible:outline-none"
+					className="border-input focus-visible:ring-ring flex h-9 w-full rounded-lg border bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:ring-1 focus-visible:outline-none"
 				>
 					{CURRENCIES.map((c) => (
 						<option key={c.code} value={c.code}>

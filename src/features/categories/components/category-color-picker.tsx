@@ -51,7 +51,7 @@ export function CategoryColorPicker({
             type="button"
             onClick={() => handleSelect(color)}
             className={cn(
-              "size-8 rounded-none border-2 transition-all",
+              "size-8 rounded-full border-2 transition-all",
               selected === color
                 ? "border-foreground ring-1 ring-foreground/20"
                 : "border-transparent",

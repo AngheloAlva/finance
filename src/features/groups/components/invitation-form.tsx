@@ -39,13 +39,13 @@ export function InvitationForm({ groupId }: InvitationFormProps) {
       <input type="hidden" name="groupId" value={groupId} />
 
       {!state.success && state.error && (
-        <div className="rounded-none border border-destructive/50 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+        <div className="rounded-lg border border-destructive/50 bg-destructive/10 px-3 py-2 text-xs text-destructive">
           {tErrors(state.error as Parameters<typeof tErrors>[0])}
         </div>
       )}
 
       {state.success && (
-        <div className="rounded-none border border-emerald-500/50 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-700 dark:text-emerald-400">
+        <div className="rounded-lg border border-emerald-500/50 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-700 dark:text-emerald-400">
           <p className="font-medium">{t("created")}</p>
           <p className="mt-1 break-all">
             {t("shareLink")}{" "}

@@ -255,7 +255,7 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
 
       {/* Stale exchange rate warning */}
       {isStaleRate && (
-        <div className="rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200">
+        <div className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200">
           {t("staleRateWarning", { date: formatDate(investment.updatedAt, "short", locale) })}
         </div>
       )}

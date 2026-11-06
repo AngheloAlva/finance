@@ -115,7 +115,7 @@ export function TransactionForm({
 			)}
 
 			{!state.success && state.error && (
-				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-none border px-3 py-2 text-xs">
+				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-lg border px-3 py-2 text-xs">
 					{tErrors(state.error as Parameters<typeof tErrors>[0])}
 				</div>
 			)}
@@ -251,7 +251,7 @@ export function TransactionForm({
 			)}
 
 			{mode === FORM_MODE.CREATE && isCredit && (
-				<div className="flex items-center justify-between gap-2 rounded-none border px-3 py-2">
+				<div className="flex items-center justify-between gap-2 rounded-lg border px-3 py-2">
 					<Label htmlFor="tx-installments-toggle" className="cursor-pointer">
 						{t("form.payInInstallments")}
 					</Label>

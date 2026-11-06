@@ -14,7 +14,7 @@ export function CategoryIcon({ icon, color, className, size = "sm" }: CategoryIc
 
 	if (!Icon) {
 		return (
-			<span className={cn("size-2 rounded-none", className)} style={{ backgroundColor: color }} />
+			<span className={cn("size-2 rounded-full", className)} style={{ backgroundColor: color }} />
 		)
 	}
 

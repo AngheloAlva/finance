@@ -39,7 +39,7 @@ export function CategoryTreeItem({
 	const content = (
 		<div
 			className={cn(
-				"group hover:bg-muted flex items-center gap-2 rounded-none px-2 py-1.5 text-xs",
+				"group hover:bg-muted flex items-center gap-2 rounded-md px-2 py-1.5 text-xs",
 				depth > 0 && "ml-6"
 			)}
 		>
@@ -59,13 +59,13 @@ export function CategoryTreeItem({
 			{!hasChildren && <span className="size-4" />}
 
 			<span
-				className="flex size-5 items-center justify-center rounded-none"
+				className="flex size-5 items-center justify-center rounded-md"
 				style={{ color: category.color }}
 			>
 				{Icon ? (
 					<Icon className="size-3.5" />
 				) : (
-					<span className="size-2 rounded-none" style={{ backgroundColor: category.color }} />
+					<span className="size-2 rounded-full" style={{ backgroundColor: category.color }} />
 				)}
 			</span>
 

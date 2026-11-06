@@ -40,7 +40,7 @@ export function RuleList({ rules, categories }: RuleListProps) {
 
 	if (rules.length === 0) {
 		return (
-			<div className="text-muted-foreground rounded-none border py-8 text-center text-sm">
+			<div className="text-muted-foreground rounded-lg border py-8 text-center text-sm">
 				{t("noRules")}
 			</div>
 		)
@@ -51,7 +51,7 @@ export function RuleList({ rules, categories }: RuleListProps) {
 			{rules.map((rule) => (
 				<div
 					key={rule.id}
-					className="flex items-center justify-between rounded-none border p-3"
+					className="flex items-center justify-between rounded-lg border p-3"
 				>
 					<div className="flex flex-col gap-1">
 						<div className="flex items-center gap-2">
@@ -67,7 +67,7 @@ export function RuleList({ rules, categories }: RuleListProps) {
 						</div>
 						<div className="text-muted-foreground flex items-center gap-1.5 text-xs">
 							<span
-								className="inline-block size-2 rounded-none"
+								className="inline-block size-2 rounded-full"
 								style={{ backgroundColor: rule.category.color }}
 							/>
 							<span>{localizeCategoryName(rule.category, locale)}</span>

@@ -35,7 +35,7 @@ function CustomTooltip({
 	const item = payload[0]
 
 	return (
-		<div className="bg-popover rounded-none border px-3 py-2 text-sm shadow-md">
+		<div className="bg-popover rounded-lg border px-3 py-2 text-sm shadow-md">
 			<p className="font-medium">{item.name}</p>
 			<p style={{ color: item.payload.color }}>
 				{formatCurrency(item.value, currency, locale)} ({item.payload.percentage}%)

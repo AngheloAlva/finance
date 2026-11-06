@@ -42,7 +42,7 @@ export function RecentTransactions({ transactions, currency }: RecentTransaction
 						{transactions.map((tx) => (
 							<li key={tx.id} className="flex items-center gap-3">
 								<div
-									className="flex size-8 shrink-0 items-center justify-center rounded-none"
+									className="flex size-8 shrink-0 items-center justify-center rounded-lg"
 									style={{ backgroundColor: `${tx.category.color}20` }}
 								>
 									<CategoryIcon icon={tx.category.icon} color={tx.category.color} size="md" />

@@ -15,7 +15,7 @@ export async function CreditCardList({ userId, currency }: CreditCardListProps) 
 
 	if (cards.length === 0) {
 		return (
-			<div className="flex flex-col items-center justify-center rounded-none border border-dashed p-12 text-center">
+			<div className="flex flex-col items-center justify-center rounded-xl border border-dashed p-12 text-center">
 				<p className="text-muted-foreground text-sm">
 					{t("noCardsYet")}
 				</p>

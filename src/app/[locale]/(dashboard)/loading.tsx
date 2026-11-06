@@ -14,18 +14,18 @@ export default function DashboardLoading() {
 
 			<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-4">
-					<Skeleton className="h-[72px] w-full rounded-none" />
-					<Skeleton className="h-[72px] w-full rounded-none" />
-					<Skeleton className="h-[72px] w-full rounded-none" />
-					<Skeleton className="h-[72px] w-full rounded-none" />
+					<Skeleton className="h-[72px] w-full rounded-xl" />
+					<Skeleton className="h-[72px] w-full rounded-xl" />
+					<Skeleton className="h-[72px] w-full rounded-xl" />
+					<Skeleton className="h-[72px] w-full rounded-xl" />
 				</div>
 
-				<Skeleton className="h-[72px] w-full rounded-none lg:col-span-2" />
-				<Skeleton className="h-[220px] w-full rounded-none lg:col-span-2" />
-				<Skeleton className="h-[300px] w-full rounded-none" />
-				<Skeleton className="h-[300px] w-full rounded-none" />
-				<Skeleton className="h-[160px] w-full rounded-none lg:col-span-2" />
-				<Skeleton className="h-[160px] w-full rounded-none lg:col-span-2" />
+				<Skeleton className="h-[72px] w-full rounded-xl lg:col-span-2" />
+				<Skeleton className="h-[220px] w-full rounded-xl lg:col-span-2" />
+				<Skeleton className="h-[300px] w-full rounded-xl" />
+				<Skeleton className="h-[300px] w-full rounded-xl" />
+				<Skeleton className="h-[160px] w-full rounded-xl lg:col-span-2" />
+				<Skeleton className="h-[160px] w-full rounded-xl lg:col-span-2" />
 			</div>
 		</div>
 	)

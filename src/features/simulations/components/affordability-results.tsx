@@ -123,7 +123,7 @@ export function AffordabilityResults({ result, currency }: AffordabilityResultsP
 			</Card>
 
 			{result.budgetWarning && (
-				<div className="bg-destructive/10 text-destructive flex items-center gap-2 rounded-none p-3 text-xs">
+				<div className="bg-destructive/10 text-destructive flex items-center gap-2 rounded-lg p-3 text-xs">
 					<AlertTriangle className="size-4 shrink-0" />
 					<span>{t("budgetWarning")}</span>
 				</div>

@@ -235,7 +235,7 @@ export function TransactionFilters({
                 <SelectItem key={tag.id} value={tag.id}>
                   <span className="flex items-center gap-1.5">
                     <span
-                      className="inline-block size-2 rounded-none"
+                      className="inline-block size-2 rounded-full"
                       style={{ backgroundColor: tag.color }}
                     />
                     {tag.name}

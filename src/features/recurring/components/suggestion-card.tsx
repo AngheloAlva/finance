@@ -65,7 +65,7 @@ export function SuggestionCard({ template, currency }: SuggestionCardProps) {
 					<span className="text-sm font-medium">{template.description}</span>
 					<div className="text-muted-foreground flex items-center gap-1.5 text-xs">
 						<span
-							className="inline-block size-2 rounded-none"
+							className="inline-block size-2 rounded-full"
 							style={{ backgroundColor: template.category.color }}
 						/>
 						<span>{localizeCategoryName(template.category, locale)}</span>

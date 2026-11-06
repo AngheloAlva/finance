@@ -101,7 +101,7 @@ export function SavingsGoalResults({ result, currency }: SavingsGoalResultsProps
 
 			{result.onTrack !== null && (
 				<div
-					className={`flex items-center gap-2 rounded-none p-3 text-xs ${
+					className={`flex items-center gap-2 rounded-lg p-3 text-xs ${
 						result.onTrack
 							? "bg-green-500/10 text-green-700 dark:text-green-400"
 							: "bg-destructive/10 text-destructive"
@@ -122,7 +122,7 @@ export function SavingsGoalResults({ result, currency }: SavingsGoalResultsProps
 			)}
 
 			{result.currentMonthlySavings <= 0 && (
-				<div className="bg-destructive/10 text-destructive flex items-center gap-2 rounded-none p-3 text-xs">
+				<div className="bg-destructive/10 text-destructive flex items-center gap-2 rounded-lg p-3 text-xs">
 					<AlertTriangle className="size-4 shrink-0" />
 					<span>{t("zeroSavingsWarning")}</span>
 				</div>

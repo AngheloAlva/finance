@@ -64,7 +64,7 @@ export function CreditCardForm({ mode, defaultValues, onSuccess }: CreditCardFor
 			)}
 
 			{!state.success && state.error && (
-				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-none border px-3 py-2 text-xs">
+				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-lg border px-3 py-2 text-xs">
 					{tErrors(state.error as Parameters<typeof tErrors>[0])}
 				</div>
 			)}
@@ -166,7 +166,7 @@ export function CreditCardForm({ mode, defaultValues, onSuccess }: CreditCardFor
 								className="peer sr-only"
 							/>
 							<div
-								className="peer-checked:border-primary peer-checked:ring-primary/30 size-8 rounded-none border-2 border-transparent transition-all peer-checked:ring-2"
+								className="peer-checked:border-primary peer-checked:ring-primary/30 size-8 rounded-full border-2 border-transparent transition-all peer-checked:ring-2"
 								style={{ backgroundColor: cardColor.value }}
 								title={t(`colors.${cardColor.labelKey}` as Parameters<typeof t>[0])}
 							/>

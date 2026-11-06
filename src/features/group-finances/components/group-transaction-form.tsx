@@ -86,7 +86,7 @@ export function GroupTransactionForm({
 			<input type="hidden" name="groupId" value={groupId} />
 
 			{!state.success && state.error && (
-				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-none border px-3 py-2 text-xs">
+				<div className="border-destructive/50 bg-destructive/10 text-destructive rounded-lg border px-3 py-2 text-xs">
 					{tErrors(state.error as Parameters<typeof tErrors>[0])}
 				</div>
 			)}

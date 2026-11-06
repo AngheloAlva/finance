@@ -74,7 +74,7 @@ function SortableRow({
     <div
       ref={setNodeRef}
       style={style}
-      className="bg-card flex items-center gap-3 border p-3"
+      className="bg-card flex items-center gap-3 rounded-lg border p-3"
     >
       <button
         type="button"

@@ -29,7 +29,7 @@ export function PortfolioSummaryCard({ portfolio, currency }: PortfolioSummaryCa
 		<Link href="/investments">
 			<Card className="relative transition-shadow hover:shadow-md">
 				<CardContent className="flex items-center gap-4">
-					<div className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-none">
+					<div className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-lg">
 						<TrendingUp className="text-muted-foreground size-5" />
 					</div>
 					<div className="flex flex-col gap-0.5">

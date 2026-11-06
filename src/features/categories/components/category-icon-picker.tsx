@@ -35,7 +35,7 @@ export function CategoryIconPicker({
             type="button"
             onClick={() => handleSelect(key)}
             className={cn(
-              "flex size-8 items-center justify-center rounded-none border transition-colors hover:bg-muted",
+              "flex size-8 items-center justify-center rounded-lg border transition-colors hover:bg-muted",
               selected === key
                 ? "border-primary bg-primary/10 text-primary"
                 : "border-transparent text-muted-foreground",

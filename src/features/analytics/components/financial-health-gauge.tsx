@@ -106,9 +106,9 @@ export function FinancialHealthGauge({ score, compact = false }: FinancialHealth
 											<span className="text-muted-foreground">{factor.name}</span>
 											<span className="font-medium">{factor.score}/100</span>
 										</div>
-										<div className="bg-muted h-1.5 w-full rounded-none">
+										<div className="bg-muted h-1.5 w-full rounded-full">
 											<div
-												className={`h-full rounded-none ${getFactorBarColor(factor.score)}`}
+												className={`h-full rounded-full ${getFactorBarColor(factor.score)}`}
 												style={{ width: `${factor.score}%` }}
 											/>
 										</div>

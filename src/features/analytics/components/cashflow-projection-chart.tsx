@@ -64,7 +64,7 @@ function CustomTooltip({
   const point = payload[0].payload;
 
   return (
-    <div className="bg-popover rounded-none border px-3 py-2 text-sm shadow-md">
+    <div className="bg-popover rounded-lg border px-3 py-2 text-sm shadow-md">
       <p className="mb-1 font-medium">{formatDayLabel(point.date, locale)}</p>
       <p
         style={{

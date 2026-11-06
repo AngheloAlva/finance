@@ -33,7 +33,7 @@ export function AcceptInvitationButton({
       <input type="hidden" name="token" value={token} />
 
       {!state.success && state.error && (
-        <div className="mb-4 rounded-none border border-destructive/50 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+        <div className="mb-4 rounded-lg border border-destructive/50 bg-destructive/10 px-3 py-2 text-xs text-destructive">
           {tErrors(state.error as Parameters<typeof tErrors>[0])}
         </div>
       )}

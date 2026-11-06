@@ -68,12 +68,12 @@ export function TagSelect({ tags, defaultValue = [] }: TagSelectProps) {
 							<button
 								key={tag.id}
 								type="button"
-								className="flex w-full items-center gap-2 rounded-none px-2 py-1.5 text-xs hover:bg-accent"
+								className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-xs hover:bg-accent"
 								onClick={() => toggle(tag.id)}
 							>
 								<Checkbox checked={selected.has(tag.id)} tabIndex={-1} />
 								<span
-									className="inline-block size-2 rounded-none"
+									className="inline-block size-2 rounded-full"
 									style={{ backgroundColor: tag.color }}
 								/>
 								<span>{tag.name}</span>
@@ -88,10 +88,10 @@ export function TagSelect({ tags, defaultValue = [] }: TagSelectProps) {
 					{selectedTags.map((tag) => (
 						<span
 							key={tag.id}
-							className="inline-flex items-center gap-1 rounded-none border px-1.5 py-0.5 text-xs"
+							className="inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-xs"
 						>
 							<span
-								className="inline-block size-2 rounded-none"
+								className="inline-block size-2 rounded-full"
 								style={{ backgroundColor: tag.color }}
 							/>
 							{tag.name}

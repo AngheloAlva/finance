@@ -34,7 +34,7 @@ export function MonthlyDigestWidget({ month, year }: MonthlyDigestWidgetProps) {
 	}, [generate])
 
 	return (
-		<div className="border bg-background p-4">
+		<div className="rounded-xl border bg-background p-4">
 			<div className="mb-3 flex items-center justify-between">
 				<div className="flex items-center gap-2">
 					<Sparkles className="h-3.5 w-3.5 text-muted-foreground" />
@@ -52,9 +52,9 @@ export function MonthlyDigestWidget({ month, year }: MonthlyDigestWidgetProps) {
 
 			{isPending && !text && (
 				<div className="space-y-1.5">
-					<div className="h-3 w-full animate-pulse rounded-none bg-muted" />
-					<div className="h-3 w-5/6 animate-pulse rounded-none bg-muted" />
-					<div className="h-3 w-4/6 animate-pulse rounded-none bg-muted" />
+					<div className="h-3 w-full animate-pulse rounded-lg bg-muted" />
+					<div className="h-3 w-5/6 animate-pulse rounded-lg bg-muted" />
+					<div className="h-3 w-4/6 animate-pulse rounded-lg bg-muted" />
 				</div>
 			)}
 

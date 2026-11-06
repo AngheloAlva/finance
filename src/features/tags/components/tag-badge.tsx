@@ -10,12 +10,12 @@ export function TagBadge({ name, color, className }: TagBadgeProps) {
 	return (
 		<span
 			className={cn(
-				"inline-flex items-center gap-1 rounded-none border px-1.5 py-0.5 text-xs",
+				"inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-xs",
 				className,
 			)}
 		>
 			<span
-				className="inline-block size-2 rounded-none"
+				className="inline-block size-2 rounded-full"
 				style={{ backgroundColor: color }}
 			/>
 			{name}

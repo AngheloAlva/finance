@@ -16,12 +16,12 @@ export function CategorySuggestion({ suggestion, onAccept, onDismiss }: Category
 	const t = useTranslations("categorization")
 
 	return (
-		<div className="flex items-center justify-between gap-2 rounded-none border border-primary/40 bg-primary/5 px-3 py-2 text-xs">
+		<div className="flex items-center justify-between gap-2 rounded-lg border border-primary/40 bg-primary/5 px-3 py-2 text-xs">
 			<div className="flex items-center gap-2">
 				<Sparkles className="size-3 text-primary" />
 				<span className="text-muted-foreground">{t("suggestionLabel")}</span>
 				<span
-					className="inline-block size-2 rounded-none"
+					className="inline-block size-2 rounded-full"
 					style={{ backgroundColor: suggestion.categoryColor }}
 				/>
 				<span className="font-medium">{suggestion.categoryName}</span>

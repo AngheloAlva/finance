@@ -14,7 +14,7 @@ interface BudgetProgressBarProps {
 
 export function BudgetProgressBar({ percentage, status }: BudgetProgressBarProps) {
 	return (
-		<div className="bg-muted h-2 w-full rounded-none">
+		<div className="bg-muted h-2 w-full rounded-full">
 			<AnimatedProgressBar percentage={percentage} className={STATUS_COLORS[status]} />
 		</div>
 	)

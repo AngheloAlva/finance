@@ -29,13 +29,13 @@ export function AnimatedProgressBar({ percentage, className }: AnimatedProgressB
 		<>
 			<div
 				className={cn(
-					"h-full rounded-none transition-[width] duration-[var(--duration-slow)] ease-[var(--ease-out-soft)] motion-reduce:hidden",
+					"h-full rounded-full transition-[width] duration-[var(--duration-slow)] ease-[var(--ease-out-soft)] motion-reduce:hidden",
 					className
 				)}
 				style={{ width: `${width}%` }}
 			/>
 			<div
-				className={cn("hidden h-full rounded-none motion-reduce:block", className)}
+				className={cn("hidden h-full rounded-full motion-reduce:block", className)}
 				style={{ width: `${targetWidth}%` }}
 			/>
 		</>

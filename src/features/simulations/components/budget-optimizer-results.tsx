@@ -101,7 +101,7 @@ export function BudgetOptimizerResults({ result, currency }: BudgetOptimizerResu
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-2 text-xs">
 									<span
-										className="inline-block size-2.5 rounded-none"
+										className="inline-block size-2.5 rounded-full"
 										style={{ backgroundColor: cat.categoryColor }}
 									/>
 									<span className="font-medium">{cat.categoryName}</span>
@@ -132,7 +132,7 @@ export function BudgetOptimizerResults({ result, currency }: BudgetOptimizerResu
 			</Card>
 
 			{!hasAvoidable && (
-				<div className="bg-muted text-muted-foreground flex items-center gap-2 rounded-none p-3 text-xs">
+				<div className="bg-muted text-muted-foreground flex items-center gap-2 rounded-lg p-3 text-xs">
 					<AlertTriangle className="size-4 shrink-0" />
 					<span>{t("noAvoidableWarning")}</span>
 				</div>

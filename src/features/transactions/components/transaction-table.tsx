@@ -237,7 +237,7 @@ export function TransactionTable({ transactions, categories, creditCards, tags, 
 									{tx.creditCard && (
 										<span className="text-muted-foreground inline-flex items-center gap-1 text-xs">
 											<span
-												className="size-2 rounded-none"
+												className="size-2 rounded-full"
 												style={{ backgroundColor: tx.creditCard.color }}
 											/>
 											*{tx.creditCard.lastFourDigits}

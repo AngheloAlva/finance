@@ -84,7 +84,7 @@ export function MonthComparisonDetail({ comparison, currency }: MonthComparisonD
 									<TableCell>
 										<div className="flex items-center gap-2">
 											<span
-												className="inline-block size-2 rounded-none"
+												className="inline-block size-2 rounded-full"
 												style={{ backgroundColor: item.categoryColor }}
 											/>
 											<span className="text-sm">{item.categoryName}</span>

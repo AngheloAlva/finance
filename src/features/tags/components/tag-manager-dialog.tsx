@@ -102,7 +102,7 @@ export function TagManagerDialog({ tags, trigger }: TagManagerDialogProps) {
 						<p className="text-muted-foreground py-4 text-center text-xs">{t("noTags")}</p>
 					)}
 					{tags.map((tag) => (
-						<div key={tag.id} className="flex items-center justify-between rounded-none border px-3 py-2">
+						<div key={tag.id} className="flex items-center justify-between rounded-lg border px-3 py-2">
 							{editingId === tag.id ? (
 								<form action={updateAction} className="flex flex-1 items-center gap-2">
 									<input type="hidden" name="id" value={tag.id} />
@@ -134,7 +134,7 @@ export function TagManagerDialog({ tags, trigger }: TagManagerDialogProps) {
 								<>
 									<div className="flex items-center gap-2">
 										<span
-											className="inline-block size-3 rounded-none"
+											className="inline-block size-3 rounded-full"
 											style={{ backgroundColor: tag.color }}
 										/>
 										<span className="text-xs font-medium">{tag.name}</span>

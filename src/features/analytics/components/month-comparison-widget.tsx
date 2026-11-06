@@ -89,7 +89,7 @@ export function MonthComparisonWidget({ comparison, currency }: MonthComparisonW
 								<div key={item.categoryId} className="flex items-center justify-between text-xs">
 									<div className="flex items-center gap-1.5">
 										<span
-											className="inline-block size-2 rounded-none"
+											className="inline-block size-2 rounded-full"
 											style={{ backgroundColor: item.categoryColor }}
 										/>
 										<span>{item.categoryName}</span>

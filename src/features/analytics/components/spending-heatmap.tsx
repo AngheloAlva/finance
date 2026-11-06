@@ -196,7 +196,7 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 									row.map((cell, weekIdx) => (
 										<div
 											key={`${dayIdx}-${weekIdx}`}
-											className={`size-3 rounded-none ${
+											className={`size-3 rounded-sm ${
 												cell && cell.inRange
 													? getIntensityClass(cell.amount, thresholds)
 													: "bg-transparent"
@@ -222,7 +222,7 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 						{/* Tooltip */}
 						{tooltip && (
 							<div
-								className="bg-popover pointer-events-none fixed z-50 rounded-none border px-3 py-2 text-sm shadow-md"
+								className="bg-popover pointer-events-none fixed z-50 rounded-lg border px-3 py-2 text-sm shadow-md"
 								style={{
 									left: tooltip.x,
 									top: tooltip.y,
@@ -237,12 +237,12 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 						{/* Legend */}
 						<div className="text-muted-foreground mt-3 flex items-center gap-1 text-[10px]">
 							<span>{t("less")}</span>
-							<div className="bg-muted size-3 rounded-none" />
-							<div className="size-3 rounded-none bg-emerald-200 dark:bg-emerald-900" />
-							<div className="size-3 rounded-none bg-emerald-400 dark:bg-emerald-700" />
-							<div className="size-3 rounded-none bg-red-300 dark:bg-red-800" />
-							<div className="size-3 rounded-none bg-red-400 dark:bg-red-600" />
-							<div className="size-3 rounded-none bg-red-500" />
+							<div className="bg-muted size-3 rounded-sm" />
+							<div className="size-3 rounded-sm bg-emerald-200 dark:bg-emerald-900" />
+							<div className="size-3 rounded-sm bg-emerald-400 dark:bg-emerald-700" />
+							<div className="size-3 rounded-sm bg-red-300 dark:bg-red-800" />
+							<div className="size-3 rounded-sm bg-red-400 dark:bg-red-600" />
+							<div className="size-3 rounded-sm bg-red-500" />
 							<span>{t("more")}</span>
 						</div>
 					</div>
