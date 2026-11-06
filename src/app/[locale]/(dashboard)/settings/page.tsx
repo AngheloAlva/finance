@@ -1,4 +1,4 @@
-import { Sparkles, Bell } from "lucide-react";
+import { Bell, LayoutGrid, Sparkles } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ProfileForm } from "@/features/settings/components/profile-form";
+import { SimpleModeToggle } from "@/features/settings/components/simple-mode-toggle";
 import { PushNotificationManager } from "@/features/notifications/components/push-notification-manager";
 import { Link } from "@/i18n/navigation";
 import { requireSession } from "@/shared/lib/auth";
@@ -28,6 +29,7 @@ export default async function SettingsPage() {
       image: true,
       currency: true,
       timezone: true,
+      simpleMode: true,
     },
   });
 
@@ -43,6 +45,19 @@ export default async function SettingsPage() {
           </CardHeader>
           <CardContent>
             <ProfileForm user={dbUser} />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <LayoutGrid className="size-4" />
+              {t("sections.title")}
+            </CardTitle>
+            <CardDescription>{t("sections.description")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <SimpleModeToggle simpleMode={dbUser.simpleMode} />
           </CardContent>
         </Card>
 

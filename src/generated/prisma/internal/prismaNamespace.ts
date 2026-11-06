@@ -2101,6 +2101,7 @@ export const UserScalarFieldEnum = {
   currency: 'currency',
   timezone: 'timezone',
   dashboardConfig: 'dashboardConfig',
+  simpleMode: 'simpleMode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2114,7 +2115,8 @@ export const PushSubscriptionScalarFieldEnum = {
   endpoint: 'endpoint',
   p256dh: 'p256dh',
   auth: 'auth',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PushSubscriptionScalarFieldEnum = (typeof PushSubscriptionScalarFieldEnum)[keyof typeof PushSubscriptionScalarFieldEnum]

@@ -121,6 +121,8 @@ model User {
   currency        String   @default("USD")
   timezone        String   @default("UTC")
   dashboardConfig Json?
+  /// Shows only the everyday sections in navigation. New accounts start simple.
+  simpleMode      Boolean  @default(true)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 

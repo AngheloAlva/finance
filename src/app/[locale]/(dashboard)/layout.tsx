@@ -7,6 +7,7 @@ import { MobileNav } from "@/shared/components/mobile-nav";
 import { CurrencyProvider } from "@/shared/components/currency-provider";
 import { requireSession } from "@/shared/lib/auth";
 import type { CurrencyCode } from "@/shared/lib/constants";
+import { prisma } from "@/shared/lib/prisma";
 
 export default async function DashboardLayout({
   children,
@@ -21,14 +22,23 @@ export default async function DashboardLayout({
     image: session.user.image,
   };
 
-  const unreadAlertCount = await getUnreadAlertCount(session.user.id);
+  const [alertCount, preferences] = await Promise.all([
+    getUnreadAlertCount(session.user.id),
+    prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { simpleMode: true },
+    }),
+  ]);
+  const simpleMode = preferences?.simpleMode ?? false;
+  // Alerts are hidden in simple mode, so their badge would point nowhere.
+  const unreadAlertCount = simpleMode ? 0 : alertCount;
 
   const currency = (session.user.currency ?? "USD") as CurrencyCode;
 
   return (
     <CurrencyProvider currency={currency}>
       <SidebarProvider>
-        <AppSidebar user={user} unreadAlertCount={unreadAlertCount} />
+        <AppSidebar user={user} unreadAlertCount={unreadAlertCount} simpleMode={simpleMode} />
         <SidebarInset>
           <AppHeader />
           <main className="flex-1 p-4 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-4">

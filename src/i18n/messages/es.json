@@ -87,6 +87,14 @@
       "disabledToast": "Notificaciones desactivadas",
       "enableFailed": "No se pudieron activar las notificaciones",
       "disableFailed": "No se pudieron desactivar las notificaciones"
+    },
+    "sections": {
+      "title": "Secciones",
+      "description": "Elige qué tan completa quieres la app.",
+      "showAll": "Mostrar todas las secciones",
+      "showAllDescription": "Agrega Recurrentes, Análisis, Simulaciones, Tarjetas, Inversiones, Alertas, Categorías y Grupos al menú.",
+      "showAllOn": "Ahora ves todas las secciones",
+      "showAllOff": "Volviste al menú simple"
     }
   },
   "dashboard": {

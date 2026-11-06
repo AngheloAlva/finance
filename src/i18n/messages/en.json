@@ -87,6 +87,14 @@
       "disabledToast": "Notifications turned off",
       "enableFailed": "Could not turn on notifications",
       "disableFailed": "Could not turn off notifications"
+    },
+    "sections": {
+      "title": "Sections",
+      "description": "Choose how complete you want the app to be.",
+      "showAll": "Show all sections",
+      "showAllDescription": "Adds Recurring, Analytics, Simulations, Credit cards, Investments, Alerts, Categories and Groups to the menu.",
+      "showAllOn": "All sections are now shown",
+      "showAllOff": "Back to the simple menu"
     }
   },
   "dashboard": {

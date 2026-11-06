@@ -32,6 +32,7 @@ export type UserMinAggregateOutputType = {
   image: string | null
   currency: string | null
   timezone: string | null
+  simpleMode: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +45,7 @@ export type UserMaxAggregateOutputType = {
   image: string | null
   currency: string | null
   timezone: string | null
+  simpleMode: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -57,6 +59,7 @@ export type UserCountAggregateOutputType = {
   currency: number
   timezone: number
   dashboardConfig: number
+  simpleMode: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -71,6 +74,7 @@ export type UserMinAggregateInputType = {
   image?: true
   currency?: true
   timezone?: true
+  simpleMode?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -83,6 +87,7 @@ export type UserMaxAggregateInputType = {
   image?: true
   currency?: true
   timezone?: true
+  simpleMode?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -96,6 +101,7 @@ export type UserCountAggregateInputType = {
   currency?: true
   timezone?: true
   dashboardConfig?: true
+  simpleMode?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -182,6 +188,7 @@ export type UserGroupByOutputType = {
   currency: string
   timezone: string
   dashboardConfig: runtime.JsonValue | null
+  simpleMode: boolean
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -216,6 +223,7 @@ export type UserWhereInput = {
   currency?: Prisma.StringFilter<"User"> | string
   timezone?: Prisma.StringFilter<"User"> | string
   dashboardConfig?: Prisma.JsonNullableFilter<"User">
+  simpleMode?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.SessionListRelationFilter
@@ -245,6 +253,7 @@ export type UserOrderByWithRelationInput = {
   currency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   dashboardConfig?: Prisma.SortOrderInput | Prisma.SortOrder
+  simpleMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
@@ -277,6 +286,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   currency?: Prisma.StringFilter<"User"> | string
   timezone?: Prisma.StringFilter<"User"> | string
   dashboardConfig?: Prisma.JsonNullableFilter<"User">
+  simpleMode?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.SessionListRelationFilter
@@ -306,6 +316,7 @@ export type UserOrderByWithAggregationInput = {
   currency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   dashboardConfig?: Prisma.SortOrderInput | Prisma.SortOrder
+  simpleMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -325,6 +336,7 @@ export type UserScalarWhereWithAggregatesInput = {
   currency?: Prisma.StringWithAggregatesFilter<"User"> | string
   timezone?: Prisma.StringWithAggregatesFilter<"User"> | string
   dashboardConfig?: Prisma.JsonNullableWithAggregatesFilter<"User">
+  simpleMode?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -338,6 +350,7 @@ export type UserCreateInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -367,6 +380,7 @@ export type UserUncheckedCreateInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -396,6 +410,7 @@ export type UserUpdateInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -425,6 +440,7 @@ export type UserUncheckedUpdateInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -454,6 +470,7 @@ export type UserCreateManyInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -467,6 +484,7 @@ export type UserUpdateManyMutationInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -480,6 +498,7 @@ export type UserUncheckedUpdateManyInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -493,6 +512,7 @@ export type UserCountOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   dashboardConfig?: Prisma.SortOrder
+  simpleMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -505,6 +525,7 @@ export type UserMaxOrderByAggregateInput = {
   image?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
+  simpleMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -517,6 +538,7 @@ export type UserMinOrderByAggregateInput = {
   image?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
+  simpleMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -782,6 +804,7 @@ export type UserCreateWithoutPushSubscriptionsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -810,6 +833,7 @@ export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -854,6 +878,7 @@ export type UserUpdateWithoutPushSubscriptionsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -882,6 +907,7 @@ export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -910,6 +936,7 @@ export type UserCreateWithoutCategoriesInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -938,6 +965,7 @@ export type UserUncheckedCreateWithoutCategoriesInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -982,6 +1010,7 @@ export type UserUpdateWithoutCategoriesInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1010,6 +1039,7 @@ export type UserUncheckedUpdateWithoutCategoriesInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1038,6 +1068,7 @@ export type UserCreateWithoutTransactionsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1066,6 +1097,7 @@ export type UserUncheckedCreateWithoutTransactionsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1110,6 +1142,7 @@ export type UserUpdateWithoutTransactionsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1138,6 +1171,7 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1166,6 +1200,7 @@ export type UserCreateWithoutCreditCardsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1194,6 +1229,7 @@ export type UserUncheckedCreateWithoutCreditCardsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1238,6 +1274,7 @@ export type UserUpdateWithoutCreditCardsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1266,6 +1303,7 @@ export type UserUncheckedUpdateWithoutCreditCardsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1294,6 +1332,7 @@ export type UserCreateWithoutSessionsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -1322,6 +1361,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -1366,6 +1406,7 @@ export type UserUpdateWithoutSessionsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -1394,6 +1435,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -1422,6 +1464,7 @@ export type UserCreateWithoutAccountsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1450,6 +1493,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1494,6 +1538,7 @@ export type UserUpdateWithoutAccountsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1522,6 +1567,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1550,6 +1596,7 @@ export type UserCreateWithoutAlertsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1578,6 +1625,7 @@ export type UserUncheckedCreateWithoutAlertsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1622,6 +1670,7 @@ export type UserUpdateWithoutAlertsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1650,6 +1699,7 @@ export type UserUncheckedUpdateWithoutAlertsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1678,6 +1728,7 @@ export type UserCreateWithoutGroupMembershipsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1706,6 +1757,7 @@ export type UserUncheckedCreateWithoutGroupMembershipsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1750,6 +1802,7 @@ export type UserUpdateWithoutGroupMembershipsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1778,6 +1831,7 @@ export type UserUncheckedUpdateWithoutGroupMembershipsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1806,6 +1860,7 @@ export type UserCreateWithoutTransactionSplitsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1834,6 +1889,7 @@ export type UserUncheckedCreateWithoutTransactionSplitsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1878,6 +1934,7 @@ export type UserUpdateWithoutTransactionSplitsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1906,6 +1963,7 @@ export type UserUncheckedUpdateWithoutTransactionSplitsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1934,6 +1992,7 @@ export type UserCreateWithoutGroupInvitationsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1962,6 +2021,7 @@ export type UserUncheckedCreateWithoutGroupInvitationsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -2006,6 +2066,7 @@ export type UserUpdateWithoutGroupInvitationsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -2034,6 +2095,7 @@ export type UserUncheckedUpdateWithoutGroupInvitationsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -2062,6 +2124,7 @@ export type UserCreateWithoutGoalsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -2090,6 +2153,7 @@ export type UserUncheckedCreateWithoutGoalsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -2134,6 +2198,7 @@ export type UserUpdateWithoutGoalsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -2162,6 +2227,7 @@ export type UserUncheckedUpdateWithoutGoalsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -2190,6 +2256,7 @@ export type UserCreateWithoutGoalContributionsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -2218,6 +2285,7 @@ export type UserUncheckedCreateWithoutGoalContributionsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -2262,6 +2330,7 @@ export type UserUpdateWithoutGoalContributionsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -2290,6 +2359,7 @@ export type UserUncheckedUpdateWithoutGoalContributionsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -2318,6 +2388,7 @@ export type UserCreateWithoutInvestmentsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -2346,6 +2417,7 @@ export type UserUncheckedCreateWithoutInvestmentsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -2390,6 +2462,7 @@ export type UserUpdateWithoutInvestmentsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -2418,6 +2491,7 @@ export type UserUncheckedUpdateWithoutInvestmentsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -2446,6 +2520,7 @@ export type UserCreateWithoutBudgetsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -2474,6 +2549,7 @@ export type UserUncheckedCreateWithoutBudgetsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -2518,6 +2594,7 @@ export type UserUpdateWithoutBudgetsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -2546,6 +2623,7 @@ export type UserUncheckedUpdateWithoutBudgetsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -2574,6 +2652,7 @@ export type UserCreateWithoutCategorizationRulesInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -2602,6 +2681,7 @@ export type UserUncheckedCreateWithoutCategorizationRulesInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -2646,6 +2726,7 @@ export type UserUpdateWithoutCategorizationRulesInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -2674,6 +2755,7 @@ export type UserUncheckedUpdateWithoutCategorizationRulesInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -2702,6 +2784,7 @@ export type UserCreateWithoutTagsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -2730,6 +2813,7 @@ export type UserUncheckedCreateWithoutTagsInput = {
   currency?: string
   timezone?: string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -2774,6 +2858,7 @@ export type UserUpdateWithoutTagsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -2802,6 +2887,7 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   dashboardConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  simpleMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -2996,6 +3082,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   currency?: boolean
   timezone?: boolean
   dashboardConfig?: boolean
+  simpleMode?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -3026,6 +3113,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   currency?: boolean
   timezone?: boolean
   dashboardConfig?: boolean
+  simpleMode?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -3039,6 +3127,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   currency?: boolean
   timezone?: boolean
   dashboardConfig?: boolean
+  simpleMode?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -3052,11 +3141,12 @@ export type UserSelectScalar = {
   currency?: boolean
   timezone?: boolean
   dashboardConfig?: boolean
+  simpleMode?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "emailVerified" | "image" | "currency" | "timezone" | "dashboardConfig" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "emailVerified" | "image" | "currency" | "timezone" | "dashboardConfig" | "simpleMode" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -3108,6 +3198,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     currency: string
     timezone: string
     dashboardConfig: runtime.JsonValue | null
+    /**
+     * Shows only the everyday sections in navigation. New accounts start simple.
+     */
+    simpleMode: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -3557,6 +3651,7 @@ export interface UserFieldRefs {
   readonly currency: Prisma.FieldRef<"User", 'String'>
   readonly timezone: Prisma.FieldRef<"User", 'String'>
   readonly dashboardConfig: Prisma.FieldRef<"User", 'Json'>
+  readonly simpleMode: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
