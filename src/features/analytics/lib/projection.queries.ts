@@ -15,6 +15,10 @@ import { prisma } from "@/shared/lib/prisma";
 
 import { computeNextDate } from "@/features/recurring/lib/recurring.utils";
 import { computeStatementDates } from "@/features/credit-cards/lib/billing-cycle.utils";
+import {
+  BALANCE_INFLOW_TRANSFER_CATEGORY_IDS,
+  BALANCE_OUTFLOW_TRANSFER_CATEGORY_IDS,
+} from "@/features/categories/lib/system-categories";
 
 import type {
   LowestPoint,
@@ -41,16 +45,60 @@ function toDateKey(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
+const BALANCE_TRANSFER_CATEGORY_IDS = [
+  ...BALANCE_OUTFLOW_TRANSFER_CATEGORY_IDS,
+  ...BALANCE_INFLOW_TRANSFER_CATEGORY_IDS,
+];
+
+/** Transactions that move the cash balance: income, expenses, and transfers to or from savings and investments. */
+const balanceImpactFilter = {
+  OR: [
+    { type: { in: [TransactionType.INCOME, TransactionType.EXPENSE] } },
+    {
+      type: TransactionType.TRANSFER,
+      categoryId: { in: BALANCE_TRANSFER_CATEGORY_IDS },
+    },
+  ],
+};
+
+/** Signed cash impact: positive = inflow, negative = outflow. */
+function signedBalanceAmount(tx: {
+  type: TransactionType;
+  categoryId: string;
+  amount: number;
+}): number {
+  if (tx.type === TransactionType.INCOME) return tx.amount;
+  if (tx.type === TransactionType.EXPENSE) return -Math.abs(tx.amount);
+  if (BALANCE_INFLOW_TRANSFER_CATEGORY_IDS.includes(tx.categoryId)) {
+    return Math.abs(tx.amount);
+  }
+  return -Math.abs(tx.amount);
+}
+
 /**
  * All-time cash balance: sum of INCOME minus abs(EXPENSE) across every
- * non-template transaction with impactDate <= asOf. This is the same number
- * the cashflow projection uses as its starting balance.
+ * non-template transaction with impactDate <= asOf, minus transfers to savings
+ * or investments, plus transfers back from them. Other transfers (card
+ * payments, between accounts, cash withdrawals) do not change it. This is the
+ * same number the cashflow projection uses as its starting balance.
  */
 export async function getAccumulatedBalance(
   userId: string,
   asOf: Date = startOfDay(new Date()),
 ): Promise<number> {
-  const [incomeAgg, expenseAgg] = await Promise.all([
+  const transferAgg = (categoryIds: string[]) =>
+    prisma.transaction.aggregate({
+      where: {
+        userId,
+        isTemplate: false,
+        type: TransactionType.TRANSFER,
+        categoryId: { in: categoryIds },
+        impactDate: { lte: asOf },
+      },
+      _sum: { amount: true },
+    });
+
+  const [incomeAgg, expenseAgg, transferOutAgg, transferInAgg] = await Promise.all([
     prisma.transaction.aggregate({
       where: {
         userId,
@@ -69,16 +117,24 @@ export async function getAccumulatedBalance(
       },
       _sum: { amount: true },
     }),
+    transferAgg(BALANCE_OUTFLOW_TRANSFER_CATEGORY_IDS),
+    transferAgg(BALANCE_INFLOW_TRANSFER_CATEGORY_IDS),
   ]);
 
-  return (incomeAgg._sum.amount ?? 0) - Math.abs(expenseAgg._sum.amount ?? 0);
+  return (
+    (incomeAgg._sum.amount ?? 0) -
+    Math.abs(expenseAgg._sum.amount ?? 0) -
+    Math.abs(transferOutAgg._sum.amount ?? 0) +
+    Math.abs(transferInAgg._sum.amount ?? 0)
+  );
 }
 
 /**
  * Compute a day-by-day cashflow projection for the next N days.
  *
- * Starting balance = sum of all INCOME minus abs(EXPENSE) with impactDate <= today.
- * Future events = existing future transactions + projected AUTO recurring occurrences.
+ * Starting balance = getAccumulatedBalance up to and including today.
+ * Future events = existing future transactions + projected AUTO recurring
+ * occurrences, including transfers to or from savings and investments.
  *
  * @param userId - The user whose projection to compute
  * @param days - Horizon in days (default 90). Result contains days + 1 points (today + N days).
@@ -98,7 +154,7 @@ export async function getDailyProjection(
     where: {
       userId,
       isTemplate: false,
-      type: { in: [TransactionType.INCOME, TransactionType.EXPENSE] },
+      ...balanceImpactFilter,
       impactDate: { gt: today, lte: horizon },
     },
     select: {
@@ -106,6 +162,7 @@ export async function getDailyProjection(
       description: true,
       amount: true,
       type: true,
+      categoryId: true,
       impactDate: true,
     },
   });
@@ -115,7 +172,7 @@ export async function getDailyProjection(
     where: {
       userId,
       isTemplate: true,
-      type: { in: [TransactionType.INCOME, TransactionType.EXPENSE] },
+      ...balanceImpactFilter,
       recurrenceRule: {
         isActive: true,
         generationMode: "AUTO",
@@ -126,6 +183,7 @@ export async function getDailyProjection(
       description: true,
       amount: true,
       type: true,
+      categoryId: true,
       creditCardId: true,
       creditCard: {
         select: { closingDay: true, paymentDay: true },
@@ -145,13 +203,12 @@ export async function getDailyProjection(
   const events: ProjectionEvent[] = [];
 
   for (const tx of existingFuture) {
-    const isIncome = tx.type === TransactionType.INCOME;
     events.push({
       date: toDateKey(tx.impactDate),
-      amount: isIncome ? tx.amount : -Math.abs(tx.amount),
+      amount: signedBalanceAmount(tx),
       description: tx.description,
       source: "EXISTING",
-      transactionType: isIncome ? "INCOME" : "EXPENSE",
+      transactionType: tx.type,
     });
   }
 
@@ -183,13 +240,12 @@ export async function getDailyProjection(
       if (impactDate > horizon) break;
 
       if (impactDate > today) {
-        const isIncome = template.type === TransactionType.INCOME;
         events.push({
           date: toDateKey(impactDate),
-          amount: isIncome ? template.amount : -Math.abs(template.amount),
+          amount: signedBalanceAmount(template),
           description: template.description,
           source: "RECURRING",
-          transactionType: isIncome ? "INCOME" : "EXPENSE",
+          transactionType: template.type,
         });
       }
 

@@ -1,11 +1,13 @@
 import { addDays, format, startOfDay } from "date-fns"
 import { describe, expect, it } from "vitest"
 import { computeStatementDates } from "@/features/credit-cards/lib/billing-cycle.utils"
+import { systemCategoryId } from "@/features/categories/lib/system-categories"
 import {
   getAccumulatedBalance,
   getDailyProjection,
 } from "@/features/analytics/lib/projection.queries"
 import {
+  createCategory,
   createCreditCard,
   createRecurringTemplate,
   createTransaction,
@@ -303,5 +305,156 @@ describe("getDailyProjection", () => {
       ymd(addDays(startOfDay(new Date()), negativeDay)),
     )
     expect(result.summary.lowestPoint?.balance).toBe(dollars(-400))
+  })
+})
+
+describe("investment and savings transfers", () => {
+  async function createTransferCategories(userId: string) {
+    const ids = {
+      toInvestments: systemCategoryId("to-investments"),
+      toSavings: systemCategoryId("to-savings"),
+      fromInvestments: systemCategoryId("from-investments"),
+      fromSavings: systemCategoryId("from-savings"),
+      cardPayment: systemCategoryId("card-payment"),
+      betweenAccounts: systemCategoryId("between-accounts"),
+    }
+    for (const id of Object.values(ids)) {
+      await createCategory(userId, { id, name: id, scope: "SYSTEM" })
+    }
+    return ids
+  }
+
+  it("subtracts transfers to investments and savings from the accumulated balance", async () => {
+    const user = await createUser()
+    const cats = await createTransferCategories(user.id)
+    await createTransaction(user.id, {
+      type: "INCOME",
+      amount: dollars(5000),
+      impactDate: daysFromNow(-10),
+    })
+    await createTransaction(user.id, {
+      type: "TRANSFER",
+      amount: dollars(1000),
+      categoryId: cats.toInvestments,
+      impactDate: daysFromNow(-3),
+    })
+    await createTransaction(user.id, {
+      type: "TRANSFER",
+      amount: dollars(500),
+      categoryId: cats.toSavings,
+      impactDate: daysFromNow(-2),
+    })
+
+    const balance = await getAccumulatedBalance(user.id)
+
+    expect(balance).toBe(dollars(3500))
+  })
+
+  it("adds transfers from investments and savings back to the accumulated balance", async () => {
+    const user = await createUser()
+    const cats = await createTransferCategories(user.id)
+    await createTransaction(user.id, {
+      type: "INCOME",
+      amount: dollars(1000),
+      impactDate: daysFromNow(-10),
+    })
+    await createTransaction(user.id, {
+      type: "TRANSFER",
+      amount: dollars(300),
+      categoryId: cats.fromInvestments,
+      impactDate: daysFromNow(-3),
+    })
+    await createTransaction(user.id, {
+      type: "TRANSFER",
+      amount: dollars(200),
+      categoryId: cats.fromSavings,
+      impactDate: daysFromNow(-2),
+    })
+
+    const balance = await getAccumulatedBalance(user.id)
+
+    expect(balance).toBe(dollars(1500))
+  })
+
+  it("keeps card payments and transfers between accounts out of the accumulated balance", async () => {
+    const user = await createUser()
+    const cats = await createTransferCategories(user.id)
+    await createTransaction(user.id, {
+      type: "INCOME",
+      amount: dollars(2000),
+      impactDate: daysFromNow(-10),
+    })
+    await createTransaction(user.id, {
+      type: "TRANSFER",
+      amount: dollars(800),
+      categoryId: cats.cardPayment,
+      impactDate: daysFromNow(-3),
+    })
+    await createTransaction(user.id, {
+      type: "TRANSFER",
+      amount: dollars(400),
+      categoryId: cats.betweenAccounts,
+      impactDate: daysFromNow(-2),
+    })
+
+    const balance = await getAccumulatedBalance(user.id)
+
+    expect(balance).toBe(dollars(2000))
+  })
+
+  it("ignores investment transfers dated after asOf", async () => {
+    const user = await createUser()
+    const cats = await createTransferCategories(user.id)
+    await createTransaction(user.id, {
+      type: "TRANSFER",
+      amount: dollars(1000),
+      categoryId: cats.toInvestments,
+      impactDate: daysFromNow(5),
+    })
+
+    const balance = await getAccumulatedBalance(user.id)
+
+    expect(balance).toBe(0)
+  })
+
+  it("projects future one-off and AUTO recurring investment transfers as outflows", async () => {
+    const user = await createUser()
+    const cats = await createTransferCategories(user.id)
+    await createTransaction(user.id, {
+      type: "INCOME",
+      amount: dollars(5000),
+      impactDate: daysFromNow(-1),
+    })
+    await createTransaction(user.id, {
+      type: "TRANSFER",
+      amount: dollars(1000),
+      categoryId: cats.toInvestments,
+      impactDate: daysFromNow(5),
+    })
+    await createTransaction(user.id, {
+      type: "TRANSFER",
+      amount: dollars(700),
+      categoryId: cats.cardPayment,
+      impactDate: daysFromNow(6),
+    })
+    await createRecurringTemplate(user.id, {
+      type: "TRANSFER",
+      amount: dollars(500),
+      categoryId: cats.toSavings,
+      frequency: "MONTHLY",
+      interval: 1,
+      generationMode: "AUTO",
+      nextGenerationDate: daysFromNow(10),
+    })
+
+    const result = await getDailyProjection(user.id, 30)
+
+    expect(result.summary.startingBalance).toBe(dollars(5000))
+    const transferEvents = result.events.filter((e) => e.transactionType === "TRANSFER")
+    expect(transferEvents).toHaveLength(2)
+    expect(result.points.find((p) => p.dayOffset === 5)?.dayOutflow).toBe(dollars(1000))
+    expect(result.points.find((p) => p.dayOffset === 6)?.dayOutflow).toBe(0)
+    expect(result.points.find((p) => p.dayOffset === 10)?.dayOutflow).toBe(dollars(500))
+    expect(result.summary.balance30).toBe(dollars(3500))
   })
 })

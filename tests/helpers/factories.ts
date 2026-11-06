@@ -115,6 +115,7 @@ export async function createTransaction(
 }
 
 interface CategoryOverrides {
+  id?: string
   name?: string
   alertThreshold?: number | null
   isAvoidable?: boolean
@@ -129,6 +130,7 @@ export async function createCategory(
   const scope = overrides.scope ?? "USER"
   return prisma.category.create({
     data: {
+      ...(overrides.id ? { id: overrides.id } : {}),
       name: overrides.name ?? `cat-${randomUUID().slice(0, 8)}`,
       icon: "circle",
       color: "#888888",
@@ -300,7 +302,8 @@ export async function createInvestment(
 interface RecurringTemplateInput {
   description?: string
   amount: number
-  type: "INCOME" | "EXPENSE"
+  type: "INCOME" | "EXPENSE" | "TRANSFER"
+  categoryId?: string | null
   frequency:
     | "DAILY"
     | "WEEKLY"
@@ -322,7 +325,8 @@ export async function createRecurringTemplate(
   userId: string,
   input: RecurringTemplateInput,
 ) {
-  const categoryId = (await getOrCreateDefaultCategory(userId)).id
+  const categoryId =
+    input.categoryId ?? (await getOrCreateDefaultCategory(userId)).id
   const template = await prisma.transaction.create({
     data: {
       user: { connect: { id: userId } },

@@ -112,7 +112,7 @@ export interface MonthComparisonResult {
 // ---------- Cashflow Projection (30/60/90) ----------
 
 export type ProjectionEventSource = "EXISTING" | "RECURRING";
-export type ProjectionEventType = "INCOME" | "EXPENSE";
+export type ProjectionEventType = "INCOME" | "EXPENSE" | "TRANSFER";
 
 export interface ProjectionEvent {
   date: string; // YYYY-MM-DD (impactDate)

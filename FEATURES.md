@@ -27,6 +27,9 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 - Registrar el café de hoy en efectivo.
 - Cargar la compra del super pagada con tarjeta de crédito en 6 cuotas → el sistema arma las 6 transacciones futuras con su `impactDate` correcto.
 - Marcar la transferencia que le hiciste a un amigo y dividirla.
+- Registrar el dinero que mandas a un broker como transferencia en "Inversión" → no cuenta como gasto del mes, pero sí se descuenta del balance acumulado y de la proyección.
+
+Las transferencias no son ingresos ni gastos. Solo las categorías "Ahorro" e "Inversión" restan del balance acumulado y de la proyección de cashflow, y "Desde ahorro" y "Desde inversiones" lo suman de vuelta. El resto (pago de tarjeta, entre cuentas, retiro de efectivo) no cambia el balance.
 
 **Estado:** ✅ núcleo del proyecto, totalmente funcional.
 
