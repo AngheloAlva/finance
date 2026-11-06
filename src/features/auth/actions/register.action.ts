@@ -60,6 +60,7 @@ export async function registerAction(
   const preferences = resolveDevicePreferences(formData.get("timezone"));
   if (preferences) {
     try {
+      // better-auth stores emails lowercased on sign-up.
       await prisma.user.update({
         where: { email: email.toLowerCase() },
         data: preferences,

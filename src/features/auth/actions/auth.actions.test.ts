@@ -69,7 +69,7 @@ describe("registerAction", () => {
     await prisma.user.create({ data: { name: "Ana", email: "ana@test.local" } })
     vi.mocked(auth.api.signUpEmail).mockResolvedValue({} as never)
     let timezoneAtSignIn: string | undefined
-    vi.mocked(auth.api.signInEmail).mockImplementation((async () => {
+    vi.mocked(auth.api.signInEmail).mockImplementationOnce((async () => {
       const user = await prisma.user.findUniqueOrThrow({ where: { email: "ana@test.local" } })
       timezoneAtSignIn = user.timezone
       return {}

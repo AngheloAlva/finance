@@ -21,16 +21,13 @@ interface DigestInput {
 }
 
 const buildDigest = unstable_cache(
-	async (input: DigestInput): Promise<DigestResult> => {
+	async (input: DigestInput): Promise<{ text: string } | { error: string }> => {
 		const { userId, month, year, currency, locale } = input
 
 		const [overview, comparison] = await Promise.all([
 			getMonthlyOverview(userId, month, year),
 			getMonthComparison(userId, month, year, locale),
 		])
-
-		// Nothing to summarize yet: skip the model call and let the widget invite the user.
-		if (overview.transactionCount === 0) return { empty: true }
 
 		const savingsRate =
 			overview.totalIncome > 0
@@ -96,6 +93,11 @@ export async function generateMonthlyDigestAction(
 	const session = await requireSession()
 	const locale = await getLocale()
 	const currency = (session.user.currency ?? "USD") as CurrencyCode
+
+	// Checked outside the cache, so the first transaction of the month shows a
+	// summary right away instead of a cached "empty" result.
+	const { transactionCount } = await getMonthlyOverview(session.user.id, month, year)
+	if (transactionCount === 0) return { empty: true }
 
 	return buildDigest({ userId: session.user.id, month, year, currency, locale })
 }

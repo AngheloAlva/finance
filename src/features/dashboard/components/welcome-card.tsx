@@ -15,7 +15,7 @@ interface WelcomeCardProps {
 /** First-run card shown on the dashboard while the account has no transactions. */
 export function WelcomeCard({ name, currency }: WelcomeCardProps) {
 	const t = useTranslations("dashboard.welcome")
-	const firstName = name.trim().split(/\s+/)[0] ?? name
+	const firstName = name.trim().split(/\s+/)[0]
 
 	return (
 		<section className="bg-accent text-accent-foreground flex flex-col gap-4 rounded-xl p-5 md:p-6">
