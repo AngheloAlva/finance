@@ -46,6 +46,25 @@ describe("updateProfileAction", () => {
     expect(updated.image).toBeNull()
   })
 
+  it("keeps the stored avatar when the form has no image field", async () => {
+    const user = await createUser()
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { image: "https://example.com/me.png" },
+    })
+    setSessionUser(user.id)
+
+    const result = await updateProfileAction(
+      { success: true, data: undefined },
+      formData({ name: "Renamed", currency: "CLP", timezone: "America/Santiago" }),
+    )
+
+    expect(result.success).toBe(true)
+    const updated = await prisma.user.findUniqueOrThrow({ where: { id: user.id } })
+    expect(updated.currency).toBe("CLP")
+    expect(updated.image).toBe("https://example.com/me.png")
+  })
+
   it("returns VALIDATION_ERROR when name is too short", async () => {
     const user = await createUser()
     setSessionUser(user.id)

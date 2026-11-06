@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactElement } from "react"
 import { useTranslations } from "next-intl"
 import { Trash2 } from "lucide-react";
 
@@ -10,11 +11,13 @@ import { DeleteEntityButton } from "@/shared/components/delete-entity-button";
 interface DeleteInstallmentGroupButtonProps {
   parentTransactionId: string;
   description: string;
+  trigger?: ReactElement;
 }
 
 export function DeleteInstallmentGroupButton({
   parentTransactionId,
   description,
+  trigger,
 }: DeleteInstallmentGroupButtonProps) {
   const t = useTranslations("transactions");
 
@@ -26,7 +29,7 @@ export function DeleteInstallmentGroupButton({
       dialogDescription={t("deleteInstallmentDialog.description", { name: description })}
       successMessage={t("deleteInstallmentDialog.success")}
       trigger={
-        <Button variant="ghost" size="icon-xs" title={t("deleteInstallmentDialog.deleteAll")}>
+        trigger ?? <Button variant="ghost" size="icon-xs" title={t("deleteInstallmentDialog.deleteAll")}>
           <Trash2 className="size-3 text-destructive" />
         </Button>
       }

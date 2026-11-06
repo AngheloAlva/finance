@@ -15,14 +15,19 @@ export function MonthlyDigestWidget({ month, year }: MonthlyDigestWidgetProps) {
 	const t = useTranslations("dashboard.monthlyDigest")
 	const [text, setText] = useState<string | null>(null)
 	const [error, setError] = useState(false)
+	const [empty, setEmpty] = useState(false)
 	const [isPending, startTransition] = useTransition()
 
 	const generate = useCallback(() => {
 		startTransition(async () => {
 			setError(false)
+			setEmpty(false)
 			const result = await generateMonthlyDigestAction(month, year)
 			if ("error" in result) {
 				setError(true)
+			} else if ("empty" in result) {
+				setText(null)
+				setEmpty(true)
 			} else {
 				setText(result.text)
 			}
@@ -60,6 +65,10 @@ export function MonthlyDigestWidget({ month, year }: MonthlyDigestWidgetProps) {
 
 			{error && !isPending && (
 				<p className="text-xs text-muted-foreground">{t("error")}</p>
+			)}
+
+			{empty && !isPending && (
+				<p className="text-xs text-muted-foreground">{t("empty")}</p>
 			)}
 
 			{text && !isPending && (

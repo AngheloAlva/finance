@@ -40,6 +40,7 @@ import { OverviewCards } from "@/features/dashboard/components/overview-cards"
 import { PortfolioSummaryCard } from "@/features/dashboard/components/portfolio-summary-card"
 import { RecentTransactions } from "@/features/dashboard/components/recent-transactions"
 import { WelcomeCard } from "@/features/dashboard/components/welcome-card"
+import { InstallPrompt } from "@/features/notifications/components/install-prompt"
 import { WidgetWrapper } from "@/features/dashboard/components/widget-wrapper"
 import {
 	mergeDashboardConfig,
@@ -90,6 +91,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 	if (!firstTransaction) {
 		return (
 			<div className="mx-auto flex max-w-5xl flex-col gap-4">
+				<InstallPrompt />
 				<h1 className="text-lg font-semibold">{t("title")}</h1>
 				<WelcomeCard name={session.user.name} currency={currency} />
 			</div>
@@ -217,6 +219,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 
 	return (
 		<div className="mx-auto flex max-w-5xl flex-col gap-4">
+			<InstallPrompt />
 			<div className="flex items-center justify-between">
 				<h1 className="text-lg font-semibold">{t("title")}</h1>
 				<div className="flex items-center gap-2">

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Bell, BellOff } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -18,6 +19,7 @@ function urlBase64ToUint8Array(base64String: string): ArrayBuffer {
 }
 
 export function PushNotificationManager() {
+	const t = useTranslations("settings.notifications")
 	const [supported, setSupported] = useState(false)
 	const [subscription, setSubscription] = useState<PushSubscription | null>(null)
 	const [loading, setLoading] = useState(false)
@@ -51,9 +53,9 @@ export function PushNotificationManager() {
 				endpoint: json.endpoint,
 				keys: { p256dh: json.keys.p256dh, auth: json.keys.auth },
 			})
-			toast.success("Push notifications enabled")
+			toast.success(t("enabledToast"))
 		} catch {
-			toast.error("Could not enable notifications")
+			toast.error(t("enableFailed"))
 		} finally {
 			setLoading(false)
 		}
@@ -66,9 +68,9 @@ export function PushNotificationManager() {
 			await unsubscribePush(subscription.endpoint)
 			await subscription.unsubscribe()
 			setSubscription(null)
-			toast.success("Push notifications disabled")
+			toast.success(t("disabledToast"))
 		} catch {
-			toast.error("Could not disable notifications")
+			toast.error(t("disableFailed"))
 		} finally {
 			setLoading(false)
 		}
@@ -82,22 +84,22 @@ export function PushNotificationManager() {
 				{subscription ? (
 					<>
 						<Bell className="text-primary size-4" />
-						<span>Push notifications are enabled</span>
+						<span>{t("enabled")}</span>
 					</>
 				) : (
 					<>
 						<BellOff className="text-muted-foreground size-4" />
-						<span className="text-muted-foreground">Push notifications are disabled</span>
+						<span className="text-muted-foreground">{t("disabled")}</span>
 					</>
 				)}
 			</div>
 			{subscription ? (
 				<Button variant="outline" size="sm" onClick={unsubscribe} disabled={loading}>
-					Disable
+					{t("disable")}
 				</Button>
 			) : (
 				<Button size="sm" onClick={subscribe} disabled={loading}>
-					Enable
+					{t("enable")}
 				</Button>
 			)}
 		</div>

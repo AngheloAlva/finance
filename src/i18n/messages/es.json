@@ -69,15 +69,25 @@
     "name": "Nombre",
     "email": "Email",
     "emailCannotChange": "El email no se puede cambiar desde aquí",
-    "avatarUrl": "URL del avatar",
-    "avatarPlaceholder": "https://...",
     "currency": "Moneda",
     "selectCurrency": "Seleccionar moneda",
     "timezone": "Zona horaria",
     "selectTimezone": "Seleccionar zona horaria",
     "saveChanges": "Guardar cambios",
     "saving": "Guardando...",
-    "profileUpdated": "Perfil actualizado correctamente"
+    "profileUpdated": "Perfil actualizado correctamente",
+    "notifications": {
+      "title": "Notificaciones",
+      "description": "Recibe un aviso en el teléfono cuando se active una alerta.",
+      "enabled": "Las notificaciones están activadas",
+      "disabled": "Las notificaciones están desactivadas",
+      "enable": "Activar",
+      "disable": "Desactivar",
+      "enabledToast": "Notificaciones activadas",
+      "disabledToast": "Notificaciones desactivadas",
+      "enableFailed": "No se pudieron activar las notificaciones",
+      "disableFailed": "No se pudieron desactivar las notificaciones"
+    }
   },
   "dashboard": {
     "title": "Panel",
@@ -166,7 +176,8 @@
     "monthlyDigest": {
       "title": "Resumen del mes",
       "regenerate": "Regenerar",
-      "error": "No se pudo generar el resumen. Intenta de nuevo."
+      "error": "No se pudo generar el resumen. Intenta de nuevo.",
+      "empty": "Cuando registres movimientos este mes, aquí verás un resumen."
     },
     "hero": {
       "leftToSpend": "Te queda este mes",
@@ -221,7 +232,8 @@
       "newTitle": "Nueva Transacción",
       "editTitle": "Editar Transacción",
       "newDescription": "Registrar una nueva transacción financiera.",
-      "editDescription": "Actualizar los detalles de la transacción."
+      "editDescription": "Actualizar los detalles de la transacción.",
+      "delete": "Eliminar movimiento"
     },
     "table": {
       "date": "Fecha",

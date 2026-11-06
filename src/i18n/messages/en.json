@@ -69,15 +69,25 @@
     "name": "Name",
     "email": "Email",
     "emailCannotChange": "Email cannot be changed here",
-    "avatarUrl": "Avatar URL",
-    "avatarPlaceholder": "https://...",
     "currency": "Currency",
     "selectCurrency": "Select currency",
     "timezone": "Timezone",
     "selectTimezone": "Select timezone",
     "saveChanges": "Save changes",
     "saving": "Saving...",
-    "profileUpdated": "Profile updated successfully"
+    "profileUpdated": "Profile updated successfully",
+    "notifications": {
+      "title": "Notifications",
+      "description": "Get a phone notification when an alert is triggered.",
+      "enabled": "Notifications are on",
+      "disabled": "Notifications are off",
+      "enable": "Turn on",
+      "disable": "Turn off",
+      "enabledToast": "Notifications turned on",
+      "disabledToast": "Notifications turned off",
+      "enableFailed": "Could not turn on notifications",
+      "disableFailed": "Could not turn off notifications"
+    }
   },
   "dashboard": {
     "title": "Dashboard",
@@ -166,7 +176,8 @@
     "monthlyDigest": {
       "title": "Monthly Digest",
       "regenerate": "Regenerate",
-      "error": "Could not generate summary. Try again."
+      "error": "Could not generate summary. Try again.",
+      "empty": "Once you log transactions this month, you'll see a summary here."
     },
     "hero": {
       "leftToSpend": "Left this month",
@@ -221,7 +232,8 @@
       "newTitle": "New Transaction",
       "editTitle": "Edit Transaction",
       "newDescription": "Record a new financial transaction.",
-      "editDescription": "Update the transaction details."
+      "editDescription": "Update the transaction details.",
+      "delete": "Delete transaction"
     },
     "table": {
       "date": "Date",

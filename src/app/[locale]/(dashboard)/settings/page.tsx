@@ -65,10 +65,10 @@ export default async function SettingsPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Bell className="size-4" />
-              Notifications
+              {t("notifications.title")}
             </CardTitle>
             <CardDescription>
-              Get push notifications when alerts are triggered
+              {t("notifications.description")}
             </CardDescription>
           </CardHeader>
           <CardContent>

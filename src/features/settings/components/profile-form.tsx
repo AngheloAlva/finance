@@ -77,22 +77,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="image">{t("avatarUrl")}</Label>
-        <Input
-          id="image"
-          name="image"
-          type="text"
-          defaultValue={user.image ?? ""}
-          placeholder={t("avatarPlaceholder")}
-          autoComplete="photo"
-          aria-invalid={
-            !state.success && state.fieldErrors?.image ? true : undefined
-          }
-        />
-        {!state.success && <FieldError errors={state.fieldErrors?.image} />}
-      </div>
-
-      <div className="flex flex-col gap-1.5">
         <Label>{t("currency")}</Label>
         <CurrencySelect
           name="currency"

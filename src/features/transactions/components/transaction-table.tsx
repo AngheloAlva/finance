@@ -108,7 +108,7 @@ export function TransactionTable({ transactions, categories, creditCards, tags, 
 		<>
 			<ul className="divide-y md:hidden">
 				{transactions.map((tx) => (
-					<li key={tx.id} className="flex items-center gap-1 pr-2">
+					<li key={tx.id} className="flex items-center pr-4">
 						<TransactionDialog
 							mode="edit"
 							transaction={tx}
@@ -145,16 +145,6 @@ export function TransactionTable({ transactions, categories, creditCards, tags, 
 								</button>
 							}
 						/>
-						<DeleteTransactionButton
-							transactionId={tx.id}
-							transactionDescription={tx.description}
-						/>
-						{tx.totalInstallments != null && tx.totalInstallments > 0 && (
-							<DeleteInstallmentGroupButton
-								parentTransactionId={tx.parentTransactionId ?? tx.id}
-								description={tx.description}
-							/>
-						)}
 					</li>
 				))}
 			</ul>

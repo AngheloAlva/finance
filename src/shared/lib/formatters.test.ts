@@ -8,6 +8,12 @@ import {
 } from "@/shared/lib/formatters"
 
 describe("formatCurrency", () => {
+  it("groups thousands in Spanish even for four-digit amounts", () => {
+    const normalize = (s: string) => s.replace(/\s/g, " ")
+    expect(normalize(formatCurrency(380000, "USD", "es"))).toBe("3.800,00 US$")
+    expect(normalize(formatCurrency(3979479, "USD", "es"))).toBe("39.794,79 US$")
+  })
+
   it("converts cents to dollars for standard currencies", () => {
     const result = formatCurrency(150000, "USD", "en-US")
     expect(result).toBe("$1,500.00")

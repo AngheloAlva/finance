@@ -18,6 +18,8 @@ function getCurrencyFormatter(currencyCode: CurrencyCode, locale = "en-US"): Int
       currency: currencyCode,
       minimumFractionDigits: zeroDecimal ? 0 : 2,
       maximumFractionDigits: zeroDecimal ? 0 : 2,
+      // Spanish skips the separator for four-digit amounts by default ("3800").
+      useGrouping: "always",
     });
     formatterCache.set(cacheKey, formatter);
   }

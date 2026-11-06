@@ -14,7 +14,7 @@ export async function updateProfileAction(
 ): Promise<ActionResult<void>> {
   const raw = {
     name: formData.get("name"),
-    image: formData.get("image"),
+    image: formData.get("image") ?? undefined,
     currency: formData.get("currency"),
     timezone: formData.get("timezone"),
   };
