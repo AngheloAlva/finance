@@ -14,7 +14,7 @@ Branch: feat/friendly-first-run. Delivery strategy: ask-on-risk (forecast ~750 a
 - T1 | S1 | inline | done | 2da1500
 - T2 | S2 | inline | done | 739f184
 - T3 | S3 | inline | done | 2278fb1 | Risk item 2 (sign-up flow: autoSignIn false)
-- T4 | S4 | inline | done | 2af99c8 | Risk item 1 (additive migration), own commit; verifier PASS; native review unavailable (budget)
+- T4 | S4 | inline | done | 2af99c8 | Risk item 1 (additive migration), own commit; verifier PASS; native review unavailable (budget), delivered on verifier result (L21)
 - T6 | S3, S5 | inline | done | b80a4c6 | review follow-ups (digest empty check outside cache)
 - T5 | S5 | inline | done | 560877f
 
@@ -40,3 +40,4 @@ Branch: feat/friendly-first-run. Delivery strategy: ask-on-risk (forecast ~750 a
 - L18: The committed Prisma client lacked PushSubscription.updatedAt (declared in schema since 6fe02d6) and no migration creates push_subscriptions; regenerating picked it up. Production table shape unknown: check it before deploying.
 - L19: Independent verifier on S4: PASS, no blockers. Migration applied by `prisma migrate deploy` on a populated copy; users/categories hashes unchanged; existing rows false, new rows true; regenerated client byte-identical to a scratch regeneration. Advisories: apply the migration to production before or with the deploy (`next build` does not migrate); check `push_subscriptions.updatedAt` in production; some in-page links still reach hidden sections (/analytics, /categories, /investments, alert pushes to /alerts), outside S4's navigation scope.
 - L20: Native review of 2af99c8 (user approved) stopped with lens_context_budget_exceeded, caused by the regenerated Prisma client; no authority created. Pending: user decision on splitting the commit for review or delivering on the verifier's result.
+- L21 (2026-11-06): "Opcion 2 bien" — deliver 2af99c8 on the independent verifier result without splitting it for native review. Next: user decision on push/PR; before deploy apply the migration to production and check `push_subscriptions.updatedAt` there.
