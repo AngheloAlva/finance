@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Plus } from "lucide-react"
 import { useTranslations } from "next-intl"
 
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/drawer"
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
 import { QuickAddForm } from "@/features/transactions/components/quick-add-form"
+import { QUICK_ADD_OPEN_EVENT } from "@/features/transactions/lib/quick-add-events"
 
 interface QuickAddDrawerProps {
 	categories: CategoryWithChildren[]
@@ -25,6 +26,12 @@ export function QuickAddDrawer({ categories }: QuickAddDrawerProps) {
 
 	const handleSuccess = useCallback(() => {
 		setOpen(false)
+	}, [])
+
+	useEffect(() => {
+		const handleOpen = () => setOpen(true)
+		window.addEventListener(QUICK_ADD_OPEN_EVENT, handleOpen)
+		return () => window.removeEventListener(QUICK_ADD_OPEN_EVENT, handleOpen)
 	}, [])
 
 	return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,10 @@ import { registerAction } from "@/features/auth/actions/register.action";
 import { FieldError } from "@/shared/components/field-error";
 import { INITIAL_VOID_STATE } from "@/shared/types/common.types";
 
+const subscribeToNothing = () => () => {};
+const getDeviceTimezone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
+const getServerTimezone = () => "";
+
 export function RegisterForm() {
   const t = useTranslations("auth");
   const tErrors = useTranslations("errors");
@@ -19,8 +23,16 @@ export function RegisterForm() {
     INITIAL_VOID_STATE,
   );
 
+  // The device time zone sets the new account's time zone and currency.
+  const timezone = useSyncExternalStore(
+    subscribeToNothing,
+    getDeviceTimezone,
+    getServerTimezone,
+  );
+
   return (
     <form action={formAction} className="flex flex-col gap-4">
+      <input type="hidden" name="timezone" value={timezone} />
       {!state.success && state.error && (
         <div className="rounded-lg border border-destructive/50 bg-destructive/10 px-3 py-2 text-xs text-destructive">
           {tErrors(state.error as Parameters<typeof tErrors>[0])}

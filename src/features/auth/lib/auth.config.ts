@@ -11,6 +11,9 @@ export const auth = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 		minPasswordLength: 8,
+		// registerAction signs in after saving device preferences, so the
+		// cached session starts with the right currency and time zone.
+		autoSignIn: false,
 	},
 	session: {
 		expiresIn: 60 * 60 * 24 * 7, // 7 days

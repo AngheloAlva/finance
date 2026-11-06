@@ -39,6 +39,7 @@ import { MonthlyFlowChart } from "@/features/dashboard/components/monthly-flow-c
 import { OverviewCards } from "@/features/dashboard/components/overview-cards"
 import { PortfolioSummaryCard } from "@/features/dashboard/components/portfolio-summary-card"
 import { RecentTransactions } from "@/features/dashboard/components/recent-transactions"
+import { WelcomeCard } from "@/features/dashboard/components/welcome-card"
 import { WidgetWrapper } from "@/features/dashboard/components/widget-wrapper"
 import {
 	mergeDashboardConfig,
@@ -74,10 +75,27 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 	const t = await getTranslations("dashboard")
 
 	// Load the user's dashboard customization (falls back to default if null/invalid)
-	const userRecord = await prisma.user.findUnique({
-		where: { id: session.user.id },
-		select: { dashboardConfig: true },
-	})
+	const [userRecord, firstTransaction] = await Promise.all([
+		prisma.user.findUnique({
+			where: { id: session.user.id },
+			select: { dashboardConfig: true },
+		}),
+		prisma.transaction.findFirst({
+			where: { userId: session.user.id, isTemplate: false },
+			select: { id: true },
+		}),
+	])
+
+	// A brand-new account gets a welcome card instead of a grid of empty widgets.
+	if (!firstTransaction) {
+		return (
+			<div className="mx-auto flex max-w-5xl flex-col gap-4">
+				<h1 className="text-lg font-semibold">{t("title")}</h1>
+				<WelcomeCard name={session.user.name} currency={currency} />
+			</div>
+		)
+	}
+
 	const config = mergeDashboardConfig(userRecord?.dashboardConfig)
 
 	// Figure out which widgets are visible so we only fetch data we need.
