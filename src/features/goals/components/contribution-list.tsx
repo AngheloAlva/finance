@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 
 import type { CurrencyCode } from "@/shared/lib/constants";
-import { formatCurrency, formatDate } from "@/shared/lib/formatters";
+import { formatCalendarDate, formatCurrency } from "@/shared/lib/formatters";
 import type { GoalContributionItem } from "@/features/goals/types/goals.types";
 
 interface ContributionListProps {
@@ -53,7 +53,7 @@ export function ContributionList({
             )}
           </div>
           <span className="text-[10px] text-muted-foreground">
-            {formatDate(contribution.date, "short", locale)}
+            {formatCalendarDate(contribution.date, "short", locale)}
           </span>
         </div>
       ))}

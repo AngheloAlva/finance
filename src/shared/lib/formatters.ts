@@ -56,22 +56,37 @@ export function formatExchangeRate(rateInt: number): string {
   return (rateInt / 10000).toFixed(4);
 }
 
+function dateFormatOptions(style: "short" | "long"): Intl.DateTimeFormatOptions {
+  return style === "short"
+    ? { month: "short", day: "numeric", year: "numeric" }
+    : {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      };
+}
+
+/** Formats a moment in time in the viewer's time zone (expiry, last update). */
 export function formatDate(
   date: Date | string,
   style: "short" | "long",
   locale = "en-US",
 ): string {
   const d = typeof date === "string" ? new Date(date) : date;
+  return new Intl.DateTimeFormat(locale, dateFormatOptions(style)).format(d);
+}
 
-  const options: Intl.DateTimeFormatOptions =
-    style === "short"
-      ? { month: "short", day: "numeric", year: "numeric" }
-      : {
-          weekday: "long",
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        };
-
-  return new Intl.DateTimeFormat(locale, options).format(d);
+/**
+ * Formats a calendar day: a date picked without a time (a transaction's date,
+ * a goal's deadline). Those are stored as UTC midnight, so they are read in
+ * UTC; the viewer's time zone would show the previous day west of UTC.
+ */
+export function formatCalendarDate(
+  date: Date | string,
+  style: "short" | "long",
+  locale = "en-US",
+): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return new Intl.DateTimeFormat(locale, { ...dateFormatOptions(style), timeZone: "UTC" }).format(d);
 }

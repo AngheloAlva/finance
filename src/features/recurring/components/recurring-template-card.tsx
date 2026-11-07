@@ -20,7 +20,7 @@ import {
 import { ConfirmDialog } from "@/shared/components/confirm-dialog"
 import { CurrencyDisplay } from "@/shared/components/currency-display"
 import type { CurrencyCode } from "@/shared/lib/constants"
-import { formatDate } from "@/shared/lib/formatters"
+import { formatCalendarDate } from "@/shared/lib/formatters"
 import { INITIAL_VOID_STATE } from "@/shared/types/common.types"
 
 interface RecurringTemplateCardProps {
@@ -111,8 +111,8 @@ export function RecurringTemplateCard({
 				</div>
 
 				<div className="text-muted-foreground text-xs">
-					{t("next", { date: formatDate(rule.nextGenerationDate, "short", locale) })}
-					{rule.endDate && <span> - {t("ends", { date: formatDate(rule.endDate, "short", locale) })}</span>}
+					{t("next", { date: formatCalendarDate(rule.nextGenerationDate, "short", locale) })}
+					{rule.endDate && <span> - {t("ends", { date: formatCalendarDate(rule.endDate, "short", locale) })}</span>}
 				</div>
 			</div>
 

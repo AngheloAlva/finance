@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 import {
   centsToDisplay,
   formatCurrency,
+  formatCalendarDate,
   formatDate,
   formatExchangeRate,
   parseCurrencyInput,
@@ -127,5 +128,22 @@ describe("formatDate", () => {
   it("formats with es-AR locale", () => {
     const result = formatDate(date, "short", "es-AR")
     expect(result).toContain("2025")
+  })
+})
+
+describe("formatCalendarDate", () => {
+  // Calendar dates (a transaction's day) are stored as UTC midnight.
+  const storedDay = new Date("2026-11-06T00:00:00Z")
+
+  it("shows the stored day, not the previous one, west of UTC", () => {
+    expect(formatCalendarDate(storedDay, "long", "en-US")).toBe("Friday, November 6, 2026")
+  })
+
+  it("formats short style in Spanish", () => {
+    expect(formatCalendarDate(storedDay, "short", "es")).toBe("6 nov 2026")
+  })
+
+  it("accepts a date string", () => {
+    expect(formatCalendarDate("2026-11-06", "short", "en-US")).toBe("Nov 6, 2026")
   })
 })

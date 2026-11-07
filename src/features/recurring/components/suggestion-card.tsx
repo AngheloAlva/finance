@@ -16,7 +16,7 @@ import {
 import { AmountInput } from "@/features/transactions/components/amount-input"
 import { CurrencyDisplay } from "@/shared/components/currency-display"
 import type { CurrencyCode } from "@/shared/lib/constants"
-import { formatDate } from "@/shared/lib/formatters"
+import { formatCalendarDate } from "@/shared/lib/formatters"
 import { INITIAL_VOID_STATE } from "@/shared/types/common.types"
 
 interface SuggestionCardProps {
@@ -73,7 +73,7 @@ export function SuggestionCard({ template, currency }: SuggestionCardProps) {
 						<span>{frequencyText}</span>
 					</div>
 					<span className="text-muted-foreground text-xs">
-						{formatDate(rule.nextGenerationDate, "short", locale)}
+						{formatCalendarDate(rule.nextGenerationDate, "short", locale)}
 					</span>
 				</div>
 				<CurrencyDisplay

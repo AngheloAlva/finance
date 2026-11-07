@@ -10,7 +10,7 @@ import { DeleteCreditCardButton } from "@/features/credit-cards/components/delet
 import { computeStatementDates } from "@/features/credit-cards/lib/billing-cycle.utils";
 import type { TransactionWithCategory } from "@/features/transactions/types/transactions.types";
 import type { CreditCardWithUsage } from "@/features/credit-cards/types/credit-cards.types";
-import { formatCurrency, formatDate } from "@/shared/lib/formatters";
+import { formatCalendarDate, formatCurrency, formatDate } from "@/shared/lib/formatters";
 import type { CurrencyCode } from "@/shared/lib/constants";
 
 interface CreditCardDetailProps {
@@ -140,7 +140,7 @@ export async function CreditCardDetail({
                       {tx.description}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {formatDate(tx.date, "short", locale)} - {localizeCategoryName(tx.category, locale)}
+                      {formatCalendarDate(tx.date, "short", locale)} - {localizeCategoryName(tx.category, locale)}
                     </span>
                   </div>
                   <span className="text-sm font-semibold">

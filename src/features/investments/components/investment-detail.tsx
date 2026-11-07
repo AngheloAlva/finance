@@ -17,11 +17,7 @@ import {
 } from "@/features/investments/lib/investments.utils";
 import type { InvestmentWithSnapshots } from "@/features/investments/types/investments.types";
 import type { CurrencyCode } from "@/shared/lib/constants";
-import {
-  formatCurrency,
-  formatDate,
-  formatExchangeRate,
-} from "@/shared/lib/formatters";
+import { formatCalendarDate, formatCurrency, formatDate, formatExchangeRate } from "@/shared/lib/formatters";
 import { cn } from "@/lib/utils";
 
 interface InvestmentDetailProps {
@@ -177,14 +173,14 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
             <div>
               <dt className="text-muted-foreground">{t("startDate")}</dt>
               <dd className="font-medium">
-                {formatDate(investment.startDate, "short", locale)}
+                {formatCalendarDate(investment.startDate, "short", locale)}
               </dd>
             </div>
             {investment.maturityDate && (
               <div>
                 <dt className="text-muted-foreground">{t("maturityDate")}</dt>
                 <dd className="font-medium">
-                  {formatDate(investment.maturityDate, "short", locale)}
+                  {formatCalendarDate(investment.maturityDate, "short", locale)}
                 </dd>
               </div>
             )}

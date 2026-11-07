@@ -28,7 +28,7 @@ import { TransactionType } from "@/generated/prisma/enums"
 import { CategoryIcon } from "@/shared/components/category-icon"
 import { CurrencyDisplay } from "@/shared/components/currency-display"
 import type { CurrencyCode } from "@/shared/lib/constants"
-import { formatDate } from "@/shared/lib/formatters"
+import { formatCalendarDate } from "@/shared/lib/formatters"
 
 interface TransactionTableProps {
 	transactions: TransactionWithCategory[]
@@ -131,7 +131,7 @@ export function TransactionTable({ transactions, categories, creditCards, tags, 
 										</span>
 										<span className="text-muted-foreground block truncate text-xs">
 											{localizeCategoryName(tx.category, locale)} ·{" "}
-											{formatDate(tx.date, "short", locale)}
+											{formatCalendarDate(tx.date, "short", locale)}
 										</span>
 									</span>
 									<span className="shrink-0 text-sm font-medium tabular-nums">
@@ -188,7 +188,7 @@ export function TransactionTable({ transactions, categories, creditCards, tags, 
 				<TableBody>
 					{transactions.map((tx) => (
 						<TableRow key={tx.id}>
-							<TableCell>{formatDate(tx.date, "short", locale)}</TableCell>
+							<TableCell>{formatCalendarDate(tx.date, "short", locale)}</TableCell>
 							<TableCell className="max-w-48">
 								<div className="flex flex-col gap-0.5">
 									<span className="flex items-center gap-1.5 truncate">

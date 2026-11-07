@@ -7,7 +7,7 @@ import { CategoryIcon } from "@/shared/components/category-icon"
 import { CurrencyDisplay } from "@/shared/components/currency-display"
 import { Link } from "@/i18n/navigation"
 import type { CurrencyCode } from "@/shared/lib/constants"
-import { formatDate } from "@/shared/lib/formatters"
+import { formatCalendarDate } from "@/shared/lib/formatters"
 
 import { TransactionType } from "@/generated/prisma/enums"
 import type { TransactionWithCategory } from "@/features/transactions/types/transactions.types"
@@ -49,7 +49,7 @@ export function RecentTransactions({ transactions, currency }: RecentTransaction
 								</div>
 								<div className="flex min-w-0 flex-1 flex-col">
 									<p className="truncate text-sm font-medium">{tx.description}</p>
-									<p className="text-muted-foreground text-xs">{formatDate(tx.date, "short", locale)}</p>
+									<p className="text-muted-foreground text-xs">{formatCalendarDate(tx.date, "short", locale)}</p>
 								</div>
 								<CurrencyDisplay
 									cents={tx.type === TransactionType.EXPENSE ? -tx.amount : tx.amount}

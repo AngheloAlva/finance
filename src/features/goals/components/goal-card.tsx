@@ -28,7 +28,7 @@ import { DeleteGoalButton } from "@/features/goals/components/delete-goal-button
 import { GoalStatus } from "@/generated/prisma/enums";
 import type { GoalDetail, GoalWithProgress } from "@/features/goals/types/goals.types";
 import type { CurrencyCode } from "@/shared/lib/constants";
-import { formatDate } from "@/shared/lib/formatters";
+import { formatCalendarDate } from "@/shared/lib/formatters";
 
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   ACTIVE: "default",
@@ -67,7 +67,7 @@ export function GoalCard({
             {goal.targetDate && (
               <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                 <CalendarDays className="size-3" />
-                <span>{formatDate(goal.targetDate, "short", locale)}</span>
+                <span>{formatCalendarDate(goal.targetDate, "short", locale)}</span>
               </div>
             )}
           </div>

@@ -21,7 +21,7 @@ import type { TransactionWithSplits } from "@/features/group-finances/types/grou
 import { CategoryIcon } from "@/shared/components/category-icon";
 import { CurrencyDisplay } from "@/shared/components/currency-display";
 import type { CurrencyCode } from "@/shared/lib/constants";
-import { formatDate } from "@/shared/lib/formatters";
+import { formatCalendarDate } from "@/shared/lib/formatters";
 
 const SPLIT_RULE_KEYS = {
   EQUAL: "equal",
@@ -146,7 +146,7 @@ function TransactionRow({
             )}
           </Button>
         </TableCell>
-        <TableCell>{formatDate(tx.date, "short", locale)}</TableCell>
+        <TableCell>{formatCalendarDate(tx.date, "short", locale)}</TableCell>
         <TableCell className="max-w-48 truncate">{tx.description}</TableCell>
         <TableCell>
           <CurrencyDisplay cents={tx.amount} currency={currency} locale={locale} />
