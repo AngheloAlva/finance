@@ -35,6 +35,21 @@ export function formatCurrency(
   return getCurrencyFormatter(currencyCode, locale).format(amount);
 }
 
+/** Short form for chart axes ("1 M CLP", "$750K"); tooltips keep the exact amount. */
+export function formatCompactCurrency(
+  cents: number,
+  currencyCode: CurrencyCode,
+  locale = "en-US",
+): string {
+  const amount = isZeroDecimal(currencyCode) ? cents : cents / 100;
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currencyCode,
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(amount);
+}
+
 export function parseCurrencyInput(display: string, currencyCode: CurrencyCode = "USD"): number {
   const cleaned = display.replace(/[^0-9.-]/g, "");
   const value = parseFloat(cleaned);

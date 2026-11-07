@@ -15,7 +15,7 @@ import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
-import { formatCurrency } from "@/shared/lib/formatters"
+import { formatCompactCurrency, formatCurrency } from "@/shared/lib/formatters"
 
 import type { CategoryComparisonItem } from "@/features/analytics/types/analytics.types"
 
@@ -94,7 +94,7 @@ export function CategoryComparisonChart({
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
-								tickFormatter={(value: number) => formatCurrency(value, currency, locale)}
+								tickFormatter={(value: number) => formatCompactCurrency(value, currency, locale)}
 							/>
 							<YAxis
 								type="category"
@@ -106,6 +106,7 @@ export function CategoryComparisonChart({
 							/>
 							<Tooltip content={<CustomTooltip currency={currency} locale={locale} />} />
 							<Legend
+								iconType="circle"
 								formatter={(value: string) => (
 									<span className="text-foreground text-xs">{value}</span>
 								)}
@@ -114,13 +115,13 @@ export function CategoryComparisonChart({
 								dataKey="period1Total"
 								name={period1Label}
 								fill={CHART_COLORS.period1}
-								radius={[0, 0, 0, 0]}
+								radius={[0, 4, 4, 0]}
 							/>
 							<Bar
 								dataKey="period2Total"
 								name={period2Label}
 								fill={CHART_COLORS.period2}
-								radius={[0, 0, 0, 0]}
+								radius={[0, 4, 4, 0]}
 							/>
 						</BarChart>
 					</ResponsiveContainer>

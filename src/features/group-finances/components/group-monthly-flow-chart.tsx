@@ -11,7 +11,7 @@ function formatMonthLabel(monthKey: string, locale: string): string {
 	const [year, month] = monthKey.split("-").map(Number)
 	return `${new Date(year, month - 1).toLocaleDateString(locale, { month: "short" })} ${year}`
 }
-import { formatCurrency } from "@/shared/lib/formatters"
+import { formatCompactCurrency } from "@/shared/lib/formatters"
 import { CurrencyBarTooltip } from "@/shared/components/chart-tooltip"
 
 interface GroupMonthlyFlowChartProps {
@@ -53,11 +53,11 @@ export function GroupMonthlyFlowChart({ data, currency }: GroupMonthlyFlowChartP
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
-								tickFormatter={(value: number) => formatCurrency(value, currency, locale)}
+								tickFormatter={(value: number) => formatCompactCurrency(value, currency, locale)}
 								width={80}
 							/>
 							<Tooltip content={<CurrencyBarTooltip currency={currency} />} />
-							<Bar dataKey="total" name={t("expenses")} fill={CHART_COLORS.bar} radius={[0, 0, 0, 0]} />
+							<Bar dataKey="total" name={t("expenses")} fill={CHART_COLORS.bar} radius={[4, 4, 0, 0]} />
 						</BarChart>
 					</ResponsiveContainer>
 				)}

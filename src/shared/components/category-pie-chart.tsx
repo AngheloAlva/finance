@@ -47,6 +47,8 @@ export function CategoryPieChart({
 								innerRadius={60}
 								outerRadius={100}
 								paddingAngle={2}
+								cornerRadius={6}
+								stroke="none"
 							>
 								{data.map((item) => (
 									<Cell key={String(item[idKey])} fill={String(item[colorKey])} />

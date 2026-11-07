@@ -75,6 +75,9 @@ export function PortfolioAllocationChart({ data, currency }: PortfolioAllocation
 							cy="50%"
 							outerRadius={90}
 							innerRadius={50}
+							paddingAngle={2}
+							cornerRadius={6}
+							stroke="none"
 						>
 							{translatedData.map((item) => (
 								<Cell key={item.type} fill={item.color} />

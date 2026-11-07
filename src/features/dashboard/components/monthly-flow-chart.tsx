@@ -14,7 +14,7 @@ import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
-import { formatCurrency } from "@/shared/lib/formatters"
+import { formatCompactCurrency } from "@/shared/lib/formatters"
 import { CurrencyBarTooltip } from "@/shared/components/chart-tooltip"
 
 import type { MonthlyFlowItem } from "@/features/dashboard/types/dashboard.types"
@@ -65,11 +65,12 @@ export function MonthlyFlowChart({ data, currency }: MonthlyFlowChartProps) {
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
-								tickFormatter={(value: number) => formatCurrency(value, currency, locale)}
+								tickFormatter={(value: number) => formatCompactCurrency(value, currency, locale)}
 								width={80}
 							/>
 							<Tooltip content={<CurrencyBarTooltip currency={currency} />} />
 							<Legend
+								iconType="circle"
 								formatter={(value: string) => (
 									<span className="text-foreground text-xs">{value}</span>
 								)}
@@ -78,13 +79,13 @@ export function MonthlyFlowChart({ data, currency }: MonthlyFlowChartProps) {
 								dataKey="income"
 								name={t("income")}
 								fill={CHART_COLORS.income}
-								radius={[0, 0, 0, 0]}
+								radius={[4, 4, 0, 0]}
 							/>
 							<Bar
 								dataKey="expenses"
 								name={t("expenses")}
 								fill={CHART_COLORS.expense}
-								radius={[0, 0, 0, 0]}
+								radius={[4, 4, 0, 0]}
 							/>
 						</BarChart>
 					</ResponsiveContainer>

@@ -17,7 +17,7 @@ import { useLocale, useTranslations } from "next-intl"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
-import { formatCurrency } from "@/shared/lib/formatters"
+import { formatCompactCurrency, formatCurrency } from "@/shared/lib/formatters"
 
 import type { BudgetVsActualItem } from "@/features/analytics/types/analytics.types"
 
@@ -109,7 +109,7 @@ export function BudgetVsActualChart({ data, currency }: BudgetVsActualChartProps
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
-								tickFormatter={(value: number) => formatCurrency(value, currency, locale)}
+								tickFormatter={(value: number) => formatCompactCurrency(value, currency, locale)}
 							/>
 							<YAxis
 								type="category"
@@ -121,6 +121,7 @@ export function BudgetVsActualChart({ data, currency }: BudgetVsActualChartProps
 							/>
 							<Tooltip content={<CustomTooltip currency={currency} budgetLabel={t("budget")} actualLabel={t("actual")} locale={locale} />} />
 							<Legend
+								iconType="circle"
 								formatter={(value: string) => (
 									<span className="text-foreground text-xs">{value}</span>
 								)}
@@ -130,9 +131,9 @@ export function BudgetVsActualChart({ data, currency }: BudgetVsActualChartProps
 								name={t("budget")}
 								fill={CHART_COLORS.budget}
 								fillOpacity={0.2}
-								radius={[0, 0, 0, 0]}
+								radius={[0, 4, 4, 0]}
 							/>
-							<Bar dataKey="actual" name={t("actual")} radius={[0, 0, 0, 0]}>
+							<Bar dataKey="actual" name={t("actual")} radius={[0, 4, 4, 0]}>
 								{chartData.map((entry) => (
 									<Cell key={entry.categoryId} fill={getBarColor(entry.percentage)} />
 								))}

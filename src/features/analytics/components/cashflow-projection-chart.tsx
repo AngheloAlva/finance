@@ -15,7 +15,7 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 
 import type { CurrencyCode } from "@/shared/lib/constants";
-import { formatCurrency } from "@/shared/lib/formatters";
+import { formatCompactCurrency, formatCurrency } from "@/shared/lib/formatters";
 
 import type { ProjectionPoint } from "@/features/analytics/types/analytics.types";
 
@@ -129,7 +129,7 @@ export function CashflowProjectionChart({
           tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
           tickLine={false}
           axisLine={false}
-          tickFormatter={(value: number) => formatCurrency(value, currency, locale)}
+          tickFormatter={(value: number) => formatCompactCurrency(value, currency, locale)}
           width={80}
         />
         <Tooltip

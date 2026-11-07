@@ -38,14 +38,14 @@ function NavLink({
 	)
 }
 
-/** Phone navigation. The center gap holds the Quick Add button. */
+/** Floating phone navigation. The center gap holds the Quick Add button. */
 export function MobileNav({ unreadAlertCount = 0 }: MobileNavProps) {
 	const pathname = usePathname()
 	const t = useTranslations("nav")
 	const { toggleSidebar } = useSidebar()
 
 	return (
-		<nav className="bg-background fixed inset-x-0 bottom-0 z-30 flex border-t pb-[env(safe-area-inset-bottom)] md:hidden">
+		<nav className="bg-background/90 fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-30 flex rounded-full border shadow-lg backdrop-blur-md md:hidden">
 			<NavLink href="/" label={t("dashboard")} icon={LayoutDashboard} active={pathname === "/"} />
 			<NavLink
 				href="/transactions"

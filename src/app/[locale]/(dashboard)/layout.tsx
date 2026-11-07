@@ -41,7 +41,7 @@ export default async function DashboardLayout({
         <AppSidebar user={user} unreadAlertCount={unreadAlertCount} simpleMode={simpleMode} />
         <SidebarInset>
           <AppHeader />
-          <main className="flex-1 p-4 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-4">
+          <main className="flex-1 p-4 pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-4">
             {children}
           </main>
           <MobileNav unreadAlertCount={unreadAlertCount} />

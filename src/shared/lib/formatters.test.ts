@@ -3,6 +3,7 @@ import {
   centsToDisplay,
   formatCurrency,
   formatCalendarDate,
+  formatCompactCurrency,
   formatDate,
   formatExchangeRate,
   parseCurrencyInput,
@@ -157,5 +158,22 @@ describe("todayDateInput", () => {
 
   it("pads month and day", () => {
     expect(todayDateInput(new Date(2026, 0, 5, 9, 0))).toBe("2026-01-05")
+  })
+})
+
+describe("formatCompactCurrency", () => {
+  const normalize = (s: string) => s.replace(/\s/g, " ")
+
+  it("shortens large zero-decimal amounts for chart axes", () => {
+    expect(normalize(formatCompactCurrency(1_000_000, "CLP", "es"))).toBe("1 M CLP")
+    expect(normalize(formatCompactCurrency(750_000, "CLP", "es"))).toBe("750 mil CLP")
+  })
+
+  it("converts cents for standard currencies", () => {
+    expect(formatCompactCurrency(100_000_000, "USD", "en-US")).toBe("$1M")
+  })
+
+  it("keeps small amounts readable", () => {
+    expect(normalize(formatCompactCurrency(0, "CLP", "es"))).toBe("0 CLP")
   })
 })
