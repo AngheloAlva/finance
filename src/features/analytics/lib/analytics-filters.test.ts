@@ -41,6 +41,18 @@ describe("getDateRangePresets", () => {
 	})
 })
 
+describe("rolling presets at month end", () => {
+	it("start the day after the same day N months ago, clamped to that month's end", () => {
+		const byValue = (now: Date) =>
+			Object.fromEntries(getDateRangePresets(now).map((p) => [p.value, p]))
+		// May 31: three months ago is Feb 28, so the window starts Mar 1
+		expect(toDateKey(byValue(new Date(2026, 4, 31, 12))["3m"].from)).toBe("2026-03-01")
+		// Feb 29 2028: a year ago is Feb 28 2027, so the window starts Mar 1 2027
+		expect(toDateKey(byValue(new Date(2028, 1, 29, 12))["12m"].from)).toBe("2027-03-01")
+		expect(toDateKey(byValue(NOW)["3m"].from)).toBe("2026-08-08")
+	})
+})
+
 describe("parseDateRange", () => {
 	it("resolves a known preset", () => {
 		const range = parseDateRange({ preset: "lastMonth" }, NOW)
@@ -59,6 +71,12 @@ describe("parseDateRange", () => {
 		const range = parseDateRange({ from: "2026-03-10", to: "2026-03-01" }, NOW)
 		expect(toDateKey(range.from)).toBe("2026-03-01")
 		expect(toDateKey(range.to)).toBe("2026-03-10")
+	})
+
+	it("limits a custom range to the five years before its end day", () => {
+		const range = parseDateRange({ from: "1000-01-01", to: "2026-11-07" }, NOW)
+		expect(toDateKey(range.from)).toBe("2021-11-08")
+		expect(toDateKey(range.to)).toBe("2026-11-07")
 	})
 
 	it("falls back to the last 12 months for missing or invalid input", () => {

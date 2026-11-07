@@ -31,6 +31,9 @@ export type DateRangePresetValue = (typeof DATE_RANGE_PRESET_VALUES)[number]
 
 const DEFAULT_PRESET: DateRangePresetValue = "12m"
 
+/** Longest custom range, so a crafted URL cannot ask for centuries of buckets. */
+const MAX_RANGE_YEARS = 5
+
 function utcDay(year: number, monthIndex: number, day: number): Date {
 	return new Date(Date.UTC(year, monthIndex, day))
 }
@@ -41,6 +44,14 @@ function addDays(date: Date, days: number): Date {
 
 function lastDayOfMonth(year: number, monthIndex: number): number {
 	return new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate()
+}
+
+/** Same calendar day `months` earlier, clamped to that month's last day. */
+function subtractMonths(date: Date, months: number): Date {
+	const target = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() - months, 1))
+	const year = target.getUTCFullYear()
+	const month = target.getUTCMonth()
+	return utcDay(year, month, Math.min(date.getUTCDate(), lastDayOfMonth(year, month)))
 }
 
 function getSingleParam(params: SearchParams, key: string): string | null {
@@ -91,9 +102,9 @@ export function getDateRangePresets(now = new Date()): DateRangePreset[] {
 			to: utcDay(year, month - 1, lastDayOfMonth(year, month - 1)),
 		},
 		{ value: "30d", from: addDays(today, -29), to: today },
-		{ value: "3m", from: utcDay(year, month - 3, now.getDate() + 1), to: today },
-		{ value: "6m", from: utcDay(year, month - 6, now.getDate() + 1), to: today },
-		{ value: "12m", from: utcDay(year - 1, month, now.getDate() + 1), to: today },
+		{ value: "3m", from: addDays(subtractMonths(today, 3), 1), to: today },
+		{ value: "6m", from: addDays(subtractMonths(today, 6), 1), to: today },
+		{ value: "12m", from: addDays(subtractMonths(today, 12), 1), to: today },
 		{ value: "ytd", from: utcDay(year, 0, 1), to: today },
 	]
 }
@@ -110,9 +121,9 @@ export function parseDateRange(
 	const from = parseDateKey(getSingleParam(params, "from"))
 	const to = parseDateKey(getSingleParam(params, "to"))
 	if (from && to) {
-		return from <= to
-			? { from, to, preset: "custom" }
-			: { from: to, to: from, preset: "custom" }
+		const [start, end] = from <= to ? [from, to] : [to, from]
+		const earliest = addDays(subtractMonths(end, MAX_RANGE_YEARS * 12), 1)
+		return { from: start < earliest ? earliest : start, to: end, preset: "custom" }
 	}
 
 	const fallback = presets.find((preset) => preset.value === DEFAULT_PRESET)!
