@@ -196,10 +196,18 @@
     },
     "welcome": {
       "title": "¡Hola, {name}! Empecemos",
-      "body": "Anota tus gastos e ingresos y aquí verás cuánto te queda del mes.",
+      "body": "Cuéntanos con cuánto dinero empiezas y desde ahí calculamos cuánto te queda.",
       "cta": "Registrar mi primer gasto",
       "currency": "Tus montos se muestran en {currency}.",
-      "changeCurrency": "Cambiar"
+      "changeCurrency": "Cambiar",
+      "orStartWithExpense": "¿Prefieres empezar de otra forma?",
+      "openingBalance": {
+        "label": "¿Con cuánto dinero empiezas?",
+        "hint": "Lo que tienes hoy entre tu cuenta y el efectivo. No cuenta como ingreso del mes.",
+        "submit": "Guardar saldo inicial",
+        "description": "Saldo inicial",
+        "saved": "Saldo inicial guardado"
+      }
     }
   },
   "transactions": {
@@ -1328,7 +1336,9 @@
     "SIMULATION_BUDGET_OPTIMIZER_FAILED": "Error al ejecutar la simulación de optimización de presupuesto",
     "SPLIT_NOT_FOUND": "División no encontrada",
     "SPLIT_NOT_GROUP": "Esta división no es parte de una transacción grupal",
-    "SPLIT_SETTLE_FAILED": "Error al liquidar la división"
+    "SPLIT_SETTLE_FAILED": "Error al liquidar la división",
+    "OPENING_BALANCE_EXISTS": "Ya registraste un saldo inicial",
+    "OPENING_BALANCE_CREATE_FAILED": "No se pudo guardar el saldo inicial"
   },
   "install": {
     "title": "Instala Finanzas",

@@ -196,10 +196,18 @@
     },
     "welcome": {
       "title": "Hi {name}! Let's get started",
-      "body": "Log your expenses and income and you'll see here how much you have left this month.",
+      "body": "Tell us how much money you start with and we'll work out how much you have left.",
       "cta": "Log my first expense",
       "currency": "Amounts are shown in {currency}.",
-      "changeCurrency": "Change"
+      "changeCurrency": "Change",
+      "orStartWithExpense": "Rather start another way?",
+      "openingBalance": {
+        "label": "How much money do you start with?",
+        "hint": "What you have today across your account and cash. It does not count as income for the month.",
+        "submit": "Save opening balance",
+        "description": "Opening balance",
+        "saved": "Opening balance saved"
+      }
     }
   },
   "transactions": {
@@ -1328,7 +1336,9 @@
     "SIMULATION_BUDGET_OPTIMIZER_FAILED": "Failed to run budget optimization simulation",
     "SPLIT_NOT_FOUND": "Split not found",
     "SPLIT_NOT_GROUP": "This split is not part of a group transaction",
-    "SPLIT_SETTLE_FAILED": "Failed to settle split"
+    "SPLIT_SETTLE_FAILED": "Failed to settle split",
+    "OPENING_BALANCE_EXISTS": "You already recorded an opening balance",
+    "OPENING_BALANCE_CREATE_FAILED": "Could not save the opening balance"
   },
   "install": {
     "title": "Install Finance",

@@ -15,11 +15,12 @@ function isZeroDecimal(code: string): boolean {
 
 interface AmountInputProps {
 	name: string;
+	id?: string;
 	defaultValue?: number;
 	className?: string;
 }
 
-export function AmountInput({ name, defaultValue, className }: AmountInputProps) {
+export function AmountInput({ name, id, defaultValue, className }: AmountInputProps) {
 	const currencyCode = useCurrency();
 	const zeroDecimal = isZeroDecimal(currencyCode);
 
@@ -42,6 +43,7 @@ export function AmountInput({ name, defaultValue, className }: AmountInputProps)
 		<>
 			<input type="hidden" name={name} value={cents || ""} />
 			<Input
+				id={id}
 				type="text"
 				inputMode={zeroDecimal ? "numeric" : "decimal"}
 				placeholder={zeroDecimal ? "0" : "0.00"}

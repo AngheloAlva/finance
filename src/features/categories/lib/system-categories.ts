@@ -416,21 +416,28 @@ export const SYSTEM_CATEGORIES: SystemCategory[] = [
 			{ slug: "from-savings", name: { en: "From Savings", es: "Desde ahorro" }, icon: "piggy-bank" },
 			{ slug: "from-investments", name: { en: "From Investments", es: "Desde inversiones" }, icon: "trending-down" },
 			{ slug: "cash-withdrawal", name: { en: "Cash Withdrawal", es: "Retiro de efectivo" }, icon: "banknote" },
+			{ slug: "opening-balance", name: { en: "Opening Balance", es: "Saldo inicial" }, icon: "wallet" },
 		],
 	},
 ]
 
 /**
  * TRANSFER categories that move money out of, or back into, the cash the user
- * can spend. Only these transfers change the accumulated balance; the others
- * (card payments, between accounts, cash withdrawals) keep it unchanged.
+ * can spend; the opening balance counts as an inflow. Only these transfers
+ * change the accumulated balance; the others (card payments, between
+ * accounts, cash withdrawals) keep it unchanged.
  */
 export const BALANCE_OUTFLOW_TRANSFER_CATEGORY_IDS = ["to-savings", "to-investments"].map(
 	systemCategoryId,
 )
-export const BALANCE_INFLOW_TRANSFER_CATEGORY_IDS = ["from-savings", "from-investments"].map(
-	systemCategoryId,
-)
+export const BALANCE_INFLOW_TRANSFER_CATEGORY_IDS = [
+	"from-savings",
+	"from-investments",
+	"opening-balance",
+].map(systemCategoryId)
+
+/** Starting cash a user records once; counts toward the balance, never as income. */
+export const OPENING_BALANCE_CATEGORY_ID = systemCategoryId("opening-balance")
 
 const NAMES_BY_ID = new Map<string, LocalizedName>(
 	SYSTEM_CATEGORIES.flatMap((root) => [root, ...(root.children ?? [])]).map(
