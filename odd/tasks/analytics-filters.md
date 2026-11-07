@@ -9,9 +9,9 @@ Branch: feat/analytics-filters. Delivery strategy: ask-on-risk. Test runner: vit
 
 ## Tasks
 
-- T1 | S1 | inline | done (unit + typecheck; browser pending)
-- T2 | S3 | inline | done (unit + typecheck; browser pending)
-- T3 | S2 | inline | done (unit + typecheck; browser pending)
+- T1 | S1 | inline | done
+- T2 | S3 | inline | done
+- T3 | S2 | inline | done
 
 ## Log
 
@@ -20,3 +20,4 @@ Branch: feat/analytics-filters. Delivery strategy: ask-on-risk. Test runner: vit
 - L3: Route inline for all tasks: one page and its queries, no Writer trigger. Dates are stored as UTC midnight, so range bounds are UTC days.
 - L4: One commit for the three tasks: queries, page and filters change together and each slice alone would not compile. Pure range/filter logic covered by 20 unit tests (GREEN after RED on missing module); DB query tests updated for the new signatures but not run, the Neon test database is unreachable. Browser check blocked: the dev database has no seeded test user.
 - L5: Native review (reliability lens) approved and acknowledged on 1f642b5. Follow-up commit: rolling presets clamped at month end (reviewer finding) and custom ranges limited to 5 years (security review). Not changed: factory claim was wrong (createCreditCard and creditCardId exist); net worth never carried values forward; rising-trend badges stay on the dashboard widget.
+- L6: Created the seed test user (seed-user.ts) on request. Browser check at 1440px and 390px: presets, custom range, category (parent with children), card filter, net worth note, two sections. Fixed: with a full range shown, a calendar click moved one end instead of starting a new range.

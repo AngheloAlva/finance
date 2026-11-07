@@ -114,7 +114,12 @@ export function DateRangeSelector({
             <Calendar
               mode="range"
               selected={draft}
-              onSelect={setDraft}
+              onSelect={(range, day) =>
+                // With a complete range shown, a click starts a new one instead of moving an end
+                setDraft((current) =>
+                  current?.from && current.to ? { from: day, to: undefined } : range,
+                )
+              }
               numberOfMonths={isMobile ? 1 : 2}
               defaultMonth={
                 draft?.to && !isMobile
