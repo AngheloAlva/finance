@@ -14,7 +14,7 @@ import {
 
 import { useLocale, useTranslations } from "next-intl"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { formatCompactCurrency, formatCurrency } from "@/shared/lib/formatters"
 
@@ -23,6 +23,8 @@ import type { NetWorthPoint } from "@/features/analytics/types/analytics.types"
 interface NetWorthChartProps {
 	data: NetWorthPoint[]
 	currency: CurrencyCode
+	/** Explains that only the date range applies, shown while other filters are active */
+	note?: string
 }
 
 const CHART_COLORS = {
@@ -66,7 +68,7 @@ function CustomTooltip({
 	)
 }
 
-export function NetWorthChart({ data, currency }: NetWorthChartProps) {
+export function NetWorthChart({ data, currency, note }: NetWorthChartProps) {
 	const t = useTranslations("analytics.netWorth")
 	const locale = useLocale()
 
@@ -74,6 +76,7 @@ export function NetWorthChart({ data, currency }: NetWorthChartProps) {
 		<Card>
 			<CardHeader>
 				<CardTitle>{t("title")}</CardTitle>
+				{note && <CardDescription>{note}</CardDescription>}
 			</CardHeader>
 			<CardContent>
 				{data.length === 0 ? (

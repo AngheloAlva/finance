@@ -360,10 +360,6 @@
     "spentSame": "Tu gasto es similar al del mes pasado",
     "risingTrend": "+{percent}% en 3 meses",
     "risingTrendsCount": "{count, plural, one {# tendencia al alza detectada} other {# tendencias al alza detectadas}}",
-    "category": "Categoría",
-    "thisMonth": "Este Mes",
-    "previousMonth": "Mes Pasado",
-    "change": "Cambio",
     "noData": "No hay datos suficientes para comparar",
     "viewAll": "Ver detalle"
   },
@@ -988,7 +984,13 @@
       "noData": "No hay datos de transacciones disponibles",
       "netSavings": "Ahorro Neto",
       "income": "Ingresos",
-      "expenses": "Gastos"
+      "expenses": "Gastos",
+      "weekOf": "Semana del {date}",
+      "granularity": {
+        "day": "Por día",
+        "week": "Por semana",
+        "month": "Por mes"
+      }
     },
     "spendingHeatmap": {
       "title": "Mapa de Calor de Gastos",
@@ -1007,7 +1009,12 @@
     },
     "categoryComparison": {
       "title": "Comparación por Categoría",
-      "noData": "No hay datos de categorías para comparar"
+      "noData": "No hay datos de categorías para comparar",
+      "description": "Gastos de {current} comparados con {previous}",
+      "category": "Categoría",
+      "previous": "Período anterior",
+      "current": "Período seleccionado",
+      "change": "Cambio"
     },
     "budgetVsActual": {
       "title": "Presupuesto vs Real",
@@ -1020,7 +1027,8 @@
       "noData": "No hay datos de inversiones disponibles. Agrega inversiones para hacer seguimiento de tu patrimonio.",
       "assets": "Activos",
       "liabilities": "Pasivos",
-      "netWorth": "Patrimonio Neto"
+      "netWorth": "Patrimonio Neto",
+      "filtersNote": "Aquí solo aplica el rango de fechas; los filtros de categoría, método y etiqueta no."
     },
     "financialHealth": {
       "title": "Salud Financiera",
@@ -1032,8 +1040,33 @@
       "last6Months": "Últimos 6 meses",
       "last12Months": "Últimos 12 meses",
       "yearToDate": "Año actual",
-      "from": "Desde",
-      "to": "hasta"
+      "thisMonth": "Este mes",
+      "lastMonth": "Mes pasado",
+      "label": "Rango de fechas",
+      "pickRange": "Elige el primer y el último día",
+      "apply": "Aplicar"
+    },
+    "filters": {
+      "category": "Categorías",
+      "allCategories": "Todas las categorías",
+      "categoriesCount": "{count, plural, one {# categoría} other {# categorías}}",
+      "clearCategories": "Quitar selección",
+      "expenses": "Gastos",
+      "income": "Ingresos",
+      "method": "Método de pago",
+      "allMethods": "Todos los métodos",
+      "tag": "Etiqueta",
+      "allTags": "Todas las etiquetas",
+      "clear": "Limpiar filtros"
+    },
+    "sections": {
+      "period": {
+        "title": "Período seleccionado"
+      },
+      "current": {
+        "title": "Situación actual",
+        "description": "El mes en curso y lo que viene. Los filtros de arriba no lo cambian."
+      }
     }
   },
   "projection": {

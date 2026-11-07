@@ -4,6 +4,17 @@ import { prisma } from "@/shared/lib/prisma";
 import { getCurrentCycleRange } from "@/features/credit-cards/lib/billing-cycle.utils";
 import type { CreditCardWithUsage } from "@/features/credit-cards/types/credit-cards.types";
 
+/** Card names for pickers, without the usage calculation. */
+export async function getCreditCardOptions(
+  userId: string,
+): Promise<Array<{ id: string; name: string }>> {
+  return prisma.creditCard.findMany({
+    where: { userId },
+    select: { id: true, name: true },
+    orderBy: { name: "asc" },
+  });
+}
+
 export async function getCreditCards(
   userId: string,
 ): Promise<CreditCardWithUsage[]> {

@@ -79,14 +79,15 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 				: [0, 0, 0, 0]
 
 		// Generate all days in range
-		const startDate = new Date(from)
-		const endDate = new Date(to)
+		// Range keys are UTC days, so the grid walks UTC days too
+		const startDate = new Date(`${from}T00:00:00Z`)
+		const endDate = new Date(`${to}T00:00:00Z`)
 
 		// Adjust start to previous Monday
-		const startDay = startDate.getDay()
+		const startDay = startDate.getUTCDay()
 		const mondayOffset = startDay === 0 ? -6 : 1 - startDay
 		const gridStart = new Date(startDate)
-		gridStart.setDate(gridStart.getDate() + mondayOffset)
+		gridStart.setUTCDate(gridStart.getUTCDate() + mondayOffset)
 
 		const cells: Array<{
 			date: string
@@ -101,10 +102,10 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 		let weekIndex = 0
 
 		const current = new Date(gridStart)
-		while (current <= endDate || current.getDay() !== 1) {
-			if (current > endDate && current.getDay() === 1) break
+		while (current <= endDate || current.getUTCDay() !== 1) {
+			if (current > endDate && current.getUTCDay() === 1) break
 
-			const dayOfWeek = current.getDay() === 0 ? 6 : current.getDay() - 1 // Mon=0, Sun=6
+			const dayOfWeek = current.getUTCDay() === 0 ? 6 : current.getUTCDay() - 1 // Mon=0, Sun=6
 			const dateStr = current.toISOString().split("T")[0]
 			const item = dataMap.get(dateStr)
 			const inRange = current >= startDate && current <= endDate
@@ -114,7 +115,7 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 			}
 
 			// Track month headers
-			const currentMonthIdx = current.getMonth()
+			const currentMonthIdx = current.getUTCMonth()
 			if (currentMonthIdx !== lastMonth) {
 				months.push({ label: getLocaleMonthLabel(currentMonthIdx, locale), weekIndex })
 				lastMonth = currentMonthIdx
@@ -128,7 +129,7 @@ export function SpendingHeatmap({ data, currency, from, to }: SpendingHeatmapPro
 				inRange,
 			})
 
-			current.setDate(current.getDate() + 1)
+			current.setUTCDate(current.getUTCDate() + 1)
 		}
 
 		// Organize into grid: weeks as columns, days as rows

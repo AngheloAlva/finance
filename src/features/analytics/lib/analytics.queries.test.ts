@@ -11,6 +11,7 @@ import {
 } from "@/features/analytics/lib/analytics.queries"
 import {
   createCategory,
+  createCreditCard,
   createInvestment,
   createInvestmentSnapshot,
   createTransaction,
@@ -18,33 +19,69 @@ import {
   dollars,
 } from "../../../../tests/helpers/factories"
 
+const NO_FILTERS = { categoryIds: [], paymentMethod: null, creditCardId: null, tagId: null }
+const utc = (year: number, month: number, day: number) => new Date(Date.UTC(year, month - 1, day))
+
 describe("getIncomeVsExpensesTrend", () => {
-  it("returns N month points with zeros when there are no transactions", async () => {
+  it("returns one zero point per day for a short range without transactions", async () => {
     const user = await createUser()
-    const trend = await getIncomeVsExpensesTrend(user.id, 6)
-    expect(trend).toHaveLength(6)
-    expect(trend.every((t) => t.income === 0 && t.expenses === 0)).toBe(true)
+    const trend = await getIncomeVsExpensesTrend(
+      user.id,
+      { from: utc(2026, 1, 1), to: utc(2026, 1, 7) },
+      NO_FILTERS,
+    )
+    expect(trend.granularity).toBe("day")
+    expect(trend.points).toHaveLength(7)
+    expect(trend.points.every((p) => p.income === 0 && p.expenses === 0)).toBe(true)
   })
 
-  it("buckets income and expenses by impactDate month", async () => {
+  it("buckets income and expenses by month for long ranges, including the last day", async () => {
     const user = await createUser()
-    const now = new Date()
     await createTransaction(user.id, {
       type: "INCOME",
       amount: dollars(1000),
-      impactDate: new Date(now.getFullYear(), now.getMonth(), 5),
+      impactDate: utc(2026, 3, 5),
     })
     await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(400),
-      impactDate: new Date(now.getFullYear(), now.getMonth(), 10),
+      impactDate: utc(2026, 3, 31),
     })
 
-    const trend = await getIncomeVsExpensesTrend(user.id, 3)
-    const current = trend[trend.length - 1]
-    expect(current.income).toBe(dollars(1000))
-    expect(current.expenses).toBe(dollars(400))
-    expect(current.netSavings).toBe(dollars(600))
+    const trend = await getIncomeVsExpensesTrend(
+      user.id,
+      { from: utc(2026, 1, 1), to: utc(2026, 3, 31) },
+      NO_FILTERS,
+    )
+    expect(trend.granularity).toBe("month")
+    const march = trend.points[trend.points.length - 1]
+    expect(march.key).toBe("2026-03-01")
+    expect(march.income).toBe(dollars(1000))
+    expect(march.expenses).toBe(dollars(400))
+    expect(march.netSavings).toBe(dollars(600))
+  })
+
+  it("only counts transactions matching the filters", async () => {
+    const user = await createUser()
+    const food = await createCategory(user.id, { name: "Food" })
+    await createTransaction(user.id, {
+      type: "EXPENSE",
+      amount: dollars(30),
+      categoryId: food.id,
+      impactDate: utc(2026, 1, 3),
+    })
+    await createTransaction(user.id, {
+      type: "EXPENSE",
+      amount: dollars(70),
+      impactDate: utc(2026, 1, 3),
+    })
+
+    const trend = await getIncomeVsExpensesTrend(
+      user.id,
+      { from: utc(2026, 1, 1), to: utc(2026, 1, 7) },
+      { ...NO_FILTERS, categoryIds: [food.id] },
+    )
+    expect(trend.points[2].expenses).toBe(dollars(30))
   })
 })
 
@@ -58,26 +95,27 @@ describe("getCategoryComparison", () => {
       type: "EXPENSE",
       amount: dollars(100),
       categoryId: food.id,
-      impactDate: new Date(2026, 0, 15),
+      impactDate: utc(2026, 1, 31),
     })
     await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(150),
       categoryId: food.id,
-      impactDate: new Date(2026, 1, 15),
+      impactDate: utc(2026, 2, 15),
     })
     await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(20),
       categoryId: fun.id,
-      impactDate: new Date(2026, 1, 15),
+      impactDate: utc(2026, 2, 15),
     })
 
     const items = await getCategoryComparison(
       user.id,
-      { from: new Date(2026, 0, 1), to: new Date(2026, 1, 1) },
-      { from: new Date(2026, 1, 1), to: new Date(2026, 2, 1) },
+      { from: utc(2026, 1, 1), to: utc(2026, 1, 31) },
+      { from: utc(2026, 2, 1), to: utc(2026, 2, 28) },
       "en",
+      NO_FILTERS,
     )
 
     expect(items[0].categoryName).toBe("Food")
@@ -85,43 +123,72 @@ describe("getCategoryComparison", () => {
     expect(items[0].period2Total).toBe(dollars(150))
     expect(items[0].change).toBe(50)
   })
+
+  it("only counts expenses paid with the filtered credit card", async () => {
+    const user = await createUser()
+    const card = await createCreditCard(user.id)
+    await createTransaction(user.id, {
+      type: "EXPENSE",
+      amount: dollars(40),
+      creditCardId: card.id,
+      impactDate: utc(2026, 2, 10),
+    })
+    await createTransaction(user.id, {
+      type: "EXPENSE",
+      amount: dollars(60),
+      impactDate: utc(2026, 2, 10),
+    })
+
+    const items = await getCategoryComparison(
+      user.id,
+      { from: utc(2026, 1, 1), to: utc(2026, 1, 31) },
+      { from: utc(2026, 2, 1), to: utc(2026, 2, 28) },
+      "en",
+      { ...NO_FILTERS, creditCardId: card.id },
+    )
+
+    expect(items).toHaveLength(1)
+    expect(items[0].period2Total).toBe(dollars(40))
+  })
 })
 
 describe("getDailySpending", () => {
-  it("aggregates EXPENSE per day sorted ascending", async () => {
+  it("aggregates EXPENSE per day sorted ascending, including the last day", async () => {
     const user = await createUser()
     await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(10),
-      impactDate: new Date(2026, 0, 5),
+      impactDate: utc(2026, 1, 5),
     })
     await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(20),
-      impactDate: new Date(2026, 0, 5),
+      impactDate: utc(2026, 1, 5),
     })
     await createTransaction(user.id, {
       type: "EXPENSE",
       amount: dollars(50),
-      impactDate: new Date(2026, 0, 7),
+      impactDate: utc(2026, 1, 31),
     })
 
     const days = await getDailySpending(
       user.id,
-      new Date(2026, 0, 1),
-      new Date(2026, 0, 31),
+      { from: utc(2026, 1, 1), to: utc(2026, 1, 31) },
+      NO_FILTERS,
     )
 
     expect(days).toHaveLength(2)
-    expect(days[0]).toMatchObject({ total: dollars(30), count: 2 })
-    expect(days[1]).toMatchObject({ total: dollars(50), count: 1 })
+    expect(days[0]).toMatchObject({ date: "2026-01-05", total: dollars(30), count: 2 })
+    expect(days[1]).toMatchObject({ date: "2026-01-31", total: dollars(50), count: 1 })
   })
 })
 
 describe("getNetWorthTimeline", () => {
+  const wholeYear = { from: utc(2026, 1, 1), to: utc(2026, 12, 31) }
+
   it("returns empty when no investment snapshots exist", async () => {
     const user = await createUser()
-    const timeline = await getNetWorthTimeline(user.id)
+    const timeline = await getNetWorthTimeline(user.id, wholeYear)
     expect(timeline).toEqual([])
   })
 
@@ -140,10 +207,26 @@ describe("getNetWorthTimeline", () => {
       value: dollars(1200),
     })
 
-    const timeline = await getNetWorthTimeline(user.id)
+    const timeline = await getNetWorthTimeline(user.id, wholeYear)
     expect(timeline.map((p) => p.date)).toEqual(["2026-01", "2026-02"])
     expect(timeline[0].assets).toBe(dollars(1100))
     expect(timeline[1].assets).toBe(dollars(1200))
+  })
+
+  it("leaves out months outside the range", async () => {
+    const user = await createUser()
+    const inv = await createInvestment(user.id, {
+      initialAmount: dollars(1000),
+      currentValue: dollars(1200),
+    })
+    await createInvestmentSnapshot(inv.id, { date: utc(2025, 12, 15), value: dollars(900) })
+    await createInvestmentSnapshot(inv.id, { date: utc(2026, 2, 15), value: dollars(1200) })
+
+    const timeline = await getNetWorthTimeline(user.id, {
+      from: utc(2026, 2, 10),
+      to: utc(2026, 3, 9),
+    })
+    expect(timeline.map((p) => p.date)).toEqual(["2026-02"])
   })
 })
 

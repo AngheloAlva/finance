@@ -1,14 +1,21 @@
+import type { PaymentMethod } from "@/generated/prisma/enums";
+
 export interface DateRange {
   from: Date;
   to: Date;
 }
 
 export interface TrendPoint {
-  month: string;
-  label: string;
+  /** First day of the bucket, YYYY-MM-DD */
+  key: string;
   income: number;
   expenses: number;
   netSavings: number;
+}
+
+export interface IncomeVsExpensesTrend {
+  granularity: TrendGranularity;
+  points: TrendPoint[];
 }
 
 export interface ForecastPoint {
@@ -67,10 +74,18 @@ export interface HealthScoreResult {
 }
 
 export interface DateRangePreset {
-  label: string;
   value: string;
   from: Date;
   to: Date;
+}
+
+export type TrendGranularity = "day" | "week" | "month";
+
+export interface AnalyticsFilters {
+  categoryIds: string[];
+  paymentMethod: PaymentMethod | null;
+  creditCardId: string | null;
+  tagId: string | null;
 }
 
 export const CHANGE_DIRECTION = {

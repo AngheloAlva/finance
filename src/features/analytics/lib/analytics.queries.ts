@@ -3,7 +3,8 @@ import { GoalStatus, TransactionType } from "@/generated/prisma/enums";
 import { prisma } from "@/shared/lib/prisma";
 
 import type {
-  TrendPoint,
+  AnalyticsFilters,
+  IncomeVsExpensesTrend,
   ForecastPoint,
   CategoryComparisonItem,
   DailySpendingItem,
@@ -18,7 +19,14 @@ import type {
 } from "@/features/analytics/types/analytics.types";
 import { CHANGE_DIRECTION } from "@/features/analytics/types/analytics.types";
 import { computeHealthSubScore } from "@/features/analytics/lib/analytics.utils";
-
+import {
+  buildTransactionFilterWhere,
+  findBucketKey,
+  getRangeEnd,
+  getTrendBuckets,
+  getTrendGranularity,
+  toDateKey,
+} from "@/features/analytics/lib/analytics-filters";
 
 function getMonthRange(month: number, year: number) {
   const start = new Date(year, month - 1, 1);
@@ -30,68 +38,45 @@ function getMonthRange(month: number, year: number) {
 
 export async function getIncomeVsExpensesTrend(
   userId: string,
-  months = 12,
-): Promise<TrendPoint[]> {
-  const now = new Date();
-  let currentMonth = now.getMonth() + 1;
-  let currentYear = now.getFullYear();
-
-  const monthsToFetch: Array<{ month: number; year: number }> = [];
-
-  for (let i = 0; i < months; i++) {
-    monthsToFetch.unshift({ month: currentMonth, year: currentYear });
-    currentMonth--;
-    if (currentMonth === 0) {
-      currentMonth = 12;
-      currentYear--;
-    }
-  }
-
-  const firstMonth = monthsToFetch[0];
-  const lastMonth = monthsToFetch[monthsToFetch.length - 1];
-  const rangeStart = getMonthRange(firstMonth.month, firstMonth.year).start;
-  const rangeEnd = getMonthRange(lastMonth.month, lastMonth.year).end;
+  range: DateRange,
+  filters: AnalyticsFilters,
+): Promise<IncomeVsExpensesTrend> {
+  const granularity = getTrendGranularity(range.from, range.to);
+  const buckets = getTrendBuckets(range.from, range.to, granularity);
 
   const groups = await prisma.transaction.groupBy({
     by: ["type", "impactDate"],
     where: {
+      ...buildTransactionFilterWhere(filters),
       userId,
       isTemplate: false,
       type: { in: [TransactionType.INCOME, TransactionType.EXPENSE] },
-      impactDate: { gte: rangeStart, lt: rangeEnd },
+      impactDate: { gte: range.from, lt: getRangeEnd(range.to) },
     },
     _sum: { amount: true },
   });
 
-  // Bucket results by month key and type
-  const buckets = new Map<string, { income: number; expenses: number }>();
+  const totals = new Map(buckets.map((b) => [b.key, { income: 0, expenses: 0 }]));
 
   for (const group of groups) {
-    const d = group.impactDate;
-    const monthKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-    const bucket = buckets.get(monthKey) ?? { income: 0, expenses: 0 };
+    const key = findBucketKey(buckets, group.impactDate);
+    const bucket = key ? totals.get(key) : undefined;
+    if (!bucket) continue;
 
     if (group.type === TransactionType.INCOME) {
       bucket.income += group._sum.amount ?? 0;
     } else {
       bucket.expenses += Math.abs(group._sum.amount ?? 0);
     }
-
-    buckets.set(monthKey, bucket);
   }
 
-  return monthsToFetch.map(({ month, year }) => {
-    const monthKey = `${year}-${String(month).padStart(2, "0")}`;
-    const bucket = buckets.get(monthKey) ?? { income: 0, expenses: 0 };
-
-    return {
-      month: monthKey,
-      label: monthKey,
-      income: bucket.income,
-      expenses: bucket.expenses,
-      netSavings: bucket.income - bucket.expenses,
-    };
-  });
+  return {
+    granularity,
+    points: buckets.map(({ key }) => {
+      const { income, expenses } = totals.get(key)!;
+      return { key, income, expenses, netSavings: income - expenses };
+    }),
+  };
 }
 
 // ---------- 2. Cash Flow Forecast ----------
@@ -242,24 +227,30 @@ export async function getCashFlowForecast(
 
 // ---------- 3. Category Comparison ----------
 
+/**
+ * Expenses by category in two periods; `period1` is the earlier one. Both
+ * ranges include their last day.
+ */
 export async function getCategoryComparison(
   userId: string,
   period1: DateRange,
   period2: DateRange,
   locale: string,
+  filters: AnalyticsFilters,
 ): Promise<CategoryComparisonItem[]> {
   const baseWhere = {
+    ...buildTransactionFilterWhere(filters),
     userId,
     type: TransactionType.EXPENSE,
     isTemplate: false,
-  } as const;
+  };
 
   const [groups1, groups2] = await Promise.all([
     prisma.transaction.groupBy({
       by: ["categoryId"],
       where: {
         ...baseWhere,
-        impactDate: { gte: period1.from, lt: period1.to },
+        impactDate: { gte: period1.from, lt: getRangeEnd(period1.to) },
       },
       _sum: { amount: true },
     }),
@@ -267,7 +258,7 @@ export async function getCategoryComparison(
       by: ["categoryId"],
       where: {
         ...baseWhere,
-        impactDate: { gte: period2.from, lt: period2.to },
+        impactDate: { gte: period2.from, lt: getRangeEnd(period2.to) },
       },
       _sum: { amount: true },
     }),
@@ -317,29 +308,29 @@ export async function getCategoryComparison(
 
 export async function getDailySpending(
   userId: string,
-  from: Date,
-  to: Date,
+  range: DateRange,
+  filters: AnalyticsFilters,
 ): Promise<DailySpendingItem[]> {
-  // Clamp to max 365 days
-  const maxMs = 365 * 24 * 60 * 60 * 1000;
-  const diff = to.getTime() - from.getTime();
-  const clampedFrom = diff > maxMs ? new Date(to.getTime() - maxMs) : from;
+  // Clamp to max 366 days
+  const maxFrom = new Date(range.to.getTime() - 365 * 24 * 60 * 60 * 1000);
+  const from = range.from < maxFrom ? maxFrom : range.from;
 
   const transactions = await prisma.transaction.findMany({
     where: {
+      ...buildTransactionFilterWhere(filters),
       userId,
       type: TransactionType.EXPENSE,
       isTemplate: false,
-      impactDate: { gte: clampedFrom, lt: to },
+      impactDate: { gte: from, lt: getRangeEnd(range.to) },
     },
     select: { impactDate: true, amount: true },
   });
 
-  // Aggregate in JS (max 365 days of data)
+  // Aggregate in JS (max 366 days of data)
   const dailyMap = new Map<string, { total: number; count: number }>();
 
   for (const tx of transactions) {
-    const dateKey = tx.impactDate.toISOString().split("T")[0];
+    const dateKey = toDateKey(tx.impactDate);
     const existing = dailyMap.get(dateKey) ?? { total: 0, count: 0 };
     existing.total += Math.abs(tx.amount);
     existing.count++;
@@ -353,11 +344,19 @@ export async function getDailySpending(
 
 // ---------- 5. Net Worth Timeline ----------
 
+/** Monthly net worth for the months the range touches. */
 export async function getNetWorthTimeline(
   userId: string,
+  range: DateRange,
 ): Promise<NetWorthPoint[]> {
+  const firstMonthStart = new Date(
+    Date.UTC(range.from.getUTCFullYear(), range.from.getUTCMonth(), 1),
+  );
   const snapshots = await prisma.investmentSnapshot.findMany({
-    where: { investment: { userId } },
+    where: {
+      investment: { userId },
+      date: { gte: firstMonthStart, lt: getRangeEnd(range.to) },
+    },
     select: { date: true, value: true },
     orderBy: { date: "asc" },
   });

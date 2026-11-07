@@ -14,19 +14,40 @@ import {
 
 import { useLocale, useTranslations } from "next-intl"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import type { CurrencyCode } from "@/shared/lib/constants"
 import { formatCompactCurrency, formatCurrency } from "@/shared/lib/formatters"
 
-import type { TrendPoint } from "@/features/analytics/types/analytics.types"
+import type {
+	IncomeVsExpensesTrend,
+	TrendGranularity,
+} from "@/features/analytics/types/analytics.types"
 
-function formatMonthLabel(monthKey: string, locale: string): string {
-	const [year, month] = monthKey.split("-").map(Number)
-	return new Date(year, month - 1).toLocaleDateString(locale, { month: "short" })
+/** Bucket keys are UTC days (YYYY-MM-DD). */
+function formatBucketLabel(
+	key: string,
+	granularity: TrendGranularity,
+	locale: string,
+	long = false,
+): string {
+	const date = new Date(`${key}T00:00:00Z`)
+	if (granularity === "month") {
+		return date.toLocaleDateString(locale, {
+			month: long ? "long" : "short",
+			...(long ? { year: "numeric" } : {}),
+			timeZone: "UTC",
+		})
+	}
+	return date.toLocaleDateString(locale, {
+		day: "numeric",
+		month: "short",
+		...(long ? { year: "numeric" } : {}),
+		timeZone: "UTC",
+	})
 }
 
 interface IncomeVsExpensesChartProps {
-	data: TrendPoint[]
+	trend: IncomeVsExpensesTrend
 	currency: CurrencyCode
 }
 
@@ -50,18 +71,20 @@ function CustomTooltip({
 	label,
 	currency,
 	locale,
+	formatLabel,
 }: {
 	active?: boolean
 	payload?: TooltipPayloadItem[]
 	label?: string
 	currency: CurrencyCode
 	locale?: string
+	formatLabel: (key: string) => string
 }) {
 	if (!active || !payload?.length) return null
 
 	return (
 		<div className="bg-popover rounded-lg border px-3 py-2 text-sm shadow-md">
-			<p className="mb-1 font-medium">{label ? formatMonthLabel(label, locale ?? "en") : label}</p>
+			<p className="mb-1 font-medium">{label ? formatLabel(label) : label}</p>
 			{payload.map((entry) => (
 				<p key={entry.name} style={{ color: entry.color }}>
 					{entry.name}: {formatCurrency(entry.value, currency, locale)}
@@ -71,17 +94,25 @@ function CustomTooltip({
 	)
 }
 
-export function IncomeVsExpensesChart({ data, currency }: IncomeVsExpensesChartProps) {
+export function IncomeVsExpensesChart({ trend, currency }: IncomeVsExpensesChartProps) {
 	const t = useTranslations("analytics.incomeVsExpenses")
 	const locale = useLocale()
+	const { granularity, points: data } = trend
+	const hasData = data.some((point) => point.income !== 0 || point.expenses !== 0)
+
+	function formatTooltipLabel(key: string): string {
+		const label = formatBucketLabel(key, granularity, locale, true)
+		return granularity === "week" ? t("weekOf", { date: label }) : label
+	}
 
 	return (
 		<Card>
 			<CardHeader>
 				<CardTitle>{t("title")}</CardTitle>
+				<CardDescription>{t(`granularity.${granularity}`)}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				{data.length === 0 ? (
+				{!hasData ? (
 					<div className="flex h-[300px] items-center justify-center">
 						<p className="text-muted-foreground text-sm">{t("noData")}</p>
 					</div>
@@ -90,8 +121,9 @@ export function IncomeVsExpensesChart({ data, currency }: IncomeVsExpensesChartP
 						<ComposedChart data={data}>
 							<CartesianGrid strokeDasharray="3 3" stroke={CHART_COLORS.grid} vertical={false} />
 							<XAxis
-								dataKey="month"
-								tickFormatter={(value: string) => formatMonthLabel(value, locale)}
+								dataKey="key"
+								tickFormatter={(value: string) => formatBucketLabel(value, granularity, locale)}
+								minTickGap={16}
 								tick={{ fill: CHART_COLORS.text, fontSize: 12 }}
 								tickLine={false}
 								axisLine={false}
@@ -103,7 +135,15 @@ export function IncomeVsExpensesChart({ data, currency }: IncomeVsExpensesChartP
 								tickFormatter={(value: number) => formatCompactCurrency(value, currency, locale)}
 								width={80}
 							/>
-							<Tooltip content={<CustomTooltip currency={currency} locale={locale} />} />
+							<Tooltip
+								content={
+									<CustomTooltip
+										currency={currency}
+										locale={locale}
+										formatLabel={formatTooltipLabel}
+									/>
+								}
+							/>
 							<Legend
 								formatter={(value: string) => (
 									<span className="text-foreground text-xs">{value}</span>

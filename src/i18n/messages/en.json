@@ -360,10 +360,6 @@
     "spentSame": "Your spending is similar to last month",
     "risingTrend": "+{percent}% in 3 months",
     "risingTrendsCount": "{count, plural, one {# rising trend detected} other {# rising trends detected}}",
-    "category": "Category",
-    "thisMonth": "This Month",
-    "previousMonth": "Last Month",
-    "change": "Change",
     "noData": "Not enough data for comparison",
     "viewAll": "View details"
   },
@@ -988,7 +984,13 @@
       "noData": "No transaction data available",
       "netSavings": "Net Savings",
       "income": "Income",
-      "expenses": "Expenses"
+      "expenses": "Expenses",
+      "weekOf": "Week of {date}",
+      "granularity": {
+        "day": "Per day",
+        "week": "Per week",
+        "month": "Per month"
+      }
     },
     "spendingHeatmap": {
       "title": "Spending Heatmap",
@@ -1007,7 +1009,12 @@
     },
     "categoryComparison": {
       "title": "Category Comparison",
-      "noData": "No category data to compare"
+      "noData": "No category data to compare",
+      "description": "Expenses in {current} compared with {previous}",
+      "category": "Category",
+      "previous": "Previous period",
+      "current": "Selected period",
+      "change": "Change"
     },
     "budgetVsActual": {
       "title": "Budget vs Actual",
@@ -1020,7 +1027,8 @@
       "noData": "No investment data available. Add investments to track your net worth.",
       "assets": "Assets",
       "liabilities": "Liabilities",
-      "netWorth": "Net Worth"
+      "netWorth": "Net Worth",
+      "filtersNote": "Only the date range applies here; category, method and tag filters don't."
     },
     "financialHealth": {
       "title": "Financial Health",
@@ -1032,8 +1040,33 @@
       "last6Months": "Last 6 months",
       "last12Months": "Last 12 months",
       "yearToDate": "Year to date",
-      "from": "From",
-      "to": "to"
+      "thisMonth": "This month",
+      "lastMonth": "Last month",
+      "label": "Date range",
+      "pickRange": "Pick the first and last day",
+      "apply": "Apply"
+    },
+    "filters": {
+      "category": "Categories",
+      "allCategories": "All categories",
+      "categoriesCount": "{count, plural, one {# category} other {# categories}}",
+      "clearCategories": "Clear selection",
+      "expenses": "Expenses",
+      "income": "Income",
+      "method": "Payment method",
+      "allMethods": "All methods",
+      "tag": "Tag",
+      "allTags": "All tags",
+      "clear": "Clear filters"
+    },
+    "sections": {
+      "period": {
+        "title": "Selected period"
+      },
+      "current": {
+        "title": "Current situation",
+        "description": "This month and what's ahead. The filters above don't change it."
+      }
     }
   },
   "projection": {
