@@ -90,3 +90,11 @@ export function formatCalendarDate(
   const d = typeof date === "string" ? new Date(date) : date;
   return new Intl.DateTimeFormat(locale, { ...dateFormatOptions(style), timeZone: "UTC" }).format(d);
 }
+
+/** The viewer's current calendar day as "yyyy-MM-dd", for date inputs. */
+export function todayDateInput(now: Date = new Date()): string {
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}

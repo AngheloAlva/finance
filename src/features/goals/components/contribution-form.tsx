@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { addContributionAction } from "@/features/goals/actions/add-contribution.action";
 import { AmountInput } from "@/features/transactions/components/amount-input";
 import { FieldError } from "@/shared/components/field-error";
+import { todayDateInput } from "@/shared/lib/formatters";
 import { INITIAL_VOID_STATE } from "@/shared/types/common.types";
 
 interface ContributionFormProps {
@@ -35,7 +36,7 @@ export function ContributionForm({ goalId, onSuccess }: ContributionFormProps) {
     }
   }, [state, onSuccess]);
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = todayDateInput();
 
   return (
     <form

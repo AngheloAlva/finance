@@ -6,6 +6,7 @@ import {
   formatDate,
   formatExchangeRate,
   parseCurrencyInput,
+  todayDateInput,
 } from "@/shared/lib/formatters"
 
 describe("formatCurrency", () => {
@@ -145,5 +146,16 @@ describe("formatCalendarDate", () => {
 
   it("accepts a date string", () => {
     expect(formatCalendarDate("2026-11-06", "short", "en-US")).toBe("Nov 6, 2026")
+  })
+})
+
+describe("todayDateInput", () => {
+  it("uses the viewer's local day, not the UTC one", () => {
+    // 22:30 local time: west of UTC the UTC date is already the next day.
+    expect(todayDateInput(new Date(2026, 10, 6, 22, 30))).toBe("2026-11-06")
+  })
+
+  it("pads month and day", () => {
+    expect(todayDateInput(new Date(2026, 0, 5, 9, 0))).toBe("2026-01-05")
   })
 })

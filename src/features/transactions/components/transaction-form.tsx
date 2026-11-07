@@ -31,7 +31,7 @@ import { updateTransactionAction } from "@/features/transactions/actions/update-
 import { AmountInput } from "@/features/transactions/components/amount-input"
 import { getPaymentMethodOptions } from "@/features/transactions/lib/payment-method-options"
 import { FieldError } from "@/shared/components/field-error"
-import { centsToDisplay } from "@/shared/lib/formatters"
+import { centsToDisplay, todayDateInput } from "@/shared/lib/formatters"
 import { FORM_MODE, INITIAL_VOID_STATE, type FormMode } from "@/shared/types/common.types"
 import { PaymentMethod } from "@/generated/prisma/enums"
 
@@ -166,7 +166,7 @@ export function TransactionForm({
 						defaultValue={
 							defaultValues
 								? formatDateForInput(defaultValues.date)
-								: formatDateForInput(new Date().toISOString())
+								: todayDateInput()
 						}
 						required
 						placeholder={t("form.selectDate")}
