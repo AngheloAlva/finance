@@ -29,7 +29,23 @@ describe("getMonthHero", () => {
 		})
 	})
 
-	it("falls back to the month's net without budgets", () => {
+	it("leads with the total balance without budgets", () => {
+		expect(getMonthHero({ totalIncome: 0, totalExpenses: 196_050 }, null, 583_422)).toEqual({
+			mode: "balance",
+			amount: 583_422,
+		})
+		expect(
+			getMonthHero(overview, { totalBudgeted: 0, totalSpent: 0 }, 583_422),
+		).toEqual({ mode: "balance", amount: 583_422 })
+	})
+
+	it("keeps the budget hero when the month has budgets and a balance", () => {
+		expect(
+			getMonthHero(overview, { totalBudgeted: 200_000, totalSpent: 150_000 }, 583_422).mode,
+		).toBe("budget")
+	})
+
+	it("falls back to the month's net without budgets or balance", () => {
 		expect(getMonthHero(overview, null)).toEqual({ mode: "net", amount: 380_000 })
 		expect(
 			getMonthHero(overview, { totalBudgeted: 0, totalSpent: 0 }),

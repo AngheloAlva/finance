@@ -1,5 +1,5 @@
 export type MonthHero =
-	| { mode: "net"; amount: number }
+	| { mode: "balance" | "net"; amount: number }
 	| {
 			mode: "budget" | "overBudget"
 			amount: number
@@ -8,12 +8,18 @@ export type MonthHero =
 			percent: number
 	  }
 
-/** Picks the single number the dashboard opens with. */
+/**
+ * Picks the single number the dashboard opens with: the budget left when the
+ * month has budgets, otherwise the total balance (what the user has today),
+ * and the month's net only when no balance is available.
+ */
 export function getMonthHero(
 	overview: { totalIncome: number; totalExpenses: number },
 	budgets: { totalBudgeted: number; totalSpent: number } | null,
+	totalBalance: number | null = null,
 ): MonthHero {
 	if (!budgets || budgets.totalBudgeted === 0) {
+		if (totalBalance !== null) return { mode: "balance", amount: totalBalance }
 		return { mode: "net", amount: overview.totalIncome - overview.totalExpenses }
 	}
 

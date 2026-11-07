@@ -18,6 +18,7 @@ interface OverviewCardsProps {
 }
 
 const HERO_LABELS = {
+	balance: "hero.totalBalance",
 	net: "hero.netThisMonth",
 	budget: "hero.leftToSpend",
 	overBudget: "hero.overBudget",
@@ -26,12 +27,19 @@ const HERO_LABELS = {
 export function OverviewCards({ overview, budgets, totalBalance, currency }: OverviewCardsProps) {
 	const t = useTranslations("dashboard")
 	const locale = useLocale()
-	const hero = getMonthHero(overview, budgets)
+	const hero = getMonthHero(overview, budgets, totalBalance)
 
+	// The figure the hero does not show moves into the stats row.
+	const thirdStat =
+		hero.mode === "balance"
+			? { label: t("hero.netThisMonth"), cents: overview.balance }
+			: totalBalance !== null
+				? { label: t("hero.totalBalance"), cents: totalBalance }
+				: null
 	const stats = [
 		{ label: t("income"), cents: overview.totalIncome },
 		{ label: t("expenses"), cents: overview.totalExpenses },
-		...(totalBalance !== null ? [{ label: t("hero.totalBalance"), cents: totalBalance }] : []),
+		...(thirdStat ? [thirdStat] : []),
 	]
 
 	return (
@@ -46,7 +54,7 @@ export function OverviewCards({ overview, budgets, totalBalance, currency }: Ove
 				<AnimatedNumber valueCents={hero.amount} currency={currency} locale={locale} />
 			</p>
 
-			{hero.mode !== "net" && (
+			{(hero.mode === "budget" || hero.mode === "overBudget") && (
 				<div className="mt-4">
 					<div className="bg-muted h-1.5 overflow-hidden">
 						<div
