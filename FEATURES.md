@@ -1,6 +1,6 @@
 # Finance — Mapa de Features
 
-App de finanzas personales y grupales construida con Next.js 16 (App Router), Prisma 7 + Postgres, Better Auth, next-intl y shadcn/ui. Soporta multi-moneda, multi-zona horaria y multi-locale.
+App de finanzas personales y grupales construida con Next.js 16 (App Router), Prisma 7 + Postgres, Better Auth, next-intl y shadcn/ui. Pensada para Chile: solo en español, montos en CLP y hora de Chile. Las inversiones pueden estar en CLP o USD.
 
 El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sepa cuánto entra, cuánto sale, cuánto va a salir, y cuánto le queda — solo o compartido con otros — sin tener que armar planillas a mano.
 
@@ -8,12 +8,11 @@ El objetivo del proyecto: **dejar de adivinar a fin de mes**. Que el usuario sep
 
 ## 1. Autenticación y cuenta
 
-**Qué hace:** registro/login con Better Auth, sesiones persistentes, perfil con moneda, zona horaria e imagen.
+**Qué hace:** registro/login con Better Auth, sesiones persistentes, perfil con nombre e imagen. Toda cuenta usa CLP y la hora de Chile.
 
 **Casos de uso:**
-- Crear una cuenta y empezar a registrar movimientos en tu moneda local (USD por default, configurable).
+- Crear una cuenta y empezar a registrar movimientos en pesos chilenos.
 - Mantener sesión entre dispositivos.
-- Cambiar moneda/timezone desde Settings cuando viajas o te mudas.
 
 **Estado:** ✅ usable end-to-end.
 
@@ -79,7 +78,7 @@ Las transferencias no son ingresos ni gastos. Solo las categorías "Ahorro" e "I
 **Qué hace:** límite de gasto por categoría y período (mensual típicamente). Compara contra los gastos reales.
 
 **Casos de uso:**
-- "Quiero gastar máximo USD 200 en delivery este mes" — el budget te muestra el progreso y dispara alertas (BUDGET_WARNING / BUDGET_EXCEEDED).
+- "Quiero gastar máximo $200.000 en delivery este mes" — el budget te muestra el progreso y dispara alertas (BUDGET_WARNING / BUDGET_EXCEEDED).
 - Planificar mes próximo basándote en lo que gastaste el mes pasado.
 
 **Estado:** ✅ funcional con alertas integradas.
@@ -113,7 +112,7 @@ Las transferencias no son ingresos ni gastos. Solo las categorías "Ahorro" e "I
 **Qué hace:** objetivos con monto target, deadline opcional, contribuciones puntuales. Status ACTIVE / COMPLETED / CANCELLED.
 
 **Casos de uso:**
-- "Juntar USD 3000 para vacaciones a fin de año" → cargas contribuciones, ves progreso, te avisa al 50/75/100%.
+- "Juntar $3.000.000 para vacaciones a fin de año" → cargas contribuciones, ves progreso, te avisa al 50/75/100%.
 - Goal compartido con un grupo (ej. fondo común con tu pareja).
 
 **Estado:** ✅ funcional con alertas de milestone/deadline.
@@ -128,6 +127,7 @@ Las transferencias no son ingresos ni gastos. Solo las categorías "Ahorro" e "I
 - Llevar el control del portfolio sin entrar a 5 apps distintas.
 - Alerta cuando algo se mueve un % significativo.
 - Sumar al patrimonio total.
+- Registrar acciones o dólares guardados en USD (por ejemplo, como `SAVINGS` en USD): cada inversión guarda su moneda (CLP o USD) y su tipo de cambio, y se convierte a CLP para el patrimonio.
 
 **Estado:** ✅ modelo y CRUD presentes; el pricing en vivo no está integrado (entrada manual).
 
@@ -223,9 +223,9 @@ Las transferencias no son ingresos ni gastos. Solo las categorías "Ahorro" e "I
 
 ## 17. Settings y preferencias
 
-**Qué hace:** moneda, timezone, perfil, configuración de cuenta.
+**Qué hace:** perfil y configuración de cuenta. La moneda (CLP) y la zona horaria (`America/Santiago`) son fijas y ya no se eligen.
 
-**Casos de uso:** ajustar el contexto del usuario (clave para fechas/tarjetas).
+**Casos de uso:** cambiar el nombre de la cuenta.
 
 **Estado:** ✅ funcional.
 
@@ -233,11 +233,11 @@ Las transferencias no son ingresos ni gastos. Solo las categorías "Ahorro" e "I
 
 ## 18. i18n (internacionalización)
 
-**Qué hace:** rutas con `[locale]`, `next-intl`, layouts separados para auth y dashboard.
+**Qué hace:** rutas con `[locale]`, `next-intl`, layouts separados para auth y dashboard. Solo existe el español (`es.json`); los textos siguen en el catálogo de mensajes.
 
-**Casos de uso:** abrir en español o inglés según el navegador.
+**Casos de uso:** los enlaces antiguos en inglés (`/en/...`) redirigen a la misma página en español (`/es/...`).
 
-**Estado:** ✅ infraestructura lista y traducción completa: `en.json` y `es.json` tienen 1029 claves cada uno, sin diferencias.
+**Estado:** ✅ solo español. El inglés se retiró a propósito.
 
 ---
 

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { GroupRole } from "@/generated/prisma/enums";
 import { createGroupSchema } from "@/features/groups/lib/groups.schema";
 import { formatZodErrors } from "@/shared/lib/action-utils";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 import { requireSession } from "@/shared/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
 import type { ActionResult } from "@/shared/types/common.types";
@@ -16,7 +17,6 @@ export async function createGroupAction(
   const raw = {
     name: formData.get("name"),
     description: formData.get("description") || undefined,
-    currency: formData.get("currency"),
   };
 
   const result = createGroupSchema.safeParse(raw);
@@ -25,14 +25,14 @@ export async function createGroupAction(
     return formatZodErrors(result.error);
   }
 
-  const { name, description, currency } = result.data;
+  const { name, description } = result.data;
 
   const session = await requireSession();
 
   try {
     await prisma.$transaction(async (tx) => {
       const group = await tx.group.create({
-        data: { name, description, currency },
+        data: { name, description, currency: APP_CURRENCY },
       });
 
       await tx.groupMember.create({

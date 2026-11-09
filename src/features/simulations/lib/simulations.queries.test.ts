@@ -164,4 +164,37 @@ describe("getFinancialSnapshot", () => {
     expect(snap.totalInvestmentValue).toBe(dollars(700))
     expect(snap.creditCards).toEqual([])
   })
+
+  it("adds USD investments to the total in CLP pesos", async () => {
+    const user = await createUser()
+    await prisma.investment.create({
+      data: {
+        type: "STOCKS",
+        name: "US ETF",
+        institution: "Broker",
+        initialAmount: 100_000,
+        currentValue: 100_000, // US$1,000.00 in cents
+        currency: "USD",
+        currentExchangeRate: 9_500_000, // 950 CLP per USD
+        startDate: new Date(),
+        user: { connect: { id: user.id } },
+      },
+    })
+    await prisma.investment.create({
+      data: {
+        type: "SAVINGS",
+        name: "Depósito a plazo",
+        institution: "Banco",
+        initialAmount: 50_000,
+        currentValue: 50_000,
+        currency: "CLP",
+        startDate: new Date(),
+        user: { connect: { id: user.id } },
+      },
+    })
+
+    const snap = await getFinancialSnapshot(user.id, "es")
+
+    expect(snap.totalInvestmentValue).toBe(1_000_000) // 950.000 + 50.000
+  })
 })

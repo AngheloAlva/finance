@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useMemo } from "react";
+import { useActionState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
@@ -8,17 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { createGroupAction } from "@/features/groups/actions/create-group.action";
 import { updateGroupAction } from "@/features/groups/actions/update-group.action";
 import { FieldError } from "@/shared/components/field-error";
-import { CURRENCIES } from "@/shared/lib/constants";
 import { FORM_MODE, INITIAL_VOID_STATE, type FormMode } from "@/shared/types/common.types";
 
 interface GroupFormProps {
@@ -27,7 +19,6 @@ interface GroupFormProps {
     id: string;
     name: string;
     description: string | null;
-    currency: string;
   };
   onSuccess?: () => void;
 }
@@ -39,11 +30,6 @@ export function GroupForm({ mode, defaultValues, onSuccess }: GroupFormProps) {
   const action =
     mode === FORM_MODE.CREATE ? createGroupAction : updateGroupAction;
   const [state, formAction, isPending] = useActionState(action, INITIAL_VOID_STATE);
-
-  const currencyItems = useMemo(
-    () => CURRENCIES.map((c) => ({ value: c.code, label: `${c.code} - ${c.name}` })),
-    [],
-  );
 
   useEffect(() => {
     if (state.success) {
@@ -93,26 +79,6 @@ export function GroupForm({ mode, defaultValues, onSuccess }: GroupFormProps) {
         {!state.success && <FieldError errors={state.fieldErrors?.description} />}
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <Label>{t("currency")}</Label>
-        <Select
-          name="currency"
-          defaultValue={defaultValues?.currency ?? "USD"}
-          items={currencyItems}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder={t("selectCurrency")} />
-          </SelectTrigger>
-          <SelectContent>
-            {CURRENCIES.map((currency) => (
-              <SelectItem key={currency.code} value={currency.code}>
-                {currency.code} - {currency.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {!state.success && <FieldError errors={state.fieldErrors?.currency} />}
-      </div>
 
       <Button type="submit" disabled={isPending} className="mt-2 w-full">
         {isPending

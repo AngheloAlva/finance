@@ -1,6 +1,10 @@
 import { InvestmentType } from "@/generated/prisma/enums"
 import { z } from "zod"
 
+import { APP_CURRENCY, CURRENCIES } from "@/shared/lib/constants"
+
+const INVESTMENT_CURRENCY_CODES = CURRENCIES.map((currency) => currency.code)
+
 function toBasisPoints(val: string | undefined): number | undefined {
 	if (!val || val.trim() === "") return undefined
 	const cleaned = val.replace(/[^0-9.-]/g, "")
@@ -25,7 +29,7 @@ export const createInvestmentSchema = z.object({
 		.number()
 		.int({ error: "invalidNumber" })
 		.positive({ error: "positive" }),
-	currency: z.string().length(3, { error: "currencyLength3" }).default("USD"),
+	currency: z.enum(INVESTMENT_CURRENCY_CODES, { error: "invalidCurrency" }).default(APP_CURRENCY),
 	startDate: z.coerce.date({ error: "validDate" }),
 	maturityDate: z.coerce.date().optional(),
 	estimatedReturn: z.string().optional().transform(toBasisPoints).pipe(z.number().int().optional()),

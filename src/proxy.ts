@@ -1,6 +1,7 @@
 import createMiddleware from "next-intl/middleware";
 import { type NextRequest, NextResponse } from "next/server";
 
+import { redirectRetiredLocale } from "@/i18n/retired-locale";
 import { routing } from "@/i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);
@@ -25,6 +26,11 @@ export function proxy(request: NextRequest) {
 
 	if (isIgnoredPath(pathname)) {
 		return NextResponse.next();
+	}
+
+	const retiredLocaleRedirect = redirectRetiredLocale(request);
+	if (retiredLocaleRedirect) {
+		return retiredLocaleRedirect;
 	}
 
 	// Run next-intl middleware first (handles locale detection, rewriting, cookie)

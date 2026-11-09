@@ -3,6 +3,7 @@ import {
   calculateAllocation,
   calculateReturn,
   convertToBaseCurrency,
+  valueInBaseCurrency,
   displayToRate,
   rateToDisplay,
 } from "@/features/investments/lib/investments.utils"
@@ -10,12 +11,31 @@ import type { Investment } from "@/features/investments/types/investments.types"
 
 describe("convertToBaseCurrency", () => {
   it("returns amount unchanged when rate is null", () => {
-    expect(convertToBaseCurrency(123_456, null)).toBe(123_456)
+    expect(convertToBaseCurrency(123_456, null, "USD", "CLP")).toBe(123_456)
   })
 
-  it("multiplies amount by rate / 10000 and rounds", () => {
-    // 100 USD * 950.25 CLP/USD = 95025
-    expect(convertToBaseCurrency(100, 9_502_500)).toBe(95_025)
+  it("turns USD cents into whole CLP pesos", () => {
+    // US$100.00 is stored as 10_000 cents; at 950.25 CLP/USD it is $95.025
+    expect(convertToBaseCurrency(10_000, 9_502_500, "USD", "CLP")).toBe(95_025)
+  })
+
+  it("rounds to the nearest peso", () => {
+    // US$0.01 at 950.25 CLP/USD is $9.5025
+    expect(convertToBaseCurrency(1, 9_502_500, "USD", "CLP")).toBe(10)
+  })
+
+  it("multiplies by rate / 10000 when both currencies share decimals", () => {
+    expect(convertToBaseCurrency(100_000, 5000, "CLP", "CLP")).toBe(50_000)
+  })
+})
+
+describe("valueInBaseCurrency", () => {
+  it("keeps CLP amounts as they are", () => {
+    expect(valueInBaseCurrency(50_000, "CLP", 9_500_000, "CLP")).toBe(50_000)
+  })
+
+  it("converts USD cents to CLP pesos", () => {
+    expect(valueInBaseCurrency(100_000, "USD", 9_500_000, "CLP")).toBe(950_000)
   })
 })
 

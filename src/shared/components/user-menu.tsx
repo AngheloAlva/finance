@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar"
 import { logoutAction } from "@/features/auth/actions/logout.action"
-import { LocaleSwitcher } from "@/shared/components/locale-switcher"
 import { ThemeToggle } from "@/shared/components/theme-toggle"
 
 interface UserMenuProps {
@@ -77,11 +76,6 @@ export function UserMenu({ user }: UserMenuProps) {
 				<div className="flex items-center justify-between px-2 py-1.5">
 					<span className="text-muted-foreground text-xs">{t("theme")}</span>
 					<ThemeToggle />
-				</div>
-
-				<div className="flex items-center justify-between px-2 py-1.5">
-					<span className="text-muted-foreground text-xs">{t("language")}</span>
-					<LocaleSwitcher />
 				</div>
 
 				<DropdownMenuSeparator />

@@ -11,7 +11,7 @@ import {
   assertGroupRole,
   canManageGoals,
 } from "@/features/groups/lib/groups.permissions";
-import type { CurrencyCode } from "@/shared/lib/constants";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 import { requireSession } from "@/shared/lib/auth";
 import { notFound } from "next/navigation";
 
@@ -37,7 +37,7 @@ export default async function GroupGoalsPage({
     notFound();
   }
 
-  const currency = (session.user.currency ?? "USD") as CurrencyCode;
+  const currency = APP_CURRENCY;
   const goals = await getGroupGoals(groupId);
 
   const goalDetails = new Map<string, GoalDetail>();

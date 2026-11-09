@@ -14,8 +14,7 @@ import {
 } from "@/features/group-finances/lib/group-finances.queries";
 import { getGroupMembership } from "@/features/groups/lib/groups.permissions";
 import { requireSession } from "@/shared/lib/auth";
-import type { CurrencyCode } from "@/shared/lib/constants";
-import { prisma } from "@/shared/lib/prisma";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 
 interface GroupDashboardPageProps {
   params: Promise<{ id: string }>;
@@ -59,19 +58,15 @@ export default async function GroupDashboardPage({
     notFound();
   }
 
-  const [overview, categoryBreakdown, monthlyFlow, balances, group] =
+  const [overview, categoryBreakdown, monthlyFlow, balances] =
     await Promise.all([
       getGroupOverview(id, month, year),
       getGroupCategoryBreakdown(id, month, year, locale),
       getGroupMonthlyFlow(id, month, year),
       getMemberBalances(id),
-      prisma.group.findUnique({
-        where: { id },
-        select: { currency: true },
-      }),
     ]);
 
-  const currency = (group?.currency ?? "USD") as CurrencyCode;
+  const currency = APP_CURRENCY;
 
   const t = await getTranslations("groups.dashboard");
 

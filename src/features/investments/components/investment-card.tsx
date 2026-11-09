@@ -53,7 +53,12 @@ export function InvestmentCard({ investment, userCurrency, locale }: InvestmentC
 	const isForeignCurrency =
 		investment.currency !== userCurrency && investment.currentExchangeRate != null
 	const baseCurrencyValue = isForeignCurrency
-		? convertToBaseCurrency(investment.currentValue, investment.currentExchangeRate)
+		? convertToBaseCurrency(
+				investment.currentValue,
+				investment.currentExchangeRate,
+				investment.currency,
+				userCurrency,
+			)
 		: null
 
 	return (

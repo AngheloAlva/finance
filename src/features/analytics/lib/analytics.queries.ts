@@ -19,6 +19,8 @@ import type {
 } from "@/features/analytics/types/analytics.types";
 import { CHANGE_DIRECTION } from "@/features/analytics/types/analytics.types";
 import { computeHealthSubScore } from "@/features/analytics/lib/analytics.utils";
+import { valueInBaseCurrency } from "@/features/investments/lib/investments.utils";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 import {
   buildTransactionFilterWhere,
   findBucketKey,
@@ -357,7 +359,12 @@ export async function getNetWorthTimeline(
       investment: { userId },
       date: { gte: firstMonthStart, lt: getRangeEnd(range.to) },
     },
-    select: { date: true, value: true },
+    select: {
+      date: true,
+      value: true,
+      exchangeRate: true,
+      investment: { select: { currency: true, currentExchangeRate: true } },
+    },
     orderBy: { date: "asc" },
   });
 
@@ -368,7 +375,13 @@ export async function getNetWorthTimeline(
   for (const snap of snapshots) {
     const monthKey = `${snap.date.getFullYear()}-${String(snap.date.getMonth() + 1).padStart(2, "0")}`;
     const current = monthlyAssets.get(monthKey) ?? 0;
-    monthlyAssets.set(monthKey, current + snap.value);
+    const valueInClp = valueInBaseCurrency(
+      snap.value,
+      snap.investment.currency,
+      snap.exchangeRate ?? snap.investment.currentExchangeRate,
+      APP_CURRENCY,
+    );
+    monthlyAssets.set(monthKey, current + valueInClp);
   }
 
   // Get outstanding installments grouped by month

@@ -39,7 +39,6 @@ export default async function GroupSettingsPage({
     id: group.id,
     name: group.name,
     description: group.description,
-    currency: group.currency,
   };
 
   const t = await getTranslations("groups.settings");

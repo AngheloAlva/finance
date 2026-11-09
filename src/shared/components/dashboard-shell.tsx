@@ -14,7 +14,7 @@ import { AppSidebar } from "@/shared/components/app-sidebar"
 import { CurrencyProvider } from "@/shared/components/currency-provider"
 import { MobileNav } from "@/shared/components/mobile-nav"
 import { requireSession } from "@/shared/lib/auth"
-import type { CurrencyCode } from "@/shared/lib/constants"
+import { APP_CURRENCY } from "@/shared/lib/constants"
 import { prisma } from "@/shared/lib/prisma"
 
 /**
@@ -42,7 +42,7 @@ const getDashboardChrome = cache(async () => {
 		// Alerts are hidden in simple mode, so their badge would point nowhere.
 		unreadAlertCount: simpleMode ? 0 : alertCount,
 		simpleMode,
-		currency: (session.user.currency ?? "USD") as CurrencyCode,
+		currency: APP_CURRENCY,
 	}
 })
 

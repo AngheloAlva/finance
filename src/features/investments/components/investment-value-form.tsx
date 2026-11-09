@@ -11,9 +11,11 @@ import { updateInvestmentValueAction } from "@/features/investments/actions/upda
 import {
   displayToRate,
   rateToDisplay,
+  toInvestmentCurrency,
 } from "@/features/investments/lib/investments.utils";
 import { AmountInput } from "@/features/transactions/components/amount-input";
 import { FieldError } from "@/shared/components/field-error";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 import { INITIAL_VOID_STATE } from "@/shared/types/common.types";
 
 interface InvestmentValueFormProps {
@@ -78,7 +80,11 @@ export function InvestmentValueForm({
       <input type="hidden" name="id" value={investmentId} />
       <div className="flex items-end gap-2">
         <div className="flex flex-1 flex-col gap-1.5">
-          <AmountInput name="currentValue" defaultValue={currentValue} />
+          <AmountInput
+            name="currentValue"
+            defaultValue={currentValue}
+            currency={toInvestmentCurrency(investmentCurrency, APP_CURRENCY)}
+          />
           {!state.success && <FieldError errors={state.fieldErrors?.currentValue} />}
         </div>
         <Button type="submit" size="sm" disabled={isPending}>

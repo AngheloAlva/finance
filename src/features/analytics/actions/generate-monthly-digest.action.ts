@@ -8,7 +8,7 @@ import { getMonthlyOverview } from "@/features/dashboard/lib/dashboard.queries"
 import { requireSession } from "@/shared/lib/auth"
 import { CLAUDE_MODEL, claude } from "@/shared/lib/claude"
 import { formatCurrency } from "@/shared/lib/formatters"
-import type { CurrencyCode } from "@/shared/lib/constants"
+import { APP_CURRENCY, type CurrencyCode } from "@/shared/lib/constants"
 
 export type DigestResult = { text: string } | { empty: true } | { error: string }
 
@@ -92,7 +92,7 @@ export async function generateMonthlyDigestAction(
 ): Promise<DigestResult> {
 	const session = await requireSession()
 	const locale = await getLocale()
-	const currency = (session.user.currency ?? "USD") as CurrencyCode
+	const currency = APP_CURRENCY
 
 	// Checked outside the cache, so the first transaction of the month shows a
 	// summary right away instead of a cached "empty" result.

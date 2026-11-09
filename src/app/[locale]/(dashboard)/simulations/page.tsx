@@ -2,13 +2,13 @@ import { getLocale, getTranslations } from "next-intl/server";
 
 import { getFinancialSnapshot } from "@/features/simulations/lib/simulations.queries";
 import { SimulationTabs } from "@/features/simulations/components/simulation-tabs";
-import type { CurrencyCode } from "@/shared/lib/constants";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 import { requireSession } from "@/shared/lib/auth";
 
 export default async function SimulationsPage() {
   const t = await getTranslations("simulations");
   const session = await requireSession();
-  const currency = (session.user.currency ?? "USD") as CurrencyCode;
+  const currency = APP_CURRENCY;
   const snapshot = await getFinancialSnapshot(session.user.id, await getLocale());
 
   return (

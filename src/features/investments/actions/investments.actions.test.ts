@@ -72,6 +72,35 @@ describe("createInvestmentAction", () => {
     )
     expect(result.success).toBe(false)
   })
+  it("rejects a currency other than CLP or USD", async () => {
+    const user = await createUser()
+    setSessionUser(user.id)
+
+    const result = await createInvestmentAction(
+      { success: true, data: undefined },
+      formData({ ...baseInvestmentFields, currency: "EUR" }),
+    )
+
+    expect(result.success).toBe(false)
+    if (!result.success) expect(result.error).toBe("VALIDATION_ERROR")
+    expect(await prisma.investment.count({ where: { userId: user.id } })).toBe(0)
+  })
+
+  it("stores the investment in CLP when no currency is sent", async () => {
+    const user = await createUser()
+    setSessionUser(user.id)
+    const fieldsWithoutCurrency: Partial<typeof baseInvestmentFields> = { ...baseInvestmentFields }
+    delete fieldsWithoutCurrency.currency
+
+    const result = await createInvestmentAction(
+      { success: true, data: undefined },
+      formData(fieldsWithoutCurrency),
+    )
+
+    expect(result.success).toBe(true)
+    const stored = await prisma.investment.findFirstOrThrow({ where: { userId: user.id } })
+    expect(stored.currency).toBe("CLP")
+  })
 })
 
 describe("updateInvestmentAction", () => {

@@ -17,7 +17,7 @@ export async function createInvestmentAction(
     name: formData.get("name"),
     institution: formData.get("institution"),
     initialAmount: formData.get("initialAmount"),
-    currency: formData.get("currency") || "USD",
+    currency: formData.get("currency") || undefined,
     startDate: formData.get("startDate"),
     maturityDate: formData.get("maturityDate") || undefined,
     estimatedReturn: formData.get("estimatedReturn") || undefined,

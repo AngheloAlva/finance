@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { useCurrency } from "@/shared/components/currency-provider";
+import type { CurrencyCode } from "@/shared/lib/constants";
 import { centsToDisplay, parseCurrencyInput } from "@/shared/lib/formatters";
 import { cn } from "@/lib/utils";
 
@@ -18,10 +19,13 @@ interface AmountInputProps {
 	id?: string;
 	defaultValue?: number;
 	className?: string;
+	/** Currency the amount is in; defaults to the app currency. */
+	currency?: CurrencyCode;
 }
 
-export function AmountInput({ name, id, defaultValue, className }: AmountInputProps) {
-	const currencyCode = useCurrency();
+export function AmountInput({ name, id, defaultValue, className, currency }: AmountInputProps) {
+	const appCurrency = useCurrency();
+	const currencyCode = currency ?? appCurrency;
 	const zeroDecimal = isZeroDecimal(currencyCode);
 
 	const [display, setDisplay] = useState(() =>

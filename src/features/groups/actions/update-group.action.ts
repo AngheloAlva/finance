@@ -18,7 +18,6 @@ export async function updateGroupAction(
     id: formData.get("id"),
     name: formData.get("name"),
     description: formData.get("description") || undefined,
-    currency: formData.get("currency"),
   };
 
   const result = updateGroupSchema.safeParse(raw);
@@ -27,7 +26,7 @@ export async function updateGroupAction(
     return formatZodErrors(result.error);
   }
 
-  const { id, name, description, currency } = result.data;
+  const { id, name, description } = result.data;
 
   const session = await requireSession();
 
@@ -40,7 +39,7 @@ export async function updateGroupAction(
   try {
     await prisma.group.update({
       where: { id },
-      data: { name, description, currency },
+      data: { name, description },
     });
 
     revalidatePath("/groups");

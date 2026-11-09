@@ -261,6 +261,27 @@ describe("getPortfolioSummary", () => {
     expect(summary.count).toBe(1)
   })
 
+  it("adds USD investments to a CLP portfolio in whole pesos", async () => {
+    const user = await createUser()
+    await prisma.investment.create({
+      data: {
+        type: "STOCKS",
+        name: "US ETF",
+        institution: "Broker",
+        initialAmount: 100_000, // US$1,000.00 in cents
+        currentValue: 120_000, // US$1,200.00 in cents
+        currency: "USD",
+        purchaseExchangeRate: 9_000_000, // 900 CLP per USD
+        currentExchangeRate: 9_500_000, // 950 CLP per USD
+        startDate: new Date(),
+        user: { connect: { id: user.id } },
+      },
+    })
+    const summary = await getPortfolioSummary(user.id, "CLP")
+    expect(summary.totalInvested).toBe(900_000)
+    expect(summary.totalCurrentValue).toBe(1_140_000)
+  })
+
   it("ignores inactive investments", async () => {
     const user = await createUser()
     const inv = await createInvestment(user.id, {

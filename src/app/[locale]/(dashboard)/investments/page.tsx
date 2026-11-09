@@ -8,7 +8,7 @@ import { InvestmentList } from "@/features/investments/components/investment-lis
 import { PortfolioAllocationChart } from "@/features/investments/components/portfolio-allocation-chart"
 import { getInvestments } from "@/features/investments/lib/investments.queries"
 import { calculateAllocation } from "@/features/investments/lib/investments.utils"
-import type { CurrencyCode } from "@/shared/lib/constants"
+import { APP_CURRENCY } from "@/shared/lib/constants"
 import { requireSession } from "@/shared/lib/auth"
 
 interface InvestmentsPageProps {
@@ -32,7 +32,7 @@ export default async function InvestmentsPage({ searchParams }: InvestmentsPageP
 	const session = await requireSession()
 	const rawParams = await searchParams
 	const filters = parseFilters(rawParams)
-	const currency = (session.user.currency ?? "USD") as CurrencyCode
+	const currency = APP_CURRENCY
 
 	const investments = await getInvestments(session.user.id, filters)
 	const activeInvestments = investments.filter((inv) => inv.isActive)

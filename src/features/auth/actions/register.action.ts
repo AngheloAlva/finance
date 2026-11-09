@@ -5,9 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { auth } from "@/features/auth/lib/auth.config";
-import { resolveDevicePreferences } from "@/features/auth/lib/device-preferences";
 import { formatZodErrors } from "@/shared/lib/action-utils";
-import { prisma } from "@/shared/lib/prisma";
 import type { ActionResult } from "@/shared/types/common.types";
 
 const registerSchema = z
@@ -53,21 +51,6 @@ export async function registerAction(
       success: false,
       error: "AUTH_REGISTER_FAILED",
     };
-  }
-
-  // Sign-up does not sign in (autoSignIn: false), so the session created
-  // below already carries the device currency and time zone.
-  const preferences = resolveDevicePreferences(formData.get("timezone"));
-  if (preferences) {
-    try {
-      // better-auth stores emails lowercased on sign-up.
-      await prisma.user.update({
-        where: { email: email.toLowerCase() },
-        data: preferences,
-      });
-    } catch {
-      // The account exists; preferences can still be changed in settings.
-    }
   }
 
   try {

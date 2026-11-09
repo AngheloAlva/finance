@@ -28,7 +28,6 @@ import { auth } from "@/features/auth/lib/auth.config"
 import { loginAction } from "@/features/auth/actions/login.action"
 import { logoutAction } from "@/features/auth/actions/logout.action"
 import { registerAction } from "@/features/auth/actions/register.action"
-import { prisma } from "@/shared/lib/prisma"
 import { expectRedirect, formData } from "../../../../tests/helpers/action-test"
 
 beforeEach(() => {
@@ -65,33 +64,6 @@ describe("registerAction", () => {
     )
   })
 
-  it("saves preferences before signing in, matching the stored lowercase email", async () => {
-    await prisma.user.create({ data: { name: "Ana", email: "ana@test.local" } })
-    vi.mocked(auth.api.signUpEmail).mockResolvedValue({} as never)
-    let timezoneAtSignIn: string | undefined
-    vi.mocked(auth.api.signInEmail).mockImplementationOnce((async () => {
-      const user = await prisma.user.findUniqueOrThrow({ where: { email: "ana@test.local" } })
-      timezoneAtSignIn = user.timezone
-      return {}
-    }) as never)
-
-    await expectRedirect(
-      registerAction(
-        { success: true, data: undefined },
-        formData({
-          name: "Ana",
-          email: "Ana@Test.local",
-          password: "supersecret",
-          confirmPassword: "supersecret",
-          timezone: "America/Santiago",
-        }),
-      ),
-      "/",
-    )
-
-    expect(timezoneAtSignIn).toBe("America/Santiago")
-  })
-
   it("sends the user to login when the automatic sign-in fails", async () => {
     vi.mocked(auth.api.signUpEmail).mockResolvedValue({} as never)
     vi.mocked(auth.api.signInEmail).mockRejectedValue(new Error("nope"))
@@ -122,52 +94,6 @@ describe("registerAction", () => {
     )
     expect(result.success).toBe(false)
     if (!result.success) expect(result.error).toBe("VALIDATION_ERROR")
-  })
-
-  it("stores the device time zone and its currency on the new account", async () => {
-    await prisma.user.create({ data: { name: "Ana", email: "ana@test.local" } })
-    vi.mocked(auth.api.signUpEmail).mockResolvedValue({} as never)
-
-    await expectRedirect(
-      registerAction(
-        { success: true, data: undefined },
-        formData({
-          name: "Ana",
-          email: "ana@test.local",
-          password: "supersecret",
-          confirmPassword: "supersecret",
-          timezone: "America/Santiago",
-        }),
-      ),
-      "/",
-    )
-
-    const user = await prisma.user.findUniqueOrThrow({ where: { email: "ana@test.local" } })
-    expect(user.timezone).toBe("America/Santiago")
-    expect(user.currency).toBe("CLP")
-  })
-
-  it("keeps the USD and UTC defaults when the device time zone is unsupported", async () => {
-    await prisma.user.create({ data: { name: "Ana", email: "ana@test.local" } })
-    vi.mocked(auth.api.signUpEmail).mockResolvedValue({} as never)
-
-    await expectRedirect(
-      registerAction(
-        { success: true, data: undefined },
-        formData({
-          name: "Ana",
-          email: "ana@test.local",
-          password: "supersecret",
-          confirmPassword: "supersecret",
-          timezone: "Mars/Olympus_Mons",
-        }),
-      ),
-      "/",
-    )
-
-    const user = await prisma.user.findUniqueOrThrow({ where: { email: "ana@test.local" } })
-    expect(user.timezone).toBe("UTC")
-    expect(user.currency).toBe("USD")
   })
 
   it("returns AUTH_REGISTER_FAILED when signUpEmail throws", async () => {

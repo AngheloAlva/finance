@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest"
+import { prisma } from "@/shared/lib/prisma"
 import {
   detectRisingTrends,
   getBudgetVsActual,
@@ -211,6 +212,35 @@ describe("getNetWorthTimeline", () => {
     expect(timeline.map((p) => p.date)).toEqual(["2026-01", "2026-02"])
     expect(timeline[0].assets).toBe(dollars(1100))
     expect(timeline[1].assets).toBe(dollars(1200))
+  })
+
+  it("values USD snapshots in CLP with the rate saved on each snapshot", async () => {
+    const user = await createUser()
+    const inv = await prisma.investment.create({
+      data: {
+        type: "STOCKS",
+        name: "US ETF",
+        institution: "Broker",
+        initialAmount: 100_000,
+        currentValue: 100_000,
+        currency: "USD",
+        currentExchangeRate: 9_500_000,
+        startDate: utc(2026, 1, 1),
+        user: { connect: { id: user.id } },
+      },
+    })
+    await prisma.investmentSnapshot.createMany({
+      data: [
+        // US$1,000.00 at 900 CLP/USD
+        { investmentId: inv.id, date: utc(2026, 1, 15), value: 100_000, exchangeRate: 9_000_000 },
+        // no rate saved: falls back to the investment's current rate (950)
+        { investmentId: inv.id, date: utc(2026, 2, 15), value: 100_000 },
+      ],
+    })
+
+    const timeline = await getNetWorthTimeline(user.id, wholeYear)
+
+    expect(timeline.map((p) => p.assets)).toEqual([900_000, 950_000])
   })
 
   it("leaves out months outside the range", async () => {

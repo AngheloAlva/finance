@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth"
 import { nextCookies } from "better-auth/next-js"
 import { prismaAdapter } from "better-auth/adapters/prisma"
 
+import { APP_CURRENCY, APP_TIMEZONE } from "@/shared/lib/constants"
 import { prisma } from "@/shared/lib/prisma"
 
 export const auth = betterAuth({
@@ -11,8 +12,8 @@ export const auth = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 		minPasswordLength: 8,
-		// registerAction signs in after saving device preferences, so the
-		// cached session starts with the right currency and time zone.
+		// registerAction signs in on its own so a failed sign-in can send the
+		// new user to the login page.
 		autoSignIn: false,
 	},
 	session: {
@@ -27,12 +28,12 @@ export const auth = betterAuth({
 		additionalFields: {
 			currency: {
 				type: "string",
-				defaultValue: "USD",
+				defaultValue: APP_CURRENCY,
 				input: false,
 			},
 			timezone: {
 				type: "string",
-				defaultValue: "UTC",
+				defaultValue: APP_TIMEZONE,
 				input: false,
 			},
 		},

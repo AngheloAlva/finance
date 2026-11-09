@@ -54,8 +54,8 @@ describe("generateTransactionsCsv", () => {
     const usd = generateTransactionsCsv([makeTx({ amount: 5000 })], "USD", "en")
     expect(usd.split("\n")[1]).toContain(",50.00,")
 
-    const jpy = generateTransactionsCsv([makeTx({ amount: 5000 })], "JPY", "en")
-    expect(jpy.split("\n")[1]).toContain(",5000,")
+    const clp = generateTransactionsCsv([makeTx({ amount: 5000 })], "CLP", "en")
+    expect(clp.split("\n")[1]).toContain(",5000,")
   })
 
   it("escapes fields with commas, quotes or newlines", () => {

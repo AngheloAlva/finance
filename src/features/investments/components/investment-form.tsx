@@ -15,11 +15,12 @@ import {
 	INVESTMENT_TYPE_KEYS,
 	displayToRate,
 	rateToDisplay,
+	toInvestmentCurrency,
 } from "@/features/investments/lib/investments.utils"
 import { AmountInput } from "@/features/transactions/components/amount-input"
 import { useCurrency } from "@/shared/components/currency-provider"
 import { FieldError } from "@/shared/components/field-error"
-import { CURRENCIES } from "@/shared/lib/constants"
+import { CURRENCIES, type CurrencyCode } from "@/shared/lib/constants"
 import { FORM_MODE, INITIAL_VOID_STATE, type FormMode } from "@/shared/types/common.types"
 
 interface InvestmentFormProps {
@@ -51,8 +52,8 @@ export function InvestmentForm({ mode, defaultValues, onSuccess }: InvestmentFor
 	const action = mode === FORM_MODE.CREATE ? createInvestmentAction : updateInvestmentAction
 	const [state, formAction, isPending] = useActionState(action, INITIAL_VOID_STATE)
 
-	const [selectedCurrency, setSelectedCurrency] = useState(
-		defaultValues?.currency ?? baseCurrency,
+	const [selectedCurrency, setSelectedCurrency] = useState<CurrencyCode>(
+		toInvestmentCurrency(defaultValues?.currency, baseCurrency),
 	)
 
 	const isForeignCurrency = selectedCurrency !== baseCurrency
@@ -148,7 +149,11 @@ export function InvestmentForm({ mode, defaultValues, onSuccess }: InvestmentFor
 			{mode === FORM_MODE.CREATE && (
 				<div className="flex flex-col gap-1.5">
 					<Label htmlFor="inv-initialAmount">{t("initialAmount")}</Label>
-					<AmountInput name="initialAmount" defaultValue={defaultValues?.initialAmount} />
+					<AmountInput
+						name="initialAmount"
+						defaultValue={defaultValues?.initialAmount}
+						currency={selectedCurrency}
+					/>
 					{!state.success && <FieldError errors={state.fieldErrors?.initialAmount} />}
 				</div>
 			)}
@@ -159,7 +164,7 @@ export function InvestmentForm({ mode, defaultValues, onSuccess }: InvestmentFor
 					id="inv-currency"
 					name="currency"
 					value={selectedCurrency}
-					onChange={(e) => setSelectedCurrency(e.target.value)}
+					onChange={(e) => setSelectedCurrency(toInvestmentCurrency(e.target.value, baseCurrency))}
 					className="border-input focus-visible:ring-ring flex h-9 w-full rounded-lg border bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:ring-1 focus-visible:outline-none"
 				>
 					{CURRENCIES.map((c) => (
@@ -193,7 +198,11 @@ export function InvestmentForm({ mode, defaultValues, onSuccess }: InvestmentFor
 
 			<div className="flex flex-col gap-1.5">
 				<Label htmlFor="inv-totalFees">{t("brokerFees")}</Label>
-				<AmountInput name="totalFees" defaultValue={defaultValues?.totalFees} />
+				<AmountInput
+					name="totalFees"
+					defaultValue={defaultValues?.totalFees}
+					currency={selectedCurrency}
+				/>
 				{!state.success && <FieldError errors={state.fieldErrors?.totalFees} />}
 			</div>
 

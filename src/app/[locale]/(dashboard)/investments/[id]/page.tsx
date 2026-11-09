@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { InvestmentDetail } from "@/features/investments/components/investment-detail";
 import { getInvestmentWithSnapshots } from "@/features/investments/lib/investments.queries";
 import { requireSession } from "@/shared/lib/auth";
-import type { CurrencyCode } from "@/shared/lib/constants";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 
 interface InvestmentDetailPageProps {
   params: Promise<{ id: string }>;
@@ -14,7 +14,7 @@ export default async function InvestmentDetailPage({
 }: InvestmentDetailPageProps) {
   const session = await requireSession();
   const { id } = await params;
-  const currency = (session.user.currency ?? "USD") as CurrencyCode;
+  const currency = APP_CURRENCY;
 
   const investment = await getInvestmentWithSnapshots(id, session.user.id);
 

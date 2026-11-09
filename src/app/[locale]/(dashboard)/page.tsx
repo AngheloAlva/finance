@@ -1,6 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server"
 
-import type { CurrencyCode } from "@/shared/lib/constants"
+import { APP_CURRENCY } from "@/shared/lib/constants"
 import { requireSession } from "@/shared/lib/auth"
 import { prisma } from "@/shared/lib/prisma"
 import {
@@ -72,7 +72,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
 	const locale = await getLocale()
 	const rawParams = await searchParams
 	const { month, year } = parseMonthYear(rawParams)
-	const currency = (session.user.currency ?? "USD") as CurrencyCode
+	const currency = APP_CURRENCY
 	const t = await getTranslations("dashboard")
 
 	// Load the user's dashboard customization (falls back to default if null/invalid)

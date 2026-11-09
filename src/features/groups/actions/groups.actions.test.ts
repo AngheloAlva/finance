@@ -54,7 +54,7 @@ const baseGroupCategoryFields = {
 }
 
 describe("createGroupAction", () => {
-  it("creates a group and adds the session user as OWNER", async () => {
+  it("creates a CLP group and adds the session user as OWNER", async () => {
     const user = await createUser()
     setSessionUser(user.id)
 
@@ -66,6 +66,7 @@ describe("createGroupAction", () => {
     expect(result.success).toBe(true)
     const groups = await prisma.group.findMany()
     expect(groups).toHaveLength(1)
+    expect(groups[0].currency).toBe("CLP")
     const member = await prisma.groupMember.findFirstOrThrow({
       where: { userId: user.id, groupId: groups[0].id },
     })
@@ -74,11 +75,12 @@ describe("createGroupAction", () => {
 })
 
 describe("updateGroupAction", () => {
-  it("updates the group when caller is OWNER", async () => {
+  it("updates the group when caller is OWNER and ignores a submitted currency", async () => {
     const user = await createUser()
     setSessionUser(user.id)
     const group = await createGroup({ name: "Old" })
     await createGroupMember(user.id, group.id, "OWNER")
+    const before = await prisma.group.findUniqueOrThrow({ where: { id: group.id } })
 
     const result = await updateGroupAction(
       { success: true, data: undefined },
@@ -87,7 +89,7 @@ describe("updateGroupAction", () => {
     expect(result.success).toBe(true)
     const updated = await prisma.group.findUniqueOrThrow({ where: { id: group.id } })
     expect(updated.name).toBe("New")
-    expect(updated.currency).toBe("EUR")
+    expect(updated.currency).toBe(before.currency)
   })
 
   it("rejects when caller is a regular MEMBER", async () => {

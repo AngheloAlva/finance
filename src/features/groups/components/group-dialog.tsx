@@ -21,7 +21,6 @@ export function GroupDialog({ mode, group, trigger }: GroupDialogProps) {
 				id: group.id,
 				name: group.name,
 				description: group.description,
-				currency: group.currency,
 			}
 		: undefined
 

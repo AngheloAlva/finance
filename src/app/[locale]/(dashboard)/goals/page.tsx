@@ -6,13 +6,13 @@ import { GoalDialog } from "@/features/goals/components/goal-dialog";
 import { GoalList } from "@/features/goals/components/goal-list";
 import { getUserGoals, getGoalById } from "@/features/goals/lib/goals.queries";
 import type { GoalDetail } from "@/features/goals/types/goals.types";
-import type { CurrencyCode } from "@/shared/lib/constants";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 import { requireSession } from "@/shared/lib/auth";
 
 export default async function GoalsPage() {
   const t = await getTranslations("goals");
   const session = await requireSession();
-  const currency = (session.user.currency ?? "USD") as CurrencyCode;
+  const currency = APP_CURRENCY;
   const goals = await getUserGoals(session.user.id);
 
   const goalDetails = new Map<string, GoalDetail>();

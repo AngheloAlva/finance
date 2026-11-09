@@ -22,25 +22,9 @@ describe("formatCurrency", () => {
     expect(result).toBe("$1,500.00")
   })
 
-  it("treats amount as whole units for zero-decimal currencies (JPY)", () => {
-    const result = formatCurrency(1500, "JPY", "en-US")
-    expect(result).toContain("1,500")
-    expect(result).not.toContain(".")
-  })
-
   it("treats amount as whole units for zero-decimal currencies (CLP)", () => {
     const result = formatCurrency(5000, "CLP", "es-CL")
     expect(result).toContain("5.000")
-  })
-
-  it("formats EUR correctly", () => {
-    const result = formatCurrency(99900, "EUR", "en-US")
-    expect(result).toBe("€999.00")
-  })
-
-  it("formats ARS with locale es-AR", () => {
-    const result = formatCurrency(100000, "ARS", "es-AR")
-    expect(result).toContain("1.000")
   })
 
   it("returns two decimals for standard currency with odd cents", () => {
@@ -58,8 +42,8 @@ describe("parseCurrencyInput", () => {
     expect(parseCurrencyInput("$1,500.00", "USD")).toBe(150000)
   })
 
-  it("returns whole number for zero-decimal currencies (JPY)", () => {
-    expect(parseCurrencyInput("1500", "JPY")).toBe(1500)
+  it("returns whole number for zero-decimal currencies (CLP)", () => {
+    expect(parseCurrencyInput("1500", "CLP")).toBe(1500)
   })
 
   it("rounds to integer for zero-decimal currencies", () => {
@@ -84,8 +68,8 @@ describe("centsToDisplay", () => {
     expect(centsToDisplay(150000, "USD")).toBe("1500.00")
   })
 
-  it("returns whole number string for zero-decimal currencies (JPY)", () => {
-    expect(centsToDisplay(1500, "JPY")).toBe("1500")
+  it("returns whole number string for zero-decimal currencies (CLP)", () => {
+    expect(centsToDisplay(1500, "CLP")).toBe("1500")
   })
 
   it("defaults to USD when no currency is provided", () => {
@@ -94,7 +78,7 @@ describe("centsToDisplay", () => {
 
   it("handles zero correctly", () => {
     expect(centsToDisplay(0, "USD")).toBe("0.00")
-    expect(centsToDisplay(0, "JPY")).toBe("0")
+    expect(centsToDisplay(0, "CLP")).toBe("0")
   })
 })
 

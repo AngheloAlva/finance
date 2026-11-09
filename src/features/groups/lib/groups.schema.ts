@@ -8,10 +8,7 @@ export const createGroupSchema = z.object({
   description: z
     .string()
     .max(500, { error: "maxLength500" })
-    .optional(),
-  currency: z
-    .string()
-    .length(3, { error: "currencyLength3" }),
+    .optional()
 });
 
 export const updateGroupSchema = createGroupSchema.extend({

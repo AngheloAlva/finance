@@ -55,7 +55,6 @@ export function GroupCard({ group }: GroupCardProps) {
                 {t("member", { count: group.memberCount })}
               </span>
             </div>
-            <span>{group.currency}</span>
           </div>
         </CardContent>
       </Card>

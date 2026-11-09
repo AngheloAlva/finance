@@ -12,7 +12,7 @@ import {
   getPendingGenerations,
 } from "@/features/recurring/lib/recurring.queries";
 import { requireSession } from "@/shared/lib/auth";
-import type { CurrencyCode } from "@/shared/lib/constants";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 
 export default async function RecurringPage() {
   const t = await getTranslations("recurring");
@@ -24,7 +24,7 @@ export default async function RecurringPage() {
     getUserCategories(session.user.id, await getLocale()),
   ]);
 
-  const currency = (session.user.currency ?? "USD") as CurrencyCode;
+  const currency = APP_CURRENCY;
   const typedCategories = categories as CategoryWithChildren[];
 
   return (

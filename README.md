@@ -27,8 +27,8 @@ Finance models the future as first-class data. Every expense carries both *when 
 Detailed per-feature status and use cases live in **[FEATURES.md](./FEATURES.md)**. Summary:
 
 ### Foundations
-- **Accounts and authentication** — session-based email/password auth with a per-user currency, timezone, and profile. ([details](./FEATURES.md#1-autenticación-y-cuenta))
-- **Multi-currency, multi-timezone, multi-locale** — English and Spanish, with locale-prefixed routes. ([details](./FEATURES.md#18-i18n-internacionalización))
+- **Accounts and authentication** — session-based email/password auth with a profile. ([details](./FEATURES.md#1-autenticación-y-cuenta))
+- **Built for Chile** — Spanish only, amounts in CLP and Chile time (`America/Santiago`). Investments can be held in CLP or USD and are converted to CLP for totals. Old `/en/...` links redirect to `/es/...`. ([details](./FEATURES.md#18-i18n-internacionalización))
 
 ### Money in and out
 - **Transactions** — income, expense, and transfer, with payment method, mandatory category, notes, and tags. ([details](./FEATURES.md#2-transacciones))
@@ -65,7 +65,7 @@ Detailed per-feature status and use cases live in **[FEATURES.md](./FEATURES.md)
 | Database | PostgreSQL via Prisma 7 with the `@prisma/adapter-pg` driver adapter — 22 models |
 | Auth | Better Auth 1.5, email/password with server-side sessions |
 | UI | shadcn/ui on Base UI primitives · Tailwind CSS 4 · Lucide · Recharts · `@dnd-kit` |
-| Internationalization | next-intl 4 — `en` (default) and `es` |
+| Internationalization | next-intl 4 — `es` only |
 | Validation | Zod 4, shared between server actions and forms |
 | AI | Anthropic SDK (Claude), for receipt extraction and the monthly digest |
 | Notifications | Web Push (`web-push`) behind a PWA service worker and manifest |

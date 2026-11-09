@@ -27,8 +27,6 @@ export default async function SettingsPage() {
       name: true,
       email: true,
       image: true,
-      currency: true,
-      timezone: true,
       simpleMode: true,
     },
   });

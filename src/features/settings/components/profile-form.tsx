@@ -7,8 +7,6 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CurrencySelect } from "@/features/settings/components/currency-select";
-import { TimezoneSelect } from "@/features/settings/components/timezone-select";
 import { updateProfileAction } from "@/features/settings/actions/update-profile.action";
 import { FieldError } from "@/shared/components/field-error";
 import { INITIAL_VOID_STATE } from "@/shared/types/common.types";
@@ -18,8 +16,6 @@ interface ProfileFormProps {
     name: string;
     email: string;
     image: string | null;
-    currency: string;
-    timezone: string;
   };
 }
 
@@ -74,28 +70,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
         <p className="text-xs text-muted-foreground">
           {t("emailCannotChange")}
         </p>
-      </div>
-
-      <div className="flex flex-col gap-1.5">
-        <Label>{t("currency")}</Label>
-        <CurrencySelect
-          name="currency"
-          defaultValue={user.currency}
-          error={
-            !state.success ? state.fieldErrors?.currency?.[0] : undefined
-          }
-        />
-      </div>
-
-      <div className="flex flex-col gap-1.5">
-        <Label>{t("timezone")}</Label>
-        <TimezoneSelect
-          name="timezone"
-          defaultValue={user.timezone}
-          error={
-            !state.success ? state.fieldErrors?.timezone?.[0] : undefined
-          }
-        />
       </div>
 
       <Button type="submit" disabled={isPending} className="mt-2 w-fit">

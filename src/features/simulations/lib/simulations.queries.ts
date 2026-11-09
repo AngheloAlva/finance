@@ -3,6 +3,8 @@ import { GoalStatus, TransactionType } from "@/generated/prisma/enums"
 import type { RecurrenceFrequency } from "@/generated/prisma/enums"
 
 import { getCurrentCycleRange } from "@/features/credit-cards/lib/billing-cycle.utils"
+import { valueInBaseCurrency } from "@/features/investments/lib/investments.utils"
+import { APP_CURRENCY } from "@/shared/lib/constants"
 import { prisma } from "@/shared/lib/prisma"
 
 import type {
@@ -53,7 +55,7 @@ export async function getFinancialSnapshot(userId: string, locale: string): Prom
 		installmentParents,
 		recurringTemplates,
 		goals,
-		investmentAgg,
+		activeInvestments,
 	] = await Promise.all([
 		// Transactions from last 3 months (non-template)
 		prisma.transaction.findMany({
@@ -126,10 +128,10 @@ export async function getFinancialSnapshot(userId: string, locale: string): Prom
 			},
 		}),
 
-		// Investment total value
-		prisma.investment.aggregate({
+		// Active investments, converted to CLP below
+		prisma.investment.findMany({
 			where: { userId, isActive: true },
-			_sum: { currentValue: true },
+			select: { currentValue: true, currency: true, currentExchangeRate: true },
 		}),
 	])
 
@@ -287,7 +289,11 @@ export async function getFinancialSnapshot(userId: string, locale: string): Prom
 	})
 
 	// ─── Investment total ─────────────────────────────────────────────
-	const totalInvestmentValue = investmentAgg._sum.currentValue ?? 0
+	const totalInvestmentValue = activeInvestments.reduce(
+		(sum, inv) =>
+			sum + valueInBaseCurrency(inv.currentValue, inv.currency, inv.currentExchangeRate, APP_CURRENCY),
+		0,
+	)
 
 	return {
 		monthlyIncome,

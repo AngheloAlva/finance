@@ -13,9 +13,8 @@ import { getGroupMembership } from "@/features/groups/lib/groups.permissions";
 import type { SplitMember } from "@/features/group-finances/lib/split.utils";
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types";
 import { requireSession } from "@/shared/lib/auth";
-import type { CurrencyCode } from "@/shared/lib/constants";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 import { notFound } from "next/navigation";
-import { prisma } from "@/shared/lib/prisma";
 
 interface GroupTransactionsPageProps {
   params: Promise<{ id: string }>;
@@ -55,17 +54,13 @@ export default async function GroupTransactionsPage({
 
   const filters = parseFilters(rawParams);
 
-  const [result, members, categories, group] = await Promise.all([
+  const [result, members, categories] = await Promise.all([
     getGroupTransactions(id, filters),
     getGroupMembers(id),
     getGroupCategories(id),
-    prisma.group.findUnique({
-      where: { id },
-      select: { currency: true },
-    }),
   ]);
 
-  const currency = (group?.currency ?? "USD") as CurrencyCode;
+  const currency = APP_CURRENCY;
 
   const splitMembers: SplitMember[] = members.map((m) => ({
     userId: m.userId,

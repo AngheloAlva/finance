@@ -21,7 +21,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
-import type { CurrencyCode } from "@/shared/lib/constants"
+import { APP_CURRENCY } from "@/shared/lib/constants"
 
 interface TransactionsPageProps {
 	searchParams: Promise<Record<string, string | string[] | undefined>>
@@ -40,7 +40,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 		getUserTagOptions(session.user.id),
 	])
 
-	const currency = (session.user.currency ?? "USD") as CurrencyCode
+	const currency = APP_CURRENCY
 	const typedCategories = categories as CategoryWithChildren[]
 
 	const hasFilters =

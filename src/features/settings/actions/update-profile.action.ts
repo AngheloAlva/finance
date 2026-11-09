@@ -15,8 +15,6 @@ export async function updateProfileAction(
   const raw = {
     name: formData.get("name"),
     image: formData.get("image") ?? undefined,
-    currency: formData.get("currency"),
-    timezone: formData.get("timezone"),
   };
 
   const result = updateProfileSchema.safeParse(raw);
@@ -25,7 +23,7 @@ export async function updateProfileAction(
     return formatZodErrors(result.error);
   }
 
-  const { name, image, currency, timezone } = result.data;
+  const { name, image } = result.data;
 
   const session = await requireSession();
 
@@ -35,8 +33,6 @@ export async function updateProfileAction(
       data: {
         name,
         image: image === "" ? null : image ?? undefined,
-        currency,
-        timezone,
       },
     });
 

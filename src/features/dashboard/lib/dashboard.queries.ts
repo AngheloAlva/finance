@@ -196,13 +196,13 @@ export async function getPortfolioSummary(
       totalInvested += inv.initialAmount;
       totalCurrentValue += inv.currentValue;
     } else {
-      totalInvested += convertToBaseCurrency(inv.initialAmount, inv.purchaseExchangeRate);
-      totalCurrentValue += convertToBaseCurrency(inv.currentValue, inv.currentExchangeRate);
+      totalInvested += convertToBaseCurrency(inv.initialAmount, inv.purchaseExchangeRate, inv.currency, userCurrency);
+      totalCurrentValue += convertToBaseCurrency(inv.currentValue, inv.currentExchangeRate, inv.currency, userCurrency);
     }
     const fees = inv.totalFees ?? 0;
     totalFees += inv.currency === userCurrency
       ? fees
-      : convertToBaseCurrency(fees, inv.currentExchangeRate);
+      : convertToBaseCurrency(fees, inv.currentExchangeRate, inv.currency, userCurrency);
   }
 
   const absoluteReturn = totalCurrentValue - totalInvested - totalFees;

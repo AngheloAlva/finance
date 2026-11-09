@@ -7,15 +7,46 @@ import type {
 	SnapshotPoint,
 	AllocationItem,
 } from "@/features/investments/types/investments.types"
+import { CURRENCIES, type CurrencyCode } from "@/shared/lib/constants"
+import { minorUnitsPerUnit } from "@/shared/lib/formatters"
 
 /**
- * Convert an amount from investment currency to base currency using the stored exchange rate.
- * If rate is null, returns the amount unchanged (same-currency or unknown rate).
+ * Convert a stored amount from the investment currency to the base currency.
+ * Amounts are in each currency's stored units (USD cents, whole CLP pesos), so
+ * the result is rescaled between them. If rate is null, returns the amount unchanged.
  * Rate is stored as rate * 10000 (e.g., 1 USD = 950.25 CLP → 9502500).
  */
-export function convertToBaseCurrency(amountCents: number, exchangeRate: number | null): number {
-	if (exchangeRate === null) return amountCents
-	return Math.round((amountCents * exchangeRate) / 10000)
+export function convertToBaseCurrency(
+	amount: number,
+	exchangeRate: number | null,
+	fromCurrency: string,
+	toCurrency: string,
+): number {
+	if (exchangeRate === null) return amount
+	const scale = minorUnitsPerUnit(toCurrency) / minorUnitsPerUnit(fromCurrency)
+	return Math.round((amount * exchangeRate * scale) / 10000)
+}
+
+/**
+ * Value of an investment amount in the base currency. Amounts already in the
+ * base currency are returned as is; others go through convertToBaseCurrency.
+ */
+export function valueInBaseCurrency(
+	amount: number,
+	currency: string,
+	exchangeRate: number | null,
+	baseCurrency: string,
+): number {
+	if (currency === baseCurrency) return amount
+	return convertToBaseCurrency(amount, exchangeRate, currency, baseCurrency)
+}
+
+/** Narrows a stored or submitted currency to one an investment supports. */
+export function toInvestmentCurrency(
+	value: string | null | undefined,
+	fallback: CurrencyCode,
+): CurrencyCode {
+	return CURRENCIES.find((currency) => currency.code === value)?.code ?? fallback
 }
 
 /** Convert stored Int rate to display float (e.g., 9502500 → 950.25) */
@@ -97,7 +128,7 @@ export function calculateAllocation(
 ): AllocationItem[] {
 	const baseCurrencyValues = investments.map((inv) => {
 		if (inv.currency === userCurrency) return inv.currentValue
-		return convertToBaseCurrency(inv.currentValue, inv.currentExchangeRate)
+		return convertToBaseCurrency(inv.currentValue, inv.currentExchangeRate, inv.currency, userCurrency)
 	})
 
 	const totalValue = baseCurrencyValues.reduce((sum, val) => sum + val, 0)

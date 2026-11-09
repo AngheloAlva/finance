@@ -12,7 +12,7 @@ import { getUserCategories } from "@/features/categories/lib/categories.queries"
 import type { CategoryWithChildren } from "@/features/categories/types/categories.types"
 import { Link } from "@/i18n/navigation"
 import { requireSession } from "@/shared/lib/auth"
-import type { CurrencyCode } from "@/shared/lib/constants"
+import { APP_CURRENCY } from "@/shared/lib/constants"
 
 interface BudgetsPageProps {
 	searchParams: Promise<Record<string, string | string[] | undefined>>
@@ -31,7 +31,7 @@ export default async function BudgetsPage({ searchParams }: BudgetsPageProps) {
 	const session = await requireSession()
 	const rawParams = await searchParams
 	const { month, year } = parseMonthYear(rawParams)
-	const currency = (session.user.currency ?? "USD") as CurrencyCode
+	const currency = APP_CURRENCY
 	const t = await getTranslations("budgets")
 
 	const [budgets, categories] = await Promise.all([

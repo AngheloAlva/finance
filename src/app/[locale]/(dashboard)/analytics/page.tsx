@@ -1,6 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
-import type { CurrencyCode } from "@/shared/lib/constants";
+import { APP_CURRENCY } from "@/shared/lib/constants";
 import { requireSession } from "@/shared/lib/auth";
 
 import { getCreditCardOptions } from "@/features/credit-cards/lib/credit-cards.queries";
@@ -49,7 +49,7 @@ export default async function AnalyticsPage({
   const session = await requireSession();
   const userId = session.user.id;
   const rawParams = await searchParams;
-  const currency = (session.user.currency ?? "USD") as CurrencyCode;
+  const currency = APP_CURRENCY;
 
   const range = parseDateRange(rawParams);
   const filters = parseAnalyticsFilters(rawParams);

@@ -2,9 +2,9 @@
 
 import { createContext, use } from "react";
 
-import type { CurrencyCode } from "@/shared/lib/constants";
+import { APP_CURRENCY, type CurrencyCode } from "@/shared/lib/constants";
 
-const CurrencyContext = createContext<CurrencyCode>("USD");
+const CurrencyContext = createContext<CurrencyCode>(APP_CURRENCY);
 
 interface CurrencyProviderProps {
 	currency: CurrencyCode;

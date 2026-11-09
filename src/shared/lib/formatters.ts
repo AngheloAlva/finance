@@ -6,6 +6,11 @@ function isZeroDecimal(currencyCode: CurrencyCode): boolean {
   return (ZERO_DECIMAL_CURRENCIES as readonly string[]).includes(currencyCode);
 }
 
+/** How many stored units make one unit of the currency: 100 cents per dollar, 1 per peso. */
+export function minorUnitsPerUnit(currencyCode: string): number {
+  return (ZERO_DECIMAL_CURRENCIES as readonly string[]).includes(currencyCode) ? 1 : 100;
+}
+
 const formatterCache = new Map<string, Intl.NumberFormat>();
 
 function getCurrencyFormatter(currencyCode: CurrencyCode, locale = "en-US"): Intl.NumberFormat {

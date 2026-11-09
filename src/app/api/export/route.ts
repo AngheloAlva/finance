@@ -5,11 +5,11 @@ import { exportFiltersSchema } from "@/features/export/lib/export.schema"
 import { getTransactions } from "@/features/transactions/lib/transactions.queries"
 import { routing } from "@/i18n/routing"
 import { requireSession } from "@/shared/lib/auth"
-import type { CurrencyCode } from "@/shared/lib/constants"
+import { APP_CURRENCY } from "@/shared/lib/constants"
 
 export async function GET(request: Request) {
 	const session = await requireSession()
-	const currency = (session.user.currency ?? "USD") as CurrencyCode
+	const currency = APP_CURRENCY
 
 	const { searchParams } = new URL(request.url)
 	// API routes bypass the locale proxy, so the client sends its locale.

@@ -45,12 +45,19 @@ export function InvestmentDetail({ investment, userCurrency }: InvestmentDetailP
     investment.currentExchangeRate != null;
 
   const baseCurrentValue = isForeignCurrency
-    ? convertToBaseCurrency(investment.currentValue, investment.currentExchangeRate)
+    ? convertToBaseCurrency(
+        investment.currentValue,
+        investment.currentExchangeRate,
+        investment.currency,
+        userCurrency,
+      )
     : null;
   const baseInitialAmount = isForeignCurrency
     ? convertToBaseCurrency(
         investment.initialAmount,
         investment.purchaseExchangeRate,
+        investment.currency,
+        userCurrency,
       )
     : null;
   const baseAbsoluteReturn =
