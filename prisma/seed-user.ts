@@ -17,9 +17,31 @@ import { prisma } from "@/shared/lib/prisma"
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Convert a dollar amount to cents (integer). */
-function dollars(n: number): number {
+/**
+ * Pesos per "reference unit". Amounts below are written as small reference
+ * numbers and scaled to realistic Chilean prices, rounded to 10 pesos.
+ */
+const CLP_SCALE = 600
+
+/** Whole Chilean pesos for a reference amount (CLP has no decimals). */
+function clp(n: number): number {
+	return Math.round((n * CLP_SCALE) / 10) * 10
+}
+
+/** US dollar amount in cents, for investments held in USD. */
+function usd(n: number): number {
 	return Math.round(n * 100)
+}
+
+/** Exchange rates are stored as CLP per USD x 10000 (950.25 → 9502500). */
+function clpPerUsd(rate: number): number {
+	return Math.round(rate * 10000)
+}
+
+/** Rate for the i-th of n monthly snapshots, moving from `from` to `to`. */
+function snapshotRate(i: number, n: number, from: number, to: number): number {
+	const t = n <= 1 ? 1 : i / (n - 1)
+	return clpPerUsd(from + (to - from) * t)
 }
 
 /** Random integer between min and max (inclusive). */
@@ -85,7 +107,7 @@ function creditCardImpactDate(
 const TEST_USER = {
 	email: "test@test.com",
 	password: "test1234",
-	name: "Test User",
+	name: "Usuario de Prueba",
 }
 
 // Deterministic IDs for cross-referencing
@@ -189,7 +211,7 @@ async function seedUser() {
 					name: "Visa Gold",
 					lastFourDigits: "4532",
 					brand: "Visa",
-					totalLimit: dollars(5000),
+					totalLimit: clp(5000),
 					closingDay: 15,
 					paymentDay: 5,
 					color: "#3b82f6", // blue
@@ -200,7 +222,7 @@ async function seedUser() {
 					name: "Mastercard Platinum",
 					lastFourDigits: "8901",
 					brand: "Mastercard",
-					totalLimit: dollars(8000),
+					totalLimit: clp(8000),
 					closingDay: 20,
 					paymentDay: 10,
 					color: "#8b5cf6", // purple
@@ -211,7 +233,7 @@ async function seedUser() {
 					name: "Amex Gold",
 					lastFourDigits: "3456",
 					brand: "American Express",
-					totalLimit: dollars(15000),
+					totalLimit: clp(15000),
 					closingDay: 25,
 					paymentDay: 15,
 					color: "#f59e0b", // amber
@@ -257,8 +279,8 @@ async function seedUser() {
 		for (const { year, month } of MONTHS) {
 			// Salary — 1st of the month
 			transactions.push({
-				amount: dollars(randFloat(4800, 5200)),
-				description: "Monthly Salary — Acme Corp",
+				amount: clp(randFloat(4800, 5200)),
+				description: "Sueldo mensual — Acme SpA",
 				date: dateOn(year, month, 1),
 				impactDate: dateOn(year, month, 1),
 				type: TransactionType.INCOME,
@@ -269,8 +291,8 @@ async function seedUser() {
 
 			// Rent — 1st of the month
 			transactions.push({
-				amount: dollars(1200),
-				description: "Monthly Rent — Apartment 4B",
+				amount: clp(1200),
+				description: "Arriendo departamento — Ñuñoa",
 				date: dateOn(year, month, 1),
 				impactDate: dateOn(year, month, 1),
 				type: TransactionType.EXPENSE,
@@ -281,11 +303,11 @@ async function seedUser() {
 
 			// Utilities — around the 10th
 			transactions.push({
-				amount: dollars(randFloat(80, 150)),
+				amount: clp(randFloat(80, 150)),
 				description: pick([
-					"Con Edison Electric Bill",
-					"National Grid Gas Bill",
-					"Utility Payment — Electric & Gas",
+					"Cuenta de luz — Enel",
+					"Cuenta de gas — Metrogas",
+					"Cuenta de agua — Aguas Andinas",
 				]),
 				date: dateOn(year, month, randInt(8, 12)),
 				impactDate: dateOn(year, month, randInt(8, 12)),
@@ -297,8 +319,8 @@ async function seedUser() {
 
 			// Netflix
 			transactions.push({
-				amount: dollars(15.99),
-				description: "Netflix Monthly",
+				amount: clp(15.99),
+				description: "Netflix mensual",
 				date: dateOn(year, month, 15),
 				impactDate: dateOn(year, month, 15),
 				type: TransactionType.EXPENSE,
@@ -310,7 +332,7 @@ async function seedUser() {
 
 			// Spotify
 			transactions.push({
-				amount: dollars(10.99),
+				amount: clp(10.99),
 				description: "Spotify Premium",
 				date: dateOn(year, month, 12),
 				impactDate: dateOn(year, month, 12),
@@ -323,8 +345,8 @@ async function seedUser() {
 
 			// Gym membership
 			transactions.push({
-				amount: dollars(50),
-				description: "Planet Fitness Monthly",
+				amount: clp(50),
+				description: "Gimnasio — Smart Fit",
 				date: dateOn(year, month, 5),
 				impactDate: dateOn(year, month, 5),
 				type: TransactionType.EXPENSE,
@@ -336,20 +358,20 @@ async function seedUser() {
 			// --- Groceries: 8-12 per month ---
 			const groceryCount = randInt(8, 12)
 			const groceryStores = [
-				"Whole Foods Market",
-				"Trader Joe's",
-				"Costco",
-				"Walmart Grocery",
-				"Safeway",
-				"Kroger",
-				"Aldi",
-				"Target Grocery",
+				"Jumbo",
+				"Líder",
+				"Santa Isabel",
+				"Unimarc",
+				"Tottus",
+				"Acuenta",
+				"La Vega Central",
+				"Feria del barrio",
 			]
 			for (let i = 0; i < groceryCount; i++) {
 				const d = randomDateInMonth(year, month)
 				const useCredit = Math.random() > 0.5
 				transactions.push({
-					amount: dollars(randFloat(30, 150)),
+					amount: clp(randFloat(30, 150)),
 					description: pick(groceryStores),
 					date: d,
 					impactDate: useCredit
@@ -368,16 +390,16 @@ async function seedUser() {
 			// --- Restaurants: 4-8 per month ---
 			const restaurantCount = randInt(4, 8)
 			const restaurants = [
-				"Chipotle Mexican Grill",
-				"Olive Garden",
-				"Panda Express",
-				"Five Guys Burgers",
-				"Shake Shack",
-				"Chick-fil-A",
-				"Sushi Roku",
-				"Thai Basil Kitchen",
-				"The Cheesecake Factory",
-				"Domino's Pizza",
+				"Dominó",
+				"Fuente Alemana",
+				"Juan Maestro",
+				"Tarragona",
+				"Streat Burger",
+				"Doggis",
+				"Niu Sushi",
+				"Barrio Italia — almuerzo",
+				"Liguria",
+				"Telepizza",
 			]
 			for (let i = 0; i < restaurantCount; i++) {
 				const d = randomDateInMonth(year, month)
@@ -385,7 +407,7 @@ async function seedUser() {
 				const closingDay = ccId === CC_VISA_ID ? 15 : 20
 				const payDay = ccId === CC_VISA_ID ? 5 : 10
 				transactions.push({
-					amount: dollars(randFloat(15, 80)),
+					amount: clp(randFloat(15, 80)),
 					description: pick(restaurants),
 					date: d,
 					impactDate: creditCardImpactDate(d, closingDay, payDay),
@@ -401,10 +423,10 @@ async function seedUser() {
 			const coffeeCount = randInt(6, 10)
 			const coffeeShops = [
 				"Starbucks",
-				"Dunkin'",
-				"Blue Bottle Coffee",
-				"Peet's Coffee",
-				"Local Coffee Roasters",
+				"Juan Valdez",
+				"Café Altura",
+				"Café Haití",
+				"Cafetería del barrio",
 			]
 			for (let i = 0; i < coffeeCount; i++) {
 				const d = randomDateInMonth(year, month)
@@ -414,7 +436,7 @@ async function seedUser() {
 					PaymentMethod.DEBIT,
 				])
 				transactions.push({
-					amount: dollars(randFloat(3, 8)),
+					amount: clp(randFloat(3, 8)),
 					description: pick(coffeeShops),
 					date: d,
 					impactDate: d,
@@ -429,37 +451,37 @@ async function seedUser() {
 			const transportCount = randInt(4, 6)
 			const transportOptions = [
 				{
-					desc: "Shell Gas Station",
+					desc: "Bencina — Copec",
 					cat: CAT.fuel,
 					min: 25,
 					max: 60,
 				},
 				{
-					desc: "BP Gas Station",
+					desc: "Bencina — Shell",
 					cat: CAT.fuel,
 					min: 30,
 					max: 55,
 				},
 				{
-					desc: "Uber ride downtown",
+					desc: "Uber al centro",
 					cat: CAT.taxiRideshare,
 					min: 10,
 					max: 35,
 				},
 				{
-					desc: "Lyft to airport",
+					desc: "Cabify al aeropuerto",
 					cat: CAT.taxiRideshare,
 					min: 25,
 					max: 50,
 				},
 				{
-					desc: "Metro Card Refill",
+					desc: "Carga tarjeta Bip!",
 					cat: CAT.publicTransit,
 					min: 20,
 					max: 40,
 				},
 				{
-					desc: "Monthly Transit Pass",
+					desc: "Carga Bip! mensual",
 					cat: CAT.publicTransit,
 					min: 50,
 					max: 60,
@@ -471,7 +493,7 @@ async function seedUser() {
 				const method = pick([PaymentMethod.DEBIT, PaymentMethod.CREDIT])
 				const ccId = method === PaymentMethod.CREDIT ? CC_VISA_ID : undefined
 				transactions.push({
-					amount: dollars(randFloat(t.min, t.max)),
+					amount: clp(randFloat(t.min, t.max)),
 					description: t.desc,
 					date: d,
 					impactDate:
@@ -489,20 +511,20 @@ async function seedUser() {
 			// --- Entertainment: 2-4 per month ---
 			const entertainmentCount = randInt(2, 4)
 			const entertainmentOptions = [
-				"AMC Movie Theater",
-				"Bowling Alley",
-				"Dave & Buster's",
-				"Broadway Show",
-				"Escape Room",
-				"Concert Tickets — Live Nation",
-				"Comedy Club",
+				"Cine — Cinemark",
+				"Bowling",
+				"Happyland",
+				"Teatro Municipal",
+				"Escape room",
+				"Entradas concierto — Puntoticket",
+				"Stand-up — Bar",
 			]
 			for (let i = 0; i < entertainmentCount; i++) {
 				const d = randomDateInMonth(year, month)
 				const method = pick([PaymentMethod.CREDIT, PaymentMethod.DEBIT])
 				const ccId = method === PaymentMethod.CREDIT ? CC_MC_ID : undefined
 				transactions.push({
-					amount: dollars(randFloat(10, 50)),
+					amount: clp(randFloat(10, 50)),
 					description: pick(entertainmentOptions),
 					date: d,
 					impactDate:
@@ -520,15 +542,15 @@ async function seedUser() {
 			// --- Shopping: 2-5 per month ---
 			const shoppingCount = randInt(2, 5)
 			const shoppingOptions = [
-				"Amazon.com",
-				"Target",
+				"Mercado Libre",
+				"Falabella",
 				"H&M",
 				"Zara",
-				"Best Buy",
-				"Nike Store",
+				"Paris",
+				"Ripley",
 				"IKEA",
-				"Home Depot",
-				"Uniqlo",
+				"Sodimac",
+				"Hites",
 			]
 			for (let i = 0; i < shoppingCount; i++) {
 				const d = randomDateInMonth(year, month)
@@ -538,7 +560,7 @@ async function seedUser() {
 				const payDay =
 					ccId === CC_VISA_ID ? 5 : ccId === CC_MC_ID ? 10 : 15
 				transactions.push({
-					amount: dollars(randFloat(20, 200)),
+					amount: clp(randFloat(20, 200)),
 					description: pick(shoppingOptions),
 					date: d,
 					impactDate: creditCardImpactDate(d, closingDay, payDay),
@@ -554,22 +576,22 @@ async function seedUser() {
 		// --- Freelance: 2-3 scattered across the 6 months ---
 		const freelancePayments = [
 			{
-				amount: dollars(1500),
-				desc: "Freelance — Logo Design for Startup",
+				amount: clp(1500),
+				desc: "Freelance — Diseño de logo",
 				year: 2025,
 				month: 10,
 				day: 20,
 			},
 			{
-				amount: dollars(2000),
-				desc: "Freelance — Website Redesign Project",
+				amount: clp(2000),
+				desc: "Freelance — Rediseño de sitio web",
 				year: 2025,
 				month: 12,
 				day: 8,
 			},
 			{
-				amount: dollars(800),
-				desc: "Freelance — Technical Writing",
+				amount: clp(800),
+				desc: "Freelance — Redacción técnica",
 				year: 2026,
 				month: 2,
 				day: 14,
@@ -591,8 +613,8 @@ async function seedUser() {
 
 		// --- Medical: 2 over 6 months ---
 		transactions.push({
-			amount: dollars(150),
-			description: "Dr. Smith — Annual Checkup Copay",
+			amount: clp(150),
+			description: "Consulta médica — Clínica Alemana",
 			date: dateOn(2025, 11, 18),
 			impactDate: dateOn(2025, 11, 18),
 			type: TransactionType.EXPENSE,
@@ -601,8 +623,8 @@ async function seedUser() {
 			categoryId: CAT.medical,
 		})
 		transactions.push({
-			amount: dollars(280),
-			description: "CityMD Urgent Care Visit",
+			amount: clp(280),
+			description: "Urgencia — RedSalud",
 			date: dateOn(2026, 2, 5),
 			impactDate: dateOn(2026, 2, 5),
 			type: TransactionType.EXPENSE,
@@ -613,8 +635,8 @@ async function seedUser() {
 
 		// --- Education: 2 courses ---
 		transactions.push({
-			amount: dollars(199),
-			description: "Udemy — Advanced TypeScript Course",
+			amount: clp(199),
+			description: "Udemy — Curso de TypeScript avanzado",
 			date: dateOn(2025, 10, 22),
 			impactDate: dateOn(2025, 10, 22),
 			type: TransactionType.EXPENSE,
@@ -624,8 +646,8 @@ async function seedUser() {
 			creditCardId: CC_VISA_ID,
 		})
 		transactions.push({
-			amount: dollars(499),
-			description: "Frontend Masters Annual Subscription",
+			amount: clp(499),
+			description: "Platzi — Suscripción anual",
 			date: dateOn(2026, 1, 10),
 			impactDate: dateOn(2026, 1, 10),
 			type: TransactionType.EXPENSE,
@@ -649,8 +671,8 @@ async function seedUser() {
 		await prisma.transaction.create({
 			data: {
 				id: PARENT_LAPTOP_ID,
-				amount: dollars(1200),
-				description: "MacBook Air M3 — Best Buy",
+				amount: clp(1200),
+				description: "MacBook Air M3 — Falabella",
 				date: laptopPurchaseDate,
 				impactDate: creditCardImpactDate(laptopPurchaseDate, 15, 5),
 				type: TransactionType.EXPENSE,
@@ -670,8 +692,8 @@ async function seedUser() {
 			const month = installMonth <= 12 ? installMonth : installMonth - 12
 			const d = dateOn(year, month, 5) // payment day for Visa
 			laptopInstallments.push({
-				amount: dollars(200), // 1200 / 6
-				description: `MacBook Air M3 — Best Buy (${i}/6)`,
+				amount: clp(200), // 1200 / 6
+				description: `MacBook Air M3 — Falabella (${i}/6)`,
 				date: d,
 				impactDate: d,
 				type: TransactionType.EXPENSE as TransactionType,
@@ -691,8 +713,8 @@ async function seedUser() {
 		await prisma.transaction.create({
 			data: {
 				id: PARENT_PHONE_ID,
-				amount: dollars(800),
-				description: "iPhone 16 Pro — Apple Store",
+				amount: clp(800),
+				description: "iPhone 16 Pro — Entel",
 				date: phonePurchaseDate,
 				impactDate: creditCardImpactDate(phonePurchaseDate, 20, 10),
 				type: TransactionType.EXPENSE,
@@ -710,8 +732,8 @@ async function seedUser() {
 			const month = 1 + i - 1 // Jan=1, so installment 2=Feb, 3=Mar, 4=Apr
 			const d = dateOn(2026, month, 10) // payment day for MC
 			phoneInstallments.push({
-				amount: dollars(200), // 800 / 4
-				description: `iPhone 16 Pro — Apple Store (${i}/4)`,
+				amount: clp(200), // 800 / 4
+				description: `iPhone 16 Pro — Entel (${i}/4)`,
 				date: d,
 				impactDate: d,
 				type: TransactionType.EXPENSE as TransactionType,
@@ -734,8 +756,8 @@ async function seedUser() {
 		const templates = [
 			{
 				id: TMPL_SALARY_ID,
-				amount: dollars(5000),
-				description: "Monthly Salary — Acme Corp",
+				amount: clp(5000),
+				description: "Sueldo mensual — Acme SpA",
 				categoryId: CAT.salary,
 				type: TransactionType.INCOME,
 				paymentMethod: PaymentMethod.TRANSFER,
@@ -743,8 +765,8 @@ async function seedUser() {
 			},
 			{
 				id: TMPL_RENT_ID,
-				amount: dollars(1200),
-				description: "Monthly Rent — Apartment 4B",
+				amount: clp(1200),
+				description: "Arriendo departamento — Ñuñoa",
 				categoryId: CAT.rent,
 				type: TransactionType.EXPENSE,
 				paymentMethod: PaymentMethod.TRANSFER,
@@ -752,8 +774,8 @@ async function seedUser() {
 			},
 			{
 				id: TMPL_NETFLIX_ID,
-				amount: dollars(15.99),
-				description: "Netflix Monthly",
+				amount: clp(15.99),
+				description: "Netflix mensual",
 				categoryId: CAT.subscriptions,
 				type: TransactionType.EXPENSE,
 				paymentMethod: PaymentMethod.CREDIT,
@@ -761,7 +783,7 @@ async function seedUser() {
 			},
 			{
 				id: TMPL_SPOTIFY_ID,
-				amount: dollars(10.99),
+				amount: clp(10.99),
 				description: "Spotify Premium",
 				categoryId: CAT.subscriptions,
 				type: TransactionType.EXPENSE,
@@ -812,10 +834,10 @@ async function seedUser() {
 		await prisma.goal.create({
 			data: {
 				id: GOAL_EMERGENCY_ID,
-				name: "Emergency Fund",
+				name: "Fondo de emergencia",
 				description:
-					"Build a 3-month emergency fund for unexpected expenses",
-				targetAmount: dollars(10000),
+					"Juntar 3 meses de gastos para imprevistos",
+				targetAmount: clp(10000),
 				targetDate: new Date("2026-12-31"),
 				status: GoalStatus.ACTIVE,
 				userId,
@@ -823,39 +845,39 @@ async function seedUser() {
 					createMany: {
 						data: [
 							{
-								amount: dollars(500),
+								amount: clp(500),
 								date: dateOn(2025, 10, 5),
-								note: "Initial contribution",
+								note: "Primer aporte",
 								userId,
 							},
 							{
-								amount: dollars(600),
+								amount: clp(600),
 								date: dateOn(2025, 11, 5),
-								note: "Monthly savings",
+								note: "Ahorro del mes",
 								userId,
 							},
 							{
-								amount: dollars(700),
+								amount: clp(700),
 								date: dateOn(2025, 12, 5),
-								note: "Holiday bonus added",
+								note: "Aguinaldo de fin de año",
 								userId,
 							},
 							{
-								amount: dollars(500),
+								amount: clp(500),
 								date: dateOn(2026, 1, 5),
-								note: "Monthly savings",
+								note: "Ahorro del mes",
 								userId,
 							},
 							{
-								amount: dollars(600),
+								amount: clp(600),
 								date: dateOn(2026, 2, 5),
-								note: "Monthly savings",
+								note: "Ahorro del mes",
 								userId,
 							},
 							{
-								amount: dollars(600),
+								amount: clp(600),
 								date: dateOn(2026, 3, 5),
-								note: "Monthly savings",
+								note: "Ahorro del mes",
 								userId,
 							},
 						],
@@ -868,9 +890,9 @@ async function seedUser() {
 		await prisma.goal.create({
 			data: {
 				id: GOAL_VACATION_ID,
-				name: "Vacation to Japan",
-				description: "2-week trip to Tokyo and Kyoto in summer 2026",
-				targetAmount: dollars(5000),
+				name: "Vacaciones en Japón",
+				description: "Viaje de 2 semanas a Tokio y Kioto en 2026",
+				targetAmount: clp(5000),
 				targetDate: new Date("2026-08-01"),
 				status: GoalStatus.ACTIVE,
 				userId,
@@ -878,35 +900,35 @@ async function seedUser() {
 					createMany: {
 						data: [
 							{
-								amount: dollars(200),
+								amount: clp(200),
 								date: dateOn(2025, 10, 15),
-								note: "Starting to save",
+								note: "Empezando a ahorrar",
 								userId,
 							},
 							{
-								amount: dollars(200),
+								amount: clp(200),
 								date: dateOn(2025, 11, 15),
 								userId,
 							},
 							{
-								amount: dollars(200),
+								amount: clp(200),
 								date: dateOn(2025, 12, 15),
 								userId,
 							},
 							{
-								amount: dollars(200),
+								amount: clp(200),
 								date: dateOn(2026, 1, 15),
 								userId,
 							},
 							{
-								amount: dollars(200),
+								amount: clp(200),
 								date: dateOn(2026, 2, 15),
 								userId,
 							},
 							{
-								amount: dollars(200),
+								amount: clp(200),
 								date: dateOn(2026, 3, 15),
-								note: "Halfway there!",
+								note: "¡Vamos a la mitad!",
 								userId,
 							},
 						],
@@ -919,9 +941,9 @@ async function seedUser() {
 		await prisma.goal.create({
 			data: {
 				id: GOAL_CAR_ID,
-				name: "New Car Down Payment",
-				description: "Save for a down payment on a new Honda Civic",
-				targetAmount: dollars(8000),
+				name: "Pie para auto nuevo",
+				description: "Ahorrar el pie para un auto nuevo",
+				targetAmount: clp(8000),
 				targetDate: new Date("2027-06-01"),
 				status: GoalStatus.ACTIVE,
 				userId,
@@ -929,18 +951,18 @@ async function seedUser() {
 					createMany: {
 						data: [
 							{
-								amount: dollars(300),
+								amount: clp(300),
 								date: dateOn(2026, 1, 20),
-								note: "Started saving",
+								note: "Empecé a ahorrar",
 								userId,
 							},
 							{
-								amount: dollars(250),
+								amount: clp(250),
 								date: dateOn(2026, 2, 20),
 								userId,
 							},
 							{
-								amount: dollars(250),
+								amount: clp(250),
 								date: dateOn(2026, 3, 20),
 								userId,
 							},
@@ -965,16 +987,16 @@ async function seedUser() {
 
 		// S&P 500 ETF — started Jun 2025
 		const sp500Snapshots = [
-			{ date: dateOn(2025, 6, 1), value: dollars(5000) },
-			{ date: dateOn(2025, 7, 1), value: dollars(5080) },
-			{ date: dateOn(2025, 8, 1), value: dollars(5150) },
-			{ date: dateOn(2025, 9, 1), value: dollars(5100) },
-			{ date: dateOn(2025, 10, 1), value: dollars(5250) },
-			{ date: dateOn(2025, 11, 1), value: dollars(5320) },
-			{ date: dateOn(2025, 12, 1), value: dollars(5400) },
-			{ date: dateOn(2026, 1, 1), value: dollars(5480) },
-			{ date: dateOn(2026, 2, 1), value: dollars(5550) },
-			{ date: dateOn(2026, 3, 1), value: dollars(5650) },
+			{ date: dateOn(2025, 6, 1), value: usd(5000) },
+			{ date: dateOn(2025, 7, 1), value: usd(5080) },
+			{ date: dateOn(2025, 8, 1), value: usd(5150) },
+			{ date: dateOn(2025, 9, 1), value: usd(5100) },
+			{ date: dateOn(2025, 10, 1), value: usd(5250) },
+			{ date: dateOn(2025, 11, 1), value: usd(5320) },
+			{ date: dateOn(2025, 12, 1), value: usd(5400) },
+			{ date: dateOn(2026, 1, 1), value: usd(5480) },
+			{ date: dateOn(2026, 2, 1), value: usd(5550) },
+			{ date: dateOn(2026, 3, 1), value: usd(5650) },
 		]
 
 		await prisma.investment.create({
@@ -982,18 +1004,21 @@ async function seedUser() {
 				id: INV_SP500_ID,
 				type: InvestmentType.FUND,
 				name: "Vanguard S&P 500 ETF (VOO)",
-				institution: "Vanguard",
-				initialAmount: dollars(5000),
-				currentValue: dollars(5650),
+				institution: "Interactive Brokers",
+				initialAmount: usd(5000),
+				currentValue: usd(5650),
 				currency: "USD",
+				purchaseExchangeRate: clpPerUsd(935),
+				currentExchangeRate: clpPerUsd(950),
 				startDate: dateOn(2025, 6, 1),
 				isActive: true,
 				userId,
 				snapshots: {
 					createMany: {
-						data: sp500Snapshots.map((s) => ({
+						data: sp500Snapshots.map((s, i, all) => ({
 							date: s.date,
 							value: s.value,
+							exchangeRate: snapshotRate(i, all.length, 935, 950),
 						})),
 					},
 				},
@@ -1002,14 +1027,14 @@ async function seedUser() {
 
 		// Apple Stock — started Aug 2025
 		const appleSnapshots = [
-			{ date: dateOn(2025, 8, 1), value: dollars(3000) },
-			{ date: dateOn(2025, 9, 1), value: dollars(3050) },
-			{ date: dateOn(2025, 10, 1), value: dollars(3120) },
-			{ date: dateOn(2025, 11, 1), value: dollars(3200) },
-			{ date: dateOn(2025, 12, 1), value: dollars(3150) },
-			{ date: dateOn(2026, 1, 1), value: dollars(3280) },
-			{ date: dateOn(2026, 2, 1), value: dollars(3350) },
-			{ date: dateOn(2026, 3, 1), value: dollars(3400) },
+			{ date: dateOn(2025, 8, 1), value: usd(3000) },
+			{ date: dateOn(2025, 9, 1), value: usd(3050) },
+			{ date: dateOn(2025, 10, 1), value: usd(3120) },
+			{ date: dateOn(2025, 11, 1), value: usd(3200) },
+			{ date: dateOn(2025, 12, 1), value: usd(3150) },
+			{ date: dateOn(2026, 1, 1), value: usd(3280) },
+			{ date: dateOn(2026, 2, 1), value: usd(3350) },
+			{ date: dateOn(2026, 3, 1), value: usd(3400) },
 		]
 
 		await prisma.investment.create({
@@ -1017,18 +1042,21 @@ async function seedUser() {
 				id: INV_APPLE_ID,
 				type: InvestmentType.STOCKS,
 				name: "Apple Inc. (AAPL)",
-				institution: "Robinhood",
-				initialAmount: dollars(3000),
-				currentValue: dollars(3400),
+				institution: "Interactive Brokers",
+				initialAmount: usd(3000),
+				currentValue: usd(3400),
 				currency: "USD",
+				purchaseExchangeRate: clpPerUsd(940),
+				currentExchangeRate: clpPerUsd(950),
 				startDate: dateOn(2025, 8, 1),
 				isActive: true,
 				userId,
 				snapshots: {
 					createMany: {
-						data: appleSnapshots.map((s) => ({
+						data: appleSnapshots.map((s, i, all) => ({
 							date: s.date,
 							value: s.value,
+							exchangeRate: snapshotRate(i, all.length, 940, 950),
 						})),
 					},
 				},
@@ -1037,13 +1065,13 @@ async function seedUser() {
 
 		// Bitcoin — started Sep 2025, volatile
 		const btcSnapshots = [
-			{ date: dateOn(2025, 9, 1), value: dollars(2000) },
-			{ date: dateOn(2025, 10, 1), value: dollars(2300) },
-			{ date: dateOn(2025, 11, 1), value: dollars(2100) },
-			{ date: dateOn(2025, 12, 1), value: dollars(2500) },
-			{ date: dateOn(2026, 1, 1), value: dollars(2350) },
-			{ date: dateOn(2026, 2, 1), value: dollars(2700) },
-			{ date: dateOn(2026, 3, 1), value: dollars(2800) },
+			{ date: dateOn(2025, 9, 1), value: usd(2000) },
+			{ date: dateOn(2025, 10, 1), value: usd(2300) },
+			{ date: dateOn(2025, 11, 1), value: usd(2100) },
+			{ date: dateOn(2025, 12, 1), value: usd(2500) },
+			{ date: dateOn(2026, 1, 1), value: usd(2350) },
+			{ date: dateOn(2026, 2, 1), value: usd(2700) },
+			{ date: dateOn(2026, 3, 1), value: usd(2800) },
 		]
 
 		await prisma.investment.create({
@@ -1051,55 +1079,58 @@ async function seedUser() {
 				id: INV_BTC_ID,
 				type: InvestmentType.CRYPTO,
 				name: "Bitcoin (BTC)",
-				institution: "Coinbase",
-				initialAmount: dollars(2000),
-				currentValue: dollars(2800),
+				institution: "Buda.com",
+				initialAmount: usd(2000),
+				currentValue: usd(2800),
 				currency: "USD",
+				purchaseExchangeRate: clpPerUsd(945),
+				currentExchangeRate: clpPerUsd(950),
 				startDate: dateOn(2025, 9, 1),
 				isActive: true,
 				userId,
 				snapshots: {
 					createMany: {
-						data: btcSnapshots.map((s) => ({
+						data: btcSnapshots.map((s, i, all) => ({
 							date: s.date,
 							value: s.value,
+							exchangeRate: snapshotRate(i, all.length, 945, 950),
 						})),
 					},
 				},
 			},
 		})
 
-		// Savings Account — started Jan 2025
+		// Time deposit in CLP — started Jan 2025
 		const savingsSnapshots = [
-			{ date: dateOn(2025, 1, 1), value: dollars(10000) },
-			{ date: dateOn(2025, 2, 1), value: dollars(10025) },
-			{ date: dateOn(2025, 3, 1), value: dollars(10050) },
-			{ date: dateOn(2025, 4, 1), value: dollars(10075) },
-			{ date: dateOn(2025, 5, 1), value: dollars(10100) },
-			{ date: dateOn(2025, 6, 1), value: dollars(10125) },
-			{ date: dateOn(2025, 7, 1), value: dollars(10150) },
-			{ date: dateOn(2025, 8, 1), value: dollars(10175) },
-			{ date: dateOn(2025, 9, 1), value: dollars(10200) },
-			{ date: dateOn(2025, 10, 1), value: dollars(10225) },
-			{ date: dateOn(2025, 11, 1), value: dollars(10250) },
-			{ date: dateOn(2025, 12, 1), value: dollars(10275) },
-			{ date: dateOn(2026, 1, 1), value: dollars(10300) },
-			{ date: dateOn(2026, 2, 1), value: dollars(10300) },
-			{ date: dateOn(2026, 3, 1), value: dollars(10300) },
+			{ date: dateOn(2025, 1, 1), value: clp(10000) },
+			{ date: dateOn(2025, 2, 1), value: clp(10025) },
+			{ date: dateOn(2025, 3, 1), value: clp(10050) },
+			{ date: dateOn(2025, 4, 1), value: clp(10075) },
+			{ date: dateOn(2025, 5, 1), value: clp(10100) },
+			{ date: dateOn(2025, 6, 1), value: clp(10125) },
+			{ date: dateOn(2025, 7, 1), value: clp(10150) },
+			{ date: dateOn(2025, 8, 1), value: clp(10175) },
+			{ date: dateOn(2025, 9, 1), value: clp(10200) },
+			{ date: dateOn(2025, 10, 1), value: clp(10225) },
+			{ date: dateOn(2025, 11, 1), value: clp(10250) },
+			{ date: dateOn(2025, 12, 1), value: clp(10275) },
+			{ date: dateOn(2026, 1, 1), value: clp(10300) },
+			{ date: dateOn(2026, 2, 1), value: clp(10300) },
+			{ date: dateOn(2026, 3, 1), value: clp(10300) },
 		]
 
 		await prisma.investment.create({
 			data: {
 				id: INV_SAVINGS_ID,
 				type: InvestmentType.SAVINGS,
-				name: "High-Yield Savings Account",
-				institution: "Chase",
-				initialAmount: dollars(10000),
-				currentValue: dollars(10300),
-				currency: "USD",
+				name: "Depósito a plazo",
+				institution: "BancoEstado",
+				initialAmount: clp(10000),
+				currentValue: clp(10300),
+				currency: "CLP",
 				startDate: dateOn(2025, 1, 1),
 				maturityDate: new Date("2026-12-31"),
-				estimatedReturn: dollars(300),
+				estimatedReturn: 550, // 5.50% a year, in basis points
 				isActive: true,
 				userId,
 				snapshots: {
@@ -1131,7 +1162,7 @@ async function seedUser() {
 				{
 					type: AlertType.CATEGORY_THRESHOLD_EXCEEDED,
 					message:
-						"Restaurant spending exceeded $400 this month — 20% above your usual pattern.",
+						"El gasto en restaurantes superó los $240.000 este mes, un 20% sobre lo habitual.",
 					severity: AlertSeverity.WARNING,
 					status: AlertStatus.PENDING,
 					referenceType: "category",
@@ -1142,7 +1173,7 @@ async function seedUser() {
 				{
 					type: AlertType.CREDIT_CARD_PAYMENT_DUE,
 					message:
-						"Visa Gold payment of $1,247.50 is due on April 5th. Don't miss it!",
+						"El pago de la Visa Gold por $748.500 vence el 5 de abril. ¡No lo olvides!",
 					severity: AlertSeverity.INFO,
 					status: AlertStatus.PENDING,
 					referenceType: "creditCard",
@@ -1153,7 +1184,7 @@ async function seedUser() {
 				{
 					type: AlertType.GOAL_MILESTONE,
 					message:
-						"You've reached 35% of your Emergency Fund goal! Keep it up.",
+						"¡Llevas el 35% de tu fondo de emergencia! Sigue así.",
 					severity: AlertSeverity.INFO,
 					status: AlertStatus.READ,
 					referenceType: "goal",
@@ -1164,7 +1195,7 @@ async function seedUser() {
 				{
 					type: AlertType.INVESTMENT_SIGNIFICANT_CHANGE,
 					message:
-						"Bitcoin is up 15% this month. Consider reviewing your crypto allocation.",
+						"Bitcoin subió un 15% este mes. Revisa cuánto tienes en cripto.",
 					severity: AlertSeverity.WARNING,
 					status: AlertStatus.PENDING,
 					referenceType: "investment",
@@ -1175,7 +1206,7 @@ async function seedUser() {
 				{
 					type: AlertType.CATEGORY_SPENDING_SPIKE,
 					message:
-						"Shopping spending spiked 45% compared to last month. Mostly online purchases.",
+						"Tus compras subieron un 45% respecto al mes pasado, sobre todo en línea.",
 					severity: AlertSeverity.WARNING,
 					status: AlertStatus.DISMISSED,
 					referenceType: "category",
@@ -1186,7 +1217,7 @@ async function seedUser() {
 				{
 					type: AlertType.NEGATIVE_BALANCE_RISK,
 					message:
-						"Based on upcoming payments, your balance may go negative around April 8th.",
+						"Con los pagos que vienen, tu saldo podría quedar negativo cerca del 8 de abril.",
 					severity: AlertSeverity.CRITICAL,
 					status: AlertStatus.PENDING,
 					referenceType: "balance",
